@@ -1,0 +1,80 @@
+server:
+  port: 8888
+#  servlet:
+#    context-path: /api
+
+pecado:
+  swagger:
+    enabled: true
+    title: Pecado API
+    basePackage: me.batizhao
+    # ignoreProviders: uaa
+    version: 1.3
+    license: Powered By batizhao
+    licenseUrl: https://batizhao.github.io
+    terms-of-service-url: https://batizhao.github.io
+    contact:
+      name: batizhao
+      email: zhaobati@gmail.com
+      url: https://batizhao.github.io
+  upload:
+    location: /Users/batizhao/Documents/upload-dir
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+security:
+  oauth2:
+    resource:
+      jwt:
+        keyValue: 123
+    ignore:
+      ant:
+        urls:
+          - /swagger-ui/**
+          - /v2/api-docs
+          - /swagger-resources/**
+          - /webjars/**
+          - /actuator/**
+          - /file/image/**
+
+# 加解密根密码
+jasypt:
+  encryptor:
+    password: pecado
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
+    url: jdbc:mysql://127.0.0.1:3306/stalber?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+  liquibase:
+    change-log: classpath:db/changelog-master.xml
+  task:
+    execution:
+      threadNamePrefix: pecadoTask-
+      shutdown:
+        awaitTermination: true
+        awaitTerminationPeriod: PT1M
+  web:
+    locale: zh_CN
+
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug
+    me.batizhao: debug

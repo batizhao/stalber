@@ -1,0 +1,28 @@
+package me.batizhao.admin;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+/**
+ * 尽量不要在这里写 @MapperScan
+ * 因为会导致单元测试的时候初始化 Mapper，造成 Service 和 Controller 的一些错误
+ * 必须用 @AutoConfigureMybatis 解决这个问题，但在环境中，又会造成其它的问题
+ * 所以，这里都直接在 Mapper 上采用 @Mapper 的方法实现
+ *
+ * @author batizhao
+ * @since 2020-02-07
+ */
+@SpringBootApplication(scanBasePackages = "me.batizhao")
+@ConfigurationPropertiesScan(basePackages = "me.batizhao")
+@EnableAspectJAutoProxy(exposeProxy = true)
+@EnableAsync
+public class StalberAdminApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(StalberAdminApplication.class, args);
+    }
+}
