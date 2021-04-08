@@ -35,21 +35,6 @@ management:
       exposure:
         include: '*'
 
-security:
-  oauth2:
-    resource:
-      jwt:
-        keyValue: 123
-    ignore:
-      ant:
-        urls:
-          - /swagger-ui/**
-          - /v2/api-docs
-          - /swagger-resources/**
-          - /webjars/**
-          - /actuator/**
-          - /file/image/**
-
 # 加解密根密码
 jasypt:
   encryptor:

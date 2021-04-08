@@ -23,10 +23,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
-    @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
+//    @Autowired
+//    private AccessDeniedHandler accessDeniedHandler;
+//    @Autowired
+//    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,21 +39,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/**", "/login", "/error").permitAll()
-                .anyRequest().authenticated()
-//                .and().formLogin();
-                .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint);
-    }
-
 //    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//    public void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/oauth/**", "/login", "/error").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling().accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint);
 //    }
+
 }

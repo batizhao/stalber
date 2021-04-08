@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.ResultEnum;
 import me.batizhao.common.util.R;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -33,10 +35,14 @@ import java.io.IOException;
 @Slf4j
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        response.setContentType("application/json; charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         R<String> message = new R<String>().setCode(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getCode())
                 .setMessage(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getMessage())
@@ -49,6 +55,6 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         }
 
         log.error("Authentication Exception Handler for 401.", authException);
-        response.getWriter().write(new ObjectMapper().writeValueAsString(message));
+        response.getWriter().write(objectMapper.writeValueAsString(message));
     }
 }
