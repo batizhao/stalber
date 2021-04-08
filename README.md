@@ -17,6 +17,11 @@
 - mvn clean install -Dmaven.test.skip=true
 - 运行 StalberAdminApplication
 
+## 建议
+
+- dp\ims\system\commons\admin 五个模块尽量不要修改，方便后续升级。新的业务功能增加新的模块就好了。
+- 避免使用 dp\ims\system 三个命名空间
+
 ## 认证和授权
 
 ### 获取 access_token
@@ -104,7 +109,6 @@
 
 ### 基本规范
 
-* 每个模块使用自己的 Liquibase 管理（考虑 DATABASECHANGELOG 是否要独立）
 * Liquibase change log 主文件目录 *src/main/resources/db/changelog-master.xml*
 * 在 db 下建立子目录 changelog，每个版本建立一个 *changelog-版本号.xml*，如 changelog-1.0.xml
 
@@ -202,10 +206,10 @@ public class UserController
  */
 @ApiOperation(value = "接口名称")
 @GetMapping("username")
-public ResponseInfo<User> findByUsername(@ApiParam(value = "用户名", required = true)
+public R<User> findByUsername(@ApiParam(value = "用户名", required = true)
                                          @RequestParam @Size(min = 3) String username) {
     User user = userService.findByUsername(username);
-    return new ResponseInfo<User>().setCode(ResultEnum.SUCCESS.getCode())
+    return new R<User>().setCode(ResultEnum.SUCCESS.getCode())
                 .setMessage(ResultEnum.SUCCESS.getMessage())
                 .setData(user);
 }
