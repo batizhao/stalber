@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
@@ -53,8 +53,8 @@ public class UserController {
     @ApiOperation(value = "分页查询用户")
     @GetMapping("/ims/users")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
-    public ResponseInfo<IPage<User>> handleUsers(Page<User> page, User user) {
-        return ResponseInfo.ok(userService.findUsers(page, user));
+    public R<IPage<User>> handleUsers(Page<User> page, User user) {
+        return R.ok(userService.findUsers(page, user));
     }
 
     /**
@@ -65,8 +65,8 @@ public class UserController {
     @ApiOperation(value = "通过id查询用户")
     @GetMapping("/ims/user/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseInfo<User> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
-        return ResponseInfo.ok(userService.findById(id));
+    public R<User> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(userService.findById(id));
     }
 
     /**
@@ -79,9 +79,9 @@ public class UserController {
     @ApiOperation(value = "根据用户名查询用户")
     @GetMapping(value = "/ims/user", params = "username")
     @SystemLog
-    public ResponseInfo<UserInfoVO> handleUsername(@ApiParam(value = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
+    public R<UserInfoVO> handleUsername(@ApiParam(value = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
         User user = userService.findByUsername(username);
-        return ResponseInfo.ok(userService.getUserInfo(user.getId()));
+        return R.ok(userService.getUserInfo(user.getId()));
     }
 
     /**
@@ -93,8 +93,8 @@ public class UserController {
     @PostMapping("/ims/user")
     @PreAuthorize("@pms.hasPermission('ims:user:add') or @pms.hasPermission('ims:user:edit')")
     @SystemLog
-    public ResponseInfo<User> handleSaveOrUpdate(@Valid @ApiParam(value = "用户" , required = true) @RequestBody User user) {
-        return ResponseInfo.ok(userService.saveOrUpdateUser(user));
+    public R<User> handleSaveOrUpdate(@Valid @ApiParam(value = "用户" , required = true) @RequestBody User user) {
+        return R.ok(userService.saveOrUpdateUser(user));
     }
 
     /**
@@ -107,8 +107,8 @@ public class UserController {
     @DeleteMapping("/ims/user")
     @PreAuthorize("@pms.hasPermission('ims:user:delete')")
     @SystemLog
-    public ResponseInfo<Boolean> handleDelete(@ApiParam(value = "用户ID串", required = true) @RequestParam List<Long> ids) {
-        return ResponseInfo.ok(userService.deleteByIds(ids));
+    public R<Boolean> handleDelete(@ApiParam(value = "用户ID串", required = true) @RequestParam List<Long> ids) {
+        return R.ok(userService.deleteByIds(ids));
     }
 
     /**
@@ -121,8 +121,8 @@ public class UserController {
     @PostMapping("/ims/user/status")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
-        return ResponseInfo.ok(userService.updateStatus(user));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
+        return R.ok(userService.updateStatus(user));
     }
 
     /**
@@ -133,9 +133,9 @@ public class UserController {
     @ApiOperation(value = "我的信息")
     @GetMapping("/ims/user/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseInfo<UserInfoVO> handleUserInfo() {
+    public R<UserInfoVO> handleUserInfo() {
         Long userId = SecurityUtils.getUser().getUserId();
-        return ResponseInfo.ok(userService.getUserInfo(userId));
+        return R.ok(userService.getUserInfo(userId));
     }
 
     /**
@@ -148,9 +148,9 @@ public class UserController {
     @PostMapping("/ims/user/avatar")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public ResponseInfo<User> handleUpdateAvatar(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
+    public R<User> handleUpdateAvatar(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
         Long userId = SecurityUtils.getUser().getUserId();
-        return ResponseInfo.ok(userService.saveOrUpdateUser(user.setId(userId)));
+        return R.ok(userService.saveOrUpdateUser(user.setId(userId)));
     }
 
     /**
@@ -164,10 +164,10 @@ public class UserController {
     @PostMapping("/ims/user/password")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public ResponseInfo<Boolean> handleUpdatePassword(@ApiParam(value = "旧密码" , required = true) @Size(min = 6) @RequestParam String oldPassword,
-                                                      @ApiParam(value = "新密码" , required = true) @Size(min = 6) @RequestParam String newPassword) {
+    public R<Boolean> handleUpdatePassword(@ApiParam(value = "旧密码" , required = true) @Size(min = 6) @RequestParam String oldPassword,
+                                           @ApiParam(value = "新密码" , required = true) @Size(min = 6) @RequestParam String newPassword) {
         Long userId = SecurityUtils.getUser().getUserId();
-        return ResponseInfo.ok(userService.updatePassword(userId, oldPassword, newPassword));
+        return R.ok(userService.updatePassword(userId, oldPassword, newPassword));
     }
 
     /**
@@ -181,8 +181,8 @@ public class UserController {
     @PostMapping(value = "/ims/user/role")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public ResponseInfo<Boolean> handleAddUserRoles(@ApiParam(value = "关联角色", required = true) @RequestBody List<UserRole> userRoleList) {
-        return ResponseInfo.ok(userRoleService.updateUserRoles(userRoleList));
+    public R<Boolean> handleAddUserRoles(@ApiParam(value = "关联角色", required = true) @RequestBody List<UserRole> userRoleList) {
+        return R.ok(userRoleService.updateUserRoles(userRoleList));
     }
 
 }

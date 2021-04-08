@@ -36,7 +36,7 @@ import java.util.Map;
  * <p>
  * 根据 check token 的结果转化用户信息
  */
-public class PecadoUserAuthenticationConverter implements UserAuthenticationConverter {
+public class MyUserAuthenticationConverter implements UserAuthenticationConverter {
 
 	private static final String N_A = "N/A";
 

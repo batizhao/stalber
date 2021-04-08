@@ -6,7 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.dp.domain.Form;
 import me.batizhao.dp.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +44,8 @@ public class FormController {
     @ApiOperation(value = "分页查询表单")
     @GetMapping("/dp/forms")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
-    public ResponseInfo<IPage<Form>> handleForms(Page<Form> page, Form form) {
-        return ResponseInfo.ok(formService.findForms(page, form));
+    public R<IPage<Form>> handleForms(Page<Form> page, Form form) {
+        return R.ok(formService.findForms(page, form));
     }
 
     /**
@@ -56,8 +56,8 @@ public class FormController {
     @ApiOperation(value = "通过id查询表单")
     @GetMapping("/dp/form/{id}")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
-    public ResponseInfo<Form> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
-        return ResponseInfo.ok(formService.findById(id));
+    public R<Form> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(formService.findById(id));
     }
 
     /**
@@ -68,8 +68,8 @@ public class FormController {
     @ApiOperation(value = "添加或编辑表单")
     @PostMapping("/dp/form")
     @PreAuthorize("@pms.hasPermission('dp:form:add') or @pms.hasPermission('dp:form:edit')")
-    public ResponseInfo<Form> handleSaveOrUpdate(@Valid @ApiParam(value = "表单" , required = true) @RequestBody Form form) {
-        return ResponseInfo.ok(formService.saveOrUpdateForm(form));
+    public R<Form> handleSaveOrUpdate(@Valid @ApiParam(value = "表单" , required = true) @RequestBody Form form) {
+        return R.ok(formService.saveOrUpdateForm(form));
     }
 
     /**
@@ -80,8 +80,8 @@ public class FormController {
     @ApiOperation(value = "通过id删除表单")
     @DeleteMapping("/dp/form")
     @PreAuthorize("@pms.hasPermission('dp:form:delete')")
-    public ResponseInfo<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
-        return ResponseInfo.ok(formService.removeByIds(ids));
+    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+        return R.ok(formService.removeByIds(ids));
     }
 
     /**
@@ -93,8 +93,8 @@ public class FormController {
     @ApiOperation(value = "更新表单状态")
     @PostMapping("/dp/form/status")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "表单" , required = true) @RequestBody Form form) {
-        return ResponseInfo.ok(formService.updateStatus(form));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "表单" , required = true) @RequestBody Form form) {
+        return R.ok(formService.updateStatus(form));
     }
 
 }

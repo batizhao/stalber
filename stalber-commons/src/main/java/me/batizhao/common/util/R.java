@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-public class ResponseInfo<T> implements Serializable {
+public class R<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,26 +35,26 @@ public class ResponseInfo<T> implements Serializable {
      */
     private T data;
 
-    public static <T> ResponseInfo<T> ok() {
-        return new ResponseInfo<T>().setCode(ResultEnum.SUCCESS.getCode())
+    public static <T> R<T> ok() {
+        return new R<T>().setCode(ResultEnum.SUCCESS.getCode())
                 .setMessage(ResultEnum.SUCCESS.getMessage())
                 .setData(null);
     }
 
-    public static <T> ResponseInfo<T> ok(T data) {
-        return new ResponseInfo<T>().setCode(ResultEnum.SUCCESS.getCode())
+    public static <T> R<T> ok(T data) {
+        return new R<T>().setCode(ResultEnum.SUCCESS.getCode())
                 .setMessage(ResultEnum.SUCCESS.getMessage())
                 .setData(data);
     }
 
-    public static <T> ResponseInfo<T> failed() {
-        return new ResponseInfo<T>().setCode(ResultEnum.UNKNOWN_ERROR.getCode())
+    public static <T> R<T> failed() {
+        return new R<T>().setCode(ResultEnum.UNKNOWN_ERROR.getCode())
                 .setMessage(ResultEnum.UNKNOWN_ERROR.getMessage())
                 .setData(null);
     }
 
-    public static <T> ResponseInfo<T> failed(T data) {
-        return new ResponseInfo<T>().setCode(ResultEnum.UNKNOWN_ERROR.getCode())
+    public static <T> R<T> failed(T data) {
+        return new R<T>().setCode(ResultEnum.UNKNOWN_ERROR.getCode())
                 .setMessage(ResultEnum.UNKNOWN_ERROR.getMessage())
                 .setData(data);
     }

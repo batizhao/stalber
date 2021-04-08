@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.dp.domain.CodeMeta;
 import me.batizhao.dp.service.CodeMetaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,8 @@ public class CodeMetaController {
      */
     @ApiOperation(value = "通过 codeId 查询生成代码元数据")
     @GetMapping(value = "/dp/code/meta", params = "codeId")
-    public ResponseInfo<List<CodeMeta>> handleCode(@ApiParam(value = "codeId" , required = true) @RequestParam @Min(1) Long codeId) {
-        return ResponseInfo.ok(codeMetaService.findByCodeId(codeId));
+    public R<List<CodeMeta>> handleCode(@ApiParam(value = "codeId" , required = true) @RequestParam @Min(1) Long codeId) {
+        return R.ok(codeMetaService.findByCodeId(codeId));
     }
 
 }

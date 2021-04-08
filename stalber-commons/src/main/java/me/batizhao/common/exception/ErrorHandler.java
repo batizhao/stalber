@@ -2,7 +2,7 @@ package me.batizhao.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +31,7 @@ public class ErrorHandler implements ErrorController {
     }
 
     @GetMapping(ERROR_PATH)
-    public ResponseInfo<String> handleError(HttpServletRequest request) {
+    public R<String> handleError(HttpServletRequest request) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         String requestUri = (String) request.getAttribute("javax.servlet.error.request_uri");
         String exceptionType = (String) request.getAttribute("javax.servlet.error.exception_type");
@@ -39,7 +39,7 @@ public class ErrorHandler implements ErrorController {
         log.error("ErrorHandler statusCode: {}, requestUri: {}, exceptionType: {}",
                 statusCode, requestUri, exceptionType);
 
-        return new ResponseInfo<String>().setMessage(ResultEnum.RESOURCE_NOT_FOUND.getMessage())
+        return new R<String>().setMessage(ResultEnum.RESOURCE_NOT_FOUND.getMessage())
                 .setCode(ResultEnum.RESOURCE_NOT_FOUND.getCode())
                 .setData(requestUri);
     }

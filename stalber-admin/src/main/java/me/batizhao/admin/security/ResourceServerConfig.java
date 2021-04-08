@@ -50,10 +50,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
         DefaultAccessTokenConverter accessTokenConverter = new DefaultAccessTokenConverter();
-        UserAuthenticationConverter userTokenConverter = new PecadoUserAuthenticationConverter();
+        UserAuthenticationConverter userTokenConverter = new MyUserAuthenticationConverter();
         accessTokenConverter.setUserTokenConverter(userTokenConverter);
 
-        PecadoTokenServices tokenServices = new PecadoTokenServices();
+        TokenServices tokenServices = new TokenServices();
 
         // 这里的签名key 保持和认证中心一致
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();

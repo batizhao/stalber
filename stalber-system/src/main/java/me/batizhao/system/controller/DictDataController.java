@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.system.domain.DictData;
 import me.batizhao.system.service.DictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,8 @@ public class DictDataController {
      */
     @ApiOperation(value = "通过id查询字典")
     @GetMapping("/system/dict/data/{id}")
-    public ResponseInfo<DictData> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
-        return ResponseInfo.ok(dictDataService.findById(id));
+    public R<DictData> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(dictDataService.findById(id));
     }
 
     /**
@@ -54,8 +54,8 @@ public class DictDataController {
      */
     @ApiOperation(value = "通过code查询字典")
     @GetMapping(value = "/system/dict/data", params = "code")
-    public ResponseInfo<List<DictData>> handleCode(@ApiParam(value = "code", required = true) @RequestParam @Size(min = 1) String code) {
-        return ResponseInfo.ok(dictDataService.list(Wrappers.<DictData>lambdaQuery().eq(DictData::getCode, code)));
+    public R<List<DictData>> handleCode(@ApiParam(value = "code", required = true) @RequestParam @Size(min = 1) String code) {
+        return R.ok(dictDataService.list(Wrappers.<DictData>lambdaQuery().eq(DictData::getCode, code)));
     }
 
     /**
@@ -67,8 +67,8 @@ public class DictDataController {
     @PostMapping("/system/dict/data")
     @PreAuthorize("@pms.hasPermission('system:dict:add') or @pms.hasPermission('system:dict:edit')")
     @SystemLog
-    public ResponseInfo<DictData> handleSaveOrUpdate(@Valid @ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
-        return ResponseInfo.ok(dictDataService.saveOrUpdateDictData(dictData));
+    public R<DictData> handleSaveOrUpdate(@Valid @ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
+        return R.ok(dictDataService.saveOrUpdateDictData(dictData));
     }
 
     /**
@@ -80,8 +80,8 @@ public class DictDataController {
     @DeleteMapping("/system/dict/data")
     @PreAuthorize("@pms.hasPermission('system:dict:delete')")
     @SystemLog
-    public ResponseInfo<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
-        return ResponseInfo.ok(dictDataService.removeByIds(ids));
+    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+        return R.ok(dictDataService.removeByIds(ids));
     }
 
     /**
@@ -94,8 +94,8 @@ public class DictDataController {
     @PostMapping("/system/dict/data/status")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
-        return ResponseInfo.ok(dictDataService.updateStatus(dictData));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
+        return R.ok(dictDataService.updateStatus(dictData));
     }
 
 }

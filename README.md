@@ -114,12 +114,12 @@ Rule violated for package ***: lines covered ratio is 0.8, but expected minimum 
 
 * 每个模块使用自己的 Liquibase 管理（考虑 DATABASECHANGELOG 是否要独立）
 * Liquibase change log 主文件目录 *src/main/resources/db/changelog-master.xml*
-* 在 db 下建立子目录 changelogs，每个版本建立一个 *changelog-版本号.xml*，如 changelog-1.0.xml
+* 在 db 下建立子目录 changelog，每个版本建立一个 *changelog-版本号.xml*，如 changelog-1.0.xml
 
 ```
 .
 ├── src/main/resources/db
-│   ├── changelogs                                            
+│   ├── changelog                                            
 │   │   ├── changelog-1.0.xml                                  
 │   │   ├── changelog-1.1.xml
 │   │   ├── changelog-1.2.xml

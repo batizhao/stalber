@@ -17,7 +17,7 @@ import java.util.Map;
  * @author batizhao
  * @date 2020/7/27
  */
-public class PecadoTokenServices implements ResourceServerTokenServices {
+public class TokenServices implements ResourceServerTokenServices {
     @Setter
     private TokenStore tokenStore;
 
@@ -44,7 +44,7 @@ public class PecadoTokenServices implements ResourceServerTokenServices {
             throw new InvalidTokenException("Invalid access token: " + accessTokenValue);
         }
 
-        UserAuthenticationConverter userTokenConverter = new PecadoUserAuthenticationConverter();
+        UserAuthenticationConverter userTokenConverter = new MyUserAuthenticationConverter();
         defaultAccessTokenConverter.setUserTokenConverter(userTokenConverter);
         Map<String, ?> map = jwtAccessTokenConverter.convertAccessToken(readAccessToken(accessTokenValue), oAuth2Authentication);
         return defaultAccessTokenConverter.extractAuthentication(map);

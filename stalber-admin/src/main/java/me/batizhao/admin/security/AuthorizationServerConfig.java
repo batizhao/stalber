@@ -30,16 +30,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-    @Autowired
-    public WebResponseExceptionTranslator webResponseExceptionTranslator() {
-        return new MyWebResponseExceptionTranslator();
-    }
-
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private WebResponseExceptionTranslator webResponseExceptionTranslator;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -51,7 +47,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
                 .userDetailsService(userDetailsService)
-                .exceptionTranslator(webResponseExceptionTranslator());
+                .exceptionTranslator(webResponseExceptionTranslator);
     }
 
     /**

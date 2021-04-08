@@ -22,7 +22,7 @@ import static me.batizhao.common.constant.PecadoConstants.NORM_DATETIME_PATTERN;
 @Configuration
 @ConditionalOnClass(ObjectMapper.class)
 @AutoConfigureBefore(JacksonAutoConfiguration.class)
-public class PecadoJacksonAutoConfiguration {
+public class JacksonConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableConfigurationProperties(SwaggerProperties.class)
 @ConditionalOnProperty(name = "pecado.swagger.enabled", havingValue = "true")
-public class PecadoSwaggerAutoConfiguration {
+public class SwaggerConfiguration {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 

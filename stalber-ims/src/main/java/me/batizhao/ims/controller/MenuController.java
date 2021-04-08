@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.ims.domain.Menu;
 import me.batizhao.ims.service.MenuService;
@@ -45,9 +45,9 @@ public class MenuController {
     @ApiOperation(value = "查询当前用户菜单")
     @GetMapping("/ims/menu/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseInfo<List<Menu>> handleMenuTree4Me() {
+    public R<List<Menu>> handleMenuTree4Me() {
         Long userId = SecurityUtils.getUser().getUserId();
-        return ResponseInfo.ok(menuService.findMenuTreeByUserId(userId));
+        return R.ok(menuService.findMenuTreeByUserId(userId));
     }
 
     /**
@@ -59,8 +59,8 @@ public class MenuController {
     @ApiOperation(value = "根据角色查询菜单")
     @GetMapping(value = "/ims/menu", params = "roleId")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
-    public ResponseInfo<List<Menu>> handleMenusByRoleId(@ApiParam(value = "菜单ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
-        return ResponseInfo.ok(menuService.findMenusByRoleId(roleId));
+    public R<List<Menu>> handleMenusByRoleId(@ApiParam(value = "菜单ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
+        return R.ok(menuService.findMenusByRoleId(roleId));
     }
 
     /**
@@ -72,8 +72,8 @@ public class MenuController {
     @ApiOperation(value = "查询所有菜单")
     @GetMapping("/ims/menus")
     @PreAuthorize("isAuthenticated()")
-    public ResponseInfo<List<Menu>> handleMenuTree(Menu menu) {
-        return ResponseInfo.ok(menuService.findMenuTree(menu));
+    public R<List<Menu>> handleMenuTree(Menu menu) {
+        return R.ok(menuService.findMenuTree(menu));
     }
 
     /**
@@ -84,8 +84,8 @@ public class MenuController {
     @ApiOperation(value = "通过id查询菜单")
     @GetMapping("/ims/menu/{id}")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
-    public ResponseInfo<Menu> handleMenu(@ApiParam(value = "菜单ID", required = true) @PathVariable("id") @Min(1) Integer id) {
-        return ResponseInfo.ok(menuService.findMenuById(id));
+    public R<Menu> handleMenu(@ApiParam(value = "菜单ID", required = true) @PathVariable("id") @Min(1) Integer id) {
+        return R.ok(menuService.findMenuById(id));
     }
 
     /**
@@ -99,8 +99,8 @@ public class MenuController {
     @PostMapping("/ims/menu")
     @PreAuthorize("@pms.hasPermission('ims:menu:add') or @pms.hasPermission('ims:menu:edit')")
     @SystemLog
-    public ResponseInfo<Menu> handleSaveOrUpdate(@Valid @ApiParam(value = "菜单", required = true) @RequestBody Menu menu) {
-        return ResponseInfo.ok(menuService.saveOrUpdateMenu(menu));
+    public R<Menu> handleSaveOrUpdate(@Valid @ApiParam(value = "菜单", required = true) @RequestBody Menu menu) {
+        return R.ok(menuService.saveOrUpdateMenu(menu));
     }
 
     /**
@@ -113,8 +113,8 @@ public class MenuController {
     @DeleteMapping("/ims/menu")
     @PreAuthorize("@pms.hasPermission('ims:menu:delete')")
     @SystemLog
-    public ResponseInfo<String> handleDelete(@ApiParam(value = "菜单ID串", required = true) @RequestParam Integer id) {
-        return menuService.deleteById(id) ? ResponseInfo.ok() : ResponseInfo.failed("存在子菜单不允许删除！");
+    public R<String> handleDelete(@ApiParam(value = "菜单ID串", required = true) @RequestParam Integer id) {
+        return menuService.deleteById(id) ? R.ok() : R.failed("存在子菜单不允许删除！");
     }
 
     /**
@@ -127,8 +127,8 @@ public class MenuController {
     @PostMapping("/ims/menu/status")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
     @SystemLog
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "菜单" , required = true) @RequestBody Menu menu) {
-        return ResponseInfo.ok(menuService.updateStatus(menu));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "菜单" , required = true) @RequestBody Menu menu) {
+        return R.ok(menuService.updateStatus(menu));
     }
 
 }

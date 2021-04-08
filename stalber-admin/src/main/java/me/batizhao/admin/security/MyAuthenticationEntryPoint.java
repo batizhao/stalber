@@ -3,7 +3,7 @@ package me.batizhao.admin.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -38,12 +38,12 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json; charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        ResponseInfo<String> message = new ResponseInfo<String>().setCode(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getCode())
+        R<String> message = new R<String>().setCode(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getCode())
                 .setMessage(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getMessage())
                 .setData(authException.getMessage());
 
         if(authException instanceof InsufficientAuthenticationException) {
-            message = new ResponseInfo<String>().setCode(ResultEnum.OAUTH2_TOKEN_INVALID.getCode())
+            message = new R<String>().setCode(ResultEnum.OAUTH2_TOKEN_INVALID.getCode())
                     .setMessage(ResultEnum.OAUTH2_TOKEN_INVALID.getMessage())
                     .setData(authException.getMessage());
         }

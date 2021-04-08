@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.dp.domain.Ds;
 import me.batizhao.dp.service.DsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,8 @@ public class DsController {
     @GetMapping("/dp/dss")
     @PreAuthorize("@pms.hasPermission('dp:ds:admin')")
     @SystemLog
-    public ResponseInfo<IPage<Ds>> handleDss(Page<Ds> page, Ds ds) {
-        return ResponseInfo.ok(dsService.findDss(page, ds));
+    public R<IPage<Ds>> handleDss(Page<Ds> page, Ds ds) {
+        return R.ok(dsService.findDss(page, ds));
     }
 
     /**
@@ -58,8 +58,8 @@ public class DsController {
     @GetMapping("/dp/ds")
     @PreAuthorize("hasRole('USER')")
     @SystemLog
-    public ResponseInfo<List<Ds>> handleDss() {
-        return ResponseInfo.ok(dsService.list());
+    public R<List<Ds>> handleDss() {
+        return R.ok(dsService.list());
     }
 
     /**
@@ -71,8 +71,8 @@ public class DsController {
     @GetMapping("/dp/ds/{id}")
     @PreAuthorize("@pms.hasPermission('dp:ds:admin')")
     @SystemLog
-    public ResponseInfo<Ds> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Integer id) {
-        return ResponseInfo.ok(dsService.findById(id));
+    public R<Ds> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Integer id) {
+        return R.ok(dsService.findById(id));
     }
 
     /**
@@ -84,8 +84,8 @@ public class DsController {
     @PostMapping("/dp/ds")
     @PreAuthorize("@pms.hasPermission('dp:ds:add') or @pms.hasPermission('dp:ds:edit')")
     @SystemLog
-    public ResponseInfo<Ds> handleSaveOrUpdate(@Valid @ApiParam(value = "数据源" , required = true) @RequestBody Ds ds) {
-        return ResponseInfo.ok(dsService.saveOrUpdateDs(ds));
+    public R<Ds> handleSaveOrUpdate(@Valid @ApiParam(value = "数据源" , required = true) @RequestBody Ds ds) {
+        return R.ok(dsService.saveOrUpdateDs(ds));
     }
 
     /**
@@ -97,8 +97,8 @@ public class DsController {
     @DeleteMapping("/dp/ds")
     @PreAuthorize("@pms.hasPermission('dp:ds:delete')")
     @SystemLog
-    public ResponseInfo<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
-        return ResponseInfo.ok(dsService.removeByIds(ids));
+    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+        return R.ok(dsService.removeByIds(ids));
     }
 
     /**
@@ -111,8 +111,8 @@ public class DsController {
     @PostMapping("/dp/ds/status")
     @PreAuthorize("@pms.hasPermission('dp:ds:admin')")
     @SystemLog
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "数据源" , required = true) @RequestBody Ds ds) {
-        return ResponseInfo.ok(dsService.updateStatus(ds));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "数据源" , required = true) @RequestBody Ds ds) {
+        return R.ok(dsService.updateStatus(ds));
     }
 
 }

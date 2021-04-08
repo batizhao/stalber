@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 @MapperScan("me.batizhao.**.mapper")
-public class PecadoMybatisAutoConfiguration {
+public class MybatisConfiguration {
 
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {

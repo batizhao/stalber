@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import me.batizhao.system.domain.DictType;
 import me.batizhao.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,8 @@ public class DictTypeController {
     @GetMapping("/system/dict/types")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
-    public ResponseInfo<IPage<DictType>> handleDictTypes(Page<DictType> page, DictType dictType) {
-        return ResponseInfo.ok(dictTypeService.findDictTypes(page, dictType));
+    public R<IPage<DictType>> handleDictTypes(Page<DictType> page, DictType dictType) {
+        return R.ok(dictTypeService.findDictTypes(page, dictType));
     }
 
     /**
@@ -57,8 +57,8 @@ public class DictTypeController {
     @ApiOperation(value = "查询所有字典类型")
     @GetMapping("/system/dict/type")
     @SystemLog
-    public ResponseInfo<List<DictType>> handleDictType() {
-        return ResponseInfo.ok(dictTypeService.list());
+    public R<List<DictType>> handleDictType() {
+        return R.ok(dictTypeService.list());
     }
 
     /**
@@ -69,10 +69,10 @@ public class DictTypeController {
     @ApiOperation(value = "通过id查询字典类型")
     @GetMapping("/system/dict/type/{id}")
     @SystemLog
-    public ResponseInfo<DictType> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<DictType> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         DictType dictType = dictTypeService.findById(id);
 //        dictType.setDictDataList(dictDataService.list(Wrappers.<DictData>lambdaQuery().eq(DictData::getCode, dictType.getCode())));
-        return ResponseInfo.ok(dictType);
+        return R.ok(dictType);
     }
 
     /**
@@ -84,8 +84,8 @@ public class DictTypeController {
     @PostMapping("/system/dict/type")
     @PreAuthorize("@pms.hasPermission('system:dict:add') or @pms.hasPermission('system:dict:edit')")
     @SystemLog
-    public ResponseInfo<DictType> handleSaveOrUpdate(@Valid @ApiParam(value = "字典类型" , required = true) @RequestBody DictType dictType) {
-        return ResponseInfo.ok(dictTypeService.saveOrUpdateDictType(dictType));
+    public R<DictType> handleSaveOrUpdate(@Valid @ApiParam(value = "字典类型" , required = true) @RequestBody DictType dictType) {
+        return R.ok(dictTypeService.saveOrUpdateDictType(dictType));
     }
 
     /**
@@ -97,8 +97,8 @@ public class DictTypeController {
     @DeleteMapping("/system/dict/type")
     @PreAuthorize("@pms.hasPermission('system:dict:delete')")
     @SystemLog
-    public ResponseInfo<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
-        return ResponseInfo.ok(dictTypeService.removeByIds(ids));
+    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+        return R.ok(dictTypeService.removeByIds(ids));
     }
 
     /**
@@ -111,8 +111,8 @@ public class DictTypeController {
     @PostMapping("/system/dict/type/status")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "字典类型" , required = true) @RequestBody DictType dictType) {
-        return ResponseInfo.ok(dictTypeService.updateStatus(dictType));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "字典类型" , required = true) @RequestBody DictType dictType) {
+        return R.ok(dictTypeService.updateStatus(dictType));
     }
 
 }

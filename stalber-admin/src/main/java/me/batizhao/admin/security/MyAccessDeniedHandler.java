@@ -3,7 +3,7 @@ package me.batizhao.admin.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.util.ResponseInfo;
+import me.batizhao.common.util.R;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType("application/json; charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        ResponseInfo<String> message = new ResponseInfo<String>().setCode(ResultEnum.PERMISSION_FORBIDDEN_ERROR.getCode())
+        R<String> message = new R<String>().setCode(ResultEnum.PERMISSION_FORBIDDEN_ERROR.getCode())
                 .setMessage(ResultEnum.PERMISSION_FORBIDDEN_ERROR.getMessage())
                 .setData(accessDeniedException.getMessage());
 
