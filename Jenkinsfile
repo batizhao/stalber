@@ -1,7 +1,7 @@
 node {
 
   stage('Git Clone') {
-    git branch: 'dev', credentialsId: 'github', url: 'git@github.com:batizhao/stalber.git'
+    git branch: 'master', credentialsId: 'github', url: 'git@github.com:batizhao/stalber.git'
   }
 
   stage('Code Test') {
