@@ -1,4 +1,4 @@
-package me.batizhao.admin.config;
+package me.batizhao.common.config;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.PackageVersion;

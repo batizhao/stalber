@@ -1,0 +1,19 @@
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: false
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
+    url: jdbc:mysql://127.0.0.1:3306/stalber?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+  liquibase:
+    change-log: classpath:db/changelog-master.xml
+  web:
+    locale: zh_CN

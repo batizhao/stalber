@@ -78,6 +78,7 @@ public class UserController {
      */
     @ApiOperation(value = "根据用户名查询用户")
     @GetMapping(value = "/ims/user", params = "username")
+    @PreAuthorize("isAuthenticated()")
     @SystemLog
     public R<UserInfoVO> handleUsername(@ApiParam(value = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
         User user = userService.findByUsername(username);

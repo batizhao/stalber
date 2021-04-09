@@ -67,6 +67,7 @@ public class LogController {
      */
     @ApiOperation(value = "添加日志")
     @PostMapping("/system/log")
+    @PreAuthorize("@pms.hasPermission('system:log:admin')")
     public R<Boolean> handleSaveOrUpdate(@Valid @ApiParam(value = "日志" , required = true) @RequestBody Log log) {
         return R.ok(logService.save(log));
     }
