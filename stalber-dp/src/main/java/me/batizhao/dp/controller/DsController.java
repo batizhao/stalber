@@ -40,7 +40,8 @@ public class DsController {
      * 分页查询数据源
      * @param page 分页对象
      * @param ds 数据源
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<Ds>>
      */
     @ApiOperation(value = "分页查询数据源")
     @GetMapping("/dp/dss")
@@ -52,7 +53,7 @@ public class DsController {
 
     /**
      * 查询所有数据源
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "查询所有数据源")
     @GetMapping("/dp/ds")
@@ -65,7 +66,7 @@ public class DsController {
     /**
      * 通过id查询数据源
      * @param id id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询数据源")
     @GetMapping("/dp/ds/{id}")
@@ -78,7 +79,7 @@ public class DsController {
     /**
      * 添加或修改数据源
      * @param ds 数据源
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "添加或修改数据源")
     @PostMapping("/dp/ds")
@@ -91,7 +92,7 @@ public class DsController {
     /**
      * 通过id删除数据源
      * @param ids ID串
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除数据源")
     @DeleteMapping("/dp/ds")
@@ -105,7 +106,7 @@ public class DsController {
      * 更新数据源状态
      *
      * @param ds 数据源
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "更新数据源状态")
     @PostMapping("/dp/ds/status")

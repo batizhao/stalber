@@ -22,7 +22,7 @@ import java.util.List;
  * 日志管理
  * 使用 AOP 实现 API 日志记录
  *
- * @module pecado-system
+ * @module system
  *
  * @author batizhao
  * @since 2020-03-24
@@ -39,7 +39,8 @@ public class LogController {
      * 分页查询日志
      * @param page 分页对象
      * @param log 日志
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<Log>>
      */
     @ApiOperation(value = "分页查询日志")
     @GetMapping("/system/logs")
@@ -51,7 +52,7 @@ public class LogController {
     /**
      * 通过id查询日志
      * @param id id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询日志")
     @GetMapping("/system/log/{id}")
@@ -63,7 +64,7 @@ public class LogController {
     /**
      * 添加日志
      * @param log 日志
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "添加日志")
     @PostMapping("/system/log")
@@ -75,7 +76,7 @@ public class LogController {
     /**
      * 通过id删除日志
      * @param ids ID串
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除日志")
     @DeleteMapping(value = "/system/log", params = "ids")
@@ -87,7 +88,7 @@ public class LogController {
 
     /**
      * 清空日志
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "清空日志")
     @DeleteMapping("/system/log")

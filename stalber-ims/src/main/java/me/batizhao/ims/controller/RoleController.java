@@ -45,7 +45,8 @@ public class RoleController {
      * 分页查询
      * 返回角色集合
      *
-     * @return 角色集合
+     * @return R<Page<Role>>
+     * @real_return R<Page<Role>>
      */
     @ApiOperation(value = "分页查询角色")
     @GetMapping("/ims/roles")
@@ -58,7 +59,7 @@ public class RoleController {
      * 查询所有角色
      * 返回角色集合
      *
-     * @return 角色集合
+     * @return R<List<Role>>
      */
     @ApiOperation(value = "查询所有角色")
     @GetMapping("/ims/role")
@@ -70,7 +71,7 @@ public class RoleController {
     /**
      * 通过id查询角色
      * @param id id
-     * @return ResponseInfo
+     * @return R<Role>
      */
     @ApiOperation(value = "通过id查询角色")
     @GetMapping("/ims/role/{id}")
@@ -84,7 +85,7 @@ public class RoleController {
      * 根据是否有ID判断是添加还是修改
      *
      * @param role 角色属性
-     * @return 角色对象
+     * @return R<Role>
      */
     @ApiOperation(value = "添加或修改角色")
     @PostMapping("/ims/role")
@@ -98,7 +99,7 @@ public class RoleController {
      * 删除角色
      * 根据角色ID删除角色
      *
-     * @return 成功或者失败
+     * @return R<Boolean>
      */
     @ApiOperation(value = "删除角色")
     @DeleteMapping("/ims/role")
@@ -112,7 +113,7 @@ public class RoleController {
      * 更新角色状态
      *
      * @param role 角色
-     * @return ResponseInfo
+     * @return R<Boolean>
      */
     @ApiOperation(value = "更新角色状态")
     @PostMapping("/ims/role/status")
@@ -127,7 +128,7 @@ public class RoleController {
      * 返回角色集合
      *
      * @param userId 用户id
-     * @return 角色集合
+     * @return R<List<Role>>
      */
     @ApiOperation(value = "根据用户ID查询角色")
     @GetMapping(value = "/ims/role", params = "userId")
@@ -141,7 +142,7 @@ public class RoleController {
      * 返回 true or false
      *
      * @param roleMenuList 权限清单
-     * @return true or false
+     * @return R<Boolean>
      */
     @ApiOperation(value = "分配角色权限")
     @PostMapping(value = "/ims/role/menu")

@@ -39,7 +39,7 @@ public class DictDataController {
     /**
      * 通过id查询字典
      * @param id id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询字典")
     @GetMapping("/system/dict/data/{id}")
@@ -50,7 +50,7 @@ public class DictDataController {
     /**
      * 通过code查询字典
      * @param code code
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过code查询字典")
     @GetMapping(value = "/system/dict/data", params = "code")
@@ -61,7 +61,7 @@ public class DictDataController {
     /**
      * 添加或编辑字典
      * @param dictData 字典
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "添加或编辑字典")
     @PostMapping("/system/dict/data")
@@ -74,7 +74,7 @@ public class DictDataController {
     /**
      * 通过id删除字典
      * @param ids ID串
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除字典")
     @DeleteMapping("/system/dict/data")
@@ -88,7 +88,7 @@ public class DictDataController {
      * 更新字典状态
      *
      * @param dictData 字典
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "更新字典状态")
     @PostMapping("/system/dict/data/status")

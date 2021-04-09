@@ -36,7 +36,7 @@ public class CodeMetaController {
     /**
      * 通过 codeId 查询生成代码元数据
      * @param codeId code.id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过 codeId 查询生成代码元数据")
     @GetMapping(value = "/dp/code/meta", params = "codeId")

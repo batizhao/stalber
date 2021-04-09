@@ -7,7 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.core.util.ResponseInfo;
+import me.batizhao.common.core.util.R;
 import ${package}.${moduleName}.domain.${className};
 import ${package}.${moduleName}.service.${className}Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,8 @@ public class ${className}Controller {
      * 分页查询${comments}
      * @param page 分页对象
      * @param ${classname} ${comments}
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<${className}>>
      */
     @ApiOperation(value = "分页查询${comments}")
     @GetMapping("/${mappingPath}s")
@@ -50,14 +51,14 @@ public class ${className}Controller {
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
 #end
-    public ResponseInfo<IPage<${className}>> handle${className}s(Page<${className}> page, ${className} ${classname}) {
-        return ResponseInfo.ok(${classname}Service.find${className}s(page, ${classname}));
+    public R<IPage<${className}>> handle${className}s(Page<${className}> page, ${className} ${classname}) {
+        return R.ok(${classname}Service.find${className}s(page, ${classname}));
     }
 #end
 
     /**
      * 查询所有${comments}
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "查询所有${comments}")
     @GetMapping("/${mappingPath}")
@@ -66,18 +67,18 @@ public class ${className}Controller {
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
 #end
-    public ResponseInfo<List<${className}>> handleAll${className}(#if($template == "tree")${className} ${classname}#end) {
+    public R<List<${className}>> handleAll${className}(#if($template == "tree")${className} ${classname}#end) {
 #if($template == "tree")
-        return ResponseInfo.ok(${classname}Service.find${className}Tree(${classname}));
+        return R.ok(${classname}Service.find${className}Tree(${classname}));
 #else
-        return ResponseInfo.ok(${classname}Service.list());
+        return R.ok(${classname}Service.list());
 #end
     }
 
     /**
      * 通过id查询${comments}
      * @param ${pk.javaField} id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询${comments}")
     @GetMapping("/${mappingPath}/{${pk.javaField}}")
@@ -86,8 +87,8 @@ public class ${className}Controller {
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
 #end
-    public ResponseInfo<${className}> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("${pk.javaField}") @Min(1) ${pk.javaType} ${pk.javaField}) {
-        return ResponseInfo.ok(${classname}Service.findById(${pk.javaField}));
+    public R<${className}> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("${pk.javaField}") @Min(1) ${pk.javaType} ${pk.javaField}) {
+        return R.ok(${classname}Service.findById(${pk.javaField}));
     }
 #if(!$relationTable.isEmpty())
 #foreach ($table in $relationTable)
@@ -101,12 +102,12 @@ public class ${className}Controller {
     /**
      * 通过${fk}查询${comments}
      * @param ${fk}
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过${fk}查询${comments}")
     @GetMapping(value = "/${mappingPath}", params = "${fk}")
-    public ResponseInfo<List<${className}>> handle${AttrName}(@ApiParam(value = "${fk}", required = true) @RequestParam String ${fk}) {
-        return ResponseInfo.ok(${classname}Service.list(Wrappers.<${className}>lambdaQuery().eq(${className}::get${AttrName}, ${fk})));
+    public R<List<${className}>> handle${AttrName}(@ApiParam(value = "${fk}", required = true) @RequestParam String ${fk}) {
+        return R.ok(${classname}Service.list(Wrappers.<${className}>lambdaQuery().eq(${className}::get${AttrName}, ${fk})));
     }
 #end
 #end
@@ -114,7 +115,7 @@ public class ${className}Controller {
     /**
      * 添加或编辑${comments}
      * @param ${classname} ${comments}
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "添加或编辑${comments}")
     @PostMapping("/${mappingPath}")
@@ -123,8 +124,8 @@ public class ${className}Controller {
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:add') or @pms.hasPermission('${moduleName}:${className}:edit')")
 #end
-    public ResponseInfo<${className}> handleSaveOrUpdate(@Valid @ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
-        return ResponseInfo.ok(${classname}Service.saveOrUpdate${className}(${classname}));
+    public R<${className}> handleSaveOrUpdate(@Valid @ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
+        return R.ok(${classname}Service.saveOrUpdate${className}(${classname}));
     }
 
     /**
@@ -134,7 +135,7 @@ public class ${className}Controller {
 #else
      * @param id ID
 #end
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除${comments}")
     @DeleteMapping("/${mappingPath}")
@@ -144,14 +145,14 @@ public class ${className}Controller {
     @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:delete')")
 #end
 #if($template != "tree")
-    public ResponseInfo<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
 #else
-    public ResponseInfo<String> handleDelete(@ApiParam(value = "ID", required = true) @RequestParam Integer id) {
+    public R<String> handleDelete(@ApiParam(value = "ID", required = true) @RequestParam Integer id) {
 #end
 #if($template != "tree")
-        return ResponseInfo.ok(${classname}Service.removeByIds(ids));
+        return R.ok(${classname}Service.removeByIds(ids));
 #else
-        return ${classname}Service.deleteById(id) ? ResponseInfo.ok() : ResponseInfo.failed("存在子${comments}不允许删除！");
+        return ${classname}Service.deleteById(id) ? R.ok() : R.failed("存在子${comments}不允许删除！");
 #end
     }
 
@@ -159,7 +160,7 @@ public class ${className}Controller {
      * 更新${comments}状态
      *
      * @param ${classname} ${comments}
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "更新${comments}状态")
     @PostMapping("/${mappingPath}/status")
@@ -168,8 +169,8 @@ public class ${className}Controller {
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
 #end
-    public ResponseInfo<Boolean> handleUpdateStatus(@ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
-        return ResponseInfo.ok(${classname}Service.updateStatus(${classname}));
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
+        return R.ok(${classname}Service.updateStatus(${classname}));
     }
 
 }

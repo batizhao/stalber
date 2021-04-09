@@ -40,7 +40,8 @@ public class DictTypeController {
      * 分页查询
      * @param page 分页对象
      * @param dictType 字典类型
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<DictType>>
      */
     @ApiOperation(value = "分页查询字典类型")
     @GetMapping("/system/dict/types")
@@ -52,7 +53,7 @@ public class DictTypeController {
 
     /**
      * 查询所有
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "查询所有字典类型")
     @GetMapping("/system/dict/type")
@@ -64,7 +65,7 @@ public class DictTypeController {
     /**
      * 通过id查询字典类型
      * @param id id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询字典类型")
     @GetMapping("/system/dict/type/{id}")
@@ -78,7 +79,7 @@ public class DictTypeController {
     /**
      * 添加或修改字典类型
      * @param dictType 字典类型
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "添加或修改字典类型")
     @PostMapping("/system/dict/type")
@@ -91,7 +92,7 @@ public class DictTypeController {
     /**
      * 通过id删除字典类型
      * @param ids ID串
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除字典类型")
     @DeleteMapping("/system/dict/type")
@@ -105,7 +106,7 @@ public class DictTypeController {
      * 更新字典类型状态
      *
      * @param dictType 字典类型
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "更新字典类型状态")
     @PostMapping("/system/dict/type/status")

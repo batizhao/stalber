@@ -39,7 +39,8 @@ public class FormController {
      * 分页查询表单
      * @param page 分页对象
      * @param form 表单
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<Form>>
      */
     @ApiOperation(value = "分页查询表单")
     @GetMapping("/dp/forms")
@@ -51,7 +52,7 @@ public class FormController {
     /**
      * 通过id查询表单
      * @param id id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询表单")
     @GetMapping("/dp/form/{id}")
@@ -63,7 +64,7 @@ public class FormController {
     /**
      * 添加或编辑表单
      * @param form 表单
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "添加或编辑表单")
     @PostMapping("/dp/form")
@@ -75,7 +76,7 @@ public class FormController {
     /**
      * 通过id删除表单
      * @param ids ID串
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除表单")
     @DeleteMapping("/dp/form")
@@ -88,7 +89,7 @@ public class FormController {
      * 更新表单状态
      *
      * @param form 表单
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "更新表单状态")
     @PostMapping("/dp/form/status")

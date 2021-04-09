@@ -48,7 +48,8 @@ public class UserController {
      * 分页查询
      * @param page 分页对象
      * @param user 用户
-     * @return ResponseInfo
+     * @return 用户集合
+     * @real_return R<Page<User>>
      */
     @ApiOperation(value = "分页查询用户")
     @GetMapping("/ims/users")
@@ -60,7 +61,7 @@ public class UserController {
     /**
      * 通过id查询用户
      * @param id id
-     * @return ResponseInfo
+     * @return R<User>
      */
     @ApiOperation(value = "通过id查询用户")
     @GetMapping("/ims/user/{id}")
@@ -74,7 +75,7 @@ public class UserController {
      * 用户名不重复，返回单个用户详情（包括其角色）
      *
      * @param username 用户名
-     * @return 用户详情
+     * @return R<UserInfoVO>
      */
     @ApiOperation(value = "根据用户名查询用户")
     @GetMapping(value = "/ims/user", params = "username")
@@ -88,7 +89,7 @@ public class UserController {
     /**
      * 添加或编辑用户
      * @param user 用户
-     * @return ResponseInfo
+     * @return R<User>
      */
     @ApiOperation(value = "添加或编辑用户")
     @PostMapping("/ims/user")
@@ -102,7 +103,7 @@ public class UserController {
      * 删除用户
      * 根据用户ID删除用户
      *
-     * @return 成功或者失败
+     * @return R<Boolean>
      */
     @ApiOperation(value = "删除用户")
     @DeleteMapping("/ims/user")
@@ -116,7 +117,7 @@ public class UserController {
      * 更新用户状态
      *
      * @param user 用户
-     * @return ResponseInfo
+     * @return R<Boolean>
      */
     @ApiOperation(value = "更新用户状态")
     @PostMapping("/ims/user/status")
@@ -129,7 +130,7 @@ public class UserController {
     /**
      * 我的信息
      *
-     * @return 当前用户基本信息、角色、权限清单
+     * @return R<UserInfoVO>
      */
     @ApiOperation(value = "我的信息")
     @GetMapping("/ims/user/me")
@@ -143,7 +144,7 @@ public class UserController {
      * 更换我的头像
      *
      * @param user 用户
-     * @return ResponseInfo
+     * @return R<User>
      */
     @ApiOperation(value = "更换我的头像")
     @PostMapping("/ims/user/avatar")
@@ -159,7 +160,7 @@ public class UserController {
      *
      * @param oldPassword 旧密码
      * @param newPassword 新密码
-     * @return ResponseInfo
+     * @return R<Boolean>
      */
     @ApiOperation(value = "更新我的密码")
     @PostMapping("/ims/user/password")
@@ -176,7 +177,7 @@ public class UserController {
      * 返回 true or false
      *
      * @param userRoleList 角色清单
-     * @return true or false
+     * @return R<Boolean>
      */
     @ApiOperation(value = "分配用户角色")
     @PostMapping(value = "/ims/user/role")

@@ -42,7 +42,7 @@ public class WebExceptionHandler {
      * RequestBody Validation
      *
      * @param e MethodArgumentNotValidException
-     * @return ResponseInfo<List<String>>
+     * @return R<List<String>>
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -64,7 +64,7 @@ public class WebExceptionHandler {
      * Path Variables Validation
      *
      * @param e ConstraintViolationException
-     * @return ResponseInfo<List<String>>
+     * @return R<List<String>>
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -84,7 +84,7 @@ public class WebExceptionHandler {
     /**
      * 处理 400 异常
      * @param e
-     * @return ResponseInfo<String>
+     * @return R<String>
      */
     @ExceptionHandler({BindException.class, TypeMismatchException.class, HttpMessageNotWritableException.class,
             MissingServletRequestPartException.class, HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
@@ -100,7 +100,7 @@ public class WebExceptionHandler {
      * 找不到记录异常。
      * 和 404 共用一个返回消息，但返回状态码是 200。
      * @param e NotFoundException
-     * @return ResponseInfo<String>
+     * @return R<String>
      */
     @ExceptionHandler
     public R<String> handleNotFoundException(NotFoundException e) {
@@ -133,7 +133,7 @@ public class WebExceptionHandler {
      * 特殊处理，这里会优先捕获 AccessDeniedException，造成 accessDeniedHandler 无效，造成返回错误消息
      *
      * @param e Exception
-     * @return ResponseInfo<String>
+     * @return R<String>
      */
     @ExceptionHandler
     @ResponseStatus

@@ -54,7 +54,7 @@ public class MenuController {
      * 根据角色查询菜单
      * 返回菜单树
      *
-     * @return 菜单树
+     * @return R<List<Menu>>
      */
     @ApiOperation(value = "根据角色查询菜单")
     @GetMapping(value = "/ims/menu", params = "roleId")
@@ -67,7 +67,7 @@ public class MenuController {
      * 查询所有菜单
      * 返回菜单树
      *
-     * @return 菜单树
+     * @return R<List<Menu>>
      */
     @ApiOperation(value = "查询所有菜单")
     @GetMapping("/ims/menus")
@@ -79,7 +79,7 @@ public class MenuController {
     /**
      * 通过id查询菜单
      * @param id 菜单 ID
-     * @return 菜单对象
+     * @return R<Menu>
      */
     @ApiOperation(value = "通过id查询菜单")
     @GetMapping("/ims/menu/{id}")
@@ -93,7 +93,7 @@ public class MenuController {
      * 根据是否有ID判断是添加还是修改
      *
      * @param menu 菜单属性
-     * @return 菜单对象
+     * @return R<Menu>
      */
     @ApiOperation(value = "添加或修改菜单")
     @PostMapping("/ims/menu")
@@ -107,7 +107,7 @@ public class MenuController {
      * 删除菜单
      * 根据菜单ID删除菜单
      *
-     * @return 成功或者失败
+     * @return R<String>
      */
     @ApiOperation(value = "删除菜单")
     @DeleteMapping("/ims/menu")
@@ -121,7 +121,7 @@ public class MenuController {
      * 更新菜单状态
      *
      * @param menu 菜单
-     * @return ResponseInfo
+     * @return R<Boolean>
      */
     @ApiOperation(value = "更新菜单状态")
     @PostMapping("/ims/menu/status")

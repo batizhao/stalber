@@ -51,7 +51,8 @@ public class CodeController {
      * 分页查询代码
      * @param page 分页对象
      * @param code 生成代码
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<Code>>
      */
     @ApiOperation(value = "分页查询代码")
     @GetMapping("/dp/codes")
@@ -64,7 +65,7 @@ public class CodeController {
     /**
      * 通过id查询生成代码
      * @param id id
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id查询代码")
     @GetMapping("/dp/code/{id}")
@@ -86,7 +87,7 @@ public class CodeController {
     /**
      * 修改生成代码
      * @param code 生成代码
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "修改生成代码")
     @PostMapping("/dp/code")
@@ -99,7 +100,7 @@ public class CodeController {
     /**
      * 通过id删除生成代码
      * @param ids ID串
-     * @return ResponseInfo
+     * @return R
      */
     @ApiOperation(value = "通过id删除生成代码")
     @DeleteMapping("/dp/code")
@@ -115,7 +116,8 @@ public class CodeController {
      * @param page   分页对象
      * @param code   生成代码
      * @param dsName 数据源
-     * @return ResponseInfo
+     * @return R
+     * @real_return R<Page<Code>>
      */
     @ApiOperation(value = "查询数据源下的所有表")
     @GetMapping("/dp/code/tables")

@@ -31,7 +31,7 @@ public interface DsService extends IService<Ds> {
     /**
      * 添加或修改数据源
      * @param ds 数据源
-     * @return ResponseInfo
+     * @return R
      */
      Ds saveOrUpdateDs(Ds ds);
 
