@@ -17,6 +17,8 @@
 - mvn clean install -Dmaven.test.skip=true
 - 运行 StalberAdminApplication
 - Swagger 地址：http://localhost:8888/swagger-ui/
+  
+  > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。
 
 ## 建议
 
@@ -27,7 +29,7 @@
 
 ### 获取 access_token
 ```shell
-# curl -X POST --user 'client_app:123456' -d 'grant_type=password&username=admin&password=123456' http://localhost:8080/oauth/token
+# curl -X POST --user 'client_app:123456' -d 'grant_type=password&username=admin&password=123456' http://localhost:8888/oauth/token
 {
   "access_token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE1ODMwNDk0NTksImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwianRpIjoiMDkyZjQ3OGMtNjM5MC00NTdhLWExOTItMGRlZmZiYmUzYTk2IiwiY2xpZW50X2lkIjoiY2xpZW50X2FwcCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.JVFPmDJ6NP6zuErN9gN9MhgxlLsCFUn-JPc_9u-ZOj0",
   "token_type" : "bearer",
@@ -46,12 +48,12 @@
 * 如果 *refresh_token* 也过期，服务端会返回 100002（**Invalid refresh token**），重新输入账号密码请求 *access_token*。测试用例 *givenInvalidRefreshToken_whenGetAccessToken_thenOAuthException*
 
 ```shell
-# curl -X POST --user 'client_app:123456' 'localhost:8080/oauth/token?grant_type=refresh_token&refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJhdGkiOiIwOTJmNDc4Yy02MzkwLTQ1N2EtYTE5Mi0wZGVmZmJiZTNhOTYiLCJleHAiOjE1ODM5MDk4NTksImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwianRpIjoiMzZlNDgzNmEtMzM4OC00YWJhLWFiMmEtMTRkODMwZTJjZDJlIiwiY2xpZW50X2lkIjoiY2xpZW50X2FwcCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.ByoaXSa6HIJc0OfmVx47SMPt_OmyrD7T9E_kxhtrd20'
+# curl -X POST --user 'client_app:123456' 'localhost:8888/oauth/token?grant_type=refresh_token&refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJhdGkiOiIwOTJmNDc4Yy02MzkwLTQ1N2EtYTE5Mi0wZGVmZmJiZTNhOTYiLCJleHAiOjE1ODM5MDk4NTksImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwianRpIjoiMzZlNDgzNmEtMzM4OC00YWJhLWFiMmEtMTRkODMwZTJjZDJlIiwiY2xpZW50X2lkIjoiY2xpZW50X2FwcCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.ByoaXSa6HIJc0OfmVx47SMPt_OmyrD7T9E_kxhtrd20'
 ```
 
 ### 调用 API
 ```shell
-# curl -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE1ODMwNDk0NTksImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwianRpIjoiMDkyZjQ3OGMtNjM5MC00NTdhLWExOTItMGRlZmZiYmUzYTk2IiwiY2xpZW50X2lkIjoiY2xpZW50X2FwcCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.JVFPmDJ6NP6zuErN9gN9MhgxlLsCFUn-JPc_9u-ZOj0"  localhost:8080/user/1
+# curl -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE1ODMwNDk0NTksImF1dGhvcml0aWVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwianRpIjoiMDkyZjQ3OGMtNjM5MC00NTdhLWExOTItMGRlZmZiYmUzYTk2IiwiY2xpZW50X2lkIjoiY2xpZW50X2FwcCIsInVzZXJuYW1lIjoiYWRtaW4ifQ.JVFPmDJ6NP6zuErN9gN9MhgxlLsCFUn-JPc_9u-ZOj0"  localhost:8888/user/1
 {
   "code" : 0,
   "message" : "ok",

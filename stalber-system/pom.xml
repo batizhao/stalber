@@ -16,7 +16,6 @@
         <dependency>
             <groupId>me.batizhao</groupId>
             <artifactId>stalber-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
