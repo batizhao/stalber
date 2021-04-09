@@ -5,7 +5,7 @@
 
 	<groupId>me.batizhao</groupId>
 	<artifactId>stalber</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>stalber</name>
@@ -41,7 +41,7 @@
 		<seata.version>1.4.0</seata.version>
 		<spring-boot.version>2.4.4</spring-boot.version>
 		<springfox.version>3.0.0</springfox.version>
-		<swagger-annotations.version>1.6.2</swagger-annotations.version>
+		<swagger.version>1.6.2</swagger.version>
 		<velocity.version>1.7</velocity.version>
 
 		<jacoco-maven-plugin.verison>0.8.6</jacoco-maven-plugin.verison>
@@ -117,11 +117,26 @@
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-boot-starter</artifactId>
 				<version>${springfox.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>io.swagger</groupId>
+						<artifactId>swagger-annotations</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>io.swagger</groupId>
+						<artifactId>swagger-models</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-annotations</artifactId>
-				<version>${swagger-annotations.version}</version>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-models</artifactId>
+				<version>${swagger.version}</version>
 			</dependency>
 
 			<dependency>

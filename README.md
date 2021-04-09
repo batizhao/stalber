@@ -16,6 +16,7 @@
 - 执行 db/db.sql
 - mvn clean install -Dmaven.test.skip=true
 - 运行 StalberAdminApplication
+- Swagger 地址：http://localhost:8888/swagger-ui/
 
 ## 建议
 
