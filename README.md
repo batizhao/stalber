@@ -8,8 +8,7 @@
 
 * JDK8
 * MySQL8
-* JUnit4
-* Hamcrest2
+* JUnit5
 
 ## 快速开始
 

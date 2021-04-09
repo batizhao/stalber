@@ -37,8 +37,6 @@
 		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
 		<mockito.version>3.7.0</mockito.version>
-		<rocketmq.version>2.1.1</rocketmq.version>
-		<seata.version>1.4.0</seata.version>
 		<spring-boot.version>2.4.4</spring-boot.version>
 		<springfox.version>3.0.0</springfox.version>
 		<swagger-annotations.version>1.6.2</swagger-annotations.version>
