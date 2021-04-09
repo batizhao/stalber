@@ -143,6 +143,48 @@
 
 * 统一处理返回类型和消息，使用 *R* 和 *ResultEnum*
 
+## 单元测试
+
+### 单元测试
+
+* 在每个模块的 Mapper、Service、Controller 层都实现了单元测试，类名以 UnitTest 结尾。
+
+* 测试方法名使用 given*Param*\_when*Dothing*\_then*Result* 的方式全名。
+
+* 在每层都会使用 Mockito 隔离所有依赖。
+
+* 需要注意的是尽量控制类和配置加载的范围在当前层。在单元测试中不要使用 *@SpringBootTest*，而是分别使用 *@MybatisTest*、*@WebMvcTest*。
+
+  ```
+  在 Spring Security 启用的情况下，如果 Controller 单元测试（使用 @WebMvcTest），隔离 Mapper、Service，要注意以下几点：
+  1. post、put、delete 方法要加上 with(csrf())，否则会返回 403
+  2. 单元测试要控制扫描范围，防止 Spring Security Config 自动初始化，尤其是 UserDetailsService 自定义的情况（会加载 Mapper）
+  3. 测试方法要加上 @WithMockUser，否则会返回 401（OAuth 开启后不需要）
+  ```
+
+### API测试
+
+* 在 admin 模块实现了 API 测试，类名以 ApiTest 结尾。
+* 在 -P test 情况下才会被激活。
+* 在启动测试时，会实例化所有上下文，使用 *@SpringBootTest*。
+* 这个测试会调用真正的接口，所有要注意事务的问题，不要生成脏数据。
+* 有可能的话，使用专门的测试库（修改测试配置下的 datasource）。
+* 还可以在 YApi 中跑集成测试（通过 Swagger 同步接口），并且在其中查看测试报告。
+* MockMvc 并不是真正的 Server，所以有些情况并不能完全模拟（比如 ErrorController 4xx Status）。具体可以看这个 [Issues](https://github.com/spring-projects/spring-boot/issues/5574)。
+
+### 测试报告
+
+使用 JaCoCo 生成测试报告，实际使用中，可以集成到 Sonar 质量检查中。
+
+> JaCoCo 不支持接口，所以 Mapper 接口没有被统计进去。
+
+### 本地查看
+
+```
+# mvn clean test
+```
+打开 target/site/jacoco/index.html 可以看到测试报告。
+
 ## YApi 整合实践
 使用 IDEA EasyYapi 插件，兼容 Swagger，这样如果没有 YApi 或者 EasyYapi 也可以使用 Swagger UI。
 
