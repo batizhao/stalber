@@ -1,3 +1,7 @@
+pecado:
+  upload:
+    location: /opt
+
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
   global-config:
