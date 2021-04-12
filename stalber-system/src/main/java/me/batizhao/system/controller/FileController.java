@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,9 +63,9 @@ public class FileController {
         Resource resource = fileService.loadAsResource(name);
         log.info("resource: {}", resource);
 
-        Path path = Paths.get(name);
-        log.info("path: {}", path);
-        String mimeType = Files.probeContentType(path);
+        java.io.File file = new java.io.File(name);
+        log.info("file: {}", file);
+        String mimeType = URLConnection.guessContentTypeFromName(file.getName());
         log.info("mimeType: {}", mimeType);
 
         return ResponseEntity.ok()
