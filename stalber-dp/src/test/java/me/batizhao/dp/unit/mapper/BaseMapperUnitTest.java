@@ -21,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ImportAutoConfiguration(MybatisPlusAutoConfiguration.class)
-@Tag("unit")
+@Tag("integration")
 public abstract class BaseMapperUnitTest {
 
     /**

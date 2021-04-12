@@ -64,10 +64,9 @@ public class DsApiTest extends BaseApiTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
-                .andExpect(status().is5xxServerError())
+                .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value(ResultEnum.UNKNOWN_ERROR.getCode()))
-                .andExpect(jsonPath("$.data", containsString("SQLIntegrityConstraintViolationException")));
+                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()));
     }
 
     @Test
