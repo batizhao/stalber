@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.system.domain.File;
 import me.batizhao.system.service.FileService;
@@ -29,6 +30,7 @@ import java.nio.file.Paths;
  */
 @Api(tags = "文件管理")
 @RestController
+@Slf4j
 public class FileController {
 
     @Autowired
@@ -57,15 +59,18 @@ public class FileController {
     @ApiOperation(value = "根据文件名显示图片")
     @GetMapping("/system/file/image/{name:^.+\\.(?:jpeg|jpg|png|JPEG|JPG|PNG)$}")
     public ResponseEntity<Resource> handleImageByName(@ApiParam(value = "图片名", required = true) @PathVariable("name") String name) {
-        Resource file = fileService.loadAsResource(name);
+        Resource resource = fileService.loadAsResource(name);
+        log.info("resource: {}", resource);
 
         Path path = Paths.get(name);
+        log.info("path: {}", path);
         String mimeType = Files.probeContentType(path);
+        log.info("mimeType: {}", mimeType);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, mimeType)
-                .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename=\"" + file.getFilename() + "\"")
-                .body(file);
+                .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
 }
