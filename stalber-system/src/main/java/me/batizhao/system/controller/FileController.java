@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * 文件管理
@@ -61,12 +58,10 @@ public class FileController {
     @GetMapping("/system/file/image/{name:^.+\\.(?:jpeg|jpg|png|JPEG|JPG|PNG)$}")
     public ResponseEntity<Resource> handleImageByName(@ApiParam(value = "图片名", required = true) @PathVariable("name") String name) {
         Resource resource = fileService.loadAsResource(name);
-        log.info("resource: {}", resource);
 
         java.io.File file = new java.io.File(name);
-        log.info("file: {}", file);
         String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-        log.info("mimeType: {}", mimeType);
+        log.info("resource: {}, file: {}, mimeType: {}", resource, file, mimeType);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, mimeType)

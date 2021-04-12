@@ -13,10 +13,20 @@
 ## 快速开始
 
 - 执行 db/db.sql
+
 - mvn clean install -Dmaven.test.skip=true
+
 - 运行 StalberAdminApplication
+
+  > 启动之前要修改的配置
+  >
+  > * pecado.upload.location
+  > * spring.datasource
+  >
+  > 如果要跑单元测试，还有注意 test 下边的这两个配置
+
 - Swagger 地址：http://localhost:8888/swagger-ui/
-  
+
   > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。
 
 ## 建议
