@@ -68,10 +68,10 @@ public class FileControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenImageFileName_whenLoadResource_thenSuccess() throws Exception {
-        Resource file = new ClassPathResource("test.jpeg");
+        Resource file = new ClassPathResource("test.jpg");
         when(fileService.loadAsResource(anyString())).thenReturn(file);
 
-        mvc.perform(get("/system/file/image/test.jpeg"))
+        mvc.perform(get("/system/file/image/test.jpg"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG_VALUE));
 
