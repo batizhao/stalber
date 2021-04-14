@@ -1,6 +1,8 @@
 package me.batizhao.dp.domain;
 
 /**
+ * input/switch/textarea
+ *
  * @author batizhao
  * @date 2021/4/12
  */

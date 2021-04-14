@@ -12,4 +12,11 @@ public class Rules {
     private boolean required;
     private String message;
 
+    public Rules() {
+    }
+
+    public Rules(boolean required, String message) {
+        this.required = required;
+        this.message = message;
+    }
 }

@@ -120,6 +120,12 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
                     element.setOptions(new Options(false));
                 }
 
+                if (cm.getRequired()) {
+                    List<Rules> rules = new ArrayList<>();
+                    rules.add(new Rules(true, "必须填写"));
+                    element.setRules(rules);
+                }
+
                 elements.add(element);
             }
         });
