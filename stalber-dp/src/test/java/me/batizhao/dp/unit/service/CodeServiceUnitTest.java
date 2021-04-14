@@ -3,6 +3,7 @@ package me.batizhao.dp.unit.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.dp.domain.Code;
 import me.batizhao.dp.domain.CodeMeta;
@@ -52,6 +53,8 @@ public class CodeServiceUnitTest extends BaseServiceUnitTest {
     private CodeMapper codeMapper;
     @MockBean
     private CodeMetaService codeMetaService;
+    @MockBean
+    private ObjectMapper objectMapper;
 
     @Autowired
     private CodeService codeService;

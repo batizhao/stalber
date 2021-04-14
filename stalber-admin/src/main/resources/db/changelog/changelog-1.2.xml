@@ -43,6 +43,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="parentMenuId" type="BIGINT" remarks="父菜单ID"/>
+            <column name="form" type="VARCHAR(16)" defaultValue="meta" remarks="生成表单方式（meta元数据 visual可视化）"/>
             <column name="type" type="VARCHAR(16)" defaultValue="zip" remarks="生成代码方式（zip压缩包 path自定义路径）"/>
             <column name="path" type="VARCHAR(128)" defaultValue="/" remarks="生成路径（不填默认项目路径）"/>
             <column name="subTableId" type="BIGINT" remarks="关联子表的code.id"/>

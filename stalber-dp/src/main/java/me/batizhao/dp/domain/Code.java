@@ -105,6 +105,12 @@ public class Code extends Model<Code> {
     private Long parentMenuId;
 
     /**
+     * 生成表单方式（meta元数据 visual可视化）
+     */
+    @ApiModelProperty(value="生成表单方式（meta元数据 visual可视化）")
+    private String form;
+
+    /**
      * 生成代码方式（zip压缩包 path自定义路径）
      */
     @ApiModelProperty(value="生成代码方式（zip压缩包 path自定义路径）")

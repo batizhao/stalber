@@ -16,6 +16,7 @@
 		<result property="mappingPath" column="mappingPath"/>
 		<result property="template" column="template"/>
 		<result property="parentMenuId" column="parentMenuId"/>
+		<result property="form" column="form"/>
 		<result property="type" column="type"/>
 		<result property="path" column="path"/>
 		<result property="subTableId" column="subTableId"/>

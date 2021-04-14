@@ -429,6 +429,8 @@ public class CodeGenUtils {
         map.put("relationTable", code.getRelationCode());
         map.put("subTableFkName", code.getSubTableFkName());
         map.put("subMappingPath", code.getSubCode() != null ? code.getSubCode().getMappingPath() : "");
+        map.put("form", code.getForm());
+        map.put("options", code.getOptions());
         return map;
     }
 

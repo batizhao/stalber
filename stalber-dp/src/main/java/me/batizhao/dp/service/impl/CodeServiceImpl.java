@@ -1,16 +1,19 @@
 package me.batizhao.dp.service.impl;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.GenConstants;
 import me.batizhao.common.exception.NotFoundException;
-import me.batizhao.dp.domain.Code;
-import me.batizhao.dp.domain.CodeMeta;
+import me.batizhao.dp.domain.*;
 import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,12 +40,15 @@ import java.util.zip.ZipOutputStream;
  * @date 2020/10/10
  */
 @Service
+@Slf4j
 public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements CodeService {
 
     @Autowired
     private CodeMapper codeMapper;
     @Autowired
     private CodeMetaService codeMetaService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public IPage<Code> findCodes(Page<Code> page, Code code) {
@@ -57,7 +64,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         Code code = codeMapper.selectById(id);
 
         if (code == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。" , id));
+            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
         }
 
         return code;
@@ -67,24 +74,18 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
      * 当前方法开启事务，会导致动态数据源无法切换。
      * 为了解决这个问题，单独封装了 saveCode 方法处理事务。
      * 但是这种方式，只适合这个方法，并不适合所有的事务+动态数据源的场景。
-     * @see <a href="SpringBoot+Mybatis配置多数据源及事务方案">https://juejin.cn/post/6844904159074844685</a>
      *
      * @param code 生成代码
      * @return
+     * @see <a href="SpringBoot+Mybatis配置多数据源及事务方案">https://juejin.cn/post/6844904159074844685</a>
      */
     @Override
     public Code saveOrUpdateCode(Code code) {
         if (code.getId() == null) {
-            code.setCreateTime(LocalDateTime.now());
-            code.setUpdateTime(LocalDateTime.now());
             List<CodeMeta> codeMetas = codeMetaService.findColumnsByTableName(code.getTableName(), code.getDsName());
             saveCode(code, codeMetas);
         } else {
-            code.setUpdateTime(LocalDateTime.now());
-            this.updateById(code);
-            if (CollectionUtils.isNotEmpty(code.getCodeMetaList())) {
-                codeMetaService.updateBatchById(code.getCodeMetaList());
-            }
+            updateCode(code);
         }
 
         return code;
@@ -93,12 +94,63 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     @Override
     @Transactional
     public Code saveCode(Code code, List<CodeMeta> codeMetas) {
-        this.save(code);
+        FormMarker fm = new FormMarker();
+        List<Element> elements = new ArrayList<>();
+
+        // 先初始化元数据
         codeMetas.forEach(cm -> {
-            cm.setCodeId(code.getId());
             CodeGenUtils.initColumnField(cm);
+
+            if ((cm.getSave() != null && cm.getSave()) || cm.getPrimaryKey()) {
+                Element element = new Element();
+                element.setType(cm.getHtmlType());
+                element.setName(cm.getColumnComment());
+                element.setModel(cm.getColumnName());
+                element.setKey(IdUtil.objectId());
+                element.setIcon("icon-" + cm.getHtmlType());
+
+                if (cm.getHtmlType() != null && cm.getHtmlType().equals(GenConstants.HTML_SELECT)) {
+                    element.setOptions(new SelectOptions());
+                } else if (cm.getHtmlType() != null && (cm.getHtmlType().equals(GenConstants.HTML_CHECKBOX)
+                        || cm.getHtmlType().equals(GenConstants.HTML_RADIO))) {
+                    element.setOptions(new RadioAndCheckboxOptions());
+                } else if (cm.getPrimaryKey()) {
+                    element.setOptions(new Options(true));
+                } else {
+                    element.setOptions(new Options(false));
+                }
+
+                elements.add(element);
+            }
         });
+
+        //设置 FormMarker 元素
+        fm.setList(elements);
+
+        try {
+            code.setOptions(objectMapper.writeValueAsString(fm));
+        } catch (JsonProcessingException e) {
+            log.error("序列化失败，{}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+
+        code.setCreateTime(LocalDateTime.now());
+        code.setUpdateTime(LocalDateTime.now());
+        this.save(code);
+        codeMetas.forEach(cm -> cm.setCodeId(code.getId()));
         codeMetaService.saveBatch(codeMetas);
+
+        return code;
+    }
+
+    @Override
+    @Transactional
+    public Code updateCode(Code code) {
+        code.setUpdateTime(LocalDateTime.now());
+        this.updateById(code);
+        if (CollectionUtils.isNotEmpty(code.getCodeMetaList())) {
+            codeMetaService.updateBatchById(code.getCodeMetaList());
+        }
 
         return code;
     }

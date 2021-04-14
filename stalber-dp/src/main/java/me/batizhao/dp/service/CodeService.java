@@ -38,6 +38,13 @@ public interface CodeService extends IService<Code> {
     Code saveCode(Code code, List<CodeMeta> codeMetas);
 
     /**
+     * 更新\生成代码
+     * @param code 生成代码
+     * @return
+     */
+    Code updateCode(Code code);
+
+    /**
      * 添加或修改生成代码
      * @param code 生成代码
      * @return Code
