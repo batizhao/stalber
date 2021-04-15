@@ -117,7 +117,12 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
                 } else if (cm.getPrimaryKey()) {
                     element.setOptions(new Options(true));
                 } else {
-                    element.setOptions(new Options(false));
+                    Options options = new Options();
+                    if (cm.getRequired()) {
+                        options.setRequired(true);
+                        options.setHidden(false);
+                    }
+                    element.setOptions(options);
                 }
 
                 if (cm.getRequired()) {
