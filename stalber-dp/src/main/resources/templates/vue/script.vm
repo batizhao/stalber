@@ -1,0 +1,372 @@
+<script>
+import { #if($template != "tree")list${className}#elseif($template == "tree")listAll${className}#end, get${className}, delete${className}, addOrUpdate${className}, change${className}Status, export${className} } from "@/api/${moduleName}/${mappingPath}";
+#if($template == "tree")
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+#end
+#foreach($column in $columns)
+#if($column.save && !$column.superColumn && !$column.primaryKey && $column.htmlType == "imageUpload")
+import ImageUpload from '@/components/ImageUpload';
+#break
+#end
+#end
+#foreach($column in $columns)
+#if($column.save && !$column.superColumn && !$column.primaryKey && $column.htmlType == "fileUpload")
+import FileUpload from '@/components/FileUpload';
+#break
+#end
+#end
+#foreach($column in $columns)
+#if($column.save && !$column.superColumn && !$column.primaryKey && $column.htmlType == "editor")
+import Editor from '@/components/Editor';
+#break
+#end
+#end
+
+export default {
+  name: "${className}",
+  components: {
+#if($template == "tree")
+    Treeselect,
+#end    
+#foreach($column in $columns)
+#if($column.save && !$column.superColumn && !$column.primaryKey && $column.htmlType == "imageUpload")
+    ImageUpload,
+#break
+#end
+#end
+#foreach($column in $columns)
+#if($column.save && !$column.superColumn && !$column.primaryKey && $column.htmlType == "fileUpload")
+    FileUpload,
+#break
+#end
+#end
+#foreach($column in $columns)
+#if($column.save && !$column.superColumn && !$column.primaryKey && $column.htmlType == "editor")
+    Editor,
+#break
+#end
+#end
+  },
+  data() {
+    return {
+#if($form == "visual")
+      jsonData: ${options},
+      dynamicData: {
+      },
+      remoteFuncs: {
+      },
+#end
+      // 遮罩层
+      loading: true,
+#if($template != "tree")      
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 总条数
+      total: 0,
+#end      
+      // 显示搜索条件
+      showSearch: true,
+      // ${comments}表格数据
+      ${classname}List: [],
+#if($template == "tree")      
+      // ${comments}树选项
+      ${classname}Options: [],
+#end      
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+#foreach ($column in $columns)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+#if(${column.dictType} != '')
+      // $comment字典
+      ${column.javaField}Options: [],
+#elseif($column.htmlType == "datetime" && $column.searchType == "BETWEEN")
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+      // $comment时间范围
+      daterange${AttrName}: [],
+#end
+#end
+      // 查询参数
+      queryParams: {
+#if($template != "tree")      
+        current: 1,
+        size: 10,
+#end        
+#foreach ($column in $columns)
+#if($column.search)
+        $column.javaField: null#if($velocityCount != $columns.size()),#end
+
+#end
+#end
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+#foreach ($column in $columns)
+#if($column.required && $column.save)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+        $column.javaField: [
+          { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select")"change"#else"blur"#end }
+        ]#if($velocityCount != $columns.size()),#end
+
+#end
+#end
+      }
+    };
+  },
+  created() {
+#if(!$relationTable.isEmpty())
+    this.queryParams.${relationTable[0].subTableFkName} = this.$route.params && this.$route.params.${relationTable[0].subTableFkName};
+#end
+    this.getList();
+#foreach ($column in $columns)
+#if(${column.dictType} != '')
+    this.listDictDataByCode("${column.dictType}").then(response => {
+      this.${column.javaField}Options = response.data;
+    });
+#end
+#end
+  },
+  methods: {
+    /** 查询${comments}列表 */
+    getList() {
+      this.loading = true;
+#foreach ($column in $columns)
+#if($column.htmlType == "datetime" && $column.searchType == "BETWEEN")
+      this.queryParams.params = {};
+#break
+#end
+#end
+#foreach ($column in $columns)
+#if($column.htmlType == "datetime" && $column.searchType == "BETWEEN")
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+      if (null != this.daterange${AttrName} && '' != this.daterange${AttrName}) {
+        this.queryParams.params["begin${AttrName}"] = this.daterange${AttrName}[0];
+        this.queryParams.params["end${AttrName}"] = this.daterange${AttrName}[1];
+      }
+#end
+#end
+      list${className}(this.queryParams).then(response => {
+        this.${classname}List = response.data.records;
+        this.total = response.data.total;
+        this.loading = false;
+      });
+    },
+    // ${comments}状态编辑
+    handleStatusChange(row) {
+      let text = row.status === "open" ? "启用" : "停用";
+      this.$confirm('确认要"' + text + '""' + row.name + '"吗?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return change${className}Status(row.id, row.status);
+        }).then(() => {
+          this.msgSuccess(text + "成功");
+        }).catch(function() {
+          row.status = row.status === "open" ? "close" : "open";
+        });
+    },
+#if($template == "tree")     
+    /** 转换${comments}数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.id,
+        label: node.name,
+        children: node.children
+      };
+    },
+    /** 查询${comments}下拉树结构 */
+    getTreeselect() {
+      listAll${className}().then(response => {
+        this.${classname}Options = [];
+        const ${classname} = { id: 0, name: '主类目', children: [] };
+        ${classname}.children = this.handleTree(response.data, "id");
+        this.${classname}Options.push(${classname});
+      });
+    },
+#end    
+#foreach ($column in $columns)
+#if(${column.dictType} != '')
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+    // $comment字典翻译
+    ${column.javaField}Format(row, column) {
+      return this.selectDictLabel#if($column.htmlType == "checkbox")s#end(this.${column.javaField}Options, row.${column.javaField});
+    },
+#end
+#end
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {};
+#if($form != "visual")
+      this.resetForm("form");
+#end
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+#if($template != "tree")     
+      this.queryParams.current = 1;
+#end      
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+#foreach ($column in $columns)
+#if($column.htmlType == "datetime" && $column.searchType == "BETWEEN")
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+      this.daterange${AttrName} = [];
+#end
+#end
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+#if($template != "tree")    
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.${pk.javaField})
+      this.single = selection.length!==1
+      this.multiple = !selection.length
+    },    
+    /** 添加按钮操作 */
+    handleAdd() {
+      this.reset();
+      this.open = true;
+      this.title = "添加${comments}";
+    },
+    /** 编辑按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      const ${pk.javaField} = row.${pk.javaField} || this.ids
+      get${className}(${pk.javaField}).then(response => {
+        this.form = response.data;
+#foreach ($column in $columns)
+#if($column.htmlType == "checkbox")
+        this.form.$column.javaField = this.form.${column.javaField}.split(",");
+#end
+#end
+        this.open = true;
+        this.title = "编辑${comments}";
+      });
+    },
+#else
+    /** 添加按钮操作 */
+    handleAdd(row) {
+      this.reset();
+      this.getTreeselect();
+      if (row != null && row.id) {
+        this.form.pid = row.id;
+      } else {
+        this.form.pid = 0;
+      }
+      this.open = true;
+      this.title = "添加${comments}";
+    },
+    /** 编辑按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      this.getTreeselect();
+      get${className}(row.id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "编辑${comments}";
+      });
+    },
+#end    
+#if($template == "onetomany")
+#set($pu = ".push")
+    /** 详情按钮操作 */
+    handleDetail(row) {
+      const ${subTableFkName} = row.${subTableFkName};
+      this.$router${pu}("/${subMappingPath}/" + ${subTableFkName});
+    },
+#end
+    /** 提交按钮 */
+    submitForm() {
+#if($form == "visual")
+      this.#[[$]]#refs.form.getData().then(data => {
+        addOrUpdate${className}(data).then(response => {
+          this.msgSuccess("保存成功");
+          this.open = false;
+          this.getList();
+        });
+      })
+#else
+      this.#[[$]]#refs["form"].validate(valid => {
+        if (valid) {
+#if(!$relationTable.isEmpty())
+          this.form.${relationTable[0].subTableFkName} = this.$route.params && this.$route.params.${relationTable[0].subTableFkName};
+#end
+#foreach ($column in $columns)
+#if($column.htmlType == "checkbox")
+          this.form.$column.javaField = this.form.${column.javaField}.join(",");
+#end
+#end
+          addOrUpdate${className}(this.form).then(response => {
+            this.msgSuccess("保存成功");
+            this.open = false;
+            this.getList();
+          });
+        }
+      });
+#end
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const ${pk.javaField}s = row.${pk.javaField}#if($template != "tree") || this.ids#end;
+      this.$confirm('是否确认删除${comments}编号为"' + ${pk.javaField}s + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return delete${className}(${pk.javaField}s);
+        }).then(() => {
+          this.getList();
+          this.msgSuccess("删除成功");
+        })
+    },
+    /** 导出按钮操作 */
+    handleExport() {
+      const queryParams = this.queryParams;
+      this.$confirm('是否确认导出所有${comments}数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return export${className}(queryParams);
+        }).then(response => {
+          this.download(response.msg);
+        })
+    }
+  }
+};
+</script>

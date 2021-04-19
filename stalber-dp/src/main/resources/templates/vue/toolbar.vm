@@ -1,0 +1,61 @@
+<el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+#if(!$relationTable.isEmpty())
+          v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:add']"
+#else
+          v-hasPermi="['${moduleName}:${className}:add']"
+#end
+        >添加</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+#if(!$relationTable.isEmpty())
+          v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:edit']"
+#else
+          v-hasPermi="['${moduleName}:${className}:edit']"
+#end
+        >编辑</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+#if(!$relationTable.isEmpty())
+          v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:delete']"
+#else
+          v-hasPermi="['${moduleName}:${className}:delete']"
+#end
+        >删除</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+#if(!$relationTable.isEmpty())
+          v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:export']"
+#else
+          v-hasPermi="['${moduleName}:${className}:export']"
+#end
+        >导出</el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>

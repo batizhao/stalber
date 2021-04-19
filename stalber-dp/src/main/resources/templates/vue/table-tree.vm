@@ -1,0 +1,62 @@
+<el-table
+      v-loading="loading"
+      :data="${classname}List"
+      row-key="id"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+#foreach($column in $columns)
+#set($javaField=$column.javaField)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+    #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+    #set($comment=$column.columnComment)
+#end
+#if($column.primaryKey)
+      <el-table-column label="${comment}" align="center" prop="${javaField}" />
+#elseif($column.display && $column.htmlType == "datetime")
+      <el-table-column label="${comment}" align="center" prop="${javaField}" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.${javaField}) }}</span>
+        </template>
+      </el-table-column>
+#elseif($column.display && $column.htmlType == "switch")
+      <el-table-column label="${comment}" align="center">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.${javaField}"
+            @change="handleStatusChange(scope.row)"
+            active-value="open"
+            inactive-value="close"
+          ></el-switch>
+        </template>
+      </el-table-column>
+#elseif($column.display && "" != $column.dictType)
+      <el-table-column label="${comment}" align="center" prop="${javaField}" :formatter="${javaField}Format" />
+#elseif($column.display && "" != $javaField)
+      <el-table-column label="${comment}" align="center" prop="${javaField}" />
+#end
+#end
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            icon="el-icon-plus"
+            @click="handleAdd(scope.row)"
+            v-hasPermi="['${moduleName}:${className}:add']"
+          >添加</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['${moduleName}:${className}:edit']"
+          >编辑</el-button>
+          <el-button
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['${moduleName}:${className}:delete']"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
