@@ -1,5 +1,5 @@
 <script>
-import { #if($template != "tree")list${className}#elseif($template == "tree")listAll${className}#end, get${className}, delete${className}, addOrUpdate${className}, change${className}Status, export${className} } from "@/api/${moduleName}/${mappingPath}";
+import {#if($template != "tree") list${className},#end listAll${className}, get${className}, delete${className}, addOrUpdate${className}, change${className}Status, export${className} } from "@/api/${moduleName}/${mappingPath}";
 #if($template == "tree")
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -73,10 +73,10 @@ export default {
       showSearch: true,
       // ${comments}表格数据
       ${classname}List: [],
-#if($template == "tree")      
+#if($template == "tree")
       // ${comments}树选项
       ${classname}Options: [],
-#end      
+#end
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -163,9 +163,17 @@ export default {
       }
 #end
 #end
+#if($template != "tree")
       list${className}(this.queryParams).then(response => {
+#else
+      listAll${className}(this.queryParams).then(response => {
+#end
+#if($template != "tree")
         this.${classname}List = response.data.records;
         this.total = response.data.total;
+#else
+        this.${classname}List = response.data;
+#end
         this.loading = false;
       });
     },
