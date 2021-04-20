@@ -24,6 +24,7 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.GenConstants;
 import me.batizhao.common.constant.PecadoConstants;
+import me.batizhao.common.exception.StalberException;
 import me.batizhao.dp.domain.Code;
 import me.batizhao.dp.domain.CodeMeta;
 import org.apache.commons.configuration2.Configuration;
@@ -211,29 +212,10 @@ public class CodeGenUtils {
                     String path = getGenPath(code, template);
                     FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
                 } catch (IOException e) {
-                    throw new RuntimeException("渲染模板失败，表名：" + code.getTableName());
+                    throw new StalberException("渲染模板失败，表名：" + code.getTableName());
                 }
             }
         }
-
-//        if (code.getSubCode() != null) {
-//            map = prepareContext(code.getSubCode());
-//            context = getVelocityContext(map);
-//            for (String template : getTemplates(code.getSubCode().getTemplate())) {
-//                if (!StringUtils.containsAny(template, MENU_SQL_VM, VUE_API_JS_VM, VUE_INDEX_VUE_VM, VUE_TREE_INDEX_VUE_VM)) {
-//                    // 渲染模板
-//                    StringWriter sw = new StringWriter();
-//                    Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
-//                    tpl.merge(context, sw);
-//                    try {
-//                        String path = getGenPath(code.getSubCode(), template);
-//                        FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException("渲染模板失败，表名：" + code.getSubCode().getTableName());
-//                    }
-//                }
-//            }
-//        }
     }
 
     /**
@@ -260,22 +242,6 @@ public class CodeGenUtils {
             IoUtil.close(sw);
             zip.closeEntry();
         }
-
-//        if (code.getSubCode() != null) {
-//            map = prepareContext(code.getSubCode());
-//            context = getVelocityContext(map);
-//            for (String template : getTemplates(code.getSubCode().getTemplate())) {
-//                StringWriter sw = new StringWriter();
-//                Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
-//                tpl.merge(context, sw);
-//
-//                // 添加到zip
-//                zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFileName(code.getSubCode(), template))));
-//                IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
-//                IoUtil.close(sw);
-//                zip.closeEntry();
-//            }
-//        }
     }
 
     /**
@@ -298,18 +264,6 @@ public class CodeGenUtils {
             tpl.merge(context, sw);
             dataMap.put(template.substring(template.lastIndexOf("/")+1, template.indexOf(".vm")), sw.toString());
         }
-
-//        if (code.getSubCode() != null) {
-//            map = prepareContext(code.getSubCode());
-//            context = getVelocityContext(map);
-//            for (String template : getTemplates(code.getSubCode().getTemplate())) {
-//                StringWriter sw = new StringWriter();
-//                Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
-//                tpl.merge(context, sw);
-//                dataMap.put(code.getSubCode().getClassName() + template.substring(template.lastIndexOf("/")+1, template.indexOf(".vm")), sw.toString());
-//            }
-//        }
-
         return dataMap;
     }
 
@@ -486,7 +440,7 @@ public class CodeGenUtils {
                                     .setIncludesAllowed(false));
             return builder.getConfiguration();
         } catch (ConfigurationException e) {
-            throw new RuntimeException("获取配置文件失败，", e);
+            throw new StalberException("获取配置文件失败，", e);
         }
     }
 

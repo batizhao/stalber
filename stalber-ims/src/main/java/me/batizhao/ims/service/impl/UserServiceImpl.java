@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.exception.StalberException;
 import me.batizhao.ims.domain.*;
 import me.batizhao.ims.mapper.UserMapper;
 import me.batizhao.ims.service.MenuService;
@@ -104,10 +105,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!bcryptPasswordEncoder.matches(oldPassword, user.getPassword()))
-            throw new RuntimeException("旧密码不正确");
+            throw new StalberException("旧密码不正确！");
 
         if (bcryptPasswordEncoder.matches(newPassword, user.getPassword()))
-            throw new RuntimeException("新旧密码相同");
+            throw new StalberException("新旧密码相同！");
 
         String hashPass = bcryptPasswordEncoder.encode(newPassword);
         user.setPassword(hashPass);
@@ -118,11 +119,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional
     public Boolean deleteByIds(List<Long> ids) {
-        this.removeByIds(ids);
         ids.forEach(i -> {
+            checkUserIsAdmin(i);
             userRoleService.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, i));
         });
+        this.removeByIds(ids);
         return true;
+    }
+
+    private void checkUserIsAdmin(Long id) {
+        if (id.equals(1L)) {
+            throw new StalberException("管理员不允许操作！");
+        }
     }
 
     @Override

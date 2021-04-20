@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.GenConstants;
 import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.exception.StalberException;
 import me.batizhao.dp.domain.*;
 import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
@@ -142,7 +143,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
             code.setOptions(objectMapper.writeValueAsString(fm));
         } catch (JsonProcessingException e) {
             log.error("序列化失败，{}", e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new StalberException("序列化失败！", e);
         }
 
         code.setCreateTime(LocalDateTime.now());
@@ -242,7 +243,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     @Transactional
     public Boolean syncColumn(Long id, List<CodeMeta> codeMetas, List<CodeMeta> dbTableColumns) {
         if (CollectionUtils.isEmpty(dbTableColumns)) {
-            throw new RuntimeException("同步数据失败，原表结构不存在");
+            throw new StalberException("同步数据失败，原表结构不存在！");
         }
 
         List<String> tableColumnNames = codeMetas.stream().map(CodeMeta::getColumnName).collect(Collectors.toList());

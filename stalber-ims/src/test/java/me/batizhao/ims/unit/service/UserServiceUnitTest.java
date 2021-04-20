@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.exception.StalberException;
 import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
 import me.batizhao.ims.mapper.UserMapper;
@@ -235,8 +236,16 @@ public class UserServiceUnitTest extends BaseServiceUnitTest {
         doReturn(true).when(service).removeByIds(anyList());
         doReturn(true).when(userRoleService).remove(any(Wrapper.class));
 
-        Boolean b = userService.deleteByIds(Arrays.asList(1L, 2L));
+        Boolean b = userService.deleteByIds(Arrays.asList(2L, 3L));
         assertThat(b, equalTo(true));
+    }
+
+    @Test
+    public void givenIds_whenDelete_thenException() {
+        doReturn(true).when(service).removeByIds(anyList());
+        doReturn(true).when(userRoleService).remove(any(Wrapper.class));
+
+        assertThrows(StalberException.class, () -> userService.deleteByIds(Arrays.asList(1L, 3L)));
     }
 
     @Test
