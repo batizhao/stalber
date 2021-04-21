@@ -236,13 +236,25 @@ public class UserApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenId_whenDeleteUser_thenSucceed() throws Exception {
-        mvc.perform(delete("/ims/user").param("ids", "1,2")
+        mvc.perform(delete("/ims/user").param("ids", "2,3")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data").value(true));
+    }
+
+    @Test
+    @Transactional
+    public void givenId_whenDeleteUser_thenIsAdminError() throws Exception {
+        mvc.perform(delete("/ims/user").param("ids", "1")
+                .header("Authorization", adminAccessToken))
+                .andDo(print())
+                .andExpect(status().is5xxServerError())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ResultEnum.UNKNOWN_ERROR.getCode()))
+                .andExpect(jsonPath("$.data", containsString("管理员不允许操作")));
     }
 
     /**
