@@ -1,9 +1,9 @@
-package ${package}.${moduleName}.api;
+package me.batizhao.ims.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.constant.ResultEnum;
-import ${package}.${moduleName}.domain.${className};
+import me.batizhao.ims.domain.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,14 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author batizhao
  * @since 2020-02-11
  */
-public class ${className}ApiTest extends BaseApiTest {
+public class PostApiTest extends BaseApiTest {
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
-    public void givenId_whenFind${className}_thenSuccess() throws Exception {
-        mvc.perform(get("/${mappingPath}/{id}", 1L)
+    public void givenId_whenFindPost_thenSuccess() throws Exception {
+        mvc.perform(get("/post/{id}", 1L)
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -41,8 +41,8 @@ public class ${className}ApiTest extends BaseApiTest {
     }
 
     @Test
-    public void givenNothing_whenFindAll${className}_thenSuccess() throws Exception {
-        mvc.perform(get("/${mappingPath}s")
+    public void givenNothing_whenFindAllPost_thenSuccess() throws Exception {
+        mvc.perform(get("/posts")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -52,11 +52,11 @@ public class ${className}ApiTest extends BaseApiTest {
 
     @Test
     @Transactional
-    public void givenJson_whenSave${className}_thenSuccess() throws Exception {
-        ${className} requestBody = new ${className}()
+    public void givenJson_whenSavePost_thenSuccess() throws Exception {
+        Post requestBody = new Post()
                 .setName("daxia");
 
-        mvc.perform(post("/${mappingPath}")
+        mvc.perform(post("/post")
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
@@ -69,11 +69,11 @@ public class ${className}ApiTest extends BaseApiTest {
 
     @Test
     @Transactional
-    public void givenJson_whenUpdate${className}_thenSuccess() throws Exception {
-        ${className} requestBody = new ${className}()
+    public void givenJson_whenUpdatePost_thenSuccess() throws Exception {
+        Post requestBody = new Post()
                 .setId(8L).setName("daxia");
 
-        mvc.perform(post("/${mappingPath}")
+        mvc.perform(post("/post")
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
@@ -85,8 +85,8 @@ public class ${className}ApiTest extends BaseApiTest {
 
     @Test
     @Transactional
-    public void givenId_whenDelete${className}_thenSuccess() throws Exception {
-        mvc.perform(delete("/${mappingPath}").param("ids", "1,2")
+    public void givenId_whenDeletePost_thenSuccess() throws Exception {
+        mvc.perform(delete("/post").param("ids", "1,2")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())

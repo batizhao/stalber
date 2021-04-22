@@ -101,4 +101,72 @@
             <dropTable tableName="department_leader"/>
         </rollback>
     </changeSet>
+
+    <changeSet author="batizhao" id="InsertTableMenu-20210422-002">
+        <insert tableName="menu">
+            <column name="id" valueNumeric="1400"/>
+            <column name="path" value="/ims/post"/>
+            <column name="name" value="岗位管理"/>
+            <column name="permission" value="ims:post:admin"/>
+            <column name="icon" value="post"/>
+            <column name="pid" valueNumeric="1000"/>
+            <column name="sort" valueNumeric="4"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="1401"/>
+            <column name="name" value="添加岗位"/>
+            <column name="permission" value="ims:post:add"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="1400"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="1402"/>
+            <column name="name" value="编辑岗位"/>
+            <column name="permission" value="ims:post:edit"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="1400"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="1403"/>
+            <column name="name" value="删除岗位"/>
+            <column name="permission" value="ims:post:delete"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="1400"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+        <rollback>
+            delete from menu where id = 1400;
+            delete from menu where id = 1401;
+            delete from menu where id = 1402;
+            delete from menu where id = 1403;
+        </rollback>
+    </changeSet>
+
+    <changeSet author="batizhao" id="InsertTableRoleMenu-20210422-003">
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="1400"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="1401"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="1402"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="1403"/>
+        </insert>
+        <rollback>
+            delete from role_menu where roleId = 2 and menuId = 1400;
+            delete from role_menu where roleId = 2 and menuId = 1401;
+            delete from role_menu where roleId = 2 and menuId = 1402;
+            delete from role_menu where roleId = 2 and menuId = 1403;
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
