@@ -1,7 +1,6 @@
 package me.batizhao.ims.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -109,6 +108,20 @@ public class PostController {
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "岗位" , required = true) @RequestBody Post post) {
         return R.ok(postService.updateStatus(post));
+    }
+
+    /**
+     * 根据用户ID查询岗位
+     * 返回岗位集合
+     *
+     * @param userId 用户id
+     * @return R<List<Post>>
+     */
+    @ApiOperation(value = "根据用户ID查询岗位")
+    @GetMapping(value = "/post", params = "userId")
+    @PreAuthorize("@pms.hasPermission('ims:post:admin')")
+    public R<List<Post>> handlePostsByUserId(@ApiParam(value = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
+        return R.ok(postService.findPostsByUserId(userId));
     }
 
 }

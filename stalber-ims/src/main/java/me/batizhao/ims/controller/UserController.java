@@ -11,7 +11,9 @@ import me.batizhao.common.util.R;
 import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
+import me.batizhao.ims.domain.UserPost;
 import me.batizhao.ims.domain.UserRole;
+import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.UserRoleService;
 import me.batizhao.ims.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private UserPostService userPostService;
 
     /**
      * 分页查询
@@ -185,6 +189,21 @@ public class UserController {
     @SystemLog
     public R<Boolean> handleAddUserRoles(@ApiParam(value = "关联角色", required = true) @RequestBody List<UserRole> userRoleList) {
         return R.ok(userRoleService.updateUserRoles(userRoleList));
+    }
+
+    /**
+     * 分配用户岗位
+     * 返回 true or false
+     *
+     * @param userPosts 岗位清单
+     * @return R<Boolean>
+     */
+    @ApiOperation(value = "分配用户岗位")
+    @PostMapping(value = "/ims/user/post")
+    @PreAuthorize("@pms.hasPermission('ims:user:admin')")
+    @SystemLog
+    public R<Boolean> handleAddUserPosts(@ApiParam(value = "关联岗位", required = true) @RequestBody List<UserPost> userPosts) {
+        return R.ok(userPostService.updateUserPosts(userPosts));
     }
 
 }

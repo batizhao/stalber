@@ -41,7 +41,7 @@ export function delete${className}(#if($template != "tree")${pk.javaField}s#else
 #end
 }
 
-// 角色状态编辑
+// ${comments}状态编辑
 export function change${className}Status(id, status) {
   const data = {
     id,

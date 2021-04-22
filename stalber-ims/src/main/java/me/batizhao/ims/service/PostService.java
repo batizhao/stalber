@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.ims.domain.Post;
+import me.batizhao.ims.domain.Role;
 
 import java.util.List;
 
@@ -43,4 +44,11 @@ public interface PostService extends IService<Post> {
      * @return Boolean
      */
     Boolean updateStatus(Post post);
+
+    /**
+     * 通过用户 ID 查相关的岗位
+     * @param userId
+     * @return
+     */
+    List<Post> findPostsByUserId(Long userId);
 }

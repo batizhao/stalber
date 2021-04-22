@@ -11,6 +11,7 @@ import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
 import me.batizhao.ims.domain.UserRole;
 import me.batizhao.ims.controller.UserController;
+import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.UserRoleService;
 import me.batizhao.ims.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,8 @@ public class UserControllerUnitTest extends BaseControllerUnitTest {
     private UserService userService;
     @MockBean
     private UserRoleService userRoleService;
+    @MockBean
+    private UserPostService userPostService;
 
     private List<User> userList;
     private IPage<User> userPageList;

@@ -73,4 +73,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         wrapper.eq(Post::getId, post.getId()).set(Post::getStatus, post.getStatus());
         return postMapper.update(null, wrapper) == 1;
     }
+
+    @Override
+    public List<Post> findPostsByUserId(Long userId) {
+        return postMapper.findPostsByUserId(userId);
+    }
 }
