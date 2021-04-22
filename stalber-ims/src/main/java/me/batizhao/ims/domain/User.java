@@ -86,6 +86,12 @@ public class User implements Serializable {
     @ApiModelProperty(value="修改时间")
     private LocalDateTime updateTime;
 
+    /**
+     * 第三方ID
+     */
+    @ApiModelProperty(value="第三方ID")
+    private String uuid;
+
 //    /**
 //     * 角色列表
 //     */

@@ -4,9 +4,17 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
     <changeSet author="batizhao" id="CreateTableDepartment-20210422-001">
+        <addColumn tableName="user">
+            <column name="uuid" type="varchar(36)" remarks="第三方ID" valueComputed="${uuid}">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
         <createTable remarks="部门表" tableName="department">
             <column autoIncrement="true" name="id" type="BIGINT" remarks="部门ID">
                 <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="uuid" type="varchar(36)" remarks="第三方ID" valueComputed="${uuid}">
+                <constraints nullable="false" />
             </column>
             <column name="pid" type="BIGINT" remarks="父ID">
                 <constraints nullable="false" />
