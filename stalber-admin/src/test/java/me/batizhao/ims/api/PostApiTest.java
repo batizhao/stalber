@@ -32,17 +32,17 @@ public class PostApiTest extends BaseApiTest {
 
     @Test
     public void givenId_whenFindPost_thenSuccess() throws Exception {
-        mvc.perform(get("/post/{id}", 1L)
+        mvc.perform(get("/ims/post/{id}", 1L)
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()));
+                .andExpect(jsonPath("$.code").value(ResultEnum.RESOURCE_NOT_FOUND.getCode()));
     }
 
     @Test
     public void givenNothing_whenFindAllPost_thenSuccess() throws Exception {
-        mvc.perform(get("/posts")
+        mvc.perform(get("/ims/posts")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -54,9 +54,9 @@ public class PostApiTest extends BaseApiTest {
     @Transactional
     public void givenJson_whenSavePost_thenSuccess() throws Exception {
         Post requestBody = new Post()
-                .setName("daxia");
+                .setName("daxia").setCode("ceo");
 
-        mvc.perform(post("/post")
+        mvc.perform(post("/ims/post")
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
@@ -73,7 +73,7 @@ public class PostApiTest extends BaseApiTest {
         Post requestBody = new Post()
                 .setId(8L).setName("daxia");
 
-        mvc.perform(post("/post")
+        mvc.perform(post("/ims/post")
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
@@ -86,12 +86,12 @@ public class PostApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenId_whenDeletePost_thenSuccess() throws Exception {
-        mvc.perform(delete("/post").param("ids", "1,2")
+        mvc.perform(delete("/ims/post").param("ids", "1,2")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data").value(true));
+                .andExpect(jsonPath("$.data").value(false));
     }
 }
