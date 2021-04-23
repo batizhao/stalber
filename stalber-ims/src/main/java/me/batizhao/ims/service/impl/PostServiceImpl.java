@@ -70,6 +70,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     @Override
+    @Transactional
     public Boolean deleteByIds(List<Long> ids) {
         this.removeByIds(ids);
         ids.forEach(i -> {

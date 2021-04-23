@@ -92,6 +92,6 @@ public class PostApiTest extends BaseApiTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data").value(false));
+                .andExpect(jsonPath("$.data").value(true));
     }
 }
