@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.ims.domain.Post;
-import me.batizhao.ims.domain.Role;
 
 import java.util.List;
 
@@ -37,6 +36,13 @@ public interface PostService extends IService<Post> {
      * @return Post
      */
     Post saveOrUpdatePost(Post post);
+
+    /**
+     * 删除
+     * @param ids
+     * @return
+     */
+    Boolean deleteByIds(List<Long> ids);
 
     /**
      * 更新岗位状态

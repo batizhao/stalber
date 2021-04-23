@@ -6,11 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.extern.slf4j.Slf4j;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.ims.domain.Post;
 import me.batizhao.ims.mapper.PostMapper;
 import me.batizhao.ims.service.PostService;
+import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.impl.PostServiceImpl;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,9 +53,14 @@ public class PostServiceUnitTest extends BaseServiceUnitTest {
 
     @MockBean
     private PostMapper postMapper;
+    @MockBean
+    private UserPostService userPostService;
 
     @Autowired
     private PostService postService;
+
+    @SpyBean
+    private ServiceImpl service;
 
     private List<Post> postList;
     private Page<Post> postPageList;
@@ -129,6 +137,15 @@ public class PostServiceUnitTest extends BaseServiceUnitTest {
         postService.saveOrUpdatePost(postList.get(0));
 
         verify(postMapper).updateById(any(Post.class));
+    }
+
+    @Test
+    public void givenIds_whenDelete_thenSuccess() {
+        doReturn(true).when(service).removeByIds(anyList());
+        doReturn(true).when(userPostService).remove(any(Wrapper.class));
+
+        Boolean b = postService.deleteByIds(Arrays.asList(1L, 2L));
+        assertThat(b, equalTo(true));
     }
 
     @Test

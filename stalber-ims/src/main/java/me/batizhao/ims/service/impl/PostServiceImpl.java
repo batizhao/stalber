@@ -2,15 +2,16 @@ package me.batizhao.ims.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
-import me.batizhao.common.util.TreeUtil;
 import me.batizhao.ims.domain.Post;
+import me.batizhao.ims.domain.UserPost;
 import me.batizhao.ims.mapper.PostMapper;
 import me.batizhao.ims.service.PostService;
+import me.batizhao.ims.service.UserPostService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private UserPostService userPostService;
 
     @Override
     public IPage<Post> findPosts(Page<Post> page, Post post) {
@@ -64,6 +67,15 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         }
 
         return post;
+    }
+
+    @Override
+    public Boolean deleteByIds(List<Long> ids) {
+        this.removeByIds(ids);
+        ids.forEach(i -> {
+            userPostService.remove(Wrappers.<UserPost>lambdaQuery().eq(UserPost::getPostId, i));
+        });
+        return true;
     }
 
     @Override

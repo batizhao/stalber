@@ -3,7 +3,6 @@ package me.batizhao.ims.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.ims.domain.UserPost;
-import me.batizhao.ims.domain.UserRole;
 import me.batizhao.ims.mapper.UserPostMapper;
 import me.batizhao.ims.service.UserPostService;
 import org.springframework.stereotype.Service;

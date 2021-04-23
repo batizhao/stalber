@@ -94,7 +94,7 @@ public class PostController {
     @DeleteMapping("/post")
     @PreAuthorize("@pms.hasPermission('ims:post:delete')")
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
-        return R.ok(postService.removeByIds(ids));
+        return R.ok(postService.deleteByIds(ids));
     }
 
     /**

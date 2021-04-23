@@ -158,7 +158,7 @@ public class PostControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenId_whenDeletePost_thenSuccess() throws Exception {
-        when(postService.removeByIds(anyList())).thenReturn(true);
+        when(postService.deleteByIds(anyList())).thenReturn(true);
 
         mvc.perform(delete("/ims/post").param("ids", "1,2").with(csrf()))
                 .andDo(print())
@@ -167,7 +167,7 @@ public class PostControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data").value(true));
 
-        verify(postService).removeByIds(anyList());
+        verify(postService).deleteByIds(anyList());
     }
 
     @Test
