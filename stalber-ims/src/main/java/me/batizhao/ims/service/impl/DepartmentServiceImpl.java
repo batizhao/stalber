@@ -39,6 +39,9 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         if (null != department && StringUtils.isNotBlank(department.getName())) {
             wrapper.like(Department::getName, department.getName());
         }
+        if (null != department && StringUtils.isNotBlank(department.getFullName())) {
+            wrapper.like(Department::getFullName, department.getFullName());
+        }
         wrapper.orderByAsc(Department::getSort);
 
         List<Department> departments = departmentMapper.selectList(wrapper);

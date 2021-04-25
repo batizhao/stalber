@@ -12,7 +12,7 @@
 #else
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 #if($template == "tree")
-      <el-form-item label="上级${comments}">
+      <el-form-item label="上级${comments}" prop="pid" v-if="form.pid !== 0">
         <treeselect
           v-model="form.pid"
           :options="${classname}Options"

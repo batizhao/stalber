@@ -114,6 +114,11 @@ export default {
       form: {},
       // 表单校验
       rules: {
+#if($template == "tree")
+        pid: [
+          { required: true, message: "上级${comments}不能为空", trigger: "blur" }
+        ],
+#end
 #foreach ($column in $columns)
 #if($column.required && $column.save)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
@@ -207,9 +212,7 @@ export default {
     /** 查询${comments}下拉树结构 */
     getTreeselect() {
       listAll${className}().then(response => {
-        const ${classname} = { id: 0, name: '主类目', children: [] };
-        ${classname}.children = this.handleTree(response.data, "id");
-        this.${classname}Options.push(${classname});
+        this.${classname}Options.children = this.handleTree(response.data, "id");
       });
     },
 #end    
@@ -290,10 +293,8 @@ export default {
     handleAdd(row) {
       this.reset();
       this.getTreeselect();
-      if (row != null && row.id) {
+      if (row != undefined) {
         this.form.pid = row.id;
-      } else {
-        this.form.pid = 0;
       }
       this.open = true;
       this.title = "添加${comments}";
