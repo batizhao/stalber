@@ -341,7 +341,7 @@
             <column name="path" value="/ims/department"/>
             <column name="name" value="部门管理"/>
             <column name="permission" value="ims:department:admin"/>
-            <column name="icon" value="post"/>
+            <column name="icon" value="tree"/>
             <column name="pid" valueNumeric="1000"/>
             <column name="sort" valueNumeric="5"/>
         </insert>
