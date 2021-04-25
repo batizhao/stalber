@@ -42,7 +42,7 @@
 #if(!$relationTable.isEmpty())
             v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:edit']"
 #else
-            v-hasPermi="['${moduleName}:${className}:edit']"
+            v-hasPermi="['${moduleName}:${classname}:edit']"
 #end
           >编辑</el-button>
           <el-button
@@ -52,7 +52,7 @@
 #if(!$relationTable.isEmpty())
             v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:delete']"
 #else
-            v-hasPermi="['${moduleName}:${className}:delete']"
+            v-hasPermi="['${moduleName}:${classname}:delete']"
 #end
           >删除</el-button>
 #if($template == "onetomany")
@@ -63,7 +63,7 @@
 #if(!$relationTable.isEmpty())
             v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:edit']"
 #else
-            v-hasPermi="['${moduleName}:${className}:edit']"
+            v-hasPermi="['${moduleName}:${classname}:edit']"
 #end
           >详情</el-button>
 #end

@@ -20,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -80,7 +77,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 //            menuTree.setId(menu.getId());
 //            menuTrees.add(menuTree);
 //        }
-        return TreeUtil.build(menus, 0);
+        int min = menus.size() > 0 ? Collections.min(menus.stream().map(Menu::getPid).collect(Collectors.toList())) : 0;
+        return TreeUtil.build(menus, min);
+
     }
 
     @Override

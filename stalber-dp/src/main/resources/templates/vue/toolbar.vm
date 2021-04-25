@@ -9,7 +9,7 @@
 #if(!$relationTable.isEmpty())
           v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:add']"
 #else
-          v-hasPermi="['${moduleName}:${className}:add']"
+          v-hasPermi="['${moduleName}:${classname}:add']"
 #end
         >添加</el-button>
       </el-col>
@@ -24,7 +24,7 @@
 #if(!$relationTable.isEmpty())
           v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:edit']"
 #else
-          v-hasPermi="['${moduleName}:${className}:edit']"
+          v-hasPermi="['${moduleName}:${classname}:edit']"
 #end
         >编辑</el-button>
       </el-col>
@@ -39,7 +39,7 @@
 #if(!$relationTable.isEmpty())
           v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:delete']"
 #else
-          v-hasPermi="['${moduleName}:${className}:delete']"
+          v-hasPermi="['${moduleName}:${classname}:delete']"
 #end
         >删除</el-button>
       </el-col>
@@ -53,7 +53,7 @@
 #if(!$relationTable.isEmpty())
           v-hasPermi="['${relationTable[0].moduleName}:${relationTable[0].className}:export']"
 #else
-          v-hasPermi="['${moduleName}:${className}:export']"
+          v-hasPermi="['${moduleName}:${classname}:export']"
 #end
         >导出</el-button>
       </el-col>

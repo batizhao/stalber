@@ -48,7 +48,9 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
     ${className}Service ${classname}Service;
 
     private List<${className}> ${classname}List;
-    private IPage<${className}> ${classname}PageList;
+#if($template != "tree")
+    private Page<${className}> ${classname}PageList;
+#end
 
     /**
      * Prepare test data.
@@ -56,14 +58,22 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
     @BeforeEach
     public void setUp() {
         ${classname}List = new ArrayList<>();
+#if($template != "tree")
         ${classname}List.add(new ${className}().setId(1L).setName("zhangsan"));
         ${classname}List.add(new ${className}().setId(2L).setName("lisi"));
         ${classname}List.add(new ${className}().setId(3L).setName("wangwu"));
 
         ${classname}PageList = new Page<>();
         ${classname}PageList.setRecords(${classname}List);
+#else
+        ${classname}List = new ArrayList<>();
+        ${classname}List.add(new ${className}(1, 0).setName("zhangsan"));
+        ${classname}List.add(new ${className}(2, 1).setName("lisi"));
+        ${classname}List.add(new ${className}(3, 2).setName("wangwu"));
+#end
     }
 
+#if($template != "tree")
     @Test
     @WithMockUser
     public void givenNothing_whenFind${className}s_thenSuccess() throws Exception {
@@ -81,6 +91,7 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
         verify(${classname}Service).find${className}s(any(Page.class), any(${className}.class));
     }
 
+#end
     @Test
     @WithMockUser
     public void givenNothing_whenFindAll${className}_thenSuccess() throws Exception {
@@ -158,16 +169,27 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenId_whenDelete${className}_thenSuccess() throws Exception {
+#if($template != "tree")
         when(${classname}Service.removeByIds(anyList())).thenReturn(true);
+#else
+        when(${classname}Service.deleteById(anyInt())).thenReturn(true);
+#end
+#if($template != "tree")
+        mvc.perform(delete("/${mappingPath}").param("ids", "1,2").with(csrf()))
+#else
+        mvc.perform(delete("/${mappingPath}").param("id", "1").with(csrf()))
+#end
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
+            .andExpect(jsonPath("$.data").value(true));
 
-        mvc.perform(delete("/${moduleName}/${mappingPath}").param("ids", "1,2").with(csrf()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data").value(true));
-
+#if($template != "tree")
         verify(${classname}Service).removeByIds(anyList());
+#else
+        verify(${classname}Service).deleteById(anyInt());
+#end
     }
 
     @Test

@@ -59,7 +59,9 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         wrapper.orderByAsc(${className}::getSort);
 
         List<${className}> ${classname}s = ${classname}Mapper.selectList(wrapper);
-        return TreeUtil.build(${classname}s, 0);
+        int min = ${classname}s.size() > 0 ? Collections.min(${classname}s.stream().map(${className}::getPid).collect(Collectors.toList())) : 0;
+        return TreeUtil.build(${classname}s, min);
+
     }
 #end
 
@@ -91,6 +93,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 #if($template == "tree")
 
     @Override
+    @Transactional
     public Boolean deleteById(Integer id) {
         if (checkHasChildren(id)) return false;
         this.removeById(id);

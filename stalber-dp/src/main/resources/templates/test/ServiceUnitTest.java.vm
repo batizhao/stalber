@@ -55,22 +55,31 @@ public class ${className}ServiceUnitTest extends BaseServiceUnitTest {
     private ${className}Service ${classname}Service;
 
     private List<${className}> ${classname}List;
+#if($template != "tree")
     private Page<${className}> ${classname}PageList;
+#end
 
     /**
      * Prepare test data.
      */
     @BeforeEach
     public void setUp() {
-        ${classname}List = new ArrayList<>();
+#if($template != "tree")
         ${classname}List.add(new ${className}().setId(1L).setName("zhangsan"));
         ${classname}List.add(new ${className}().setId(2L).setName("lisi"));
         ${classname}List.add(new ${className}().setId(3L).setName("wangwu"));
 
         ${classname}PageList = new Page<>();
         ${classname}PageList.setRecords(${classname}List);
+#else
+        ${classname}List = new ArrayList<>();
+        ${classname}List.add(new ${className}(1, 0).setName("zhangsan"));
+        ${classname}List.add(new ${className}(2, 1).setName("lisi"));
+        ${classname}List.add(new ${className}(3, 2).setName("wangwu"));
+#end
     }
 
+#if($template != "tree")
     @Test
     public void givenNothing_whenFindAll${className}_thenSuccess() {
         when(${classname}Mapper.selectPage(any(Page.class), any(Wrapper.class)))
@@ -92,6 +101,7 @@ public class ${className}ServiceUnitTest extends BaseServiceUnitTest {
         assertThat(${classname}s.getRecords(), hasItems(hasProperty("name", equalTo("lisi"))));
     }
 
+#end
     @Test
     public void given${className}Id_whenFind${className}_thenSuccess() {
         when(${classname}Mapper.selectById(1L))

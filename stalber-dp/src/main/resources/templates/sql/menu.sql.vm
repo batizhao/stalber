@@ -1,7 +1,7 @@
 -- 菜单 SQL
 INSERT INTO `menu` (`path`, `name`, `permission`, `icon`, `type`, `sort`, `description`, `pid`, `status`)
 VALUES
-('/${moduleName}/${mappingPath}', '${comments}', '${moduleName}:${className}:admin', '#', 'M', 1, NULL, ${parentMenuId}, 'open');
+('/${moduleName}/${mappingPath}', '${comments}', '${moduleName}:${classname}:admin', '#', 'M', 1, NULL, ${parentMenuId}, 'open');
 
 -- 按钮父菜单ID
 SELECT @parentId := LAST_INSERT_ID();
@@ -9,12 +9,12 @@ SELECT @parentId := LAST_INSERT_ID();
 -- 按钮 SQL
 INSERT INTO `menu` (`path`, `name`, `permission`, `icon`, `type`, `sort`, `description`, `pid`, `status`)
 VALUES
-('', '添加${comments}', '${moduleName}:${className}:add', '#', 'B', 1, NULL, @parentId, 'open');
+('', '添加${comments}', '${moduleName}:${classname}:add', '#', 'B', 1, NULL, @parentId, 'open');
 
 INSERT INTO `menu` (`path`, `name`, `permission`, `icon`, `type`, `sort`, `description`, `pid`, `status`)
 VALUES
-('', '编辑${comments}', '${moduleName}:${className}:edit', '#', 'B', 2, NULL, @parentId, 'open');
+('', '编辑${comments}', '${moduleName}:${classname}:edit', '#', 'B', 2, NULL, @parentId, 'open');
 
 INSERT INTO `menu` (`path`, `name`, `permission`, `icon`, `type`, `sort`, `description`, `pid`, `status`)
 VALUES
-('', '删除${comments}', '${moduleName}:${className}:delete', '#', 'B', 3, NULL, @parentId, 'open');
+('', '删除${comments}', '${moduleName}:${classname}:delete', '#', 'B', 3, NULL, @parentId, 'open');

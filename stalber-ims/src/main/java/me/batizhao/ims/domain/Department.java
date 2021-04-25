@@ -6,65 +6,71 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import me.batizhao.common.domain.TreeNode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 岗位 实体对象
+ * 部门 实体对象
  *
  * @author batizhao
- * @since 2021-04-22
+ * @since 2021-04-25
  */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "岗位")
-@TableName("post")
-public class Post implements Serializable {
+@ApiModel(description = "部门")
+@TableName("department")
+public class Department extends TreeNode implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * pk
+     * 第三方ID
      */
-    @ApiModelProperty(value="id")
-    private Long id;
-        
+    @ApiModelProperty(value="第三方ID")
+    private String uuid;
+                                                
     /**
      * 名称
      */
     @ApiModelProperty(value="名称")
     private String name;
-        
+                        
     /**
-     * 编码
+     * 全名
      */
-    @ApiModelProperty(value="编码")
-    private String code;
-        
+    @ApiModelProperty(value="全名")
+    private String fullName;
+                        
     /**
      * 排序
      */
     @ApiModelProperty(value="排序")
     private Long sort;
-        
+                        
     /**
      * 状态
      */
     @ApiModelProperty(value="状态")
     private String status;
-        
+                        
     /**
      * 创建时间
      */
     @ApiModelProperty(value="创建时间")
     private LocalDateTime createTime;
-        
+                        
     /**
      * 修改时间
      */
     @ApiModelProperty(value="修改时间")
     private LocalDateTime updateTime;
-    
+            
+    public Department(Integer id, Integer pid) {
+        this.id = id;
+        this.pid = pid;
+    }
+
 }

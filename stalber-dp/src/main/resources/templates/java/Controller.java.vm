@@ -50,7 +50,7 @@ public class ${className}Controller {
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
     public R<IPage<${className}>> handle${className}s(Page<${className}> page, ${className} ${classname}) {
         return R.ok(${classname}Service.find${className}s(page, ${classname}));
@@ -66,7 +66,7 @@ public class ${className}Controller {
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
     public R<List<${className}>> handleAll${className}(#if($template == "tree")${className} ${classname}#end) {
 #if($template == "tree")
@@ -86,7 +86,7 @@ public class ${className}Controller {
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
     public R<${className}> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("${pk.javaField}") @Min(1) ${pk.javaType} ${pk.javaField}) {
         return R.ok(${classname}Service.findById(${pk.javaField}));
@@ -123,7 +123,7 @@ public class ${className}Controller {
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:add') or @pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:edit')")
 #else
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:add') or @pms.hasPermission('${moduleName}:${className}:edit')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:add') or @pms.hasPermission('${moduleName}:${classname}:edit')")
 #end
     public R<${className}> handleSaveOrUpdate(@Valid @ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.saveOrUpdate${className}(${classname}));
@@ -143,7 +143,7 @@ public class ${className}Controller {
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:delete')")
 #else
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:delete')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:delete')")
 #end
 #if($template != "tree")
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
@@ -168,7 +168,7 @@ public class ${className}Controller {
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${className}:admin')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.updateStatus(${classname}));

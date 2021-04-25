@@ -207,7 +207,6 @@ export default {
     /** 查询${comments}下拉树结构 */
     getTreeselect() {
       listAll${className}().then(response => {
-        this.${classname}Options = [];
         const ${classname} = { id: 0, name: '主类目', children: [] };
         ${classname}.children = this.handleTree(response.data, "id");
         this.${classname}Options.push(${classname});
