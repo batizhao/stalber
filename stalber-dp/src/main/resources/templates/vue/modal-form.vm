@@ -12,15 +12,15 @@
 #else
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 #if($template == "tree")
-      <el-form-item label="上级${comments}" prop="pid" v-if="form.pid !== 0">
-        <treeselect
-          v-model="form.pid"
-          :options="${classname}Options"
-          :normalizer="normalizer"
-          :show-count="true"
-          placeholder="选择上级${comments}"
-        />
-      </el-form-item>
+        <el-form-item label="上级${comments}" prop="pid" v-if="form.pid !== 0">
+          <treeselect
+            v-model="form.pid"
+            :options="${classname}Options"
+            :normalizer="normalizer"
+            :show-count="true"
+            placeholder="选择上级${comments}"
+          />
+        </el-form-item>
 #end      
 #foreach($column in $columns)
 #set($field=$column.javaField)
