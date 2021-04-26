@@ -229,7 +229,7 @@ public class UserController {
      * @return R<List<User>>
      */
     @ApiOperation(value = "根据部门ID查询领导")
-    @GetMapping(value = "/user/leader", params = "departmentId")
+    @GetMapping(value = "/ims/user/leader", params = "departmentId")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<List<User>> handleLeadersByDepartmentId(@ApiParam(value = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Long departmentId) {
         return R.ok(userService.findLeadersByDepartmentId(departmentId));
