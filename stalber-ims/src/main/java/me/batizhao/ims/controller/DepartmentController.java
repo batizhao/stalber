@@ -8,7 +8,6 @@ import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.util.R;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.domain.DepartmentLeader;
-import me.batizhao.ims.domain.Post;
 import me.batizhao.ims.service.DepartmentLeaderService;
 import me.batizhao.ims.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
