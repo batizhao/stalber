@@ -25,6 +25,12 @@
             <column name="fullName" type="VARCHAR(255)" remarks="全名">
                 <constraints nullable="false" unique="true" />
             </column>
+            <column name="code" type="VARCHAR(32)" remarks="编码">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="VARCHAR(8)" remarks="类型（C公司 D部门）" defaultValue="D">
+                <constraints nullable="false" />
+            </column>
             <column name="sort" type="INT" remarks="排序" defaultValue="1">
                 <constraints nullable="false" />
             </column>
@@ -408,6 +414,8 @@
             <column name="uuid" value="5fa11b2d-7ed3-4413-8abd-208fdfff0bda"/>
             <column name="name" value="根部门"/>
             <column name="fullName" value="根部门"/>
+            <column name="code" value="000000"/>
+            <column name="type" value="root"/>
             <column name="sort" valueNumeric="0"/>
         </insert>
         <rollback>

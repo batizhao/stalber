@@ -16,18 +16,18 @@
             </column>
             <column name="permission" type="VARCHAR(64)" defaultValue="" remarks="权限名"/>
             <column name="icon" type="VARCHAR(32)" defaultValue="#" remarks="图标"/>
-            <column name="type" type="CHAR(1)" defaultValue="M" remarks="类型（L左侧 T顶部 B按钮）">
-                <constraints nullable="false" />
+            <column name="type" type="CHAR(1)" defaultValue="M" remarks="类型（M菜单 B按钮）">
+                <constraints nullable="false"/>
             </column>
             <column name="sort" type="INT" defaultValue="1" remarks="排序">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(255)" remarks="权限描述" defaultValue="" />
+            <column name="description" type="VARCHAR(255)" remarks="权限描述" defaultValue=""/>
             <column name="pid" type="BIGINT" remarks="权限父ID">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
@@ -51,9 +51,9 @@
             <column name="code" type="VARCHAR(255)" remarks="角色编码">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="description" type="VARCHAR(255)" remarks="角色描述" defaultValue="" />
+            <column name="description" type="VARCHAR(255)" remarks="角色描述" defaultValue=""/>
             <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
@@ -102,7 +102,7 @@
                     defaultValue="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"/>
             <column name="unreadCount" type="INT" remarks="未读消息数量" defaultValue="0"/>
             <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>

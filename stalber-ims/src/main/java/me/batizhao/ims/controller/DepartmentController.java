@@ -4,9 +4,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.util.R;
 import me.batizhao.ims.domain.Department;
+import me.batizhao.ims.domain.DepartmentLeader;
 import me.batizhao.ims.domain.Post;
+import me.batizhao.ims.service.DepartmentLeaderService;
 import me.batizhao.ims.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +37,8 @@ public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private DepartmentLeaderService departmentLeaderService;
 
     /**
      * 查询所有部门
@@ -107,6 +112,21 @@ public class DepartmentController {
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
     public R<List<Department>> handleDepartmentsByUserId(@ApiParam(value = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
         return R.ok(departmentService.findDepartmentsByUserId(userId));
+    }
+
+    /**
+     * 分配部门领导
+     * 返回 true or false
+     *
+     * @param departmentLeaders 部门领导关联
+     * @return true or false
+     */
+    @ApiOperation(value = "分配部门领导")
+    @PostMapping(value = "/department/leader")
+    @PreAuthorize("@pms.hasPermission('ims:department:admin')")
+    @SystemLog
+    public R<Boolean> handleAddDepartmentLeaders(@ApiParam(value = "关联菜单", required = true) @RequestBody List<DepartmentLeader> departmentLeaders) {
+        return R.ok(departmentLeaderService.updateDepartmentLeaders(departmentLeaders));
     }
 
 }

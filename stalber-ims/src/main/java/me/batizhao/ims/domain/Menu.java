@@ -44,7 +44,7 @@ public class Menu extends TreeNode implements Serializable {
     @ApiModelProperty(value = "图标", example = "icon-web")
     private String icon;
 
-    @ApiModelProperty(value = "类型（L左侧 T顶部 B按钮）", example = "L")
+    @ApiModelProperty(value = "类型（M菜单 B按钮）", example = "M")
     private String type;
 
     @ApiModelProperty(value = "排序", example = "1")

@@ -221,4 +221,18 @@ public class UserController {
         return R.ok(userDepartmentService.updateUserDepartments(userDepartments));
     }
 
+    /**
+     * 根据部门ID查询领导
+     * 返回领导集合
+     *
+     * @param departmentId 部门ID
+     * @return R<List<User>>
+     */
+    @ApiOperation(value = "根据部门ID查询领导")
+    @GetMapping(value = "/user/leader", params = "departmentId")
+    @PreAuthorize("@pms.hasPermission('ims:user:admin')")
+    public R<List<User>> handleLeadersByDepartmentId(@ApiParam(value = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Long departmentId) {
+        return R.ok(userService.findLeadersByDepartmentId(departmentId));
+    }
+
 }

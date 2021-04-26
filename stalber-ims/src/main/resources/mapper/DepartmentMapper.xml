@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.batizhao.ims.mapper.DepartmentMapper">
+
+  <resultMap id="departmentMap" type="me.batizhao.ims.domain.Department">
+    <id property="id" column="id"/>
+    <result property="uuid" column="uuid"/>
+    <result property="pid" column="pid"/>
+    <result property="name" column="name"/>
+    <result property="fullName" column="fullName"/>
+    <result property="sort" column="sort"/>
+    <result property="code" column="code"/>
+    <result property="status" column="status"/>
+    <result property="type" column="type"/>
+    <result property="createTime" column="createTime"/>
+    <result property="updateTime" column="updateTime"/>
+  </resultMap>
+
+</mapper>

@@ -80,4 +80,11 @@ public interface UserService extends IService<User> {
 	 */
     UserInfoVO getUserInfo(Long userId);
 
+	/**
+	 * 根据部门ID查询领导
+	 * @param departmentId
+	 * @return
+	 */
+	List<User> findLeadersByDepartmentId(Long departmentId);
+
 }

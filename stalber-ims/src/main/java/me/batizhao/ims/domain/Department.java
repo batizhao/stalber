@@ -49,13 +49,25 @@ public class Department extends TreeNode implements Serializable {
      */
     @ApiModelProperty(value="排序")
     private Long sort;
-                        
+
+    /**
+     * 编码
+     */
+    @ApiModelProperty(value="编码")
+    private String code;
+
     /**
      * 状态
      */
     @ApiModelProperty(value="状态")
     private String status;
-                        
+
+    /**
+     * 类型（C公司 D部门）
+     */
+    @ApiModelProperty(value="类型（C公司 D部门）")
+    private String type;
+
     /**
      * 创建时间
      */
