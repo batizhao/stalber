@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.ims.domain.Department;
+import me.batizhao.ims.domain.Post;
 import me.batizhao.ims.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -92,6 +93,20 @@ public class DepartmentController {
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "部门" , required = true) @RequestBody Department department) {
         return R.ok(departmentService.updateStatus(department));
+    }
+
+    /**
+     * 根据用户ID查询部门
+     * 返回部门集合
+     *
+     * @param userId 用户id
+     * @return R<List<Department>>
+     */
+    @ApiOperation(value = "根据用户ID查询部门")
+    @GetMapping(value = "/department", params = "userId")
+    @PreAuthorize("@pms.hasPermission('ims:department:admin')")
+    public R<List<Department>> handleDepartmentsByUserId(@ApiParam(value = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
+        return R.ok(departmentService.findDepartmentsByUserId(userId));
     }
 
 }

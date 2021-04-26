@@ -11,6 +11,7 @@ import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
 import me.batizhao.ims.domain.UserRole;
 import me.batizhao.ims.controller.UserController;
+import me.batizhao.ims.service.UserDepartmentService;
 import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.UserRoleService;
 import me.batizhao.ims.service.UserService;
@@ -66,6 +67,8 @@ public class UserControllerUnitTest extends BaseControllerUnitTest {
     private UserRoleService userRoleService;
     @MockBean
     private UserPostService userPostService;
+    @MockBean
+    private UserDepartmentService userDepartmentService;
 
     private List<User> userList;
     private IPage<User> userPageList;

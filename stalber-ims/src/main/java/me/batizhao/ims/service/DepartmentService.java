@@ -2,6 +2,7 @@ package me.batizhao.ims.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.ims.domain.Department;
+import me.batizhao.ims.domain.Post;
 
 import java.util.List;
 
@@ -55,4 +56,11 @@ public interface DepartmentService extends IService<Department> {
      * @return
      */
     Boolean checkHasChildren(Integer id);
+
+    /**
+     * 通过用户 ID 查相关的部门
+     * @param userId
+     * @return
+     */
+    List<Department> findDepartmentsByUserId(Long userId);
 }
