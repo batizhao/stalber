@@ -18,7 +18,7 @@ import java.util.List;
 public interface DepartmentMapper extends BaseMapper<Department> {
 
     /**
-     * 查用户角色
+     * 查用户部门
      * @param id
      * @return
      */

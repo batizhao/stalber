@@ -8,7 +8,7 @@ import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.mapper.DepartmentMapper;
 import me.batizhao.ims.service.DepartmentService;
-import me.batizhao.ims.service.RoleMenuService;
+import me.batizhao.ims.service.UserDepartmentService;
 import me.batizhao.ims.service.impl.DepartmentServiceImpl;
 import org.apache.ibatis.builder.MapperBuilderAssistant;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +48,7 @@ public class DepartmentServiceUnitTest extends BaseServiceUnitTest {
     @MockBean
     private DepartmentMapper departmentMapper;
     @MockBean
-    private RoleMenuService roleMenuService;
+    private UserDepartmentService UserDepartmentService;
 
     @Autowired
     private DepartmentService departmentService;

@@ -2,7 +2,6 @@ package me.batizhao.ims.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.ims.domain.Department;
-import me.batizhao.ims.domain.Post;
 
 import java.util.List;
 
