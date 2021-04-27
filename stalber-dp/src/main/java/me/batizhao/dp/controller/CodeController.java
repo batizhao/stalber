@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("dp")
 public class CodeController {
 
     @Autowired
@@ -55,7 +56,7 @@ public class CodeController {
      * @real_return R<Page<Code>>
      */
     @ApiOperation(value = "分页查询代码")
-    @GetMapping("/dp/codes")
+    @GetMapping("/codes")
     @PreAuthorize("@pms.hasPermission('dp:code:admin')")
     public R<IPage<Code>> handleCodes(Page<Code> page, Code code) {
         return R.ok(codeService.findCodes(page, code));
@@ -68,7 +69,7 @@ public class CodeController {
      * @return R
      */
     @ApiOperation(value = "通过id查询代码")
-    @GetMapping("/dp/code/{id}")
+    @GetMapping("/code/{id}")
     @PreAuthorize("@pms.hasPermission('dp:code:admin')")
     public R<Map<String, Object>> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         Code code = codeService.findById(id);
@@ -90,7 +91,7 @@ public class CodeController {
      * @return R
      */
     @ApiOperation(value = "修改生成代码")
-    @PostMapping("/dp/code")
+    @PostMapping("/code")
     @PreAuthorize("@pms.hasPermission('dp:code:edit')")
     @SystemLog
     public R<Code> handleUpdate(@Valid @ApiParam(value = "生成代码" , required = true) @RequestBody Code code) {
@@ -103,7 +104,7 @@ public class CodeController {
      * @return R
      */
     @ApiOperation(value = "通过id删除生成代码")
-    @DeleteMapping("/dp/code")
+    @DeleteMapping("/code")
     @PreAuthorize("@pms.hasPermission('dp:code:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
@@ -120,7 +121,7 @@ public class CodeController {
      * @real_return R<Page<Code>>
      */
     @ApiOperation(value = "查询数据源下的所有表")
-    @GetMapping("/dp/code/tables")
+    @GetMapping("/code/tables")
     @PreAuthorize("@pms.hasPermission('dp:code:admin')")
     @SystemLog
     public R<IPage<Code>> handleCodeTables(Page<Code> page, Code code, String dsName) {
@@ -133,7 +134,7 @@ public class CodeController {
      * @return
      */
     @ApiOperation(value = "导入选中的表")
-    @PostMapping("/dp/code/table")
+    @PostMapping("/code/table")
     @PreAuthorize("@pms.hasPermission('dp:code:import')")
     @SystemLog
     public R<Boolean> handleImportTables(@RequestBody List<Code> codes) {
@@ -147,7 +148,7 @@ public class CodeController {
      */
     @SneakyThrows
     @ApiOperation(value = "生成代码zip")
-    @PostMapping(value = "/dp/code/zip")
+    @PostMapping(value = "/code/zip")
     @PreAuthorize("@pms.hasPermission('dp:code:gen')")
     @SystemLog
     public void handleGenerateCode4Zip(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids, HttpServletResponse response) {
@@ -167,7 +168,7 @@ public class CodeController {
      * @return
      */
     @ApiOperation(value = "生成代码path")
-    @PostMapping("/dp/code/path/{id}")
+    @PostMapping("/code/path/{id}")
     @PreAuthorize("@pms.hasPermission('dp:code:gen')")
     @SystemLog
     public R<Boolean> handleGenerateCode4Path(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
@@ -180,7 +181,7 @@ public class CodeController {
      * @return
      */
     @ApiOperation(value = "预览代码")
-    @GetMapping("/dp/code/preview/{id}")
+    @GetMapping("/code/preview/{id}")
     @PreAuthorize("@pms.hasPermission('dp:code:preview')")
     public R<Map<String, String>> handlePreviewCode(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(codeService.previewCode(id));
@@ -192,7 +193,7 @@ public class CodeController {
      * @return
      */
     @ApiOperation(value = "同步表元数据")
-    @PostMapping("/dp/code/sync/{id}")
+    @PostMapping("/code/sync/{id}")
     @PreAuthorize("@pms.hasPermission('dp:code:sync')")
     @SystemLog
     public R<Boolean> handleSyncCodeMeta(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {

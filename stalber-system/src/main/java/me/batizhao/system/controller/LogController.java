@@ -30,6 +30,7 @@ import java.util.List;
 @Api(tags = "日志管理")
 @RestController
 @Validated
+@RequestMapping("system")
 public class LogController {
 
     @Autowired
@@ -43,7 +44,7 @@ public class LogController {
      * @real_return R<Page<Log>>
      */
     @ApiOperation(value = "分页查询日志")
-    @GetMapping("/system/logs")
+    @GetMapping("/logs")
     @PreAuthorize("@pms.hasPermission('system:log:admin')")
     public R<IPage<Log>> handleLogs(Page<Log> page, Log log) {
         return R.ok(logService.findLogs(page, log));
@@ -55,7 +56,7 @@ public class LogController {
      * @return R
      */
     @ApiOperation(value = "通过id查询日志")
-    @GetMapping("/system/log/{id}")
+    @GetMapping("/log/{id}")
     @PreAuthorize("@pms.hasPermission('system:log:admin')")
     public R<Log> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(logService.findById(id));
@@ -67,7 +68,7 @@ public class LogController {
      * @return R
      */
     @ApiOperation(value = "添加日志")
-    @PostMapping("/system/log")
+    @PostMapping("/log")
     @PreAuthorize("@pms.hasPermission('system:log:admin')")
     public R<Boolean> handleSaveOrUpdate(@Valid @ApiParam(value = "日志" , required = true) @RequestBody Log log) {
         return R.ok(logService.save(log));
@@ -79,7 +80,7 @@ public class LogController {
      * @return R
      */
     @ApiOperation(value = "通过id删除日志")
-    @DeleteMapping(value = "/system/log", params = "ids")
+    @DeleteMapping(value = "/log", params = "ids")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
@@ -91,7 +92,7 @@ public class LogController {
      * @return R
      */
     @ApiOperation(value = "清空日志")
-    @DeleteMapping("/system/log")
+    @DeleteMapping("/log")
     @PreAuthorize("@pms.hasPermission('system:log:clean')")
     @SystemLog
     public R<Boolean> handleDeleteAllLog() {

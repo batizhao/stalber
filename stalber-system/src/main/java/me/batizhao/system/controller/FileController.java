@@ -29,6 +29,7 @@ import java.net.URLConnection;
 @Api(tags = "文件管理")
 @RestController
 @Slf4j
+@RequestMapping("system")
 public class FileController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class FileController {
      * @return File
      */
     @ApiOperation(value = "插入文件")
-    @PostMapping("/system/file/upload")
+    @PostMapping("/file/upload")
     public R<File> handleSave(@RequestParam("file") MultipartFile file) {
         return R.ok(fileService.upload(file));
     }
@@ -55,7 +56,7 @@ public class FileController {
      */
     @SneakyThrows
     @ApiOperation(value = "根据文件名显示图片")
-    @GetMapping("/system/file/image/{name:^.+\\.(?:jpeg|jpg|png|JPEG|JPG|PNG)$}")
+    @GetMapping("/file/image/{name:^.+\\.(?:jpeg|jpg|png|JPEG|JPG|PNG)$}")
     public ResponseEntity<Resource> handleImageByName(@ApiParam(value = "图片名", required = true) @PathVariable("name") String name) {
         Resource resource = fileService.loadAsResource(name);
 

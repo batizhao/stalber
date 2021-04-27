@@ -31,6 +31,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("dp")
 public class DsController {
 
     @Autowired
@@ -44,7 +45,7 @@ public class DsController {
      * @real_return R<Page<Ds>>
      */
     @ApiOperation(value = "分页查询数据源")
-    @GetMapping("/dp/dss")
+    @GetMapping("/dss")
     @PreAuthorize("@pms.hasPermission('dp:ds:admin')")
     @SystemLog
     public R<IPage<Ds>> handleDss(Page<Ds> page, Ds ds) {
@@ -56,7 +57,7 @@ public class DsController {
      * @return R
      */
     @ApiOperation(value = "查询所有数据源")
-    @GetMapping("/dp/ds")
+    @GetMapping("/ds")
     @PreAuthorize("hasRole('USER')")
     @SystemLog
     public R<List<Ds>> handleDss() {
@@ -69,7 +70,7 @@ public class DsController {
      * @return R
      */
     @ApiOperation(value = "通过id查询数据源")
-    @GetMapping("/dp/ds/{id}")
+    @GetMapping("/ds/{id}")
     @PreAuthorize("@pms.hasPermission('dp:ds:admin')")
     @SystemLog
     public R<Ds> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Integer id) {
@@ -82,7 +83,7 @@ public class DsController {
      * @return R
      */
     @ApiOperation(value = "添加或修改数据源")
-    @PostMapping("/dp/ds")
+    @PostMapping("/ds")
     @PreAuthorize("@pms.hasPermission('dp:ds:add') or @pms.hasPermission('dp:ds:edit')")
     @SystemLog
     public R<Ds> handleSaveOrUpdate(@Valid @ApiParam(value = "数据源" , required = true) @RequestBody Ds ds) {
@@ -95,7 +96,7 @@ public class DsController {
      * @return R
      */
     @ApiOperation(value = "通过id删除数据源")
-    @DeleteMapping("/dp/ds")
+    @DeleteMapping("/ds")
     @PreAuthorize("@pms.hasPermission('dp:ds:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
@@ -109,7 +110,7 @@ public class DsController {
      * @return R
      */
     @ApiOperation(value = "更新数据源状态")
-    @PostMapping("/dp/ds/status")
+    @PostMapping("/ds/status")
     @PreAuthorize("@pms.hasPermission('dp:ds:admin')")
     @SystemLog
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "数据源" , required = true) @RequestBody Ds ds) {

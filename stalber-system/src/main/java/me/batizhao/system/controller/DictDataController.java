@@ -31,6 +31,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("system")
 public class DictDataController {
 
     @Autowired
@@ -42,7 +43,7 @@ public class DictDataController {
      * @return R
      */
     @ApiOperation(value = "通过id查询字典")
-    @GetMapping("/system/dict/data/{id}")
+    @GetMapping("/dict/data/{id}")
     public R<DictData> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(dictDataService.findById(id));
     }
@@ -53,7 +54,7 @@ public class DictDataController {
      * @return R
      */
     @ApiOperation(value = "通过code查询字典")
-    @GetMapping(value = "/system/dict/data", params = "code")
+    @GetMapping(value = "/dict/data", params = "code")
     public R<List<DictData>> handleCode(@ApiParam(value = "code", required = true) @RequestParam @Size(min = 1) String code) {
         return R.ok(dictDataService.list(Wrappers.<DictData>lambdaQuery().eq(DictData::getCode, code)));
     }
@@ -64,7 +65,7 @@ public class DictDataController {
      * @return R
      */
     @ApiOperation(value = "添加或编辑字典")
-    @PostMapping("/system/dict/data")
+    @PostMapping("/dict/data")
     @PreAuthorize("@pms.hasPermission('system:dict:add') or @pms.hasPermission('system:dict:edit')")
     @SystemLog
     public R<DictData> handleSaveOrUpdate(@Valid @ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
@@ -77,7 +78,7 @@ public class DictDataController {
      * @return R
      */
     @ApiOperation(value = "通过id删除字典")
-    @DeleteMapping("/system/dict/data")
+    @DeleteMapping("/dict/data")
     @PreAuthorize("@pms.hasPermission('system:dict:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
@@ -91,7 +92,7 @@ public class DictDataController {
      * @return R
      */
     @ApiOperation(value = "更新字典状态")
-    @PostMapping("/system/dict/data/status")
+    @PostMapping("/dict/data/status")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {

@@ -40,6 +40,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("ims")
 public class UserController {
 
     @Autowired
@@ -59,7 +60,7 @@ public class UserController {
      * @real_return R<Page<User>>
      */
     @ApiOperation(value = "分页查询用户")
-    @GetMapping("/ims/users")
+    @GetMapping("/users")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<IPage<User>> handleUsers(Page<User> page, User user) {
         return R.ok(userService.findUsers(page, user));
@@ -72,7 +73,7 @@ public class UserController {
      * @return R<List<User>>
      */
     @ApiOperation(value = "查询用户")
-    @GetMapping("/ims/user")
+    @GetMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<List<User>> handleUsers(User user) {
         return R.ok(userService.findUsers(user));
@@ -84,7 +85,7 @@ public class UserController {
      * @return R<User>
      */
     @ApiOperation(value = "通过id查询用户")
-    @GetMapping("/ims/user/{id}")
+    @GetMapping("/user/{id}")
     @PreAuthorize("isAuthenticated()")
     public R<User> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(userService.findById(id));
@@ -98,7 +99,7 @@ public class UserController {
      * @return R<UserInfoVO>
      */
     @ApiOperation(value = "根据用户名查询用户")
-    @GetMapping(value = "/ims/user", params = "username")
+    @GetMapping(value = "/user", params = "username")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
     public R<UserInfoVO> handleUsername(@ApiParam(value = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
@@ -112,7 +113,7 @@ public class UserController {
      * @return R<User>
      */
     @ApiOperation(value = "添加或编辑用户")
-    @PostMapping("/ims/user")
+    @PostMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:add') or @pms.hasPermission('ims:user:edit')")
     @SystemLog
     public R<User> handleSaveOrUpdate(@Valid @ApiParam(value = "用户" , required = true) @RequestBody User user) {
@@ -126,7 +127,7 @@ public class UserController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "删除用户")
-    @DeleteMapping("/ims/user")
+    @DeleteMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "用户ID串", required = true) @RequestParam List<Long> ids) {
@@ -140,7 +141,7 @@ public class UserController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "更新用户状态")
-    @PostMapping("/ims/user/status")
+    @PostMapping("/user/status")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
@@ -153,7 +154,7 @@ public class UserController {
      * @return R<UserInfoVO>
      */
     @ApiOperation(value = "我的信息")
-    @GetMapping("/ims/user/me")
+    @GetMapping("/user/me")
     @PreAuthorize("isAuthenticated()")
     public R<UserInfoVO> handleUserInfo() {
         Long userId = SecurityUtils.getUser().getUserId();
@@ -167,7 +168,7 @@ public class UserController {
      * @return R<User>
      */
     @ApiOperation(value = "更换我的头像")
-    @PostMapping("/ims/user/avatar")
+    @PostMapping("/user/avatar")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
     public R<User> handleUpdateAvatar(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
@@ -183,7 +184,7 @@ public class UserController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "更新我的密码")
-    @PostMapping("/ims/user/password")
+    @PostMapping("/user/password")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
     public R<Boolean> handleUpdatePassword(@ApiParam(value = "旧密码" , required = true) @Size(min = 6) @RequestParam String oldPassword,
@@ -200,7 +201,7 @@ public class UserController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "分配用户角色")
-    @PostMapping(value = "/ims/user/role")
+    @PostMapping(value = "/user/role")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
     public R<Boolean> handleAddUserRoles(@ApiParam(value = "关联角色", required = true) @RequestBody List<UserRole> userRoleList) {
@@ -215,7 +216,7 @@ public class UserController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "分配用户岗位")
-    @PostMapping(value = "/ims/user/post")
+    @PostMapping(value = "/user/post")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
     public R<Boolean> handleAddUserPosts(@ApiParam(value = "关联岗位", required = true) @RequestBody List<UserPost> userPosts) {
@@ -230,7 +231,7 @@ public class UserController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "分配用户部门")
-    @PostMapping(value = "/ims/user/department")
+    @PostMapping(value = "/user/department")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
     public R<Boolean> handleAddUserDepartments(@ApiParam(value = "关联部门", required = true) @RequestBody List<UserDepartment> userDepartments) {
@@ -245,7 +246,7 @@ public class UserController {
      * @return R<List<User>>
      */
     @ApiOperation(value = "根据部门ID查询领导")
-    @GetMapping(value = "/ims/user/leader", params = "departmentId")
+    @GetMapping(value = "/user/leader", params = "departmentId")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<List<User>> handleLeadersByDepartmentId(@ApiParam(value = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Long departmentId) {
         return R.ok(userService.findLeadersByDepartmentId(departmentId));

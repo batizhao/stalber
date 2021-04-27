@@ -31,6 +31,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("ims")
 public class MenuController {
 
     @Autowired
@@ -43,7 +44,7 @@ public class MenuController {
      * @return 菜单树
      */
     @ApiOperation(value = "查询当前用户菜单")
-    @GetMapping("/ims/menu/me")
+    @GetMapping("/menu/me")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree4Me() {
         Long userId = SecurityUtils.getUser().getUserId();
@@ -57,7 +58,7 @@ public class MenuController {
      * @return R<List<Menu>>
      */
     @ApiOperation(value = "根据角色查询菜单")
-    @GetMapping(value = "/ims/menu", params = "roleId")
+    @GetMapping(value = "/menu", params = "roleId")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
     public R<List<Menu>> handleMenusByRoleId(@ApiParam(value = "菜单ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
         return R.ok(menuService.findMenusByRoleId(roleId));
@@ -70,7 +71,7 @@ public class MenuController {
      * @return R<List<Menu>>
      */
     @ApiOperation(value = "查询所有菜单")
-    @GetMapping("/ims/menus")
+    @GetMapping("/menus")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree(Menu menu) {
         return R.ok(menuService.findMenuTree(menu));
@@ -82,7 +83,7 @@ public class MenuController {
      * @return R<Menu>
      */
     @ApiOperation(value = "通过id查询菜单")
-    @GetMapping("/ims/menu/{id}")
+    @GetMapping("/menu/{id}")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
     public R<Menu> handleMenu(@ApiParam(value = "菜单ID", required = true) @PathVariable("id") @Min(1) Integer id) {
         return R.ok(menuService.findMenuById(id));
@@ -96,7 +97,7 @@ public class MenuController {
      * @return R<Menu>
      */
     @ApiOperation(value = "添加或修改菜单")
-    @PostMapping("/ims/menu")
+    @PostMapping("/menu")
     @PreAuthorize("@pms.hasPermission('ims:menu:add') or @pms.hasPermission('ims:menu:edit')")
     @SystemLog
     public R<Menu> handleSaveOrUpdate(@Valid @ApiParam(value = "菜单", required = true) @RequestBody Menu menu) {
@@ -110,7 +111,7 @@ public class MenuController {
      * @return R<String>
      */
     @ApiOperation(value = "删除菜单")
-    @DeleteMapping("/ims/menu")
+    @DeleteMapping("/menu")
     @PreAuthorize("@pms.hasPermission('ims:menu:delete')")
     @SystemLog
     public R<String> handleDelete(@ApiParam(value = "菜单ID串", required = true) @RequestParam Integer id) {
@@ -124,7 +125,7 @@ public class MenuController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "更新菜单状态")
-    @PostMapping("/ims/menu/status")
+    @PostMapping("/menu/status")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
     @SystemLog
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "菜单" , required = true) @RequestBody Menu menu) {

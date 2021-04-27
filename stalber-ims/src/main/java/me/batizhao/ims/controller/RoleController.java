@@ -34,6 +34,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("ims")
 public class RoleController {
 
     @Autowired
@@ -49,7 +50,7 @@ public class RoleController {
      * @real_return R<Page<Role>>
      */
     @ApiOperation(value = "分页查询角色")
-    @GetMapping("/ims/roles")
+    @GetMapping("/roles")
     @PreAuthorize("@pms.hasPermission('ims:role:admin')")
     public R<IPage<Role>> handleRoles(Page<Role> page, Role role) {
         return R.ok(roleService.findRoles(page, role));
@@ -62,7 +63,7 @@ public class RoleController {
      * @return R<List<Role>>
      */
     @ApiOperation(value = "查询所有角色")
-    @GetMapping("/ims/role")
+    @GetMapping("/role")
     @PreAuthorize("@pms.hasPermission('ims:role:admin')")
     public R<List<Role>> handleRoles() {
         return R.ok(roleService.list());
@@ -74,7 +75,7 @@ public class RoleController {
      * @return R<Role>
      */
     @ApiOperation(value = "通过id查询角色")
-    @GetMapping("/ims/role/{id}")
+    @GetMapping("/role/{id}")
     @PreAuthorize("@pms.hasPermission('ims:role:admin')")
     public R<Role> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(roleService.findById(id));
@@ -88,7 +89,7 @@ public class RoleController {
      * @return R<Role>
      */
     @ApiOperation(value = "添加或修改角色")
-    @PostMapping("/ims/role")
+    @PostMapping("/role")
     @PreAuthorize("@pms.hasPermission('ims:role:add') or @pms.hasPermission('ims:role:edit')")
     @SystemLog
     public R<Role> handleSaveOrUpdate(@Valid @ApiParam(value = "角色", required = true) @RequestBody Role role) {
@@ -102,7 +103,7 @@ public class RoleController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "删除角色")
-    @DeleteMapping("/ims/role")
+    @DeleteMapping("/role")
     @PreAuthorize("@pms.hasPermission('ims:role:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "角色ID串", required = true) @RequestParam List<Long> ids) {
@@ -116,7 +117,7 @@ public class RoleController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "更新角色状态")
-    @PostMapping("/ims/role/status")
+    @PostMapping("/role/status")
     @PreAuthorize("@pms.hasPermission('ims:role:admin')")
     @SystemLog
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "角色" , required = true) @RequestBody Role role) {
@@ -131,7 +132,7 @@ public class RoleController {
      * @return R<List<Role>>
      */
     @ApiOperation(value = "根据用户ID查询角色")
-    @GetMapping(value = "/ims/role", params = "userId")
+    @GetMapping(value = "/role", params = "userId")
     @PreAuthorize("@pms.hasPermission('ims:role:admin')")
     public R<List<Role>> handleRolesByUserId(@ApiParam(value = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
         return R.ok(roleService.findRolesByUserId(userId));
@@ -145,7 +146,7 @@ public class RoleController {
      * @return R<Boolean>
      */
     @ApiOperation(value = "分配角色权限")
-    @PostMapping(value = "/ims/role/menu")
+    @PostMapping(value = "/role/menu")
     @PreAuthorize("@pms.hasPermission('ims:role:admin')")
     @SystemLog
     public R<Boolean> handleAddUserRoles(@ApiParam(value = "关联菜单", required = true) @RequestBody List<RoleMenu> roleMenuList) {

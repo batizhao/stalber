@@ -10,6 +10,7 @@ import me.batizhao.dp.service.CodeMetaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("dp")
 public class CodeMetaController {
 
     @Autowired
@@ -39,7 +41,7 @@ public class CodeMetaController {
      * @return R
      */
     @ApiOperation(value = "通过 codeId 查询生成代码元数据")
-    @GetMapping(value = "/dp/code/meta", params = "codeId")
+    @GetMapping(value = "/code/meta", params = "codeId")
     public R<List<CodeMeta>> handleCode(@ApiParam(value = "codeId" , required = true) @RequestParam @Min(1) Long codeId) {
         return R.ok(codeMetaService.findByCodeId(codeId));
     }

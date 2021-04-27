@@ -30,6 +30,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("dp")
 public class FormController {
 
     @Autowired
@@ -43,7 +44,7 @@ public class FormController {
      * @real_return R<Page<Form>>
      */
     @ApiOperation(value = "分页查询表单")
-    @GetMapping("/dp/forms")
+    @GetMapping("/forms")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
     public R<IPage<Form>> handleForms(Page<Form> page, Form form) {
         return R.ok(formService.findForms(page, form));
@@ -55,7 +56,7 @@ public class FormController {
      * @return R
      */
     @ApiOperation(value = "通过id查询表单")
-    @GetMapping("/dp/form/{id}")
+    @GetMapping("/form/{id}")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
     public R<Form> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(formService.findById(id));
@@ -67,7 +68,7 @@ public class FormController {
      * @return R
      */
     @ApiOperation(value = "添加或编辑表单")
-    @PostMapping("/dp/form")
+    @PostMapping("/form")
     @PreAuthorize("@pms.hasPermission('dp:form:add') or @pms.hasPermission('dp:form:edit')")
     public R<Form> handleSaveOrUpdate(@Valid @ApiParam(value = "表单" , required = true) @RequestBody Form form) {
         return R.ok(formService.saveOrUpdateForm(form));
@@ -79,7 +80,7 @@ public class FormController {
      * @return R
      */
     @ApiOperation(value = "通过id删除表单")
-    @DeleteMapping("/dp/form")
+    @DeleteMapping("/form")
     @PreAuthorize("@pms.hasPermission('dp:form:delete')")
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(formService.removeByIds(ids));
@@ -92,7 +93,7 @@ public class FormController {
      * @return R
      */
     @ApiOperation(value = "更新表单状态")
-    @PostMapping("/dp/form/status")
+    @PostMapping("/form/status")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "表单" , required = true) @RequestBody Form form) {
         return R.ok(formService.updateStatus(form));

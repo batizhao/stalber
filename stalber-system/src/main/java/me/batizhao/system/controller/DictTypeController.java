@@ -31,6 +31,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("system")
 public class DictTypeController {
 
     @Autowired
@@ -44,7 +45,7 @@ public class DictTypeController {
      * @real_return R<Page<DictType>>
      */
     @ApiOperation(value = "分页查询字典类型")
-    @GetMapping("/system/dict/types")
+    @GetMapping("/dict/types")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
     public R<IPage<DictType>> handleDictTypes(Page<DictType> page, DictType dictType) {
@@ -56,7 +57,7 @@ public class DictTypeController {
      * @return R
      */
     @ApiOperation(value = "查询所有字典类型")
-    @GetMapping("/system/dict/type")
+    @GetMapping("/dict/type")
     @SystemLog
     public R<List<DictType>> handleDictType() {
         return R.ok(dictTypeService.list());
@@ -68,7 +69,7 @@ public class DictTypeController {
      * @return R
      */
     @ApiOperation(value = "通过id查询字典类型")
-    @GetMapping("/system/dict/type/{id}")
+    @GetMapping("/dict/type/{id}")
     @SystemLog
     public R<DictType> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         DictType dictType = dictTypeService.findById(id);
@@ -82,7 +83,7 @@ public class DictTypeController {
      * @return R
      */
     @ApiOperation(value = "添加或修改字典类型")
-    @PostMapping("/system/dict/type")
+    @PostMapping("/dict/type")
     @PreAuthorize("@pms.hasPermission('system:dict:add') or @pms.hasPermission('system:dict:edit')")
     @SystemLog
     public R<DictType> handleSaveOrUpdate(@Valid @ApiParam(value = "字典类型" , required = true) @RequestBody DictType dictType) {
@@ -95,7 +96,7 @@ public class DictTypeController {
      * @return R
      */
     @ApiOperation(value = "通过id删除字典类型")
-    @DeleteMapping("/system/dict/type")
+    @DeleteMapping("/dict/type")
     @PreAuthorize("@pms.hasPermission('system:dict:delete')")
     @SystemLog
     public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
@@ -109,7 +110,7 @@ public class DictTypeController {
      * @return R
      */
     @ApiOperation(value = "更新字典类型状态")
-    @PostMapping("/system/dict/type/status")
+    @PostMapping("/dict/type/status")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
     public R<Boolean> handleUpdateStatus(@ApiParam(value = "字典类型" , required = true) @RequestBody DictType dictType) {
