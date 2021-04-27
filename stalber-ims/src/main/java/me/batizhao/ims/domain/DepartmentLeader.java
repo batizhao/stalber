@@ -36,4 +36,16 @@ public class DepartmentLeader implements Serializable {
     @ApiModelProperty(value="领导ID")
     private Long leaderUserId;
 
+    /**
+     * 类型（Z正 F副）
+     */
+    @ApiModelProperty(value="类型（Z正 F副）")
+    private String type;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value="排序")
+    private Long sort;
+
 }

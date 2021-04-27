@@ -17,29 +17,20 @@
         <result property="status" column="status"/>
         <result property="createTime" column="createTime"/>
         <result property="updateTime" column="updateTime"/>
-<!--        <collection property="roleList" ofType="me.batizhao.ims.api.vo.RoleVO"-->
-<!--                    select="me.batizhao.ims.mapper.findRolesByUserId" column="id">-->
-<!--        </collection>-->
     </resultMap>
 
-<!--    <select id="selectUserPage" resultMap="baseResultMap">-->
-<!--        SELECT-->
-<!--            u.id,-->
-<!--            u.username,-->
-<!--            u.email,-->
-<!--            u.name,-->
-<!--            u.avatar,-->
-<!--            u.unreadCount,-->
-<!--            u.status,-->
-<!--            u.createTime-->
-<!--        FROM-->
-<!--        user AS u-->
-<!--        <where>-->
-<!--            <if test="user.username != null and user.username != ''">-->
-<!--                and u.username LIKE CONCAT('%',#{user.username},'%')-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        ORDER BY u.createTime DESC-->
-<!--    </select>-->
+    <select id="selectLeadersByDepartmentId" resultMap="baseResultMap">
+        SELECT
+            A.id, A.name, A.username
+        FROM user A
+        LEFT JOIN department_leader B ON A.id = B.leaderUserId
+        <where>
+            B.departmentId = #{id}
+            <if test="type != null and type != ''">
+                and B.type = #{type}
+            </if>
+        </where>
+        ORDER BY B.sort
+    </select>
 
 </mapper>

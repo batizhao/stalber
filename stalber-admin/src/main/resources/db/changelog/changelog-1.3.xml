@@ -102,6 +102,12 @@
             <column name="leaderUserId" type="BIGINT" remarks="用户ID">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DEPARTMENT_LEADER"/>
             </column>
+            <column name="type" type="VARCHAR(8)" remarks="类型（Z正 F副）" defaultValue="F">
+                <constraints nullable="false" />
+            </column>
+            <column name="sort" type="INT" remarks="排序" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="department_leader"/>

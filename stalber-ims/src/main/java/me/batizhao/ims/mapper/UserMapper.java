@@ -18,9 +18,9 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 根据部门ID查询领导
      * @param id
+     * @param type
      * @return
      */
-    @Select("SELECT A.id, A.name, A.username FROM user A LEFT JOIN department_leader B ON A.id = B.leaderUserId WHERE B.departmentId = #{id}")
-    List<User> selectLeadersByDepartmentId(@Param("id") Long id);
+    List<User> selectLeadersByDepartmentId(@Param("id") Long id, @Param("type") String type);
 
 }

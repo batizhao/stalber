@@ -22,7 +22,9 @@ public class DepartmentLeaderServiceImpl extends ServiceImpl<DepartmentLeaderMap
     @Override
     @Transactional
     public Boolean updateDepartmentLeaders(List<DepartmentLeader> departmentLeaders) {
-        this.remove(Wrappers.<DepartmentLeader>lambdaQuery().eq(DepartmentLeader::getDepartmentId, departmentLeaders.get(0).getDepartmentId()));
+        this.remove(Wrappers.<DepartmentLeader>lambdaQuery()
+                .eq(DepartmentLeader::getDepartmentId, departmentLeaders.get(0).getDepartmentId())
+                .eq(DepartmentLeader::getType, departmentLeaders.get(0).getType()));
         return saveBatch(departmentLeaders);
     }
 }

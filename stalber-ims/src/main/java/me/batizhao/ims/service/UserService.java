@@ -90,7 +90,8 @@ public interface UserService extends IService<User> {
 	/**
 	 * 根据部门ID查询领导
 	 * @param departmentId
+	 * @param type
 	 * @return
 	 */
-	List<User> findLeadersByDepartmentId(Long departmentId);
+	List<User> findLeadersByDepartmentId(Long departmentId, String type);
 }

@@ -1,8 +1,6 @@
 package me.batizhao.ims.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +14,6 @@ import me.batizhao.ims.service.UserDepartmentService;
 import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.UserRoleService;
 import me.batizhao.ims.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -246,10 +243,11 @@ public class UserController {
      * @return R<List<User>>
      */
     @ApiOperation(value = "根据部门ID查询领导")
-    @GetMapping(value = "/user/leader", params = "departmentId")
+    @GetMapping(value = "/user/leader")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
-    public R<List<User>> handleLeadersByDepartmentId(@ApiParam(value = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Long departmentId) {
-        return R.ok(userService.findLeadersByDepartmentId(departmentId));
+    public R<List<User>> handleLeadersByDepartmentId(@ApiParam(value = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Long departmentId,
+                                                     @ApiParam(value = "领导类型") @RequestParam("type") String type) {
+        return R.ok(userService.findLeadersByDepartmentId(departmentId, type));
     }
 
 }
