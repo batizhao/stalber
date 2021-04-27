@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +51,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             wrapper.like(User::getName, user.getName());
         }
         return userMapper.selectPage(page, wrapper);
+    }
+
+    @Override
+    public List<User> findUsers(User user) {
+        LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(user.getName())) {
+            wrapper.like(User::getName, user.getName());
+        }
+        return userMapper.selectList(wrapper);
     }
 
     @Override
@@ -87,6 +97,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             String hashPass = bcryptPasswordEncoder.encode("123456");
             user.setPassword(hashPass);
 
+            user.setUuid(UUID.randomUUID().toString());
             user.setCreateTime(LocalDateTime.now());
             user.setUpdateTime(LocalDateTime.now());
             userMapper.insert(user);

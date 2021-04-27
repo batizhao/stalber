@@ -1,6 +1,8 @@
 package me.batizhao.ims.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +16,7 @@ import me.batizhao.ims.service.UserDepartmentService;
 import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.UserRoleService;
 import me.batizhao.ims.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -60,6 +63,19 @@ public class UserController {
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<IPage<User>> handleUsers(Page<User> page, User user) {
         return R.ok(userService.findUsers(page, user));
+    }
+
+    /**
+     * 查询用户
+     * 返回用户集合
+     *
+     * @return R<List<User>>
+     */
+    @ApiOperation(value = "查询用户")
+    @GetMapping("/ims/user")
+    @PreAuthorize("@pms.hasPermission('ims:user:admin')")
+    public R<List<User>> handleUsers(User user) {
+        return R.ok(userService.findUsers(user));
     }
 
     /**

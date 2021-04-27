@@ -23,6 +23,13 @@ public interface UserService extends IService<User> {
 	IPage<User> findUsers(Page<User> page, User user);
 
 	/**
+	 * 查询用户
+	 * @param user
+	 * @return
+	 */
+	List<User> findUsers(User user);
+
+	/**
 	 * 通过id查询用户
 	 * @param id id
 	 * @return User
@@ -86,5 +93,4 @@ public interface UserService extends IService<User> {
 	 * @return
 	 */
 	List<User> findLeadersByDepartmentId(Long departmentId);
-
 }

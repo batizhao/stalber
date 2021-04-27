@@ -23,9 +23,16 @@ public interface ${className}Service extends IService<${className}> {
      * @return IPage<${className}>
      */
     IPage<${className}> find${className}s(Page<${className}> page, ${className} ${classname});
+
+    /**
+     * 查询${comments}
+     * @param ${classname}
+     * @return List<${className}>
+     */
+    List<${className}> find${className}s(${className} ${classname});
 #else
     /**
-     * 查询所有${comments}
+     * 查询${comments}
      * @return ${comments}树
      */
     List<${className}> find${className}Tree(${className} ${classname});

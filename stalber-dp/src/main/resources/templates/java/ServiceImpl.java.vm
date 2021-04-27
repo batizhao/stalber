@@ -49,6 +49,24 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 #end
         return ${classname}Mapper.selectPage(page, wrapper);
     }
+
+    @Override
+    public List<${className}> find${className}s(${className} ${classname}) {
+        LambdaQueryWrapper<${className}> wrapper = Wrappers.lambdaQuery();
+#foreach ($column in $columns)
+#if($column.search)
+#if($column.javaField.length() > 2 && $column.javaField.substring(1,2).matches("[A-Z]"))
+#set($AttrName=$column.javaField)
+#else
+#set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+#end
+        if (StringUtils.isNotBlank(${classname}.get${AttrName}())) {
+            wrapper.like(${className}::get${AttrName}, ${classname}.get${AttrName}());
+        }
+#end
+#end
+        return ${classname}Mapper.selectList(wrapper);
+    }
 #else
     @Override
     public List<${className}> find${className}Tree(${className} ${classname}) {

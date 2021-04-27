@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 #if($template != "tree")
 // 分页查询${comments}
-export function list${className}(query) {
+export function list${className}s(query) {
   return request({
     url: '/${moduleName}/${mappingPath}s',
     params: query
@@ -10,8 +10,8 @@ export function list${className}(query) {
 }
 #end
 
-// 查询所有${comments}
-export function listAll${className}(query) {
+// 查询${comments}
+export function list${className}(query) {
   return request({
     url: '/${moduleName}/${mappingPath}',
     params: query

@@ -58,21 +58,21 @@ public class ${className}Controller {
 #end
 
     /**
-     * 查询所有${comments}
-     * @return R
+     * 查询${comments}
+     * @return R<List<${className}>>
      */
-    @ApiOperation(value = "查询所有${comments}")
+    @ApiOperation(value = "查询${comments}")
     @GetMapping("/${mappingPath}")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
-    public R<List<${className}>> handleAll${className}(#if($template == "tree")${className} ${classname}#end) {
+    public R<List<${className}>> handle${className}s(${className} ${classname}) {
 #if($template == "tree")
         return R.ok(${classname}Service.find${className}Tree(${classname}));
 #else
-        return R.ok(${classname}Service.list());
+        return R.ok(${classname}Service.find${className}s(${classname}));
 #end
     }
 

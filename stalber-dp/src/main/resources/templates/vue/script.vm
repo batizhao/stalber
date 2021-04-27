@@ -1,5 +1,5 @@
 <script>
-import {#if($template != "tree") list${className},#end listAll${className}, get${className}, delete${className}, addOrUpdate${className}, change${className}Status, export${className} } from "@/api/${moduleName}/${mappingPath}";
+import {#if($template != "tree") list${className}s,#end list${className}, get${className}, delete${className}, addOrUpdate${className}, change${className}Status, export${className} } from "@/api/${moduleName}/${mappingPath}";
 #if($template == "tree")
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -169,9 +169,9 @@ export default {
 #end
 #end
 #if($template != "tree")
-      list${className}(this.queryParams).then(response => {
+      list${className}s(this.queryParams).then(response => {
 #else
-      listAll${className}(this.queryParams).then(response => {
+      list${className}(this.queryParams).then(response => {
 #end
 #if($template != "tree")
         this.${classname}List = response.data.records;
@@ -211,7 +211,7 @@ export default {
     },
     /** 查询${comments}下拉树结构 */
     getTreeselect() {
-      listAll${className}().then(response => {
+      list${className}().then(response => {
         this.${classname}Options.children = this.handleTree(response.data, "id");
       });
     },

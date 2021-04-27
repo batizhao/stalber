@@ -40,10 +40,10 @@ public class DepartmentController {
     private DepartmentLeaderService departmentLeaderService;
 
     /**
-     * 查询所有部门
-     * @return R
+     * 查询部门
+     * @return R<List<Department>>
      */
-    @ApiOperation(value = "查询所有部门")
+    @ApiOperation(value = "查询部门")
     @GetMapping("/department")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
     public R<List<Department>> handleAllDepartment(Department department) {

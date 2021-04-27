@@ -51,10 +51,10 @@ public class PostController {
     }
 
     /**
-     * 查询所有岗位
-     * @return R
+     * 查询岗位
+     * @return R<List<Post>>
      */
-    @ApiOperation(value = "查询所有岗位")
+    @ApiOperation(value = "查询岗位")
     @GetMapping("/post")
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
     public R<List<Post>> handleAllPost() {
