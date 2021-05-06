@@ -146,10 +146,10 @@ public class UserServiceUnitTest extends BaseServiceUnitTest {
 
     @Test
     public void givenNothing_whenFindAllUser_thenSuccess() {
-        when(userMapper.selectPage(any(Page.class), any(Wrapper.class)))
+        when(userMapper.selectUsers(any(Page.class), any(User.class), anyLong()))
                 .thenReturn(userPageList);
 
-        IPage<User> users = userService.findUsers(new Page<>(), new User().setUsername("tom"));
+        IPage<User> users = userService.findUsers(new Page<>(), new User().setUsername("tom"), null);
 
         assertThat(users.getRecords(), iterableWithSize(3));
         assertThat(users.getRecords(), hasItems(hasProperty("username", is("zhangsan")),
@@ -162,13 +162,6 @@ public class UserServiceUnitTest extends BaseServiceUnitTest {
                                                       hasProperty("username", is("lisi"))),
                                                 allOf(hasProperty("email", is("wangwu@gmail.com")),
                                                       hasProperty("username", is("wangwu")))));
-
-        when(userMapper.selectPage(any(Page.class), any(Wrapper.class)))
-                .thenReturn(userPageList);
-
-        users = userService.findUsers(new Page<>(), new User().setName("tom"));
-
-        assertThat(users.getRecords(), iterableWithSize(3));
     }
 
     @Test

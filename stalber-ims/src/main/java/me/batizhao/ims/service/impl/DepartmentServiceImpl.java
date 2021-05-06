@@ -8,9 +8,10 @@ import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.common.exception.StalberException;
 import me.batizhao.common.util.TreeUtil;
 import me.batizhao.ims.domain.Department;
-import me.batizhao.ims.domain.RoleMenu;
+import me.batizhao.ims.domain.DepartmentRelation;
 import me.batizhao.ims.domain.UserDepartment;
 import me.batizhao.ims.mapper.DepartmentMapper;
+import me.batizhao.ims.service.DepartmentRelationService;
 import me.batizhao.ims.service.DepartmentService;
 import me.batizhao.ims.service.UserDepartmentService;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +38,8 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     private DepartmentMapper departmentMapper;
     @Autowired
     private UserDepartmentService userDepartmentService;
+    @Autowired
+    private DepartmentRelationService departmentRelationService;
 
     @Override
     public List<Department> findDepartmentTree(Department department) {
@@ -73,9 +76,11 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
             department.setUpdateTime(LocalDateTime.now());
             department.setUuid(UUID.randomUUID().toString());
             departmentMapper.insert(department);
+            departmentRelationService.saveDepartmentRelation(department);
         } else {
             department.setUpdateTime(LocalDateTime.now());
             departmentMapper.updateById(department);
+            departmentRelationService.updateDepartmentRelation(department);
         }
 
         return department;
@@ -88,6 +93,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         checkDepartmentIsRoot(id);
         this.removeById(id);
         userDepartmentService.remove(Wrappers.<UserDepartment>lambdaQuery().eq(UserDepartment::getDepartmentId, id));
+        departmentRelationService.remove(Wrappers.<DepartmentRelation>lambdaQuery().eq(DepartmentRelation::getDescendant, id));
         return true;
     }
 

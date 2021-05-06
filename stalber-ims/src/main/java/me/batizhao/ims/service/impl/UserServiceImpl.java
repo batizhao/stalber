@@ -42,15 +42,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserRoleService userRoleService;
 
     @Override
-    public IPage<User> findUsers(Page<User> page, User user) {
-        LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
-        if (StringUtils.isNotBlank(user.getUsername())) {
-            wrapper.like(User::getUsername, user.getUsername());
-        }
-        if (StringUtils.isNotBlank(user.getName())) {
-            wrapper.like(User::getName, user.getName());
-        }
-        return userMapper.selectPage(page, wrapper);
+    public IPage<User> findUsers(Page<User> page, User user, Long departmentId) {
+        if (departmentId == null) departmentId = 1L;
+        return userMapper.selectUsers(page, user, departmentId);
     }
 
     @Override

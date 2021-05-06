@@ -26,7 +26,7 @@
                 <constraints nullable="false" unique="true" />
             </column>
             <column name="code" type="VARCHAR(32)" remarks="编码">
-                <constraints nullable="false" />
+                <constraints nullable="false" unique="true" />
             </column>
             <column name="type" type="VARCHAR(8)" remarks="类型（C公司 D部门）" defaultValue="D">
                 <constraints nullable="false" />
@@ -111,6 +111,17 @@
         </createTable>
         <rollback>
             <dropTable tableName="department_leader"/>
+        </rollback>
+        <createTable tableName="department_relation" remarks="部门依赖关系表">
+            <column name="ancestor" type="BIGINT" remarks="祖先">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DEPARTMENT_RELATION"/>
+            </column>
+            <column name="descendant" type="BIGINT" remarks="后代">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DEPARTMENT_RELATION"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="department_relation"/>
         </rollback>
     </changeSet>
 
@@ -252,15 +263,196 @@
             <column name="id" valueNumeric="1"/>
             <column name="pid" valueNumeric="0"/>
             <column name="uuid" value="5fa11b2d-7ed3-4413-8abd-208fdfff0bda"/>
-            <column name="name" value="根部门"/>
-            <column name="fullName" value="根部门"/>
+            <column name="name" value="江苏省"/>
+            <column name="fullName" value="江苏省"/>
             <column name="code" value="000000"/>
             <column name="type" value="root"/>
             <column name="sort" valueNumeric="0"/>
         </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="2"/>
+            <column name="pid" valueNumeric="1"/>
+            <column name="uuid" value="1b3fbc3a-f52f-4c51-ad2b-65672ed3113e"/>
+            <column name="name" value="省公司"/>
+            <column name="fullName" value="江苏省公司"/>
+            <column name="code" value="000001"/>
+            <column name="type" value="C"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="3"/>
+            <column name="pid" valueNumeric="1"/>
+            <column name="uuid" value="30674805-751d-49f4-92fd-3c246185356f"/>
+            <column name="name" value="南京分公司"/>
+            <column name="fullName" value="江苏省南京分公司"/>
+            <column name="code" value="000002"/>
+            <column name="type" value="C"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="4"/>
+            <column name="pid" valueNumeric="1"/>
+            <column name="uuid" value="6d001d04-c5ad-4cf9-820d-cd3c8c2b0d09"/>
+            <column name="name" value="苏州分公司"/>
+            <column name="fullName" value="江苏省苏州分公司"/>
+            <column name="code" value="000003"/>
+            <column name="type" value="C"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="5"/>
+            <column name="pid" valueNumeric="1"/>
+            <column name="uuid" value="bdaae11a-4f12-4ff9-b9e8-fdeec4f57708"/>
+            <column name="name" value="南通分公司"/>
+            <column name="fullName" value="江苏省南通分公司"/>
+            <column name="code" value="000004"/>
+            <column name="type" value="C"/>
+            <column name="sort" valueNumeric="4"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="6"/>
+            <column name="pid" valueNumeric="3"/>
+            <column name="uuid" value="e2acf0c2-730f-4027-af6f-968316e0619b"/>
+            <column name="name" value="玄武区分公司"/>
+            <column name="fullName" value="南京玄武区分公司"/>
+            <column name="code" value="000005"/>
+            <column name="type" value="C"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="7"/>
+            <column name="pid" valueNumeric="3"/>
+            <column name="uuid" value="6f1c74a9-70c9-4f94-9644-50b54c5515df"/>
+            <column name="name" value="六合区分公司"/>
+            <column name="fullName" value="南京六合区分公司"/>
+            <column name="code" value="000006"/>
+            <column name="type" value="C"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="8"/>
+            <column name="pid" valueNumeric="6"/>
+            <column name="uuid" value="0e3e0ac4-3446-409a-be09-b32bdaa40cbe"/>
+            <column name="name" value="技术部"/>
+            <column name="fullName" value="南京玄武区分公司技术部"/>
+            <column name="code" value="000007"/>
+            <column name="type" value="D"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="department">
+            <column name="id" valueNumeric="9"/>
+            <column name="pid" valueNumeric="6"/>
+            <column name="uuid" value="acc49b3a-4e09-464e-abed-555471bdef2d"/>
+            <column name="name" value="人事部"/>
+            <column name="fullName" value="南京玄武区分公司人事部"/>
+            <column name="code" value="000008"/>
+            <column name="type" value="D"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
         <rollback>
             delete from department where id = 1;
+            delete from department where id = 2;
+            delete from department where id = 3;
+            delete from department where id = 4;
+            delete from department where id = 5;
+            delete from department where id = 6;
+            delete from department where id = 7;
+            delete from department where id = 8;
+            delete from department where id = 9;
         </rollback>
+
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="1"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="2"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="3"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="4"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="5"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="6"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="7"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="8"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="1"/>
+            <column name="descendant" valueNumeric="9"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="2"/>
+            <column name="descendant" valueNumeric="2"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="3"/>
+            <column name="descendant" valueNumeric="3"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="3"/>
+            <column name="descendant" valueNumeric="6"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="3"/>
+            <column name="descendant" valueNumeric="7"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="3"/>
+            <column name="descendant" valueNumeric="8"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="3"/>
+            <column name="descendant" valueNumeric="9"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="4"/>
+            <column name="descendant" valueNumeric="4"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="5"/>
+            <column name="descendant" valueNumeric="5"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="6"/>
+            <column name="descendant" valueNumeric="6"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="6"/>
+            <column name="descendant" valueNumeric="8"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="6"/>
+            <column name="descendant" valueNumeric="9"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="7"/>
+            <column name="descendant" valueNumeric="7"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="8"/>
+            <column name="descendant" valueNumeric="8"/>
+        </insert>
+        <insert tableName="department_relation">
+            <column name="ancestor" valueNumeric="9"/>
+            <column name="descendant" valueNumeric="9"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
