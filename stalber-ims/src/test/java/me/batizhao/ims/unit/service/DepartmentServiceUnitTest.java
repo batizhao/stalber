@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.mapper.DepartmentMapper;
+import me.batizhao.ims.service.DepartmentLeaderService;
 import me.batizhao.ims.service.DepartmentRelationService;
 import me.batizhao.ims.service.DepartmentService;
 import me.batizhao.ims.service.UserDepartmentService;
@@ -52,6 +53,8 @@ public class DepartmentServiceUnitTest extends BaseServiceUnitTest {
     private UserDepartmentService UserDepartmentService;
     @MockBean
     private DepartmentRelationService departmentRelationService;
+    @MockBean
+    private DepartmentLeaderService departmentLeaderService;
 
     @Autowired
     private DepartmentService departmentService;

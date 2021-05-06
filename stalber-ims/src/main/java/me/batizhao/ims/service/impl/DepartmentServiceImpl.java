@@ -8,9 +8,11 @@ import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.common.exception.StalberException;
 import me.batizhao.common.util.TreeUtil;
 import me.batizhao.ims.domain.Department;
+import me.batizhao.ims.domain.DepartmentLeader;
 import me.batizhao.ims.domain.DepartmentRelation;
 import me.batizhao.ims.domain.UserDepartment;
 import me.batizhao.ims.mapper.DepartmentMapper;
+import me.batizhao.ims.service.DepartmentLeaderService;
 import me.batizhao.ims.service.DepartmentRelationService;
 import me.batizhao.ims.service.DepartmentService;
 import me.batizhao.ims.service.UserDepartmentService;
@@ -40,6 +42,8 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     private UserDepartmentService userDepartmentService;
     @Autowired
     private DepartmentRelationService departmentRelationService;
+    @Autowired
+    private DepartmentLeaderService departmentLeaderService;
 
     @Override
     public List<Department> findDepartmentTree(Department department) {
@@ -94,6 +98,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         this.removeById(id);
         userDepartmentService.remove(Wrappers.<UserDepartment>lambdaQuery().eq(UserDepartment::getDepartmentId, id));
         departmentRelationService.remove(Wrappers.<DepartmentRelation>lambdaQuery().eq(DepartmentRelation::getDescendant, id));
+        departmentLeaderService.remove(Wrappers.<DepartmentLeader>lambdaQuery().eq(DepartmentLeader::getDepartmentId, id));
         return true;
     }
 

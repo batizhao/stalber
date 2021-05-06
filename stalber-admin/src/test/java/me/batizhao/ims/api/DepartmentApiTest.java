@@ -89,9 +89,9 @@ public class DepartmentApiTest extends BaseApiTest {
         mvc.perform(delete("/ims/department").param("id", "1")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
-                .andExpect(status().is5xxServerError())
+                .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.UNKNOWN_ERROR.getCode()))
-                .andExpect(jsonPath("$.data", containsString("不允许操作")));
+                .andExpect(jsonPath("$.data", containsString("存在子部门不允许删除")));
     }
 }
