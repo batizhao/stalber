@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.system.domain.DictType;
 
+import java.util.List;
+
 /**
  * 字典类型接口类
  *
@@ -34,6 +36,13 @@ public interface DictTypeService extends IService<DictType> {
      * @return DictType
      */
     DictType saveOrUpdateDictType(DictType dictType);
+
+    /**
+     * 删除
+     * @param codes
+     * @return
+     */
+    Boolean deleteByIds(List<String> codes);
 
     /**
      * 更新字典类型状态

@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.system.domain.DictData;
 import me.batizhao.system.domain.DictType;
 import me.batizhao.system.mapper.DictTypeMapper;
+import me.batizhao.system.service.DictDataService;
 import me.batizhao.system.service.DictTypeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 字典类型接口实现类
@@ -28,6 +31,8 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
 
     @Autowired
     private DictTypeMapper dictTypeMapper;
+    @Autowired
+    private DictDataService dictDataService;
 
     @Override
     public IPage<DictType> findDictTypes(Page<DictType> page, DictType dictType) {
@@ -62,6 +67,16 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         }
 
         return dictType;
+    }
+
+    @Override
+    @Transactional
+    public Boolean deleteByIds(List<String> codes) {
+        codes.forEach(i -> {
+            this.remove(Wrappers.<DictType>lambdaQuery().eq(DictType::getCode, i));
+            dictDataService.remove(Wrappers.<DictData>lambdaQuery().eq(DictData::getCode, i));
+        });
+        return true;
     }
 
     @Override

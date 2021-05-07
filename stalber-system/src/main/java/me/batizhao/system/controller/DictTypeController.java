@@ -92,15 +92,15 @@ public class DictTypeController {
 
     /**
      * 通过id删除字典类型
-     * @param ids ID串
+     * @param codes code串
      * @return R
      */
     @ApiOperation(value = "通过id删除字典类型")
     @DeleteMapping("/dict/type")
     @PreAuthorize("@pms.hasPermission('system:dict:delete')")
     @SystemLog
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
-        return R.ok(dictTypeService.removeByIds(ids));
+    public R<Boolean> handleDelete(@ApiParam(value = "code串" , required = true) @RequestParam List<String> codes) {
+        return R.ok(dictTypeService.deleteByIds(codes));
     }
 
     /**
