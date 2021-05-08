@@ -86,7 +86,7 @@ public class DictTypeApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenId_whenDeleteDictType_thenSuccess() throws Exception {
-        mvc.perform(delete("/system/dict/type").param("ids", "1,2")
+        mvc.perform(delete("/system/dict/type").param("codes", "1,2")
                 .header("Authorization", adminAccessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
