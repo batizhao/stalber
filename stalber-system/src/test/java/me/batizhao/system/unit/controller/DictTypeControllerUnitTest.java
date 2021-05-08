@@ -158,16 +158,16 @@ public class DictTypeControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenId_whenDeleteDictType_thenSuccess() throws Exception {
-        when(dictTypeService.removeByIds(anyList())).thenReturn(true);
+        when(dictTypeService.deleteByIds(anyList())).thenReturn(true);
 
-        mvc.perform(delete("/system/dict/type").param("ids", "1,2").with(csrf()))
+        mvc.perform(delete("/system/dict/type").param("codes", "1,2").with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data").value(true));
 
-        verify(dictTypeService).removeByIds(anyList());
+        verify(dictTypeService).deleteByIds(anyList());
     }
 
     @Test
