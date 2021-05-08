@@ -3,6 +3,7 @@ package me.batizhao.system.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.constant.ScheduleConstants;
 import me.batizhao.system.domain.SysJob;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,8 @@ public class JobApiTest extends BaseApiTest {
     @Transactional
     public void givenJson_whenSaveJob_thenSuccess() throws Exception {
         SysJob requestBody = new SysJob()
-                .setName("daxia");
+                .setName("daxia").setCronExpression("0/30 * * * * ?").setInvokeTarget("xxx")
+                .setMisfirePolicy("nothing").setStatus(ScheduleConstants.Status.CLOSE.getValue());
 
         mvc.perform(post("/system/job")
                 .content(objectMapper.writeValueAsString(requestBody))
@@ -71,7 +73,8 @@ public class JobApiTest extends BaseApiTest {
     @Transactional
     public void givenJson_whenUpdateJob_thenSuccess() throws Exception {
         SysJob requestBody = new SysJob()
-                .setId(8L).setName("daxia");
+                .setId(1L).setName("daxia").setCronExpression("0/30 * * * * ?").setInvokeTarget("xxx")
+                .setMisfirePolicy("nothing").setStatus(ScheduleConstants.Status.CLOSE.getValue());
 
         mvc.perform(post("/system/job")
                 .content(objectMapper.writeValueAsString(requestBody))
