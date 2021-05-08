@@ -1,0 +1,78 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="CreateJobData-20210507-001">
+        <insert tableName="dict_type">
+            <column name="name" value="任务分组"/>
+            <column name="code" value="job_group"/>
+            <column name="description" value="DEFAULT|SYSTEM"/>
+        </insert>
+        <insert tableName="dict_data">
+            <column name="code" value="job_group"/>
+            <column name="label" value="默认"/>
+            <column name="value" value="DEFAULT"/>
+            <column name="sort" valueNumeric="1"/>
+            <column name="isDefault" value="yes"/>
+        </insert>
+        <insert tableName="dict_data">
+            <column name="code" value="job_group"/>
+            <column name="label" value="系统"/>
+            <column name="value" value="SYSTEM"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+
+        <insert tableName="menu">
+            <column name="id" valueNumeric="2300"/>
+            <column name="path" value="/system/job"/>
+            <column name="name" value="定时任务"/>
+            <column name="permission" value="system:job:admin"/>
+            <column name="icon" value="job"/>
+            <column name="pid" valueNumeric="2000"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="2301"/>
+            <column name="name" value="添加任务"/>
+            <column name="permission" value="system:job:add"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="2300"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="2302"/>
+            <column name="name" value="编辑任务"/>
+            <column name="permission" value="system:job:edit"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="2300"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="2303"/>
+            <column name="name" value="删除任务"/>
+            <column name="permission" value="system:job:delete"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="2300"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="2300"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="2301"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="2302"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="2303"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,12 +1,11 @@
-package ${package}.${moduleName}.unit.controller;
+package me.batizhao.system.unit.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.common.constant.ResultEnum;
-import ${package}.${moduleName}.controller.${className}Controller;
-import ${package}.${moduleName}.domain.${className};
-import ${package}.${moduleName}.service.${className}Service;
+import me.batizhao.system.controller.JobController;
+import me.batizhao.system.domain.SysJob;
+import me.batizhao.system.service.JobService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * ${comments}
+ * 任务调度
  *
- * @author ${author}
- * @since ${date}
+ * @author batizhao
+ * @since 2021-05-07
  */
-@WebMvcTest(${className}Controller.class)
-public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
+@WebMvcTest(JobController.class)
+public class JobControllerUnitTest extends BaseControllerUnitTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -45,41 +44,31 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
     private MockMvc mvc;
 
     @MockBean
-    ${className}Service ${classname}Service;
+    JobService jobService;
 
-    private List<${className}> ${classname}List;
-#if($template != "tree")
-    private Page<${className}> ${classname}PageList;
-#end
+    private List<SysJob> jobList;
+    private Page<SysJob> jobPageList;
 
     /**
      * Prepare test data.
      */
     @BeforeEach
     public void setUp() {
-        ${classname}List = new ArrayList<>();
-#if($template != "tree")
-        ${classname}List.add(new ${className}().setId(1L).setName("zhangsan"));
-        ${classname}List.add(new ${className}().setId(2L).setName("lisi"));
-        ${classname}List.add(new ${className}().setId(3L).setName("wangwu"));
+        jobList = new ArrayList<>();
+        jobList.add(new SysJob().setId(1L).setName("zhangsan"));
+        jobList.add(new SysJob().setId(2L).setName("lisi"));
+        jobList.add(new SysJob().setId(3L).setName("wangwu"));
 
-        ${classname}PageList = new Page<>();
-        ${classname}PageList.setRecords(${classname}List);
-#else
-        ${classname}List = new ArrayList<>();
-        ${classname}List.add(new ${className}(1, 0).setName("zhangsan"));
-        ${classname}List.add(new ${className}(2, 1).setName("lisi"));
-        ${classname}List.add(new ${className}(3, 2).setName("wangwu"));
-#end
+        jobPageList = new Page<>();
+        jobPageList.setRecords(jobList);
     }
 
-#if($template != "tree")
     @Test
     @WithMockUser
-    public void givenNothing_whenFind${className}s_thenSuccess() throws Exception {
-        when(${classname}Service.find${className}s(any(Page.class), any(${className}.class))).thenReturn(${classname}PageList);
+    public void givenNothing_whenFindJobs_thenSuccess() throws Exception {
+        when(jobService.findJobs(any(Page.class), any(SysJob.class))).thenReturn(jobPageList);
 
-        mvc.perform(get("/${moduleName}/${mappingPath}s"))
+        mvc.perform(get("/system/jobs"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -88,16 +77,15 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.data.records", hasSize(3)))
                 .andExpect(jsonPath("$.data.records[0].name", equalTo("zhangsan")));
 
-        verify(${classname}Service).find${className}s(any(Page.class), any(${className}.class));
+        verify(jobService).findJobs(any(Page.class), any(SysJob.class));
     }
 
-#end
     @Test
     @WithMockUser
-    public void givenNothing_whenFindAll${className}_thenSuccess() throws Exception {
-        when(${classname}Service.find${className}s(any(${className}.class))).thenReturn(${classname}List);
+    public void givenNothing_whenFindAllJob_thenSuccess() throws Exception {
+        when(jobService.findJobs(any(SysJob.class))).thenReturn(jobList);
 
-        mvc.perform(get("/${moduleName}/${mappingPath}"))
+        mvc.perform(get("/system/job"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -106,35 +94,35 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.data", hasSize(3)))
                 .andExpect(jsonPath("$.data[0].name", equalTo("zhangsan")));
 
-        verify(${classname}Service).find${className}s(any(${className}.class));
+        verify(jobService).findJobs(any(SysJob.class));
     }
 
     @Test
     @WithMockUser
-    public void givenId_whenFind${className}_thenSuccess() throws Exception {
+    public void givenId_whenFindJob_thenSuccess() throws Exception {
         Long id = 1L;
 
-        when(${classname}Service.findById(id)).thenReturn(${classname}List.get(0));
+        when(jobService.findById(id)).thenReturn(jobList.get(0));
 
-        mvc.perform(get("/${moduleName}/${mappingPath}/{${pk.javaField}}", id))
+        mvc.perform(get("/system/job/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data.name").value("zhangsan"));
 
-        verify(${classname}Service).findById(anyLong());
+        verify(jobService).findById(anyLong());
     }
 
     @Test
     @WithMockUser
-    public void givenJson_whenSave${className}_thenSuccess() throws Exception {
-        ${className} requestBody = new ${className}().setName("zhaoliu");
+    public void givenJson_whenSaveJob_thenSuccess() throws Exception {
+        SysJob requestBody = new SysJob().setName("zhaoliu");
 
-        when(${classname}Service.saveOrUpdate${className}(any(${className}.class)))
-                .thenReturn(${classname}List.get(0));
+        when(jobService.saveOrUpdateJob(any(SysJob.class)))
+                .thenReturn(jobList.get(0));
 
-        mvc.perform(post("/${moduleName}/${mappingPath}").with(csrf())
+        mvc.perform(post("/system/job").with(csrf())
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -143,18 +131,18 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data.id", equalTo(1)));
 
-        verify(${classname}Service).saveOrUpdate${className}(any(${className}.class));
+        verify(jobService).saveOrUpdateJob(any(SysJob.class));
     }
 
     @Test
     @WithMockUser
-    public void givenJson_whenUpdate${className}_thenSuccess() throws Exception {
-        ${className} requestBody = new ${className}().setId(2L).setName("zhaoliu");
+    public void givenJson_whenUpdateJob_thenSuccess() throws Exception {
+        SysJob requestBody = new SysJob().setId(2L).setName("zhaoliu");
 
-        when(${classname}Service.saveOrUpdate${className}(any(${className}.class)))
-                .thenReturn(${classname}List.get(1));
+        when(jobService.saveOrUpdateJob(any(SysJob.class)))
+                .thenReturn(jobList.get(1));
 
-        mvc.perform(post("/${moduleName}/${mappingPath}").with(csrf())
+        mvc.perform(post("/system/job").with(csrf())
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -163,43 +151,31 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data.id", equalTo(2)));
 
-        verify(${classname}Service).saveOrUpdate${className}(any(${className}.class));
+        verify(jobService).saveOrUpdateJob(any(SysJob.class));
     }
 
     @Test
     @WithMockUser
-    public void givenId_whenDelete${className}_thenSuccess() throws Exception {
-#if($template != "tree")
-        when(${classname}Service.removeByIds(anyList())).thenReturn(true);
-#else
-        when(${classname}Service.deleteById(anyInt())).thenReturn(true);
-#end
-#if($template != "tree")
-        mvc.perform(delete("/${moduleName}/${mappingPath}").param("ids", "1,2").with(csrf()))
-#else
-        mvc.perform(delete("/${moduleName}/${mappingPath}").param("id", "1").with(csrf()))
-#end
+    public void givenId_whenDeleteJob_thenSuccess() throws Exception {
+        when(jobService.removeByIds(anyList())).thenReturn(true);
+        mvc.perform(delete("/system/job").param("ids", "1,2").with(csrf()))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
             .andExpect(jsonPath("$.data").value(true));
 
-#if($template != "tree")
-        verify(${classname}Service).removeByIds(anyList());
-#else
-        verify(${classname}Service).deleteById(anyInt());
-#end
+        verify(jobService).removeByIds(anyList());
     }
 
     @Test
     @WithMockUser
-    public void given${className}_whenUpdateStatus_thenSuccess() throws Exception {
-        ${className} requestBody = new ${className}().setId(2L).setStatus("close");
+    public void givenJob_whenUpdateStatus_thenSuccess() throws Exception {
+        SysJob requestBody = new SysJob().setId(2L).setStatus("close");
 
-        when(${classname}Service.updateStatus(any(${className}.class))).thenReturn(true);
+        when(jobService.updateStatus(any(SysJob.class))).thenReturn(true);
 
-        mvc.perform(post("/${moduleName}/${mappingPath}/status").with(csrf())
+        mvc.perform(post("/system/job/status").with(csrf())
                 .content(objectMapper.writeValueAsString(requestBody))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -208,6 +184,6 @@ public class ${className}ControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data").value(true));
 
-        verify(${classname}Service).updateStatus(any(${className}.class));
+        verify(jobService).updateStatus(any(SysJob.class));
     }
 }
