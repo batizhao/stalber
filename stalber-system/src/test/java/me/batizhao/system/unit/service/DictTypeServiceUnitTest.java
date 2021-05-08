@@ -50,11 +50,11 @@ public class DictTypeServiceUnitTest extends BaseServiceUnitTest {
 
     @MockBean
     private DictTypeMapper dictTypeMapper;
+    @MockBean
+    private DictDataService dictDataService;
 
     @Autowired
     private DictTypeService dictTypeService;
-    @Autowired
-    private DictDataService dictDataService;
 
     private List<DictType> dictTypeList;
     private Page<DictType> dictTypePageList;
