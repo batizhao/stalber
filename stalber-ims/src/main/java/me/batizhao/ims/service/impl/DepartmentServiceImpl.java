@@ -66,7 +66,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         Department department = departmentMapper.selectById(id);
 
         if(department == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return department;
@@ -104,7 +104,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
 
     private void checkDepartmentIsRoot(Integer id) {
         if (id.equals(1)) {
-            throw new StalberException("不允许操作！");
+            throw new StalberException("Operation not allowed!");
         }
     }
 

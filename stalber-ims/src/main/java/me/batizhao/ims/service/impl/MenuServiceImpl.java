@@ -97,7 +97,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public Menu findMenuById(Integer id) {
         Menu menu = menuMapper.selectById(id);
         if (menu == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
         return menu;
     }

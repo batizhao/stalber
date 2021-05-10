@@ -38,8 +38,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
-        R<String> message = new R<String>().setCode(ResultEnum.PERMISSION_FORBIDDEN_ERROR.getCode())
-                .setMessage(ResultEnum.PERMISSION_FORBIDDEN_ERROR.getMessage())
+        R<String> message = new R<String>(ResultEnum.PERMISSION_FORBIDDEN_ERROR.getCode())
                 .setData(accessDeniedException.getMessage());
 
         log.error("Access Denied Handler for 403.", accessDeniedException);

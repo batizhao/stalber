@@ -66,7 +66,7 @@ public class DsServiceImpl extends ServiceImpl<DsMapper, Ds> implements DsServic
         Ds ds = dsMapper.selectById(id);
 
         if(ds == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return ds;
@@ -120,8 +120,8 @@ public class DsServiceImpl extends ServiceImpl<DsMapper, Ds> implements DsServic
             DriverManager.getConnection(ds.getUrl(), ds.getUsername(), ds.getPassword());
         }
         catch (SQLException e) {
-            log.error("数据源配置 {} , 获取链接失败", ds.getName(), e);
-            throw new DataSourceException("获取链接失败", e);
+            log.error("Data source configuration {} , Failed to get connection", ds.getName(), e);
+            throw new DataSourceException("Failed to get connection", e);
         }
         return Boolean.TRUE;
     }

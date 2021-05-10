@@ -61,7 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectById(id);
 
         if(user == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return user;
@@ -72,7 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, username));
 
         if(user == null) {
-            throw new NotFoundException(String.format("没有该用户 '%s'。", username));
+            throw new NotFoundException(String.format("Record not found '%s'。", username));
         }
 
         return user;
@@ -110,10 +110,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!bcryptPasswordEncoder.matches(oldPassword, user.getPassword()))
-            throw new StalberException("旧密码不正确！");
+            throw new StalberException("The old password is incorrect!");
 
         if (bcryptPasswordEncoder.matches(newPassword, user.getPassword()))
-            throw new StalberException("新旧密码相同！");
+            throw new StalberException("Same old and new password!");
 
         String hashPass = bcryptPasswordEncoder.encode(newPassword);
         user.setPassword(hashPass);
@@ -134,7 +134,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private void checkUserIsAdmin(Long id) {
         if (id.equals(1L)) {
-            throw new StalberException("管理员不允许操作！");
+            throw new StalberException("Operation not allowed!");
         }
     }
 
@@ -151,7 +151,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectById(userId);
 
         if(user == null) {
-            throw new NotFoundException(String.format("没有该用户 '%s'。", userId));
+            throw new NotFoundException(String.format("Record not found '%s'。", userId));
         }
 
         UserInfoVO userInfoVO = new UserInfoVO();

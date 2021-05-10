@@ -37,7 +37,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         User user = userService.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("没有该用户 '%s'。", username));
+            throw new UsernameNotFoundException(String.format("Record not found '%s'。", username));
         }
 
         UserInfoVO userInfoVO = userService.getUserInfo(user.getId());

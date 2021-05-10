@@ -115,7 +115,7 @@ public class MenuController {
     @PreAuthorize("@pms.hasPermission('ims:menu:delete')")
     @SystemLog
     public R<String> handleDelete(@ApiParam(value = "菜单ID串", required = true) @RequestParam Integer id) {
-        return menuService.deleteById(id) ? R.ok() : R.failed("存在子菜单不允许删除！");
+        return menuService.deleteById(id) ? R.ok() : R.failed("There are sub menus that cannot be deleted！");
     }
 
     /**

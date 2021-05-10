@@ -15,51 +15,44 @@ public enum ResultEnum {
     /**
      * 成功
      */
-    SUCCESS(0, "ok"),
+    SUCCESS(0),
 
     /**
      * 系统错误
      */
-    UNKNOWN_ERROR(100000, "出错了！"),
-    PARAMETER_INVALID(100001, "参数不合法！"),
-    OAUTH2_TOKEN_ERROR(100002, "获取访问令牌失败！"),
-    OAUTH2_TOKEN_INVALID(100003, "访问令牌不合法！"),
-    PERMISSION_UNAUTHORIZED_ERROR(100004, "认证失败！"),
-    PERMISSION_FORBIDDEN_ERROR(100005, "权限不足！"),
-    GATEWAY_ERROR(10008, "网关异常！"),
-    TOO_MANY_REQUEST(10009, "您的请求被限流了！"),
-    RESOURCE_NOT_FOUND(100010, "没有找到相关资源！"),
-    MQ_MESSAGE_ERROR(100011, "系统内部错误，请联系管理员！"),
+    UNKNOWN_ERROR(100000),
+    PARAMETER_INVALID(100001),
+    OAUTH2_TOKEN_ERROR(100002),
+    OAUTH2_TOKEN_INVALID(100003),
+    PERMISSION_UNAUTHORIZED_ERROR(100004),
+    PERMISSION_FORBIDDEN_ERROR(100005),
+    GATEWAY_ERROR(100008),
+    TOO_MANY_REQUEST(100009),
+    RESOURCE_NOT_FOUND(100010),
+    MQ_MESSAGE_ERROR(100011),
 
     /**
      * IMS 01 模块错误
      */
-    IMS_USER_NOT_FOUND(100100, "用户不存在！"),
+    IMS_USER_NOT_FOUND(100100),
 
     /**
      * SYSTEM 02 模块错误
      */
-    SYSTEM_STORAGE_ERROR(100200, "存储异常！"),
+    SYSTEM_STORAGE_ERROR(100200),
 
     /**
      * DP 03 模块错误
      */
-    DP_DS_ERROR(100300, "数据源参数异常！");
+    DP_DS_ERROR(100300);
 
-    private Integer code;
-    private String message;
+    private final Integer code;
 
-    ResultEnum(Integer code, String message) {
+    ResultEnum(Integer code) {
         this.code = code;
-        this.message = message;
     }
 
     public Integer getCode() {
         return code;
     }
-
-    public String getMessage() {
-        return message;
-    }
-
 }

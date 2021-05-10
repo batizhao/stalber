@@ -44,13 +44,11 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        R<String> message = new R<String>().setCode(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getCode())
-                .setMessage(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getMessage())
+        R<String> message = new R<String>(ResultEnum.PERMISSION_UNAUTHORIZED_ERROR.getCode())
                 .setData(authException.getMessage());
 
         if(authException instanceof InsufficientAuthenticationException) {
-            message = new R<String>().setCode(ResultEnum.OAUTH2_TOKEN_INVALID.getCode())
-                    .setMessage(ResultEnum.OAUTH2_TOKEN_INVALID.getMessage())
+            message = new R<String>(ResultEnum.OAUTH2_TOKEN_INVALID.getCode())
                     .setData(authException.getMessage());
         }
 

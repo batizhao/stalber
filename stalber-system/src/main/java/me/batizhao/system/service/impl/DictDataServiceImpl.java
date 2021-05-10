@@ -30,7 +30,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         DictData dictData = dictDataMapper.selectById(id);
 
         if(dictData == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return dictData;

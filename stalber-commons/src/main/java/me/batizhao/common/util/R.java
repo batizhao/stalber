@@ -35,27 +35,39 @@ public class R<T> implements Serializable {
      */
     private T data;
 
+    public R(Integer code) {
+        this.code = code;
+        setCode(code);
+    }
+
+    public void setCode(Integer code) {
+        String message;
+        try {
+            message = I18nUtil.getMessage("response." + code);
+        } catch (Exception e) {
+            message = String.valueOf(code);
+        }
+        this.code = code;
+        this.message = message;
+    }
+
     public static <T> R<T> ok() {
-        return new R<T>().setCode(ResultEnum.SUCCESS.getCode())
-                .setMessage(ResultEnum.SUCCESS.getMessage())
+        return new R<T>(ResultEnum.SUCCESS.getCode())
                 .setData(null);
     }
 
     public static <T> R<T> ok(T data) {
-        return new R<T>().setCode(ResultEnum.SUCCESS.getCode())
-                .setMessage(ResultEnum.SUCCESS.getMessage())
+        return new R<T>(ResultEnum.SUCCESS.getCode())
                 .setData(data);
     }
 
     public static <T> R<T> failed() {
-        return new R<T>().setCode(ResultEnum.UNKNOWN_ERROR.getCode())
-                .setMessage(ResultEnum.UNKNOWN_ERROR.getMessage())
+        return new R<T>(ResultEnum.UNKNOWN_ERROR.getCode())
                 .setData(null);
     }
 
     public static <T> R<T> failed(T data) {
-        return new R<T>().setCode(ResultEnum.UNKNOWN_ERROR.getCode())
-                .setMessage(ResultEnum.UNKNOWN_ERROR.getMessage())
+        return new R<T>(ResultEnum.UNKNOWN_ERROR.getCode())
                 .setData(data);
     }
 

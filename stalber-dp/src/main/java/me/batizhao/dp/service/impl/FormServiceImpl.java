@@ -43,7 +43,7 @@ public class FormServiceImpl extends ServiceImpl<FormMapper, Form> implements Fo
         Form form = formMapper.selectById(id);
 
         if(form == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return form;

@@ -76,7 +76,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, SysJob> implements Jo
         SysJob job = jobMapper.selectById(id);
 
         if (job == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return job;
@@ -86,7 +86,7 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, SysJob> implements Jo
     @Transactional
     public SysJob saveOrUpdateJob(SysJob job) throws SchedulerException, TaskException {
         if (!CronUtils.isValid(job.getCronExpression()))
-            throw new TaskException("表达式语法不正确！", TaskException.Code.CRON_INVALID);
+            throw new TaskException("Incorrect cron expression syntax!", TaskException.Code.CRON_INVALID);
 
         if (job.getId() == null) {
             job.setCreateTime(LocalDateTime.now());

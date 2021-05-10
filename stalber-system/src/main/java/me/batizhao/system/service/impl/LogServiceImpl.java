@@ -44,7 +44,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log> implements LogSe
         Log log = logMapper.selectById(id);
 
         if(log == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return log;

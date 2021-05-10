@@ -25,7 +25,6 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         additionalInfo.put(SecurityConstants.DETAILS_USERNAME, user.getUsername());
         additionalInfo.put(SecurityConstants.DETAILS_DEPT_ID, user.getDeptId());
         additionalInfo.put("code", ResultEnum.SUCCESS.getCode());
-        additionalInfo.put("message", ResultEnum.SUCCESS.getMessage());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
         return accessToken;
     }

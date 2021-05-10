@@ -65,7 +65,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         Code code = codeMapper.selectById(id);
 
         if (code == null) {
-            throw new NotFoundException(String.format("没有该记录 '%s'。", id));
+            throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
 
         return code;
@@ -128,7 +128,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
 
                 if (cm.getRequired() != null && cm.getRequired()) {
                     List<Rules> rules = new ArrayList<>();
-                    rules.add(new Rules(true, "必须填写"));
+                    rules.add(new Rules(true, "Required"));
                     element.setRules(rules);
                 }
 
@@ -142,8 +142,8 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         try {
             code.setOptions(objectMapper.writeValueAsString(fm));
         } catch (JsonProcessingException e) {
-            log.error("序列化失败，{}", e.getMessage());
-            throw new StalberException("序列化失败！", e);
+            log.error("Serialization failed，{}", e.getMessage());
+            throw new StalberException("Serialization failed！", e);
         }
 
         code.setCreateTime(LocalDateTime.now());
@@ -243,7 +243,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     @Transactional
     public Boolean syncColumn(Long id, List<CodeMeta> codeMetas, List<CodeMeta> dbTableColumns) {
         if (CollectionUtils.isEmpty(dbTableColumns)) {
-            throw new StalberException("同步数据失败，原表结构不存在！");
+            throw new StalberException("Failed to synchronize data, original table structure does not exist!");
         }
 
         List<String> tableColumnNames = codeMetas.stream().map(CodeMeta::getColumnName).collect(Collectors.toList());
