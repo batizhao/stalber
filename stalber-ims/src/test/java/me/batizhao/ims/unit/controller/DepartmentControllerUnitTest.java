@@ -125,8 +125,7 @@ public class DepartmentControllerUnitTest extends BaseControllerUnitTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.message").value("ok"));
+                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()));
 
         verify(departmentService).deleteById(anyInt());
     }

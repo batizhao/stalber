@@ -29,7 +29,7 @@ public class I18nUtil {
         try {
             content = messageSource.getMessage(code, args, locale);
         } catch (Exception e) {
-            log.info("获取提示消息失败： ->", e);
+            log.info("Failed to get message： ->", e);
             content = defaultMessage;
         }
         return content;

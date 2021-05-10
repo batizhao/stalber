@@ -201,8 +201,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.message").value("ok"));
+                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()));
 
         verify(menuService).deleteById(anyInt());
     }
@@ -217,7 +216,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.UNKNOWN_ERROR.getCode()))
-                .andExpect(jsonPath("$.data").value("存在子菜单不允许删除！"));
+                .andExpect(jsonPath("$.data").value("There are sub menus that cannot be deleted!"));
 
         verify(menuService).deleteById(anyInt());
     }
