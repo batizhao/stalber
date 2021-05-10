@@ -254,7 +254,7 @@ public class UserApiTest extends BaseApiTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.UNKNOWN_ERROR.getCode()))
-                .andExpect(jsonPath("$.data", containsString("管理员不允许操作")));
+                .andExpect(jsonPath("$.data", containsString("Operation not allowed!")));
     }
 
     /**
