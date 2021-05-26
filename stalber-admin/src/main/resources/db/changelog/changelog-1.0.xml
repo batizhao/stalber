@@ -172,6 +172,22 @@
             <column name="sort" valueNumeric="3"/>
         </insert>
         <insert tableName="menu">
+            <column name="id" valueNumeric="1104"/>
+            <column name="name" value="导入用户"/>
+            <column name="permission" value="ims:user:import"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="1100"/>
+            <column name="sort" valueNumeric="4"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="1105"/>
+            <column name="name" value="导出用户"/>
+            <column name="permission" value="ims:user:export"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="1100"/>
+            <column name="sort" valueNumeric="5"/>
+        </insert>
+        <insert tableName="menu">
             <column name="id" valueNumeric="1200"/>
             <column name="path" value="/ims/role"/>
             <column name="name" value="角色管理"/>
@@ -317,6 +333,8 @@
             delete from menu where id = 1101;
             delete from menu where id = 1102;
             delete from menu where id = 1103;
+            delete from menu where id = 1104;
+            delete from menu where id = 1105;
             delete from menu where id = 1200;
             delete from menu where id = 1201;
             delete from menu where id = 1202;
@@ -372,6 +390,14 @@
         <insert tableName="role_menu">
             <column name="roleId" valueNumeric="2"/>
             <column name="menuId" valueNumeric="1103"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="1104"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="1105"/>
         </insert>
         <insert tableName="role_menu">
             <column name="roleId" valueNumeric="2"/>
@@ -447,6 +473,8 @@
             delete from role_menu where roleId = 2 and menuId = 1101;
             delete from role_menu where roleId = 2 and menuId = 1102;
             delete from role_menu where roleId = 2 and menuId = 1103;
+            delete from role_menu where roleId = 2 and menuId = 1104;
+            delete from role_menu where roleId = 2 and menuId = 1105;
             delete from role_menu where roleId = 2 and menuId = 1200;
             delete from role_menu where roleId = 2 and menuId = 1201;
             delete from role_menu where roleId = 2 and menuId = 1202;

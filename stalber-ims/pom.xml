@@ -17,6 +17,14 @@
             <groupId>me.batizhao</groupId>
             <artifactId>stalber-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.vintage</groupId>

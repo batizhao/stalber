@@ -94,4 +94,11 @@ public interface UserService extends IService<User> {
 	 * @return
 	 */
 	List<User> findLeadersByDepartmentId(Long departmentId, String type);
+
+	/**
+	 * 导入
+	 * @param users
+	 * @return
+	 */
+    String importUsers(List<User> users, boolean updateSupport);
 }

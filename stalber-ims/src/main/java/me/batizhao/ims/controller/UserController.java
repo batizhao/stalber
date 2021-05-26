@@ -1,5 +1,9 @@
 package me.batizhao.ims.controller;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -7,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
+import me.batizhao.common.constant.PecadoConstants;
 import me.batizhao.common.util.R;
 import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.ims.domain.*;
@@ -15,22 +20,26 @@ import me.batizhao.ims.service.UserPostService;
 import me.batizhao.ims.service.UserRoleService;
 import me.batizhao.ims.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * 用户管理
  * 这里是用户管理接口的描述
  *
- * @module pecado-ims
- *
  * @author batizhao
+ * @module pecado-ims
  * @since 2016/9/28
  */
 @Api(tags = "用户管理")
@@ -51,11 +60,12 @@ public class UserController {
 
     /**
      * 分页查询
-     * @param page 分页对象
-     * @param user 用户
+     *
+     * @param page         分页对象
+     * @param user         用户
      * @param departmentId 部门ID
      * @return 用户集合
-     * @real_return R<Page<User>>
+     * @real_return R<Page < User>>
      */
     @ApiOperation(value = "分页查询用户")
     @GetMapping("/users")
@@ -68,7 +78,7 @@ public class UserController {
      * 查询用户
      * 返回用户集合
      *
-     * @return R<List<User>>
+     * @return R<List < User>>
      */
     @ApiOperation(value = "查询用户")
     @GetMapping("/user")
@@ -79,13 +89,14 @@ public class UserController {
 
     /**
      * 通过id查询用户
+     *
      * @param id id
      * @return R<User>
      */
     @ApiOperation(value = "通过id查询用户")
     @GetMapping("/user/{id}")
     @PreAuthorize("isAuthenticated()")
-    public R<User> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<User> handleId(@ApiParam(value = "ID", required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(userService.findById(id));
     }
 
@@ -107,6 +118,7 @@ public class UserController {
 
     /**
      * 添加或编辑用户
+     *
      * @param user 用户
      * @return R<User>
      */
@@ -114,7 +126,7 @@ public class UserController {
     @PostMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:add') or @pms.hasPermission('ims:user:edit')")
     @SystemLog
-    public R<User> handleSaveOrUpdate(@Valid @ApiParam(value = "用户" , required = true) @RequestBody User user) {
+    public R<User> handleSaveOrUpdate(@Valid @ApiParam(value = "用户", required = true) @RequestBody User user) {
         return R.ok(userService.saveOrUpdateUser(user));
     }
 
@@ -142,7 +154,7 @@ public class UserController {
     @PostMapping("/user/status")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
+    public R<Boolean> handleUpdateStatus(@ApiParam(value = "用户", required = true) @RequestBody User user) {
         return R.ok(userService.updateStatus(user));
     }
 
@@ -169,7 +181,7 @@ public class UserController {
     @PostMapping("/user/avatar")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public R<User> handleUpdateAvatar(@ApiParam(value = "用户" , required = true) @RequestBody User user) {
+    public R<User> handleUpdateAvatar(@ApiParam(value = "用户", required = true) @RequestBody User user) {
         Long userId = SecurityUtils.getUser().getUserId();
         return R.ok(userService.saveOrUpdateUser(user.setId(userId)));
     }
@@ -185,8 +197,8 @@ public class UserController {
     @PostMapping("/user/password")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public R<Boolean> handleUpdatePassword(@ApiParam(value = "旧密码" , required = true) @Size(min = 6) @RequestParam String oldPassword,
-                                           @ApiParam(value = "新密码" , required = true) @Size(min = 6) @RequestParam String newPassword) {
+    public R<Boolean> handleUpdatePassword(@ApiParam(value = "旧密码", required = true) @Size(min = 6) @RequestParam String oldPassword,
+                                           @ApiParam(value = "新密码", required = true) @Size(min = 6) @RequestParam String newPassword) {
         Long userId = SecurityUtils.getUser().getUserId();
         return R.ok(userService.updatePassword(userId, oldPassword, newPassword));
     }
@@ -241,7 +253,7 @@ public class UserController {
      * 返回领导集合
      *
      * @param departmentId 部门ID
-     * @return R<List<User>>
+     * @return R<List < User>>
      */
     @ApiOperation(value = "根据部门ID查询领导")
     @GetMapping(value = "/user/leader")
@@ -251,4 +263,45 @@ public class UserController {
         return R.ok(userService.findLeadersByDepartmentId(departmentId, type));
     }
 
+    /**
+     * 导入
+     * 返回状态标记
+     *
+     * @param file Excel文件
+     * @param updateSupport 覆盖更新
+     */
+    @ApiOperation(value = "导入")
+    @PostMapping(value = "/user/import")
+    @PreAuthorize("@pms.hasPermission('ims:user:import')")
+    public R<String> handleImport(MultipartFile file, boolean updateSupport) throws IOException {
+        ExcelReader reader = ExcelUtil.getReader(file.getInputStream());
+        List<User> users = reader.readAll(User.class);
+        return R.ok(userService.importUsers(users, updateSupport));
+    }
+
+    /**
+     * 导出
+     * 返回Excel流
+     *
+     * @param user 过滤条件
+     */
+    @ApiOperation(value = "导出")
+    @PostMapping(value = "/user/export")
+    @PreAuthorize("@pms.hasPermission('ims:user:export')")
+    public void handleExport(Page<User> page, User user, Long departmentId, HttpServletResponse response) throws IOException {
+        List<User> users = userService.findUsers(page, user, departmentId).getRecords();
+
+        ExcelWriter writer = ExcelUtil.getWriter(true);
+        writer.write(users, true);
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                String.format("attachment; filename=%s.xlsx", PecadoConstants.BACK_END_PROJECT));
+
+        ServletOutputStream out = response.getOutputStream();
+
+        writer.flush(out, true);
+        writer.close();
+        IoUtil.close(out);
+    }
 }
