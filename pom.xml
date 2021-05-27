@@ -34,7 +34,7 @@
 		<hutool.version>5.6.5</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
 		<liquibase.version>4.3.5</liquibase.version>
-		<mybatis-plus.version>3.4.3</mybatis-plus.version>
+		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
 		<poi.version>5.0.0</poi.version>
 		<spring-boot.version>2.4.6</spring-boot.version>
