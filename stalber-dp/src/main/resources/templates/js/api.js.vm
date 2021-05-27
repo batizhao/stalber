@@ -53,11 +53,3 @@ export function change${className}Status(id, status) {
     data: data
   })
 }
-
-// 导出${comments}
-export function export${className}(query) {
-  return request({
-    url: '/${moduleName}/${mappingPath}/export',
-    params: query
-  })
-}

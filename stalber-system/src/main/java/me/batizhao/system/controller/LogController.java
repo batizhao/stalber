@@ -1,21 +1,29 @@
 package me.batizhao.system.controller;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import me.batizhao.common.annotation.SystemLog;
+import me.batizhao.common.constant.PecadoConstants;
 import me.batizhao.common.util.R;
 import me.batizhao.system.domain.Log;
 import me.batizhao.system.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -98,4 +106,31 @@ public class LogController {
     public R<Boolean> handleDeleteAllLog() {
         return R.ok(logService.remove(null));
     }
+
+    /**
+     * 导出
+     * 返回Excel流
+     *
+     * @param log 过滤条件
+     */
+    @ApiOperation(value = "导出")
+    @PostMapping(value = "/log/export")
+    @PreAuthorize("@pms.hasPermission('system:log:export')")
+    public void handleExport(Page<Log> page, Log log, HttpServletResponse response) throws IOException {
+        List<Log> logs = logService.findLogs(page, log).getRecords();
+
+        ExcelWriter writer = ExcelUtil.getWriter(true);
+        writer.write(logs, true);
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                String.format("attachment; filename=%s.xlsx", PecadoConstants.BACK_END_PROJECT));
+
+        ServletOutputStream out = response.getOutputStream();
+
+        writer.flush(out, true);
+        writer.close();
+        IoUtil.close(out);
+    }
+
 }

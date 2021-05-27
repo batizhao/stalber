@@ -33,18 +33,17 @@
 		<dynamic-datasource.version>3.3.1</dynamic-datasource.version>
 		<hutool.version>5.6.5</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
-		<liquibase.version>4.3.1</liquibase.version>
-		<mybatis-plus.version>3.4.2</mybatis-plus.version>
+		<liquibase.version>4.3.5</liquibase.version>
+		<mybatis-plus.version>3.4.3</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
-		<mockito.version>3.7.0</mockito.version>
 		<poi.version>5.0.0</poi.version>
-		<spring-boot.version>2.4.4</spring-boot.version>
+		<spring-boot.version>2.4.6</spring-boot.version>
 		<springfox.version>3.0.0</springfox.version>
 		<swagger-annotations.version>1.6.2</swagger-annotations.version>
 		<velocity.version>1.7</velocity.version>
 
-		<jacoco-maven-plugin.verison>0.8.6</jacoco-maven-plugin.verison>
-		<git-commit-id-plugin.version>4.0.3</git-commit-id-plugin.version>
+		<jacoco-maven-plugin.verison>0.8.7</jacoco-maven-plugin.verison>
+		<git-commit-id-plugin.version>4.0.4</git-commit-id-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 	</properties>
 

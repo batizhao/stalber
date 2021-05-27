@@ -35,6 +35,9 @@ public class R<T> implements Serializable {
      */
     private T data;
 
+    public R() {
+    }
+
     public R(Integer code) {
         this.code = code;
         setCode(code);
