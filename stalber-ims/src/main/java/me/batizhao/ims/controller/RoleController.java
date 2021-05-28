@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.util.R;
 import me.batizhao.ims.domain.Role;
+import me.batizhao.ims.domain.RoleDepartment;
 import me.batizhao.ims.domain.RoleMenu;
 import me.batizhao.ims.service.RoleMenuService;
 import me.batizhao.ims.service.RoleService;
@@ -151,6 +152,21 @@ public class RoleController {
     @SystemLog
     public R<Boolean> handleAddUserRoles(@ApiParam(value = "关联菜单", required = true) @RequestBody List<RoleMenu> roleMenuList) {
         return R.ok(roleMenuService.updateRoleMenus(roleMenuList));
+    }
+
+    /**
+     * 分配数据权限
+     * 返回 true or false
+     *
+     * @param role 角色（包含数据范围roleDepartments）
+     * @return R<Boolean>
+     */
+    @ApiOperation(value = "分配数据权限")
+    @PostMapping(value = "/role/department")
+    @PreAuthorize("@pms.hasPermission('ims:role:admin')")
+    @SystemLog
+    public R<Boolean> handleUpdateDataScope(@ApiParam(value = "角色", required = true) @RequestBody Role role) {
+        return R.ok(roleService.updateDataScope(role));
     }
 
 }

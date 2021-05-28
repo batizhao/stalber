@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author batizhao
@@ -43,6 +44,12 @@ public class Role implements Serializable {
     private String description;
 
     /**
+     * 数据范围（all|custom|dept|sub|oneself）
+     */
+    @ApiModelProperty(value="数据范围（all|custom|dept|sub|oneself）")
+    private String dataScope;
+
+    /**
      * 状态
      */
     @ApiModelProperty(value="状态")
@@ -59,4 +66,10 @@ public class Role implements Serializable {
      */
     @ApiModelProperty(value="修改时间")
     private LocalDateTime updateTime;
+
+    /**
+     * 数据权限
+     */
+    @ApiModelProperty(value = "数据权限")
+    private transient List<RoleDepartment> roleDepartments;
 }

@@ -52,6 +52,9 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="description" type="VARCHAR(255)" remarks="角色描述" defaultValue=""/>
+            <column name="dataScope" type="VARCHAR(32)" remarks="数据范围（all|custom|dept|sub|oneself）" defaultValue="oneself">
+                <constraints nullable="false"/>
+            </column>
             <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
                 <constraints nullable="false"/>
             </column>
@@ -364,6 +367,7 @@
             <column name="id" valueNumeric="2"/>
             <column name="name" value="系统管理员"/>
             <column name="code" value="ROLE_ADMIN"/>
+            <column name="dataScope" value="all"/>
         </insert>
         <rollback>
             delete from role where id = 1;
@@ -842,5 +846,19 @@
     </changeSet>
     <changeSet author="batizhao" id="CreateTableSeataUndoLog-20201203-002">
         <addUniqueConstraint columnNames="xid, branch_id" constraintName="ux_undo_log" tableName="undo_log"/>
+    </changeSet>
+
+    <changeSet author="batizhao" id="CreateTableRoleDepartment-20210528-001">
+        <createTable tableName="role_department" remarks="角色数据权限">
+            <column name="roleId" type="BIGINT" remarks="角色ID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROLE_DEPARTMENT"/>
+            </column>
+            <column name="departmentId" type="BIGINT" remarks="部门ID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ROLE_DEPARTMENT"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="role_department"/>
+        </rollback>
     </changeSet>
 </databaseChangeLog>

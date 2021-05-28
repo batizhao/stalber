@@ -62,4 +62,11 @@ public interface DepartmentService extends IService<Department> {
      * @return
      */
     List<Department> findDepartmentsByUserId(Long userId);
+
+    /**
+     * 通过角色 ID 查相关的部门
+     * @param roleId
+     * @return
+     */
+    List<Department> findDepartmentsByRoleId(Long roleId);
 }

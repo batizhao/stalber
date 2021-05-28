@@ -114,6 +114,20 @@ public class DepartmentController {
     }
 
     /**
+     * 根据角色ID查询部门
+     * 返回部门集合
+     *
+     * @param roleId 角色id
+     * @return R<List<Department>>
+     */
+    @ApiOperation(value = "根据角色ID查询部门")
+    @GetMapping(value = "/department", params = "roleId")
+    @PreAuthorize("@pms.hasPermission('ims:department:admin')")
+    public R<List<Department>> handleDepartmentsByRoleId(@ApiParam(value = "角色ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
+        return R.ok(departmentService.findDepartmentsByRoleId(roleId));
+    }
+
+    /**
      * 分配部门领导
      * 返回 true or false
      *

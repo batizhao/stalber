@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.ims.domain.Role;
 import me.batizhao.ims.mapper.RoleMapper;
+import me.batizhao.ims.service.RoleDepartmentService;
 import me.batizhao.ims.service.RoleMenuService;
 import me.batizhao.ims.service.RoleService;
 import me.batizhao.ims.service.UserRoleService;
@@ -57,6 +58,8 @@ public class RoleServiceUnitTest extends BaseServiceUnitTest {
     private UserRoleService userRoleService;
     @MockBean
     private RoleMenuService roleMenuService;
+    @MockBean
+    private RoleDepartmentService roleDepartmentService;
 
     @Autowired
     private RoleService roleService;

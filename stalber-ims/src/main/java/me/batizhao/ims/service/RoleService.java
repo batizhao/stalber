@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.ims.domain.Role;
+import me.batizhao.ims.domain.RoleDepartment;
 
 import java.util.List;
 
@@ -55,4 +56,11 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     List<Role> findRolesByUserId(Long userId);
+
+    /**
+     * 更新数据权限
+     * @param role
+     * @return
+     */
+    Boolean updateDataScope(Role role);
 }

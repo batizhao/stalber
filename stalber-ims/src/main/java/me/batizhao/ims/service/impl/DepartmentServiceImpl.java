@@ -125,4 +125,9 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     public List<Department> findDepartmentsByUserId(Long userId) {
         return departmentMapper.findDepartmentsByUserId(userId);
     }
+
+    @Override
+    public List<Department> findDepartmentsByRoleId(Long roleId) {
+        return departmentMapper.findDepartmentsByRoleId(roleId);
+    }
 }
