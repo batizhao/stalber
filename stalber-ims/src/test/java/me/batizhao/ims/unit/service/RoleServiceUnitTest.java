@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.exception.StalberException;
 import me.batizhao.ims.domain.Role;
 import me.batizhao.ims.mapper.RoleMapper;
 import me.batizhao.ims.service.RoleDepartmentService;
@@ -149,8 +150,11 @@ public class RoleServiceUnitTest extends BaseServiceUnitTest {
         doReturn(true).when(service).removeByIds(anyList());
         doReturn(true).when(userRoleService).remove(any(Wrapper.class));
         doReturn(true).when(roleMenuService).remove(any(Wrapper.class));
+        doReturn(true).when(roleDepartmentService).remove(any(Wrapper.class));
 
-        Boolean b = roleService.deleteByIds(Arrays.asList(1L, 2L));
+        assertThrows(StalberException.class, () -> roleService.deleteByIds(Arrays.asList(1L, 2L)));
+
+        Boolean b = roleService.deleteByIds(Arrays.asList(3L));
         assertThat(b, equalTo(true));
     }
 
