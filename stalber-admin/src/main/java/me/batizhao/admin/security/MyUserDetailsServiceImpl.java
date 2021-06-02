@@ -1,14 +1,11 @@
 package me.batizhao.admin.security;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.domain.PecadoUser;
 import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
 import me.batizhao.ims.service.UserService;
-import me.batizhao.ims.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,8 +51,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         Collection<? extends GrantedAuthority> authorities = AuthorityUtils
                 .createAuthorityList(authSet.toArray(new String[0]));
 
-        //TODO: The second param to user.getDeptId
-        return new PecadoUser(user.getId(), user.getId(), user.getUsername(), user.getPassword(),
+        return new PecadoUser(user.getId(), userInfoVO.getDeptIds(), userInfoVO.getRoleIds(), user.getUsername(), user.getPassword(),
                 true,
                 true,
                 true,

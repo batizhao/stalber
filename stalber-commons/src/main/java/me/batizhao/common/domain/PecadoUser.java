@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.List;
 
 public class PecadoUser extends User {
 
@@ -18,14 +19,21 @@ public class PecadoUser extends User {
      * 部门ID
      */
     @Getter
-    private Long deptId;
+    private List<Integer> deptIds;
 
-    public PecadoUser(Long userId, Long deptId, String username, String password, boolean enabled,
+    /**
+     * 角色ID
+     */
+    @Getter
+    private List<Long> roleIds;
+
+    public PecadoUser(Long userId, List<Integer> deptIds, List<Long> roleIds, String username, String password, boolean enabled,
                    boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
                    Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.userId = userId;
-        this.deptId = deptId;
+        this.deptIds = deptIds;
+        this.roleIds = roleIds;
     }
 
 }

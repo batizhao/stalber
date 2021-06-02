@@ -25,7 +25,7 @@
         LEFT JOIN user_department ud ON u.id = ud.userId
         <where>
             <if test="departmentId != null and departmentId != 1">
-                ud.departmentId  in
+                ud.departmentId IN
                 (SELECT d.id FROM department d LEFT JOIN department_relation dr ON d.id = dr.descendant WHERE dr.ancestor = #{departmentId})
             </if>
             <if test="user.username != null and user.username != ''">
@@ -34,6 +34,7 @@
             <if test="user.name != null and user.name != ''">
                 AND u.name LIKE CONCAT('%',#{user.name},'%')
             </if>
+            ${user.dataPermission}
         </where>
     </select>
 

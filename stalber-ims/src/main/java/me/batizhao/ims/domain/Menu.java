@@ -9,7 +9,6 @@ import me.batizhao.common.domain.TreeNode;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @author batizhao
@@ -56,17 +55,17 @@ public class Menu extends TreeNode implements Serializable {
     @ApiModelProperty(value="状态")
     private String status;
 
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value="创建时间")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty(value="修改时间")
-    private LocalDateTime updateTime;
+//    /**
+//     * 创建时间
+//     */
+//    @ApiModelProperty(value="创建时间")
+//    private LocalDateTime createTime;
+//
+//    /**
+//     * 修改时间
+//     */
+//    @ApiModelProperty(value="修改时间")
+//    private LocalDateTime updateTime;
 
     /**
      * 路由元数据

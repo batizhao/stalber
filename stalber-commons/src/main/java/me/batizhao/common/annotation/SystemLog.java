@@ -1,6 +1,5 @@
 package me.batizhao.common.annotation;
 
-
 import java.lang.annotation.*;
 
 /**

@@ -5,12 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import me.batizhao.common.domain.BaseEntity;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @author batizhao
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @NoArgsConstructor
 @ApiModel(description = "用户")
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -75,26 +75,8 @@ public class User implements Serializable {
     private String status;
 
     /**
-     * 创建时间
-     */
-    @ApiModelProperty(value="创建时间")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty(value="修改时间")
-    private LocalDateTime updateTime;
-
-    /**
      * 第三方ID
      */
     @ApiModelProperty(value="第三方ID")
     private String uuid;
-
-//    /**
-//     * 角色列表
-//     */
-//    @ApiModelProperty(value = "角色列表")
-//    private transient List<Role> roleList;
 }

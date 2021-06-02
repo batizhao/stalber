@@ -56,4 +56,9 @@ public class SecurityConstants {
 	 * 用户部门字段
 	 */
 	public static final String DETAILS_DEPT_ID = "dept_id";
+
+	/**
+	 * 用户角色字段
+	 */
+	public static final String DETAILS_ROLE_ID = "role_id";
 }

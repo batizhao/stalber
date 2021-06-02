@@ -31,6 +31,18 @@ public class UserInfoVO implements Serializable {
 	/**
 	 * @mock @pick(["ADMIN","MEMBER","GUEST"])
 	 */
-	@ApiModelProperty(value = "角色清单 ")
+	@ApiModelProperty(value = "角色清单")
 	private List<String> roles;
+
+	/**
+	 * @mock @pick([1,2,3])
+	 */
+	@ApiModelProperty(value = "角色ID串")
+	private List<Long> roleIds;
+
+	/**
+	 * @mock @pick([1,2,3])
+	 */
+	@ApiModelProperty(value = "部门ID串")
+	private List<Integer> deptIds;
 }

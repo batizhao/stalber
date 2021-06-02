@@ -20,7 +20,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param id
      * @return
      */
-    @Select("SELECT A.id, A.name, A.code FROM role A LEFT JOIN user_role B ON A.id = B.roleId WHERE B.userId = #{id}")
+    @Select("SELECT A.id, A.name, A.code, A.dataScope FROM role A LEFT JOIN user_role B ON A.id = B.roleId WHERE B.userId = #{id}")
     List<Role> findRolesByUserId(@Param("id") Long id);
 
 //    /**

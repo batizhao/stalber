@@ -28,7 +28,9 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author lengleng
@@ -68,9 +70,11 @@ public class MyUserAuthenticationConverter implements UserAuthenticationConverte
 			Collection<? extends GrantedAuthority> authorities = getAuthorities(map);
 
 			String username = (String) map.get(SecurityConstants.DETAILS_USERNAME);
-			Integer id = (Integer) map.get(SecurityConstants.DETAILS_USER_ID);
-			Integer deptId = (Integer) map.get(SecurityConstants.DETAILS_DEPT_ID);
-			PecadoUser user = new PecadoUser(id.longValue(), deptId.longValue(), username, N_A, true, true, true, true, authorities);
+			Integer userId = (Integer) map.get(SecurityConstants.DETAILS_USER_ID);
+			List<Integer> deptIds = (List<Integer>) map.get(SecurityConstants.DETAILS_DEPT_ID);
+			List<Integer> role_ids = (List<Integer>) map.get(SecurityConstants.DETAILS_ROLE_ID);
+			List<Long> roleIds = role_ids.stream().mapToLong(Integer::longValue).boxed().collect(Collectors.toList());
+			PecadoUser user = new PecadoUser(userId.longValue(), deptIds, roleIds, username, N_A, true, true, true, true, authorities);
 			return new UsernamePasswordAuthenticationToken(user, N_A, authorities);
 		}
 		return null;
