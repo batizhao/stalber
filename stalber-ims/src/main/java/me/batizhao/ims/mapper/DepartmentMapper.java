@@ -18,6 +18,13 @@ import java.util.List;
 public interface DepartmentMapper extends BaseMapper<Department> {
 
     /**
+     * 查询所有部门
+     * @param department
+     * @return
+     */
+    List<Department> selectDepartments(@Param("department") Department department);
+
+    /**
      * 查用户部门
      * @param id
      * @return
@@ -32,4 +39,5 @@ public interface DepartmentMapper extends BaseMapper<Department> {
      */
     @Select("SELECT A.id, A.name FROM department A LEFT JOIN role_department B ON A.id = B.departmentId WHERE B.roleId = #{id}")
     List<Department> findDepartmentsByRoleId(@Param("id") Long id);
+
 }

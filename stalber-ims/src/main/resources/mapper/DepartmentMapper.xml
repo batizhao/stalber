@@ -18,4 +18,21 @@
     <result property="updateTime" column="updateTime"/>
   </resultMap>
 
+  <select id="selectDepartments" resultMap="departmentMap">
+    SELECT d.*
+    FROM (
+      SELECT id,uuid,name,fullName,sort,code,status,type,pid,createTime,updateTime,id AS departmentId
+      FROM department) d
+    <where>
+      <if test="department.fullName != null and department.fullName != ''">
+        AND d.fullName LIKE CONCAT('%',#{department.fullName},'%')
+      </if>
+      <if test="department.name != null and department.name != ''">
+        AND d.name LIKE CONCAT('%',#{department.name},'%')
+      </if>
+      ${department.dataPermission}
+    </where>
+    ORDER BY d.sort ASC
+  </select>
+
 </mapper>

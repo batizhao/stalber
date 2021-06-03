@@ -71,7 +71,7 @@ public class UserController {
     @GetMapping("/users")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<IPage<User>> handleUsers(Page<User> page, User user, Long departmentId) {
-        return R.ok(userService.findUsers(page, user, departmentId));
+        return R.ok(userService.findUsers(user, page, departmentId));
     }
 
     /**
@@ -289,7 +289,7 @@ public class UserController {
     @PostMapping(value = "/user/export")
     @PreAuthorize("@pms.hasPermission('ims:user:export')")
     public void handleExport(Page<User> page, User user, Long departmentId, HttpServletResponse response) throws IOException {
-        List<User> users = userService.findUsers(page, user, departmentId).getRecords();
+        List<User> users = userService.findUsers(user, page, departmentId).getRecords();
 
         ExcelWriter writer = ExcelUtil.getWriter(true);
         writer.write(users, true);

@@ -147,7 +147,7 @@ public class UserServiceUnitTest extends BaseServiceUnitTest {
         when(userMapper.selectUsers(any(Page.class), any(User.class), anyLong()))
                 .thenReturn(userPageList);
 
-        IPage<User> users = userService.findUsers(new Page<>(), new User().setUsername("tom"), null);
+        IPage<User> users = userService.findUsers(new User().setUsername("tom"), new Page<>(), null);
 
         assertThat(users.getRecords(), iterableWithSize(3));
         assertThat(users.getRecords(), hasItems(hasProperty("username", is("zhangsan")),

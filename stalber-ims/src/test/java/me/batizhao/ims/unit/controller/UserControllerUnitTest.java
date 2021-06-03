@@ -162,7 +162,7 @@ public class UserControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenNothing_whenFindAllUser_thenUserListJson() throws Exception {
-        when(userService.findUsers(any(Page.class), any(User.class), any())).thenReturn(userPageList);
+        when(userService.findUsers(any(User.class), any(Page.class), any())).thenReturn(userPageList);
 
         mvc.perform(get("/ims/users"))
                 .andDo(print())
@@ -173,7 +173,7 @@ public class UserControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.data.records", hasSize(3)))
                 .andExpect(jsonPath("$.data.records[0].username", equalTo("zhangsan")));
 
-        verify(userService).findUsers(any(Page.class), any(User.class), any());
+        verify(userService).findUsers(any(User.class), any(Page.class), any());
     }
 
     @Test

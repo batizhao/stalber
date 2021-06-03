@@ -118,7 +118,7 @@ public class DataScopeAspect {
         }
 
         if (StringUtils.isNotBlank(sqlString.toString())) {
-            Object params = joinPoint.getArgs()[1];
+            Object params = joinPoint.getArgs()[0];
             if (params instanceof BaseEntity) {
                 BaseEntity baseEntity = (BaseEntity) params;
                 baseEntity.setDataPermission(" AND (" + sqlString.substring(4) + ")");

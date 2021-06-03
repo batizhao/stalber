@@ -20,7 +20,7 @@ public interface UserService extends IService<User> {
 	 * @param user 用户
 	 * @return IPage<User>
 	 */
-	IPage<User> findUsers(Page<User> page, User user, Long departmentId);
+	IPage<User> findUsers(User user, Page<User> page, Long departmentId);
 
 	/**
 	 * 查询用户

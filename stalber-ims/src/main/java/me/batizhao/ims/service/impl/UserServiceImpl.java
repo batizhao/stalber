@@ -45,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     @DataScope(deptAlias = "ud", userAlias = "u")
-    public IPage<User> findUsers(Page<User> page, User user, Long departmentId) {
+    public IPage<User> findUsers(User user, Page<User> page, Long departmentId) {
         if (departmentId == null) departmentId = 1L;
         return userMapper.selectUsers(page, user, departmentId);
     }

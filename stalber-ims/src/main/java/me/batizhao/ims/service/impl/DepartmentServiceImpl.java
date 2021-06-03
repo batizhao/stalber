@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.batizhao.common.annotation.DataScope;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.common.exception.StalberException;
 import me.batizhao.common.util.TreeUtil;
@@ -46,17 +47,9 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
     private DepartmentLeaderService departmentLeaderService;
 
     @Override
+    @DataScope(deptAlias = "d")
     public List<Department> findDepartmentTree(Department department) {
-        LambdaQueryWrapper<Department> wrapper = Wrappers.lambdaQuery();
-        if (null != department && StringUtils.isNotBlank(department.getName())) {
-            wrapper.like(Department::getName, department.getName());
-        }
-        if (null != department && StringUtils.isNotBlank(department.getFullName())) {
-            wrapper.like(Department::getFullName, department.getFullName());
-        }
-        wrapper.orderByAsc(Department::getSort);
-
-        List<Department> departments = departmentMapper.selectList(wrapper);
+        List<Department> departments = departmentMapper.selectDepartments(department);
         int min = departments.size() > 0 ? Collections.min(departments.stream().map(Department::getPid).collect(Collectors.toList())) : 0;
         return TreeUtil.build(departments, min);
     }
