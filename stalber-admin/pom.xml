@@ -15,15 +15,19 @@
     <dependencies>
         <dependency>
             <groupId>me.batizhao</groupId>
+            <artifactId>stalber-dp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>me.batizhao</groupId>
             <artifactId>stalber-ims</artifactId>
         </dependency>
         <dependency>
             <groupId>me.batizhao</groupId>
-            <artifactId>stalber-system</artifactId>
+            <artifactId>stalber-oa</artifactId>
         </dependency>
         <dependency>
             <groupId>me.batizhao</groupId>
-            <artifactId>stalber-dp</artifactId>
+            <artifactId>stalber-system</artifactId>
         </dependency>
 
         <dependency>

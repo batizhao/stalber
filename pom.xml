@@ -17,7 +17,8 @@
 		<module>stalber-system</module>
 		<module>stalber-dp</module>
 		<module>stalber-admin</module>
-	</modules>
+        <module>stalber-oa</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,17 +65,22 @@
 			</dependency>
 			<dependency>
 				<groupId>me.batizhao</groupId>
+				<artifactId>stalber-dp</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>me.batizhao</groupId>
 				<artifactId>stalber-ims</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>me.batizhao</groupId>
-				<artifactId>stalber-system</artifactId>
+				<artifactId>stalber-oa</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>me.batizhao</groupId>
-				<artifactId>stalber-dp</artifactId>
+				<artifactId>stalber-system</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
