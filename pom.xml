@@ -12,13 +12,14 @@
 	<description>基于 Pecado 微服务改造的 Spring Boot 项目</description>
 
 	<modules>
-		<module>stalber-commons</module>
-		<module>stalber-ims</module>
-		<module>stalber-system</module>
-		<module>stalber-dp</module>
 		<module>stalber-admin</module>
-        <module>stalber-oa</module>
-    </modules>
+		<module>stalber-api</module>
+		<module>stalber-commons</module>
+		<module>stalber-dp</module>
+		<module>stalber-ims</module>
+		<module>stalber-oa</module>
+		<module>stalber-system</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +33,7 @@
 		<commons-configuration.version>2.7</commons-configuration.version>
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<dynamic-datasource.version>3.3.1</dynamic-datasource.version>
+		<feign.version>11.2</feign.version>
 		<hutool.version>5.6.5</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
 		<liquibase.version>4.3.5</liquibase.version>
@@ -58,6 +60,11 @@
 				<scope>import</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>me.batizhao</groupId>
+				<artifactId>stalber-terrace-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>me.batizhao</groupId>
 				<artifactId>stalber-commons</artifactId>
@@ -170,6 +177,17 @@
 			</dependency>
 
 			<dependency>
+				<groupId>io.github.openfeign</groupId>
+				<artifactId>feign-core</artifactId>
+				<version>${feign.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.openfeign</groupId>
+				<artifactId>feign-jackson</artifactId>
+				<version>${feign.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.mybatis.spring.boot</groupId>
 				<artifactId>mybatis-spring-boot-starter-test</artifactId>
 				<version>${mybatis-spring-boot.version}</version>
@@ -187,55 +205,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security.oauth.boot</groupId>
-			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-extension</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

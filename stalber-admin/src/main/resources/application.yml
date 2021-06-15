@@ -56,6 +56,9 @@ spring:
   web:
     locale: zh_CN
 
+third-party-service:
+  flowable-service-url: http://172.31.21.208:8886/terrace/
+
 logging:
   level:
     org.springframework:

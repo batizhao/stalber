@@ -17,6 +17,15 @@
             <groupId>me.batizhao</groupId>
             <artifactId>stalber-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>me.batizhao</groupId>
+            <artifactId>stalber-terrace-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

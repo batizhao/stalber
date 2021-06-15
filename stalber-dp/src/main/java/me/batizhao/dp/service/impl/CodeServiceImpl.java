@@ -19,11 +19,11 @@ import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
 import me.batizhao.dp.util.CodeGenUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
@@ -160,7 +160,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     public Code updateCode(Code code) {
         code.setUpdateTime(LocalDateTime.now());
         this.updateById(code);
-        if (CollectionUtils.isNotEmpty(code.getCodeMetaList())) {
+        if (!CollectionUtils.isEmpty(code.getCodeMetaList())) {
             codeMetaService.updateBatchById(code.getCodeMetaList());
         }
 
@@ -259,7 +259,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         });
 
         List<CodeMeta> delColumns = codeMetas.stream().filter(column -> !dbTableColumnNames.contains(column.getColumnName())).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(delColumns)) {
+        if (!CollectionUtils.isEmpty(delColumns)) {
             List<Long> ids = delColumns.stream().map(CodeMeta::getId).collect(Collectors.toList());
             codeMetaService.removeByIds(ids);
         }
