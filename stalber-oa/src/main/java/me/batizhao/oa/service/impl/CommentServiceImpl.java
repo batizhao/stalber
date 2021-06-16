@@ -10,12 +10,16 @@ import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.oa.domain.Comment;
 import me.batizhao.oa.mapper.CommentMapper;
 import me.batizhao.oa.service.CommentService;
+import me.batizhao.terrace.api.FlowableApi;
+import me.batizhao.terrace.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * 审批接口实现类
@@ -28,8 +32,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Autowired
     private CommentMapper commentMapper;
-//    @Autowired
-//    private FlowableApi flowableApi;
+    @Autowired
+    private FlowableApi flowableApi;
 
     @Override
     public IPage<Comment> findComments(Page<Comment> page, Comment comment) {
@@ -87,8 +91,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 //        applicationDTO.setTitle("title");
 //        applicationDTO.setCreator("admin");
 //        dto.setDto(applicationDTO);
-//
-//        System.out.println(flowableApi.start(dto));
+
+        AppTodoTaskDTO dto = new AppTodoTaskDTO();
+        dto.setBusinessModuleId("12");
+        dto.setUserName("1");
+
+        flowableApi.todo(dto);
 
         if (comment.getId() == null) {
             comment.setCreateTime(LocalDateTime.now());

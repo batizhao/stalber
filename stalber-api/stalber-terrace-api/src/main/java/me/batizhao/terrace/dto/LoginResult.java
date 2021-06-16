@@ -18,7 +18,7 @@ public class LoginResult {
     /**
      * token
      */
-    private String authorization;
+    private String accessToken;
 
     /**
      * 过期时间

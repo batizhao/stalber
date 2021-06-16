@@ -1,8 +1,9 @@
 package me.batizhao.terrace.api;
 
-import feign.Headers;
+import feign.Body;
 import feign.Param;
 import feign.RequestLine;
+import me.batizhao.terrace.dto.AppTodoTaskDTO;
 import me.batizhao.terrace.dto.LoginResult;
 import me.batizhao.terrace.dto.R;
 import me.batizhao.terrace.dto.StartProcessDTO;
@@ -18,12 +19,13 @@ public interface FlowableApi {
     /**
      * 登录
      *
-     * @param code
-     * @param key
+     * @param appCode
+     * @param privateKey
      * @return
      */
-    @RequestLine("POST app/login?appCode={code}&privateKey={key}")
-    R<LoginResult> login(@Param("code") String code, @Param("key") String key);
+    @RequestLine("POST app/login")
+    @Body("%7B\"appCode\":\"{appCode}\",\"privateKey\":\"{privateKey}\"%7D")
+    R<LoginResult> login(@Param("appCode") String appCode, @Param("privateKey") String privateKey);
 
     /**
      * 通过流程定义 key 获取最新流程定义，并初始化流程起始环节配置
@@ -32,7 +34,6 @@ public interface FlowableApi {
      * @return
      */
     @RequestLine("GET oa/repository/process/definition/{key}")
-    @Headers("Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjM3NTMzODIzMzMiLCJleHAiOjE2MjM3OTY1ODIsImFjY291bnQiOiJqc29hIn0.jyGcnHzw7e3UgasuLCr5Y1NVI_KgbT-8ZD9lgwvmk9w")
     R loadProcessDefinitionByKey(@Param("key") String key);
 
     /**
@@ -42,7 +43,15 @@ public interface FlowableApi {
      * @return
      */
     @RequestLine("POST oa/runtime/start")
-    @Headers({"Content-Type: application/json", "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjM3NzIxMTIyODEiLCJleHAiOjE2MjM4MTUzMTIsImFjY291bnQiOiJqc29hIn0.w1ipUuVSEKMjJDF0xpxlxfp3zG8AlUBdGkDfcvsFDts"})
     R start(StartProcessDTO dto);
+
+    /**
+     * 任务获取
+     *
+     * @param dto
+     * @return
+     */
+    @RequestLine("GET oa/task/todo")
+    R todo(AppTodoTaskDTO dto);
 
 }

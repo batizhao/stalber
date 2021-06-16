@@ -1,7 +1,5 @@
 package me.batizhao.terrace.dto;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -49,14 +47,12 @@ public class ProcessNodeDTO {
      * 参数类型 0、用户参数 1、组参数 2、用户与组参数
      */
     @ApiModelProperty(value = "参数类型:0、用户参数 1、组参数 2、用户与组参数 默认是：0", name = "paramType")
-    @JsonSetter(nulls = Nulls.SKIP)
     private Integer paramType;
 
     /**
      * 操作类型：0、审批 1、送阅 2、阅毕
      **/
     @ApiModelProperty(value = "操作类型：0、审批  1、送阅 2、阅毕 默认是：0", name = "operType")
-    @JsonSetter(nulls = Nulls.SKIP)
     private Integer operType;
 
     public ProcessNodeDTO() {

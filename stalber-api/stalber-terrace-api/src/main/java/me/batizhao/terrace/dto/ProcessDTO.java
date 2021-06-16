@@ -1,7 +1,5 @@
 package me.batizhao.terrace.dto;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.Nulls;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -103,14 +101,12 @@ public class ProcessDTO {
      * 数据来源
      **/
     @ApiModelProperty(value = "用户采用什么提交数据：0 pc、1 手机、2 其他", name = "source")
-    @JsonSetter(nulls = Nulls.SKIP)
     private Integer source;
 
     /**
      * 手机短信发送标示
      **/
     @ApiModelProperty(value = "手机短信发送标示: false 不发送短信、true 推送短信", name = "sendSMS")
-    @JsonSetter(nulls = Nulls.SKIP)
     private Boolean sendSMS;
 
     /**

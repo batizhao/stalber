@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "third-party-service")
-public class ThirdPartyServiceConfig {
+public class ThirdPartyServiceProperties {
 
     private String flowableServiceUrl;
 
