@@ -3,10 +3,7 @@ package me.batizhao.terrace.api;
 import feign.Body;
 import feign.Param;
 import feign.RequestLine;
-import me.batizhao.terrace.dto.AppTodoTaskDTO;
-import me.batizhao.terrace.dto.LoginResult;
-import me.batizhao.terrace.dto.R;
-import me.batizhao.terrace.dto.StartProcessDTO;
+import me.batizhao.terrace.dto.*;
 
 /**
  * 流程平台接口定义
@@ -14,7 +11,7 @@ import me.batizhao.terrace.dto.StartProcessDTO;
  * @author batizhao
  * @date 2021/6/11
  */
-public interface FlowableApi {
+public interface TerraceApi {
 
     /**
      * 登录
@@ -52,6 +49,25 @@ public interface FlowableApi {
      * @return
      */
     @RequestLine("GET oa/task/todo")
-    R todo(AppTodoTaskDTO dto);
+    R loadTasks(AppTodoTaskDTO dto);
+
+    /**
+     * 通过流程任务id获取任务信息
+     *
+     * @param taskId 任务Id
+     * @param type 任务类型：0 审批任务、 1 传阅任务
+     * @return
+     */
+    @RequestLine("GET oa/task/{taskId}/{type}")
+    R loadTaskDetail(@Param("taskId") String taskId, @Param("type") String type);
+
+    /**
+     * 流程提交
+     *
+     * @param dto
+     * @return
+     */
+    @RequestLine("POST oa/runtime/submit")
+    R submit(SubmitProcessDTO dto);
 
 }

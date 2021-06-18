@@ -5,24 +5,27 @@ import feign.Logger;
 import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-import me.batizhao.terrace.api.FlowableApi;
+import lombok.RequiredArgsConstructor;
+import me.batizhao.terrace.api.TerraceApi;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.Resource;
 
 /**
  * @author batizhao
  * @date 2021/6/11
  */
-@Configuration
+@RequiredArgsConstructor
+@Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties(value = ThirdPartyServiceProperties.class)
+@ConditionalOnProperty(name = "pecado.third-party.enabled", havingValue = "true")
 public class ThirdPartyClientConfig {
 
-    @Resource
-    private ThirdPartyServiceProperties thirdPartyServiceProperties;
+    private final ThirdPartyServiceProperties thirdPartyServiceProperties;
 
     @Bean
-    public FlowableApi flowableApi() {
+    public TerraceApi terraceApi() {
         return Feign.builder()
                 .client(new ApacheHttpClient())
                 .encoder(new JacksonEncoder())
@@ -34,10 +37,10 @@ public class ThirdPartyClientConfig {
                             // not available when building PRs...
                             // https://docs.travis-ci.com/user/environment-variables/#defining-encrypted-variables-in-travisyml
                             "Authorization",
-                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjM4NDU1ODkwMzMiLCJleHAiOjE2MjM4ODg3ODksImFjY291bnQiOiJqc29hIn0.gGq9ptpImuC_E126xDbvAGU8dZx1cdEYld9dPaYk6Mg")
+                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjM5MzYyOTc4MTQiLCJleHAiOjE2MjM5Nzk0OTcsImFjY291bnQiOiJqc29hIn0.hL6X6m4xi4kntAST0u88uUngnvr4-LuMD9U8-eJ03Po")
                     .header("Content-Type", "application/json");
                 })
-                .target(FlowableApi.class, thirdPartyServiceProperties.getFlowableServiceUrl());
+                .target(TerraceApi.class, thirdPartyServiceProperties.getTerraceServiceUrl());
     }
 
 }

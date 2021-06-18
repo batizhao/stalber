@@ -18,6 +18,10 @@ pecado:
       url: https://batizhao.github.io
   upload:
     location: /Users/batizhao/Documents/upload-dir
+  third-party:
+    enabled: true
+    terrace-service-url: http://172.31.21.208:8886/terrace/
+
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
@@ -55,9 +59,6 @@ spring:
         awaitTerminationPeriod: PT1M
   web:
     locale: zh_CN
-
-third-party-service:
-  flowable-service-url: http://172.31.21.208:8886/terrace/
 
 logging:
   level:

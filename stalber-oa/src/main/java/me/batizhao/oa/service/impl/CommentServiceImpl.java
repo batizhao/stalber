@@ -10,16 +10,12 @@ import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.oa.domain.Comment;
 import me.batizhao.oa.mapper.CommentMapper;
 import me.batizhao.oa.service.CommentService;
-import me.batizhao.terrace.api.FlowableApi;
-import me.batizhao.terrace.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 /**
  * 审批接口实现类
@@ -32,8 +28,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Autowired
     private CommentMapper commentMapper;
-    @Autowired
-    private FlowableApi flowableApi;
 
     @Override
     public IPage<Comment> findComments(Page<Comment> page, Comment comment) {
@@ -61,43 +55,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     @Transactional
     public Comment saveOrUpdateComment(Comment comment) {
-//        StartProcessDTO dto = new StartProcessDTO();
-//        dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
-//        dto.setCurrent("usertask1");
-//        dto.setUserId("1");
-//        dto.setUserName("admin");
-//        dto.setTenantId("23");
-//        dto.setOrgId("1");
-//        dto.setOrgName("jiangsu");
-//        dto.setDraft(false);
-//
-//        ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
-//        processNodeDTO.setTarget("usertask2");
-//        processNodeDTO.setFlowName("南京发文流程");
-//
-//        CandidateDTO candidateDTO = new CandidateDTO();
-//        candidateDTO.setUserId("1");
-//        candidateDTO.setOrgId("2");
-//        processNodeDTO.setCandidate(asList(candidateDTO));
-//
-//        List<ProcessNodeDTO> processNodeDTOList = asList(processNodeDTO);
-//        dto.setProcessNodeDTO(processNodeDTOList);
-//
-//        ApplicationDTO applicationDTO = new ApplicationDTO();
-//        applicationDTO.setId("1");
-//        applicationDTO.setCode("xxx");
-//        applicationDTO.setModuleId("12");
-//        applicationDTO.setModuleName("oa");
-//        applicationDTO.setTitle("title");
-//        applicationDTO.setCreator("admin");
-//        dto.setDto(applicationDTO);
-
-        AppTodoTaskDTO dto = new AppTodoTaskDTO();
-        dto.setBusinessModuleId("12");
-        dto.setUserName("1");
-
-        flowableApi.todo(dto);
-
         if (comment.getId() == null) {
             comment.setCreateTime(LocalDateTime.now());
             comment.setUpdateTime(LocalDateTime.now());
