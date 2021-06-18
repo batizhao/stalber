@@ -1,9 +1,11 @@
 package me.batizhao.terrace.api;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import feign.Body;
 import feign.Param;
 import feign.RequestLine;
 import me.batizhao.terrace.dto.*;
+import me.batizhao.terrace.vo.TodoTaskView;
 
 /**
  * 流程平台接口定义
@@ -49,7 +51,7 @@ public interface TerraceApi {
      * @return
      */
     @RequestLine("GET oa/task/todo")
-    R loadTasks(AppTodoTaskDTO dto);
+    R<Page<TodoTaskView>> loadTasks(AppTodoTaskDTO dto);
 
     /**
      * 通过流程任务id获取任务信息
