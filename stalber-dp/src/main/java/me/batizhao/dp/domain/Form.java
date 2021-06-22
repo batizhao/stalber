@@ -32,6 +32,12 @@ public class Form implements Serializable {
     private Long id;
 
     /**
+     * 表单key
+     */
+    @ApiModelProperty(value="表单key")
+    private String formKey;
+
+    /**
      * 表单名称
      */
     @ApiModelProperty(value="表单名称")

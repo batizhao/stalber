@@ -89,13 +89,14 @@ public class TerraceFeignApiTest {
         AppTodoTaskDTO dto = new AppTodoTaskDTO();
         dto.setBusinessModuleId("12");
         dto.setUserName("1");
+        dto.setQueryType("1");
 
         terraceApi.loadTasks(dto);
     }
 
     @Test
     public void given_whenLoadTaskDetail_thenSuccess() {
-        terraceApi.loadTaskDetail("1297527", "0");
+        terraceApi.loadTaskDetail("1300223", "0");
     }
 
     @Test
@@ -109,7 +110,7 @@ public class TerraceFeignApiTest {
         dto.setOrgId("1");
         dto.setOrgName("jiangsu");
         dto.setTaskId("1297527");
-        dto.setProcInstId("1297501");
+        dto.setProcInstId("1300365");
 
         ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
         processNodeDTO.setTarget("usertask2");

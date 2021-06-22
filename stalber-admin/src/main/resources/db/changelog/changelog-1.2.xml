@@ -124,6 +124,9 @@
             <column autoIncrement="true" name="id" type="BIGINT" remarks="表单ID">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
+            <column name="formKey" type="VARCHAR(64)" remarks="表单key">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="name" type="VARCHAR(255)" remarks="表单名称">
                 <constraints nullable="false" unique="true"/>
             </column>

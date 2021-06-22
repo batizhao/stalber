@@ -1,5 +1,5 @@
 <!-- 添加或编辑${comments}对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" v-if='open' append-to-body>   
+    <el-dialog :title="title" :visible.sync="open" width="500px" v-if="open" append-to-body>
 #if($form == "visual")
       <fm-generate-form
         :data="jsonData"

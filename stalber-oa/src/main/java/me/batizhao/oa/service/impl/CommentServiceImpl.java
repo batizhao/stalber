@@ -10,12 +10,19 @@ import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.oa.domain.Comment;
 import me.batizhao.oa.mapper.CommentMapper;
 import me.batizhao.oa.service.CommentService;
+import me.batizhao.terrace.api.TerraceApi;
+import me.batizhao.terrace.dto.ApplicationDTO;
+import me.batizhao.terrace.dto.CandidateDTO;
+import me.batizhao.terrace.dto.ProcessNodeDTO;
+import me.batizhao.terrace.dto.StartProcessDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * 审批接口实现类
@@ -28,6 +35,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private TerraceApi terraceApi;
 
     @Override
     public IPage<Comment> findComments(Page<Comment> page, Comment comment) {
@@ -58,6 +67,39 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (comment.getId() == null) {
             comment.setCreateTime(LocalDateTime.now());
             comment.setUpdateTime(LocalDateTime.now());
+
+            StartProcessDTO dto = new StartProcessDTO();
+            dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
+            dto.setCurrent("usertask1");
+            dto.setUserId("1");
+            dto.setUserName("admin");
+            dto.setTenantId("23");
+            dto.setOrgId("1");
+            dto.setOrgName("jiangsu");
+            dto.setDraft(false);
+
+            ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
+            processNodeDTO.setTarget("usertask2");
+            processNodeDTO.setFlowName("南京发文流程");
+
+            CandidateDTO candidateDTO = new CandidateDTO();
+            candidateDTO.setUserId("1");
+            candidateDTO.setOrgId("2");
+            processNodeDTO.setCandidate(asList(candidateDTO));
+
+            List<ProcessNodeDTO> processNodeDTOList = asList(processNodeDTO);
+            dto.setProcessNodeDTO(processNodeDTOList);
+
+            ApplicationDTO applicationDTO = new ApplicationDTO();
+            applicationDTO.setId("1");
+            applicationDTO.setCode("xxx");
+            applicationDTO.setModuleId("12");
+            applicationDTO.setModuleName("oa");
+            applicationDTO.setTitle(comment.getTitle());
+            applicationDTO.setCreator("admin");
+            dto.setDto(applicationDTO);
+            terraceApi.start(dto);
+
             commentMapper.insert(comment);
         } else {
             comment.setUpdateTime(LocalDateTime.now());

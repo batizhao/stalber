@@ -1,5 +1,6 @@
 package me.batizhao.dp.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -55,6 +56,7 @@ public class FormServiceImpl extends ServiceImpl<FormMapper, Form> implements Fo
         if (form.getId() == null) {
             form.setCreateTime(LocalDateTime.now());
             form.setUpdateTime(LocalDateTime.now());
+            form.setFormKey(IdUtil.objectId());
             formMapper.insert(form);
         } else {
             form.setUpdateTime(LocalDateTime.now());
