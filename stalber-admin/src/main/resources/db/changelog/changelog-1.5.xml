@@ -50,6 +50,15 @@
             <column name="pid" valueNumeric="4100"/>
             <column name="sort" valueNumeric="1"/>
         </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4200"/>
+            <column name="path" value="/oa/task"/>
+            <column name="name" value="待办公文"/>
+            <column name="permission" value="oa:task:admin"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
 
         <insert tableName="role_menu">
             <column name="roleId" valueNumeric="2"/>
@@ -62,6 +71,10 @@
         <insert tableName="role_menu">
             <column name="roleId" valueNumeric="2"/>
             <column name="menuId" valueNumeric="4101"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4200"/>
         </insert>
     </changeSet>
 </databaseChangeLog>
