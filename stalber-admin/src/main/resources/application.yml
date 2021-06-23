@@ -7,7 +7,7 @@ pecado:
   swagger:
     enabled: true
     title: Pecado API
-    basePackage: me.batizhao
+    basePackage: me.batizhao.dp.controller
     version: 1.0-SNAPSHOT
     license: Powered By batizhao
     licenseUrl: https://batizhao.github.io

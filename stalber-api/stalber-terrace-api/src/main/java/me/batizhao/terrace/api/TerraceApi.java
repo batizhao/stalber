@@ -5,6 +5,8 @@ import feign.Body;
 import feign.Param;
 import feign.RequestLine;
 import me.batizhao.terrace.dto.*;
+import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
 
 /**
@@ -33,7 +35,7 @@ public interface TerraceApi {
      * @return
      */
     @RequestLine("GET oa/repository/process/definition/{key}")
-    R loadProcessDefinitionByKey(@Param("key") String key);
+    R<InitProcessDefView> loadProcessDefinitionByKey(@Param("key") String key);
 
     /**
      * 流程启动
@@ -42,7 +44,7 @@ public interface TerraceApi {
      * @return
      */
     @RequestLine("POST oa/runtime/start")
-    R start(StartProcessDTO dto);
+    R<String> start(StartProcessDTO dto);
 
     /**
      * 任务获取
@@ -61,7 +63,7 @@ public interface TerraceApi {
      * @return
      */
     @RequestLine("GET oa/task/{taskId}/{type}")
-    R loadTaskDetail(@Param("taskId") String taskId, @Param("type") String type);
+    R<TaskNodeView> loadTaskDetail(@Param("taskId") String taskId, @Param("type") String type);
 
     /**
      * 流程提交
@@ -70,6 +72,6 @@ public interface TerraceApi {
      * @return
      */
     @RequestLine("POST oa/runtime/submit")
-    R submit(SubmitProcessDTO dto);
+    R<String> submit(SubmitProcessDTO dto);
 
 }

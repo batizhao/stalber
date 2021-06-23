@@ -1,12 +1,15 @@
 package me.batizhao.terrace;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.terrace.api.TerraceApi;
 import me.batizhao.terrace.config.ThirdPartyClientConfig;
 import me.batizhao.terrace.config.ThirdPartyServiceProperties;
 import me.batizhao.terrace.dto.*;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.TaskNodeView;
+import me.batizhao.terrace.vo.TodoTaskView;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,6 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @author batizhao
@@ -30,6 +35,7 @@ import static java.util.Arrays.asList;
 @EnableConfigurationProperties(value = ThirdPartyServiceProperties.class)
 @TestPropertySource(properties = {"pecado.third-party.enabled=true", "pecado.third-party.terrace-service-url=http://172.31.21.208:8886/terrace/"})
 @Slf4j
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TerraceFeignApiTest {
 
     @Autowired
@@ -38,14 +44,30 @@ public class TerraceFeignApiTest {
     @Autowired
     private ThirdPartyServiceProperties thirdPartyServiceProperties;
 
+    private static String taskId;
+    private static String procInstId;
+
     @Test
+    @Order(1)
     public void testServiceUrl() {
         log.info("Flowable service url: {}", thirdPartyServiceProperties.getTerraceServiceUrl());
+
+        assertThat(thirdPartyServiceProperties.getTerraceServiceUrl(), equalTo("http://172.31.21.208:8886/terrace/"));
     }
 
     @Test
     public void givenKey_whenLoadProcessDefinition_thenSuccess() {
-        terraceApi.loadProcessDefinitionByKey("jsoa_njfw");
+        R<InitProcessDefView> result = terraceApi.loadProcessDefinitionByKey("jsoa_njfw");
+
+        InitProcessDefView view = result.getData();
+        assertThat(result.getCode(), equalTo("000000"));
+
+        log.info("View: {}, Dto: {}", view.getView(), view.getDto());
+        assertThat(result.getData().getView().getConfig().getId(), equalTo("9f9e4129cab18ed44a1b313d87a52d0b"));
+
+        log.info("Config: {}", view.getView().getConfig().getConfig());
+        assertThat(result.getData().getView().getConfig().getConfig().getGlobal().isNeed(), equalTo(true));
+        assertThat(result.getData().getView().getConfig().getConfig().getForm().getPcPath(), equalTo("/oa/njfw"));
     }
 
     @Test
@@ -81,25 +103,44 @@ public class TerraceFeignApiTest {
         applicationDTO.setCreator("admin");
         dto.setDto(applicationDTO);
 
-        terraceApi.start(dto);
+        R<String> result = terraceApi.start(dto);
+
+        assertThat(result.getCode(), equalTo("000000"));
+        assertThat(result.getData(), notNullValue());
     }
 
     @Test
+    @Order(2)
     public void given_whenLoadTasks_thenSuccess() {
         AppTodoTaskDTO dto = new AppTodoTaskDTO();
         dto.setBusinessModuleId("12");
         dto.setUserName("1");
         dto.setQueryType("1");
 
-        terraceApi.loadTasks(dto);
+        R<Page<TodoTaskView>> result = terraceApi.loadTasks(dto);
+
+        assertThat(result.getCode(), equalTo("000000"));
+        assertThat(result.getData().getTotal(), greaterThan(0L));
+        assertThat(result.getData().getRecords().get(0).getTaskId(), notNullValue());
+        assertThat(result.getData().getRecords().get(0).getProcInstId(), notNullValue());
+
+        taskId = result.getData().getRecords().get(0).getTaskId();
+        procInstId = result.getData().getRecords().get(0).getProcInstId();
     }
 
     @Test
     public void given_whenLoadTaskDetail_thenSuccess() {
-        terraceApi.loadTaskDetail("1300223", "0");
+        R<TaskNodeView> result = terraceApi.loadTaskDetail("1300307", "0");
+
+        assertThat(result.getCode(), equalTo("000000"));
+        assertThat(result.getData().getConfig().getId(), equalTo("b83ada88e698c454f8a645439024bf73"));
     }
 
+    /**
+     * 这里要控制在 given_whenLoadTasks_thenSuccess 执行以后运行
+     */
     @Test
+    @Order(5)
     public void given_whenProcessSubmit_thenSuccess() {
         SubmitProcessDTO dto = new SubmitProcessDTO();
         dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
@@ -109,8 +150,8 @@ public class TerraceFeignApiTest {
         dto.setTenantId("23");
         dto.setOrgId("1");
         dto.setOrgName("jiangsu");
-        dto.setTaskId("1297527");
-        dto.setProcInstId("1300365");
+        dto.setTaskId(taskId);
+        dto.setProcInstId(procInstId);
 
         ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
         processNodeDTO.setTarget("usertask2");
@@ -133,6 +174,9 @@ public class TerraceFeignApiTest {
         applicationDTO.setCreator("admin");
         dto.setDto(applicationDTO);
 
-        terraceApi.submit(dto);
+        R<String> result = terraceApi.submit(dto);
+
+        assertThat(result.getCode(), equalTo("000000"));
+        assertThat(result.getData(), equalTo("true"));
     }
 }
