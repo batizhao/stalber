@@ -1,6 +1,7 @@
 package me.batizhao.dp.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -60,6 +62,17 @@ public class FormController {
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
     public R<Form> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(formService.findById(id));
+    }
+
+    /**
+     * 通过key查询表单
+     * @param key key
+     * @return R
+     */
+    @ApiOperation(value = "通过key查询表单")
+    @GetMapping(value = "/form", params = "key")
+    public R<Form> handleKey(@ApiParam(value = "key" , required = true) @RequestParam("key") @Size(min = 1) String key) {
+        return R.ok(formService.getOne(Wrappers.<Form>lambdaQuery().eq(Form::getFormKey, key)));
     }
 
     /**

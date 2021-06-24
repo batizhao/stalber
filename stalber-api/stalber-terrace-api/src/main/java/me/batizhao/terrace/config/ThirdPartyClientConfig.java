@@ -37,7 +37,7 @@ public class ThirdPartyClientConfig {
                             // not available when building PRs...
                             // https://docs.travis-ci.com/user/environment-variables/#defining-encrypted-variables-in-travisyml
                             "Authorization",
-                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjQ0Mzg0NDEzNTciLCJleHAiOjE2MjQ0ODE2NDEsImFjY291bnQiOiJqc29hIn0.ReOOSTgSa4ZmWNRN1BKgaYl_MNlCyQLi40fbSzJWafg")
+                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjQ1MjczMjY3NDMiLCJleHAiOjE2MjQ1NzA1MjYsImFjY291bnQiOiJqc29hIn0.FkEuTWKnMXPLgcFib8W1XdshhLYh7SLXvy0wP9dupqE")
                     .header("Content-Type", "application/json");
                 })
                 .target(TerraceApi.class, thirdPartyServiceProperties.getTerraceServiceUrl());

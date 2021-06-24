@@ -67,7 +67,7 @@ public class TerraceFeignApiTest {
 
         log.info("Config: {}", view.getView().getConfig().getConfig());
         assertThat(result.getData().getView().getConfig().getConfig().getGlobal().isNeed(), equalTo(true));
-        assertThat(result.getData().getView().getConfig().getConfig().getForm().getPcPath(), equalTo("/oa/njfw"));
+        assertThat(result.getData().getView().getConfig().getConfig().getForm().getPcPath(), equalTo("60d1918964549dabd95cff87"));
     }
 
     @Test

@@ -2,8 +2,9 @@ package me.batizhao.oa.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import me.batizhao.oa.domain.Comment;
 import me.batizhao.oa.domain.Task;
+import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
 
 /**
@@ -13,6 +14,13 @@ import me.batizhao.terrace.vo.TodoTaskView;
  * @since 2021-06-10
  */
 public interface TaskService {
+
+    /**
+     * 获取流程定义
+     * @param key
+     * @return
+     */
+    InitProcessDefView findProcessDefinitionByKey(String key);
 
     /**
      * 分页查询
@@ -27,12 +35,12 @@ public interface TaskService {
      * @param id id
      * @return Comment
      */
-    Object findById(Long id);
+    TaskNodeView findById(Long id);
 
     /**
      * 提交任务
      * @param task 任务
      * @return
      */
-    Object submit(Task task);
+    String submit(Task task);
 }

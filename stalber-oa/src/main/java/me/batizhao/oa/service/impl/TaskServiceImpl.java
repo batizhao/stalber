@@ -6,6 +6,8 @@ import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;
 import me.batizhao.terrace.dto.*;
+import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,11 @@ public class TaskServiceImpl implements TaskService {
     private TerraceApi terraceApi;
 
     @Override
+    public InitProcessDefView findProcessDefinitionByKey(String key) {
+        return terraceApi.loadProcessDefinitionByKey(key).getData();
+    }
+
+    @Override
     public IPage<TodoTaskView> findTasks(Page<TodoTaskView> page, TodoTaskView todoTaskView) {
         AppTodoTaskDTO dto = new AppTodoTaskDTO();
         dto.setBusinessModuleId("12");
@@ -37,12 +44,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Object findById(Long id) {
+    public TaskNodeView findById(Long id) {
         return terraceApi.loadTaskDetail(id.toString(), "0").getData();
     }
 
     @Override
-    public Object submit(Task task) {
+    public String submit(Task task) {
         SubmitProcessDTO dto = new SubmitProcessDTO();
         dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
         dto.setCurrent("usertask1");
@@ -75,6 +82,6 @@ public class TaskServiceImpl implements TaskService {
         applicationDTO.setCreator("admin");
         dto.setDto(applicationDTO);
 
-        return terraceApi.submit(dto);
+        return terraceApi.submit(dto).getData();
     }
 }

@@ -1,5 +1,6 @@
 package me.batizhao.terrace.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 
 import java.util.List;
@@ -31,7 +32,8 @@ public class TaskNodeView {
         private String processDefId;
         private String taskDefKey;
         private String businessId;
-        private String config;
+        @JsonDeserialize(using = ProcessNodeConfig.NodeConfigDeserializer.class)
+        private NodeConfig config;
     }
 
     @Data
