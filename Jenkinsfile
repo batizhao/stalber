@@ -19,7 +19,7 @@ node {
   stage('Build Maven Package') {
       build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
       withMaven(maven: 'maven', jdk: 'jdk11', mavenSettingsConfig: 'maven-settings') {
-          sh "mvn clean package -Pprod -Dmaven.test.skip=true"
+          sh "mvn clean package -Pdemo -Dmaven.test.skip=true"
       }
     }
 

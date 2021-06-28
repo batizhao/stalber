@@ -330,5 +330,11 @@
 				<test-group>integration</test-group>
 			</properties>
 		</profile>
+		<profile>
+			<id>demo</id>
+			<properties>
+				<profiles.active>demo</profiles.active>
+			</properties>
+		</profile>
 	</profiles>
 </project>
