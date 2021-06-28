@@ -6,8 +6,11 @@ import feign.Param;
 import feign.RequestLine;
 import me.batizhao.terrace.dto.*;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.ProcessRouterView;
 import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
+
+import java.util.List;
 
 /**
  * 流程平台接口定义
@@ -64,6 +67,16 @@ public interface TerraceApi {
      */
     @RequestLine("GET oa/task/{taskId}/{type}")
     R<TaskNodeView> loadTaskDetail(@Param("taskId") String taskId, @Param("type") String type);
+
+    /**
+     * 获取环节的输出路由及路由后的任务环节配置信息
+     *
+     * @param id 流程定义Id
+     * @param taskDefKey 流程环节key
+     * @return
+     */
+    @RequestLine("GET /oa/repository/{id}/{taskDefKey}/next/rout")
+    R<List<ProcessRouterView>> loadProcessRouter(@Param("taskDefKey") String taskDefKey, @Param("id") String id);
 
     /**
      * 流程提交

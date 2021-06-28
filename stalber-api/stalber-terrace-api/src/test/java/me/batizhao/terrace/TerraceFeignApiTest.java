@@ -7,6 +7,7 @@ import me.batizhao.terrace.config.ThirdPartyClientConfig;
 import me.batizhao.terrace.config.ThirdPartyServiceProperties;
 import me.batizhao.terrace.dto.*;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.ProcessRouterView;
 import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
 import org.junit.jupiter.api.*;
@@ -178,5 +179,13 @@ public class TerraceFeignApiTest {
 
         assertThat(result.getCode(), equalTo("000000"));
         assertThat(result.getData(), equalTo("true"));
+    }
+
+    @Test
+    void givenTaskDef_whenLoadProcessRouter_thenSuccess() {
+        R<List<ProcessRouterView>> result = terraceApi.loadProcessRouter("usertask1", "jsoa_njfw:1:1292510");
+
+        assertThat(result.getCode(), equalTo("000000"));
+        assertThat(result.getData().get(0).getName(), equalTo("送部门审核"));
     }
 }
