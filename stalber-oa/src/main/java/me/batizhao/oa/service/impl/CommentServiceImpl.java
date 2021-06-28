@@ -67,6 +67,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (comment.getId() == null) {
             comment.setCreateTime(LocalDateTime.now());
             comment.setUpdateTime(LocalDateTime.now());
+            commentMapper.insert(comment);
 
             StartProcessDTO dto = new StartProcessDTO();
             dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
@@ -91,7 +92,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             dto.setProcessNodeDTO(processNodeDTOList);
 
             ApplicationDTO applicationDTO = new ApplicationDTO();
-            applicationDTO.setId("1");
+            applicationDTO.setId(comment.getId().toString());
             applicationDTO.setCode("xxx");
             applicationDTO.setModuleId("12");
             applicationDTO.setModuleName("oa");
@@ -99,8 +100,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             applicationDTO.setCreator("admin");
             dto.setDto(applicationDTO);
             terraceApi.start(dto);
-
-            commentMapper.insert(comment);
         } else {
             comment.setUpdateTime(LocalDateTime.now());
             commentMapper.updateById(comment);
