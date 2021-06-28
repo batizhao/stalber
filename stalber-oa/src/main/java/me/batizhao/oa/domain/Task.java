@@ -24,21 +24,27 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * id
+     * 任务ID
      */
     @ApiModelProperty(value="任务ID")
     private String taskId;
-        
-    /**
-     * 标题
-     */
-    @ApiModelProperty(value="标题")
-    private String title;
         
     /**
      * 意见
      */
     @ApiModelProperty(value="流程实例ID")
     private String procInstId;
+
+    /**
+     * 业务id
+     */
+    @ApiModelProperty(value="id")
+    private String id;
+
+    /**
+     * 标题
+     */
+    @ApiModelProperty(value="标题")
+    private String title;
     
 }

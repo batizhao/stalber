@@ -3,6 +3,7 @@ package me.batizhao.oa.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.batizhao.oa.domain.Task;
+import me.batizhao.terrace.dto.ApplicationDTO;
 import me.batizhao.terrace.vo.InitProcessDefView;
 import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
@@ -36,6 +37,13 @@ public interface TaskService {
      * @return Comment
      */
     TaskNodeView findById(Long id);
+
+    /**
+     * 启动流程
+     * @param applicationDTO 业务详情
+     * @return
+     */
+    String start(String appId, String appTitle);
 
     /**
      * 提交任务

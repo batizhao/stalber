@@ -49,6 +49,42 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public String start(String appId, String appTitle) {
+        StartProcessDTO dto = new StartProcessDTO();
+        dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
+        dto.setCurrent("usertask1");
+        dto.setUserId("1");
+        dto.setUserName("admin");
+        dto.setTenantId("23");
+        dto.setOrgId("1");
+        dto.setOrgName("jiangsu");
+        dto.setDraft(false);
+
+        ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
+        processNodeDTO.setTarget("usertask2");
+        processNodeDTO.setFlowName("南京发文流程");
+
+        CandidateDTO candidateDTO = new CandidateDTO();
+        candidateDTO.setUserId("1");
+        candidateDTO.setOrgId("2");
+        processNodeDTO.setCandidate(asList(candidateDTO));
+
+        List<ProcessNodeDTO> processNodeDTOList = asList(processNodeDTO);
+        dto.setProcessNodeDTO(processNodeDTOList);
+
+        ApplicationDTO applicationDTO = new ApplicationDTO();
+        applicationDTO.setId(appId);
+        applicationDTO.setCode("xxx");
+        applicationDTO.setModuleId("12");
+        applicationDTO.setModuleName("oa");
+        applicationDTO.setTitle(appTitle);
+        applicationDTO.setCreator("admin");
+        dto.setDto(applicationDTO);
+
+        return terraceApi.start(dto).getData();
+    }
+
+    @Override
     public String submit(Task task) {
         SubmitProcessDTO dto = new SubmitProcessDTO();
         dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
@@ -74,7 +110,7 @@ public class TaskServiceImpl implements TaskService {
         dto.setProcessNodeDTO(processNodeDTOList);
 
         ApplicationDTO applicationDTO = new ApplicationDTO();
-        applicationDTO.setId("1");
+        applicationDTO.setId(task.getId());
         applicationDTO.setCode("xxx");
         applicationDTO.setModuleId("12");
         applicationDTO.setModuleName("oa");
