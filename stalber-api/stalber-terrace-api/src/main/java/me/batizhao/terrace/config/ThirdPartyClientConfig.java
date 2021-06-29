@@ -5,8 +5,10 @@ import feign.Logger;
 import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import feign.slf4j.Slf4jLogger;
 import lombok.RequiredArgsConstructor;
 import me.batizhao.terrace.api.TerraceApi;
+import me.batizhao.terrace.exception.FeignErrorDecoder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,14 +32,14 @@ public class ThirdPartyClientConfig {
                 .client(new ApacheHttpClient())
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
-                .logger(new Logger.ErrorLogger())
+                .errorDecoder(new FeignErrorDecoder())
+                .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.FULL)
                 .requestInterceptor(template -> {
                     template.header(
                             // not available when building PRs...
                             // https://docs.travis-ci.com/user/environment-variables/#defining-encrypted-variables-in-travisyml
-                            "Authorization",
-                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjQ4NzIzMDY4MTYiLCJleHAiOjE2MjQ5MTU1MDYsImFjY291bnQiOiJqc29hIn0.ybyZqP5JJOR4iPqIOcPhktPWbkBVPkEszY_JzNjJYmQ")
+                            "Authorization", thirdPartyServiceProperties.getToken())
                     .header("Content-Type", "application/json");
                 })
                 .target(TerraceApi.class, thirdPartyServiceProperties.getTerraceServiceUrl());

@@ -21,4 +21,9 @@ public class ThirdPartyServiceProperties {
      */
     private String terraceServiceUrl;
 
+    /**
+     * 流程平台Token
+     */
+    private String token;
+
 }
