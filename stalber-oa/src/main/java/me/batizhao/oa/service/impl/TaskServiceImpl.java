@@ -7,6 +7,7 @@ import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;
 import me.batizhao.terrace.dto.*;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.ProcessRouterView;
 import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,5 +120,10 @@ public class TaskServiceImpl implements TaskService {
         dto.setDto(applicationDTO);
 
         return terraceApi.submit(dto).getData();
+    }
+
+    @Override
+    public List<ProcessRouterView> findProcessRouter(String processDefinitionId, String taskDefKey) {
+        return terraceApi.loadProcessRouter(taskDefKey, processDefinitionId).getData();
     }
 }

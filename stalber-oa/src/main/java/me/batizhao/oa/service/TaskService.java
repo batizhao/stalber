@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.terrace.dto.ApplicationDTO;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.ProcessRouterView;
 import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
+
+import java.util.List;
 
 /**
  * 审批接口类
@@ -40,7 +43,8 @@ public interface TaskService {
 
     /**
      * 启动流程
-     * @param applicationDTO 业务详情
+     * @param appId 业务Id
+     * @param appTitle 业务标题
      * @return
      */
     String start(String appId, String appTitle);
@@ -51,4 +55,13 @@ public interface TaskService {
      * @return
      */
     String submit(Task task);
+
+    /**
+     * 获取环节的输出路由及路由后的任务环节配置信息
+     *
+     * @param processDefinitionId 流程定义Id
+     * @param taskDefKey 流程环节key
+     * @return
+     */
+    List<ProcessRouterView> findProcessRouter(String processDefinitionId, String taskDefKey);
 }

@@ -10,6 +10,7 @@ import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.ProcessRouterView;
 import me.batizhao.terrace.vo.TaskNodeView;
 import me.batizhao.terrace.vo.TodoTaskView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * 流程任务管理 API
@@ -44,10 +46,24 @@ public class TaskController {
      * @return R
      * @real_return R<InitProcessDefView>
      */
-    @ApiOperation(value = "分页查询")
-    @GetMapping(value = "/task", params = "key")
+    @ApiOperation(value = "获取流程定义")
+    @GetMapping(value = "/process", params = "key")
     public R<InitProcessDefView> handleProcessDefinition(@ApiParam(value = "key" , required = true) @RequestParam("key") @Size(min = 1) String key) {
         return R.ok(taskService.findProcessDefinitionByKey(key));
+    }
+
+    /**
+     * 获取环节的输出路由及路由后的任务环节配置信息
+     * @param processDefinitionId 流程定义Id
+     * @param taskDefKey 流程环节key
+     * @return R
+     * @real_return R<List<ProcessRouterView>>
+     */
+    @ApiOperation(value = "获取环节的输出路由及路由后的任务环节配置信息")
+    @GetMapping(value = "/process/{processDefinitionId}/{taskDefKey}")
+    public R<List<ProcessRouterView>> handleProcessDefinition(@ApiParam(value = "processDefinitionId" , required = true) @PathVariable("processDefinitionId") @Size(min = 1) String processDefinitionId,
+                                                              @ApiParam(value = "taskDefKey" , required = true) @PathVariable("taskDefKey") @Size(min = 1) String taskDefKey) {
+        return R.ok(taskService.findProcessRouter(processDefinitionId, taskDefKey));
     }
 
     /**
