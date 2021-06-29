@@ -1,7 +1,9 @@
 <script>
 import {#if($template != "tree") list${className}s,#end list${className}, get${className}, delete${className}, addOrUpdate${className}, change${className}Status } from "@/api/${moduleName}/${mappingPath}";
 import { downLoadExcel } from "@/utils/download";
-
+#if($form == "visual")
+import { getFormByKey } from "@/api/dp/form";
+#end
 #if($template == "tree")
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -53,7 +55,8 @@ export default {
   data() {
     return {
 #if($form == "visual")
-      jsonData: ${options},
+      jsonData: {
+      },
       dynamicData: {
       },
       remoteFuncs: {
@@ -143,6 +146,11 @@ export default {
     this.queryParams.${relationTable[0].subTableFkName} = this.$route.params && this.$route.params.${relationTable[0].subTableFkName};
 #end
     this.getList();
+#if($form == "visual")
+    getFormByKey('${formKey}').then( response => {
+      this.jsonData = JSON.parse(response.data.metadata);
+    });
+#end
 #foreach ($column in $columns)
 #if(${column.dictType} != '')
     this.listDictDataByCode("${column.dictType}").then(response => {

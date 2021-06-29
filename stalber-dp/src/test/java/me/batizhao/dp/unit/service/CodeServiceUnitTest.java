@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.dp.domain.Code;
 import me.batizhao.dp.domain.CodeMeta;
+import me.batizhao.dp.domain.Form;
 import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
+import me.batizhao.dp.service.FormService;
 import me.batizhao.dp.service.impl.CodeMetaServiceImpl;
 import me.batizhao.dp.service.impl.CodeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +55,8 @@ public class CodeServiceUnitTest extends BaseServiceUnitTest {
     private CodeMapper codeMapper;
     @MockBean
     private CodeMetaService codeMetaService;
+    @MockBean
+    private FormService formService;
     @MockBean
     private ObjectMapper objectMapper;
 
@@ -119,10 +123,12 @@ public class CodeServiceUnitTest extends BaseServiceUnitTest {
 
         // insert 不带 id
         doReturn(codeMetaList).when(codeMetaService).findColumnsByTableName(any(String.class), any(String.class));
+        doReturn(new Form().setFormKey("xxxx")).when(formService).saveOrUpdateForm(any(Form.class));
         doReturn(true).when(codeMetaService).saveBatch(anyList());
 
         Code code = codeService.saveOrUpdateCode(code_test_data);
         assertThat(code.getDsName(), equalTo("ims"));
+        assertThat(code.getFormKey(), equalTo("xxxx"));
 
         // update 需要带 id
         doReturn(true).when(codeMetaService).updateBatchById(anyList());

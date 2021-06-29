@@ -2,6 +2,7 @@ package me.batizhao.dp.service.impl;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -18,6 +19,7 @@ import me.batizhao.dp.domain.*;
 import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
+import me.batizhao.dp.service.FormService;
 import me.batizhao.dp.util.CodeGenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,8 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     private CodeMapper codeMapper;
     @Autowired
     private CodeMetaService codeMetaService;
+    @Autowired
+    private FormService formService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -140,7 +144,12 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         fm.setList(elements);
 
         try {
-            code.setOptions(objectMapper.writeValueAsString(fm));
+            Form form = new Form()
+                    .setName(code.getDsName() + ":" + code.getTableName() + ":" + RandomUtil.randomString(5))
+                    .setDescription(code.getClassComment())
+                    .setMetadata(objectMapper.writeValueAsString(fm));
+            form = formService.saveOrUpdateForm(form);
+            code.setFormKey(form.getFormKey());
         } catch (JsonProcessingException e) {
             log.error("Serialization failed，{}", e.getMessage());
             throw new StalberException("Serialization failed！", e);

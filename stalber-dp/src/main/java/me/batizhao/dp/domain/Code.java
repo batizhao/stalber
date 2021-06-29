@@ -138,7 +138,7 @@ public class Code extends Model<Code> {
      * 表单元数据
      */
     @ApiModelProperty(value="表单元数据")
-    private String options;
+    private String formKey;
 
     /**
      * 创建时间

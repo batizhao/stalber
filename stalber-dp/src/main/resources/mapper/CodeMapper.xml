@@ -21,7 +21,7 @@
 		<result property="path" column="path"/>
 		<result property="subTableId" column="subTableId"/>
 		<result property="subTableFkName" column="subTableFkName"/>
-		<result property="options" column="options"/>
+		<result property="formKey" column="formKey"/>
 		<result property="createTime" column="createTime"/>
 		<result property="updateTime" column="updateTime"/>
 	</resultMap>

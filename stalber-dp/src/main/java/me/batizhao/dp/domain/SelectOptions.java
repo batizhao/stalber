@@ -17,7 +17,7 @@ public class SelectOptions extends Options {
     private boolean multiple = false;
     private boolean clearable = false;
     private boolean showLabel = false;
-    private List<Option> options = asList(new Option("Option 1"), new Option("Option 1"), new Option("Option 1"));
+    private List<Option> options = asList(new Option("Option 1"), new Option("Option 2"), new Option("Option 3"));
     private boolean remote = false;
     private String remoteType = "option";
     private boolean filterable = false;
