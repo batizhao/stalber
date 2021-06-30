@@ -61,8 +61,8 @@ public class TaskController {
      */
     @ApiOperation(value = "获取环节的输出路由及路由后的任务环节配置信息")
     @GetMapping(value = "/process/{processDefinitionId}/{taskDefKey}")
-    public R<List<ProcessRouterView>> handleProcessDefinition(@ApiParam(value = "processDefinitionId" , required = true) @PathVariable("processDefinitionId") @Size(min = 1) String processDefinitionId,
-                                                              @ApiParam(value = "taskDefKey" , required = true) @PathVariable("taskDefKey") @Size(min = 1) String taskDefKey) {
+    public R<List<ProcessRouterView>> handleProcessRouter(@ApiParam(value = "processDefinitionId" , required = true) @PathVariable("processDefinitionId") @Size(min = 1) String processDefinitionId,
+                                                          @ApiParam(value = "taskDefKey" , required = true) @PathVariable("taskDefKey") @Size(min = 1) String taskDefKey) {
         return R.ok(taskService.findProcessRouter(processDefinitionId, taskDefKey));
     }
 
