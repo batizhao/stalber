@@ -264,6 +264,19 @@ public class UserController {
     }
 
     /**
+     * 查询登录用户的部门领导
+     * 返回领导集合
+     *
+     * @return R<List < User>>
+     */
+    @ApiOperation(value = "查询登录用户的部门领导")
+    @GetMapping(value = "/user/dept/leader")
+    @PreAuthorize("isAuthenticated()")
+    public R<List<User>> handleLeadersByUserId() {
+        return R.ok(userService.findLeaders());
+    }
+
+    /**
      * 导入
      * 返回状态标记
      *

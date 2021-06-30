@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.annotation.DataScope;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.common.exception.StalberException;
+import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.ims.domain.*;
 import me.batizhao.ims.mapper.UserMapper;
 import me.batizhao.ims.service.*;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -172,6 +172,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> findLeadersByDepartmentId(Long departmentId, String type) {
         return userMapper.selectLeadersByDepartmentId(departmentId, type);
+    }
+
+    @Override
+    public List<User> findLeaders() {
+        Integer deptId = SecurityUtils.getUser().getDeptIds().get(0);
+        return this.findLeadersByDepartmentId(deptId.longValue(), null);
     }
 
     @Override
