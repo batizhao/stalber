@@ -5,9 +5,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import me.batizhao.terrace.dto.ProcessNodeDTO;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 任务 实体对象
@@ -24,27 +26,50 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 流程定义Id
+     */
+    @NotEmpty(message = "流程定义Id")
+    @ApiModelProperty(value = "流程定义Id", name = "processDefinitionId")
+    private String processDefinitionId;
+
+    /**
      * 任务ID
      */
+    @NotEmpty
     @ApiModelProperty(value="任务ID")
     private String taskId;
         
     /**
      * 意见
      */
+    @NotEmpty
     @ApiModelProperty(value="流程实例ID")
     private String procInstId;
 
     /**
      * 业务id
      */
-    @ApiModelProperty(value="id")
+    @NotEmpty
+    @ApiModelProperty(value="业务id")
     private String id;
 
     /**
-     * 标题
+     * 业务标题
      */
-    @ApiModelProperty(value="标题")
+    @NotEmpty
+    @ApiModelProperty(value="业务标题")
     private String title;
-    
+
+    /**
+     * 当前节点
+     */
+    @ApiModelProperty(value="当前节点")
+    private String current;
+
+    /**
+     * 封装提交不同环节参数
+     */
+    @NotEmpty(message = "下一环节提交参数不能为空")
+    @ApiModelProperty(value = "当前任务处理人角色名")
+    private List<ProcessNodeDTO> processNodeDTO;
 }

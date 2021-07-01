@@ -88,8 +88,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public String submit(Task task) {
         SubmitProcessDTO dto = new SubmitProcessDTO();
-        dto.setProcessDefinitionId("jsoa_njfw:1:1292510");
-        dto.setCurrent("usertask1");
+        dto.setProcessDefinitionId(task.getProcessDefinitionId());
+        dto.setCurrent(task.getCurrent());
         dto.setUserId("1");
         dto.setUserName("admin");
         dto.setTenantId("23");
@@ -97,18 +97,7 @@ public class TaskServiceImpl implements TaskService {
         dto.setOrgName("jiangsu");
         dto.setTaskId(task.getTaskId());
         dto.setProcInstId(task.getProcInstId());
-
-        ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
-        processNodeDTO.setTarget("usertask2");
-        processNodeDTO.setFlowName("南京发文流程");
-
-        CandidateDTO candidateDTO = new CandidateDTO();
-        candidateDTO.setUserId("1");
-        candidateDTO.setOrgId("2");
-        processNodeDTO.setCandidate(asList(candidateDTO));
-
-        List<ProcessNodeDTO> processNodeDTOList = asList(processNodeDTO);
-        dto.setProcessNodeDTO(processNodeDTOList);
+        dto.setProcessNodeDTO(task.getProcessNodeDTO());
 
         ApplicationDTO applicationDTO = new ApplicationDTO();
         applicationDTO.setId(task.getId());
