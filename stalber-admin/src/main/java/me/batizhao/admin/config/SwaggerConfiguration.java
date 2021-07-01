@@ -59,6 +59,7 @@ public class SwaggerConfiguration {
                 .securityContexts(Collections.singletonList(securityContext()))
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .select()
+//                .paths(PathSelectors.regex("^(\\/oa|\\/dp)\\/.*$"));
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage())
                         .and(RequestHandlerSelectors.withClassAnnotation(RestController.class)));
 

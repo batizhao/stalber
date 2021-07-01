@@ -28,11 +28,10 @@ public interface TaskService {
 
     /**
      * 分页查询
-     * @param page 分页对象
      * @param todoTaskView 任务对象
      * @return IPage<TodoTaskView>
      */
-    IPage<TodoTaskView> findTasks(Page<TodoTaskView> page, TodoTaskView todoTaskView);
+    IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView);
 
     /**
      * 通过id查询

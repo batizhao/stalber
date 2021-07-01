@@ -1,7 +1,6 @@
 package me.batizhao.oa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -68,15 +67,14 @@ public class TaskController {
 
     /**
      * 分页查询
-     * @param page 分页对象
      * @param taskView 任务对象
      * @return R
      * @real_return R<Page<TodoTaskView>>
      */
     @ApiOperation(value = "分页查询")
     @GetMapping("/tasks")
-    public R<IPage<TodoTaskView>> handleTasks(Page<TodoTaskView> page, TodoTaskView taskView) {
-        return R.ok(taskService.findTasks(page, taskView));
+    public R<IPage<TodoTaskView>> handleTasks(TodoTaskView taskView) {
+        return R.ok(taskService.findTasks(taskView));
     }
 
     /**

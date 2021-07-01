@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public IPage<TodoTaskView> findTasks(Page<TodoTaskView> page, TodoTaskView todoTaskView) {
+    public IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView) {
         AppTodoTaskDTO dto = new AppTodoTaskDTO();
         dto.setBusinessModuleId("12");
         dto.setUserName("1");

@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.*;
 @EnableConfigurationProperties(value = ThirdPartyServiceProperties.class)
 @TestPropertySource(properties = {"pecado.third-party.enabled=true",
         "pecado.third-party.terrace-service-url=http://172.31.21.208:8886/terrace/",
-        "pecado.third-party.token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjUwNDQxNTIyOTAiLCJleHAiOjE2MjUwODczNTIsImFjY291bnQiOiJqc29hIn0.kDtXIu1EoLuBv5557pK-sRpLlYQ3cFrwtfitb0Gr49Y"})
+        "pecado.third-party.token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjUxMzI3OTgzMjciLCJleHAiOjE2MjUxNzU5OTgsImFjY291bnQiOiJqc29hIn0.hCM_E9PGHALDMavAMj317Oc4DsszP7c2S6s079ErTvM"})
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TerraceFeignApiTest {

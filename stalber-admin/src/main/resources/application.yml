@@ -7,7 +7,7 @@ pecado:
   swagger:
     enabled: true
     title: Pecado API
-    basePackage: me.batizhao.dp.controller
+    basePackage: me.batizhao
     version: 1.0-SNAPSHOT
     license: Powered By batizhao
     licenseUrl: https://batizhao.github.io
@@ -21,7 +21,7 @@ pecado:
   third-party:
     enabled: true
     terrace-service-url: http://172.31.21.208:8886/terrace/
-    token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjUwNDQxNTIyOTAiLCJleHAiOjE2MjUwODczNTIsImFjY291bnQiOiJqc29hIn0.kDtXIu1EoLuBv5557pK-sRpLlYQ3cFrwtfitb0Gr49Y"
+    token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjUxMzI3OTgzMjciLCJleHAiOjE2MjUxNzU5OTgsImFjY291bnQiOiJqc29hIn0.hCM_E9PGHALDMavAMj317Oc4DsszP7c2S6s079ErTvM"
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
