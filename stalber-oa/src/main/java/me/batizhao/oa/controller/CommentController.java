@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Comment;
+import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -82,8 +83,9 @@ public class CommentController {
     @ApiOperation(value = "添加或编辑审批")
     @PostMapping("/comment")
     @PreAuthorize("@pms.hasPermission('oa:comment:add') or @pms.hasPermission('oa:comment:edit')")
-    public R<Comment> handleSaveOrUpdate(@Valid @ApiParam(value = "审批" , required = true) @RequestBody Comment comment) {
-        return R.ok(commentService.saveOrUpdateComment(comment));
+    public R<Comment> handleSaveOrUpdate(@Valid @ApiParam(value = "审批" , required = true) @RequestBody Comment comment,
+                                         @Valid @ApiParam(value = "流程信息" , required = true) @RequestBody Task task) {
+        return R.ok(commentService.saveOrUpdateComment(comment, task));
     }
 
     /**

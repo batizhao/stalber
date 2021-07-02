@@ -42,11 +42,10 @@ public interface TaskService {
 
     /**
      * 启动流程
-     * @param appId 业务Id
-     * @param appTitle 业务标题
+     * @param task 任务
      * @return
      */
-    String start(String appId, String appTitle);
+    String start(Task task);
 
     /**
      * 提交任务

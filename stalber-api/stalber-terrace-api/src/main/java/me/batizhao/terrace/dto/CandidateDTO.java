@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * <p> 流程提交下一节点候选人参数封装 </p>
@@ -16,7 +17,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @ApiModel(value = "流程提交下一节点候选人参数封装", description = "流程提交下一节点候选人参数封装")
-public class CandidateDTO {
+public class CandidateDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 候选人ID

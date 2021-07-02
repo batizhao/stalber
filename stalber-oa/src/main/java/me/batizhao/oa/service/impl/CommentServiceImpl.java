@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.oa.domain.Comment;
+import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.mapper.CommentMapper;
 import me.batizhao.oa.service.CommentService;
 import me.batizhao.oa.service.TaskService;
@@ -57,13 +58,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     @Transactional
-    public Comment saveOrUpdateComment(Comment comment) {
+    public Comment saveOrUpdateComment(Comment comment, Task task) {
         if (comment.getId() == null) {
             comment.setCreateTime(LocalDateTime.now());
             comment.setUpdateTime(LocalDateTime.now());
             commentMapper.insert(comment);
 
-            taskService.start(comment.getId().toString(), comment.getTitle());
+            taskService.start(task);
         } else {
             comment.setUpdateTime(LocalDateTime.now());
             commentMapper.updateById(comment);

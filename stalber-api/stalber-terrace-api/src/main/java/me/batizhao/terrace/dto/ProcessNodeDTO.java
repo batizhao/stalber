@@ -3,8 +3,10 @@ package me.batizhao.terrace.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,8 +16,11 @@ import java.util.List;
  * @since 2020-07-13 14:33
  */
 @Data
+@NoArgsConstructor
 @ApiModel(value = "流程提交参数封装", description = "流程节点参数封装")
-public class ProcessNodeDTO {
+public class ProcessNodeDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 目标节点id
@@ -47,16 +52,12 @@ public class ProcessNodeDTO {
      * 参数类型 0、用户参数 1、组参数 2、用户与组参数
      */
     @ApiModelProperty(value = "参数类型:0、用户参数 1、组参数 2、用户与组参数 默认是：0", name = "paramType")
-    private Integer paramType;
+    private Integer paramType = 0;
 
     /**
      * 操作类型：0、审批 1、送阅 2、阅毕
      **/
     @ApiModelProperty(value = "操作类型：0、审批  1、送阅 2、阅毕 默认是：0", name = "operType")
-    private Integer operType;
+    private Integer operType = 0;
 
-    public ProcessNodeDTO() {
-        this.paramType = 0;
-        this.operType = 0;
-    }
 }

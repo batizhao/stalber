@@ -72,4 +72,5 @@ public class Task implements Serializable {
     @NotEmpty(message = "下一环节提交参数不能为空")
     @ApiModelProperty(value = "当前任务处理人角色名")
     private List<ProcessNodeDTO> processNodeDTO;
+
 }
