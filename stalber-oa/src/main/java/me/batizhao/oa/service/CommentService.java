@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.oa.domain.Comment;
+import me.batizhao.oa.domain.CommentAndTask;
 import me.batizhao.oa.domain.Task;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public interface CommentService extends IService<Comment> {
      * @param comment 审批
      * @return Comment
      */
-    Comment saveOrUpdateComment(Comment comment, Task task);
+    Comment saveOrUpdateComment(CommentAndTask cat);
 
     /**
      * 更新审批状态

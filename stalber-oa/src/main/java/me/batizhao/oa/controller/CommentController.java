@@ -1,7 +1,6 @@
 package me.batizhao.oa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,7 +8,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Comment;
-import me.batizhao.oa.domain.Task;
+import me.batizhao.oa.domain.CommentAndTask;
 import me.batizhao.oa.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -77,15 +76,14 @@ public class CommentController {
 
     /**
      * 添加或编辑审批
-     * @param comment 审批
+     * @param cat 审批
      * @return R
      */
     @ApiOperation(value = "添加或编辑审批")
     @PostMapping("/comment")
-    @PreAuthorize("@pms.hasPermission('oa:comment:add') or @pms.hasPermission('oa:comment:edit')")
-    public R<Comment> handleSaveOrUpdate(@Valid @ApiParam(value = "审批" , required = true) @RequestBody Comment comment,
-                                         @Valid @ApiParam(value = "流程信息" , required = true) @RequestBody Task task) {
-        return R.ok(commentService.saveOrUpdateComment(comment, task));
+//    @PreAuthorize("@pms.hasPermission('oa:comment:add') or @pms.hasPermission('oa:comment:edit')")
+    public R<Comment> handleSaveOrUpdate(@Valid @ApiParam(value = "审批" , required = true) @RequestBody CommentAndTask cat) {
+        return R.ok(commentService.saveOrUpdateComment(cat));
     }
 
     /**

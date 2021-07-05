@@ -2,6 +2,7 @@ package me.batizhao.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;
@@ -24,6 +25,7 @@ import static java.util.Arrays.asList;
  * @since 2021-06-10
  */
 @Service
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
@@ -70,6 +72,8 @@ public class TaskServiceImpl implements TaskService {
         applicationDTO.setTitle(task.getTitle());
         applicationDTO.setCreator("admin");
         dto.setDto(applicationDTO);
+
+        log.info("StartProcessDTO : {}", dto);
 
         return terraceApi.start(dto).getData();
     }

@@ -562,9 +562,7 @@
             <column name="title" type="VARCHAR(32)" remarks="标题" defaultValue="">
                 <constraints nullable="false"/>
             </column>
-            <column name="comment" type="VARCHAR(255)" remarks="意见">
-                <constraints nullable="false" unique="true"/>
-            </column>
+            <column name="comment" type="VARCHAR(255)" remarks="意见" defaultValue=""/>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
