@@ -566,7 +566,7 @@
             <column name="dept" type="VARCHAR(64)" remarks="发单部门" defaultValue="">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="DATETIME(6)" remarks="发单日期" defaultValueComputed="NOW(6)">
+            <column name="date" type="datetime" remarks="发单日期" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(64)" remarks="项目名称" defaultValue="">

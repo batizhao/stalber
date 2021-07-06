@@ -63,6 +63,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (comment.getId() == null) {
             comment.setCreateTime(LocalDateTime.now());
             comment.setUpdateTime(LocalDateTime.now());
+            comment.setDate(LocalDateTime.now());
             commentMapper.insert(comment);
 
             taskService.start(cat.getTask().setId(comment.getId().toString()).setTitle(comment.getTitle()));
