@@ -3,7 +3,6 @@ package me.batizhao.oa.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.ims.domain.User;
 import me.batizhao.oa.domain.Comment;
 import me.batizhao.oa.domain.CommentAndTask;
 import me.batizhao.oa.domain.Task;
@@ -14,12 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
