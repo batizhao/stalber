@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -42,6 +43,36 @@ public class Comment implements Serializable {
      */
     @ApiModelProperty(value="意见")
     private String comment;
+
+    /**
+     * 发单部门
+     */
+    @ApiModelProperty(value="发单部门")
+    private String dept;
+
+    /**
+     * 发单日期
+     */
+    @ApiModelProperty(value="发单日期")
+    private LocalDateTime date;
+
+    /**
+     * 投资金额
+     */
+    @ApiModelProperty(value="投资金额")
+    private BigDecimal investment;
+
+    /**
+     * 年初计划
+     */
+    @ApiModelProperty(value="年初计划")
+    private BigDecimal plan;
+
+    /**
+     * 项目名称
+     */
+    @ApiModelProperty(value="项目名称")
+    private String name;
         
     /**
      * 创建时间
