@@ -21,7 +21,7 @@ pecado:
   third-party:
     enabled: true
     terrace-service-url: http://172.31.21.208:8886/terrace/
-    token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjU1NjA5Njg2NzciLCJleHAiOjE2MjU2MDQxNjgsImFjY291bnQiOiJqc29hIn0.4jxLqng_MB7-7_kyCt5I8swsUmIj4pi1vKTrrSM0Lcw"
+    token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjU2NTI1NDY2ODkiLCJleHAiOjE2MjU2OTU3NDYsImFjY291bnQiOiJqc29hIn0.OGyCQyxhvZibNFTpl6z1uK-E5DPL5q1sNktjY1P_8zo"
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml
