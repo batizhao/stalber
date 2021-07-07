@@ -41,7 +41,7 @@ public interface CommentService extends IService<Comment> {
 
     /**
      * 添加或编辑审批
-     * @param comment 审批
+     * @param cat 审批
      * @return Comment
      */
     Comment saveOrUpdateComment(CommentAndTask cat);
