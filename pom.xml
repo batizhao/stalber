@@ -19,7 +19,7 @@
 		<module>stalber-ims</module>
 		<module>stalber-oa</module>
 		<module>stalber-system</module>
-	</modules>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

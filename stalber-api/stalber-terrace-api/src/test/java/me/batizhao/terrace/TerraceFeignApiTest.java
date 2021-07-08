@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.*;
 @EnableConfigurationProperties(value = ThirdPartyServiceProperties.class)
 @TestPropertySource(properties = {"pecado.third-party.enabled=true",
         "pecado.third-party.terrace-service-url=http://172.31.21.208:8886/terrace/",
-        "pecado.third-party.token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjU2NTI1NDY2ODkiLCJleHAiOjE2MjU2OTU3NDYsImFjY291bnQiOiJqc29hIn0.OGyCQyxhvZibNFTpl6z1uK-E5DPL5q1sNktjY1P_8zo"})
+        "pecado.third-party.token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MjU3NTMyNjc0NTQiLCJleHAiOjE2MjU3OTY0NjcsImFjY291bnQiOiJqc29hIn0.BIP3rLjFEmAyvlvhScNr8W0tc_6zLAnJ-AIg1FcmIpA"})
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TerraceFeignApiTest {
@@ -62,15 +62,15 @@ public class TerraceFeignApiTest {
     public void givenKey_whenLoadProcessDefinition_thenSuccess() {
         R<InitProcessDefView> result = terraceApi.loadProcessDefinitionByKey("jsoa_njfw");
 
-        InitProcessDefView view = result.getData();
         assertThat(result.getCode(), equalTo("000000"));
 
+        InitProcessDefView view = result.getData();
         log.info("View: {}, Dto: {}", view.getView(), view.getDto());
-        assertThat(result.getData().getView().getConfig().getId(), equalTo("9f9e4129cab18ed44a1b313d87a52d0b"));
+        assertThat(view.getView().getConfig().getId(), equalTo("9f9e4129cab18ed44a1b313d87a52d0b"));
 
         log.info("Config: {}", view.getView().getConfig().getConfig());
-        assertThat(result.getData().getView().getConfig().getConfig().getGlobal().isNeed(), equalTo(true));
-        assertThat(result.getData().getView().getConfig().getConfig().getForm().getPcPath(), equalTo("60d1918964549dabd95cff87"));
+        assertThat(view.getView().getConfig().getConfig().getGlobal().isNeed(), equalTo(true));
+        assertThat(view.getView().getConfig().getConfig().getForm().getPcPath(), equalTo("60d1918964549dabd95cff87"));
     }
 
     @Test
