@@ -1,7 +1,6 @@
 package me.batizhao.dp.service.impl;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -21,6 +20,7 @@ import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
 import me.batizhao.dp.service.FormService;
 import me.batizhao.dp.util.CodeGenUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,55 +99,175 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     @Override
     @Transactional
     public Code saveCode(Code code, List<CodeMeta> codeMetas) {
-        FormMarker fm = new FormMarker();
-        List<Element> elements = new ArrayList<>();
+//        FormMarker fm = new FormMarker();
+//        List<Element> elements = new ArrayList<>();
+//
+//        // 先初始化元数据
+//        codeMetas.forEach(cm -> {
+//            CodeGenUtils.initColumnField(cm);
+//
+//            if ((cm.getSave() != null && cm.getSave()) || cm.getPrimaryKey()) {
+//                Element element = new Element();
+//                element.setType(cm.getHtmlType());
+//                element.setName(cm.getColumnComment());
+//                element.setModel(cm.getColumnName());
+//                element.setKey(IdUtil.objectId());
+//                element.setIcon("icon-" + cm.getHtmlType());
+//
+//                if (cm.getHtmlType() != null && cm.getHtmlType().equals(GenConstants.HTML_SELECT)) {
+//                    element.setOptions(new SelectOptions());
+//                } else if (cm.getHtmlType() != null && (cm.getHtmlType().equals(GenConstants.HTML_CHECKBOX)
+//                        || cm.getHtmlType().equals(GenConstants.HTML_RADIO))) {
+//                    element.setOptions(new RadioAndCheckboxOptions());
+//                } else if (cm.getPrimaryKey()) {
+//                    element.setOptions(new Options(true));
+//                } else {
+//                    Options options = new Options();
+//                    if (cm.getRequired() != null && cm.getRequired()) {
+//                        options.setRequired(true);
+//                        options.setHidden(false);
+//                    }
+//                    element.setOptions(options);
+//                }
+//
+//                if (cm.getRequired() != null && cm.getRequired()) {
+//                    List<Rules> rules = new ArrayList<>();
+//                    rules.add(new Rules(true, "Required"));
+//                    element.setRules(rules);
+//                }
+//
+//                elements.add(element);
+//            }
+//        });
+//
+//        //设置 FormMarker 元素
+//        fm.setList(elements);
 
-        // 先初始化元数据
+        FormGenerator fg = new FormGenerator();
+        List<Fields> fields = new ArrayList<>();
+
+        int[] i = {100};
         codeMetas.forEach(cm -> {
             CodeGenUtils.initColumnField(cm);
+            if (cm.getSave() != null && cm.getSave() && cm.getHtmlType() != null) {
+                Fields field = new Fields();
+                field.setVModel(cm.getColumnName())
+                        .setPlaceholder("请输入" + cm.getColumnComment());
 
-            if ((cm.getSave() != null && cm.getSave()) || cm.getPrimaryKey()) {
-                Element element = new Element();
-                element.setType(cm.getHtmlType());
-                element.setName(cm.getColumnComment());
-                element.setModel(cm.getColumnName());
-                element.setKey(IdUtil.objectId());
-                element.setIcon("icon-" + cm.getHtmlType());
+                Style style = new Style();
+                field.setStyle(style);
 
-                if (cm.getHtmlType() != null && cm.getHtmlType().equals(GenConstants.HTML_SELECT)) {
-                    element.setOptions(new SelectOptions());
-                } else if (cm.getHtmlType() != null && (cm.getHtmlType().equals(GenConstants.HTML_CHECKBOX)
-                        || cm.getHtmlType().equals(GenConstants.HTML_RADIO))) {
-                    element.setOptions(new RadioAndCheckboxOptions());
-                } else if (cm.getPrimaryKey()) {
-                    element.setOptions(new Options(true));
-                } else {
-                    Options options = new Options();
-                    if (cm.getRequired() != null && cm.getRequired()) {
-                        options.setRequired(true);
-                        options.setHidden(false);
-                    }
-                    element.setOptions(options);
+                switch (cm.getHtmlType()) {
+                    case GenConstants.HTML_TEXTAREA:
+                        Config config = new Config(cm.getColumnComment(),
+                                "el-input",
+                                cm.getHtmlType(),
+                                cm.getRequired() != null && cm.getRequired(),
+                                i[0]++,
+                                RandomUtils.nextInt());
+
+                        field.setType(GenConstants.HTML_TEXTAREA)
+                                .setAutosize(new Autosize())
+                                .setReadonly(false)
+                                .setShowWordLimit(false)
+                                .setConfig(config);
+
+                        break;
+                    case GenConstants.HTML_SELECT:
+                        config = new Config(cm.getColumnComment(),
+                                "el-select",
+                                cm.getHtmlType(),
+                                cm.getRequired() != null && cm.getRequired(),
+                                i[0]++,
+                                RandomUtils.nextInt());
+
+                        field.setSlot(new SlotList())
+                                .setMultiple(false)
+                                .setFilterable(false)
+                                .setClearable(true)
+                                .setConfig(config);
+
+                        break;
+//                    case GenConstants.HTML_RADIO:
+//                        config = new Config(cm.getColumnComment(),
+//                                "el-radio-group",
+//                                cm.getHtmlType(),
+//                                cm.getRequired() != null && cm.getRequired(),
+//                                i[0]++,
+//                                RandomUtils.nextInt(),
+//                                "default",
+//                                false);
+//
+//                        field.setType(GenConstants.HTML_RADIO)
+//                                .setSlot(new SlotList())
+//                                .setSize("medium")
+//                                .setConfig(config);
+//
+//                        break;
+//                    case GenConstants.HTML_CHECKBOX:
+//                        config = new CheckboxConfig(cm.getColumnComment(),
+//                                "el-checkbox-group",
+//                                cm.getHtmlType(),
+//                                cm.getRequired() != null && cm.getRequired(),
+//                                i[0]++,
+//                                RandomUtils.nextInt(),
+//                                "default",
+//                                false,
+//                                new ArrayList<>());
+//
+//                        field.setType(GenConstants.HTML_CHECKBOX)
+//                                .setSlot(new SlotList())
+//                                .setSize("medium")
+//                                .setConfig(config);
+//
+//                        break;
+//                    case GenConstants.HTML_SWITCH:
+//                        config = new SwitchConfig(cm.getColumnComment(),
+//                                "el-switch",
+//                                cm.getHtmlType(),
+//                                cm.getRequired() != null && cm.getRequired(),
+//                                i[0]++,
+//                                RandomUtils.nextInt(),
+//                                "default",
+//                                false,
+//                                "open");
+//
+//                        field.setActiveText("")
+//                                .setInactiveText("")
+//                                .setActiveValue("open")
+//                                .setInactiveValue("close")
+//                                .setConfig(config);
+//                        break;
+                    default:
+                        config = new Config(cm.getColumnComment(),
+                                "el-input",
+                                cm.getHtmlType(),
+                                cm.getRequired() != null && cm.getRequired(),
+                                i[0]++,
+                                RandomUtils.nextInt());
+
+                        field.setSlot(new InputSlot())
+                                .setConfig(config)
+                                .setClearable(true)
+                                .setShowWordLimit(false)
+                                .setPrefixIcon("")
+                                .setSuffixIcon("");
+                        break;
                 }
 
-                if (cm.getRequired() != null && cm.getRequired()) {
-                    List<Rules> rules = new ArrayList<>();
-                    rules.add(new Rules(true, "Required"));
-                    element.setRules(rules);
-                }
-
-                elements.add(element);
+                fields.add(field);
             }
         });
 
-        //设置 FormMarker 元素
-        fm.setList(elements);
+        fg.setFields(fields);
+
+        log.info("FormGenerator: {}", fg);
 
         try {
             Form form = new Form()
                     .setName(code.getDsName() + ":" + code.getTableName() + ":" + RandomUtil.randomString(5))
                     .setDescription(code.getClassComment())
-                    .setMetadata(objectMapper.writeValueAsString(fm));
+                    .setMetadata(objectMapper.writeValueAsString(fg));
             form = formService.saveOrUpdateForm(form);
             code.setFormKey(form.getFormKey());
         } catch (JsonProcessingException e) {

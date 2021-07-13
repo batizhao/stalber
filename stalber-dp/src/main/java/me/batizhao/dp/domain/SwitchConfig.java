@@ -1,0 +1,23 @@
+package me.batizhao.dp.domain;
+
+/**
+ * @author batizhao
+ * @date 2021/7/13
+ */
+public class SwitchConfig extends Config {
+
+    public SwitchConfig(String label, String tag, String tagIcon, boolean required, Integer formId, Integer renderKey, String optionType, Boolean border, String defaultValue) {
+        super(label, tag, tagIcon, required, formId, renderKey, optionType, border);
+        this.defaultValue = defaultValue;
+    }
+
+    private String defaultValue;
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+}
