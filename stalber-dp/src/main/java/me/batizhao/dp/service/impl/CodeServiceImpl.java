@@ -20,7 +20,6 @@ import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
 import me.batizhao.dp.service.FormService;
 import me.batizhao.dp.util.CodeGenUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -164,7 +163,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
                                 cm.getHtmlType(),
                                 cm.getRequired() != null && cm.getRequired(),
                                 i[0]++,
-                                RandomUtils.nextInt());
+                                RandomUtil.randomNumbers(17));
 
                         field.setType(GenConstants.HTML_TEXTAREA)
                                 .setAutosize(new Autosize())
@@ -179,7 +178,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
                                 cm.getHtmlType(),
                                 cm.getRequired() != null && cm.getRequired(),
                                 i[0]++,
-                                RandomUtils.nextInt());
+                                RandomUtil.randomNumbers(17));
 
                         field.setSlot(new SlotList())
                                 .setMultiple(false)
@@ -244,11 +243,12 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
                                 cm.getHtmlType(),
                                 cm.getRequired() != null && cm.getRequired(),
                                 i[0]++,
-                                RandomUtils.nextInt());
+                                RandomUtil.randomNumbers(17));
 
                         field.setSlot(new InputSlot())
                                 .setConfig(config)
                                 .setClearable(true)
+                                .setReadonly(false)
                                 .setShowWordLimit(false)
                                 .setPrefixIcon("")
                                 .setSuffixIcon("");
@@ -260,8 +260,6 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         });
 
         fg.setFields(fields);
-
-        log.info("FormGenerator: {}", fg);
 
         try {
             Form form = new Form()

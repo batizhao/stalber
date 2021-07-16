@@ -15,7 +15,7 @@ public class Config {
     public Config() {
     }
 
-    public Config(String label, String tag, String tagIcon, boolean required, Integer formId, Integer renderKey) {
+    public Config(String label, String tag, String tagIcon, boolean required, Integer formId, String renderKey) {
         this.label = label;
         this.tag = tag;
         this.tagIcon = tagIcon;
@@ -24,7 +24,7 @@ public class Config {
         this.renderKey = renderKey;
     }
 
-    public Config(String label, String tag, String tagIcon, boolean required, Integer formId, Integer renderKey, String optionType, Boolean border) {
+    public Config(String label, String tag, String tagIcon, boolean required, Integer formId, String renderKey, String optionType, Boolean border) {
         this.label = label;
         this.tag = tag;
         this.tagIcon = tagIcon;
@@ -53,13 +53,15 @@ public class Config {
 
     private Integer span = 24;
 
+    private boolean show = true;
+
     private String document;
 
     private List<RegList> regList = new ArrayList<>();
 
     private Integer formId;
 
-    private Integer renderKey;
+    private String renderKey;
 
     /**
      * for radio
@@ -145,6 +147,14 @@ public class Config {
         this.span = span;
     }
 
+    public boolean isShow() {
+        return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
+    }
+
     public String getDocument() {
         return document;
     }
@@ -169,11 +179,11 @@ public class Config {
         this.formId = formId;
     }
 
-    public Integer getRenderKey() {
+    public String getRenderKey() {
         return renderKey;
     }
 
-    public void setRenderKey(Integer renderKey) {
+    public void setRenderKey(String renderKey) {
         this.renderKey = renderKey;
     }
 

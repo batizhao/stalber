@@ -1,5 +1,7 @@
 package me.batizhao.dp.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
  * @date 2021/7/9
  */
 @Data
+@JsonTypeName("formData")
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT ,use = JsonTypeInfo.Id.NAME)
 public class FormGenerator {
 
     private List<Fields> fields;

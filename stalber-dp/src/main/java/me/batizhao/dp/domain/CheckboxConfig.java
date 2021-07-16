@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class CheckboxConfig extends Config {
 
-    public CheckboxConfig(String label, String tag, String tagIcon, boolean required, Integer formId, Integer renderKey, String optionType, Boolean border, List<String> defaultValue) {
+    public CheckboxConfig(String label, String tag, String tagIcon, boolean required, Integer formId, String renderKey, String optionType, Boolean border, List<String> defaultValue) {
         super(label, tag, tagIcon, required, formId, renderKey, optionType, border);
         this.defaultValue = defaultValue;
     }
