@@ -1,0 +1,15 @@
+<template>
+  <div class="app-container">
+    #parse( "templates/pecado/vue/search-form.vm" )
+
+    #parse( "templates/pecado/vue/toolbar.vm" )
+
+    #parse( "templates/pecado/vue/table.vm" )
+
+    #parse( "templates/pecado/vue/modal-form.vm" )
+
+  </div>
+</template>
+
+#parse( "templates/pecado/vue/script.vm" )
+

@@ -19,27 +19,23 @@ package me.batizhao.dp.util;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.extra.template.Template;
+import cn.hutool.extra.template.TemplateConfig;
+import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.extra.template.TemplateUtil;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.GenConstants;
 import me.batizhao.common.constant.PecadoConstants;
 import me.batizhao.common.exception.StalberException;
+import me.batizhao.dp.config.GenConfig;
 import me.batizhao.dp.domain.Code;
 import me.batizhao.dp.domain.CodeMeta;
-import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,9 +94,9 @@ public class CodeGenUtils {
     public static void initData(Code code) {
         code.setClassName(columnToJava(code.getTableName()));
         code.setClassComment(replaceText(code.getTableComment()));
-        code.setClassAuthor("batizhao");
-        code.setModuleName("system");
-        code.setPackageName("me.batizhao");
+        code.setClassAuthor(GenConfig.getAuthor());
+        code.setModuleName(GenConfig.getModuleName());
+        code.setPackageName(GenConfig.getPackageName());
         code.setTemplate(GenConstants.TPL_CRUD);
         code.setMappingPath(StringUtils.uncapitalize(code.getClassName()));
         code.setCreateTime(LocalDateTime.now());
@@ -198,16 +194,15 @@ public class CodeGenUtils {
         // 封装模板数据
         Map<String, Object> map = prepareContext(code);
 
-        // 设置velocity资源加载器
-        VelocityContext context = getVelocityContext(map);
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("/templates/" + GenConfig.getProjectKey(), TemplateConfig.ResourceMode.CLASSPATH));
 
         // 获取模板列表
         for (String template : getTemplates(code.getTemplate())) {
             if (!StringUtils.containsAny(template, MENU_SQL_VM, VUE_API_JS_VM, VUE_INDEX_VUE_VM, VUE_TREE_INDEX_VUE_VM)) {
                 // 渲染模板
                 StringWriter sw = new StringWriter();
-                Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
-                tpl.merge(context, sw);
+                Template tpl = engine.getTemplate(template);
+                tpl.render(map, sw);
                 try {
                     String path = getGenPath(code, template);
                     FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
@@ -226,15 +221,14 @@ public class CodeGenUtils {
         // 封装模板数据
         Map<String, Object> map = prepareContext(code);
 
-        // 设置velocity资源加载器
-        VelocityContext context = getVelocityContext(map);
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("/templates/" + GenConfig.getProjectKey(), TemplateConfig.ResourceMode.CLASSPATH));
 
         // 获取模板列表
         for (String template : getTemplates(code.getTemplate())) {
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
-            tpl.merge(context, sw);
+            Template tpl = engine.getTemplate(template);
+            tpl.render(map, sw);
 
             // 添加到zip
             zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFileName(code, template))));
@@ -252,16 +246,15 @@ public class CodeGenUtils {
         // 封装模板数据
         Map<String, Object> map = prepareContext(code);
 
-        // 设置velocity资源加载器
-        VelocityContext context = getVelocityContext(map);
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("/templates/" + GenConfig.getProjectKey(), TemplateConfig.ResourceMode.CLASSPATH));
 
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 获取模板列表
         for (String template : getTemplates(code.getTemplate())) {
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = Velocity.getTemplate(template, CharsetUtil.UTF_8);
-            tpl.merge(context, sw);
+            Template tpl = engine.getTemplate(template);
+            tpl.render(map, sw);
             dataMap.put(template.substring(template.lastIndexOf("/")+1, template.indexOf(".vm")), sw.toString());
         }
         return dataMap;
@@ -338,31 +331,24 @@ public class CodeGenUtils {
      */
     private List<String> getTemplates(String template) {
         List<String> templates = new ArrayList<>();
-        templates.add("templates/java/Domain.java.vm");
-        templates.add("templates/java/Mapper.java.vm");
-        templates.add("templates/java/Service.java.vm");
-        templates.add("templates/java/ServiceImpl.java.vm");
-        templates.add("templates/java/Controller.java.vm");
-        templates.add("templates/xml/Mapper.xml.vm");
-        templates.add("templates/test/MapperUnitTest.java.vm");
-        templates.add("templates/test/ServiceUnitTest.java.vm");
-        templates.add("templates/test/ControllerUnitTest.java.vm");
-        templates.add("templates/test/ApiTest.java.vm");
-        templates.add("templates/sql/menu.sql.vm");
-		templates.add("templates/js/api.js.vm");
+        templates.add("java/Domain.java.vm");
+        templates.add("java/Mapper.java.vm");
+        templates.add("java/Service.java.vm");
+        templates.add("java/ServiceImpl.java.vm");
+        templates.add("java/Controller.java.vm");
+        templates.add("xml/Mapper.xml.vm");
+        templates.add("test/MapperUnitTest.java.vm");
+        templates.add("test/ServiceUnitTest.java.vm");
+        templates.add("test/ControllerUnitTest.java.vm");
+        templates.add("test/ApiTest.java.vm");
+        templates.add("sql/menu.sql.vm");
+		templates.add("js/api.js.vm");
 		if (template.equals(GenConstants.TPL_TREE)) {
-            templates.add("templates/vue/index-tree.vue.vm");
+            templates.add("vue/index-tree.vue.vm");
         } else {
-            templates.add("templates/vue/index.vue.vm");
+            templates.add("vue/index.vue.vm");
         }
         return templates;
-    }
-
-    private VelocityContext getVelocityContext(Map<String, Object> map) {
-        Properties prop = new Properties();
-        prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        Velocity.init(prop);
-        return new VelocityContext(map);
     }
 
     private Map<String, Object> prepareContext(Code code) {
@@ -393,55 +379,6 @@ public class CodeGenUtils {
      */
     public String columnToJava(String columnName) {
         return WordUtils.capitalizeFully(columnName, new char[]{'_'}).replace("_", "");
-    }
-
-    /**
-     * 表名转换成Java类名
-     */
-    private String tableToJava(String tableName, String tablePrefix) {
-        if (StringUtils.isNotBlank(tablePrefix)) {
-            tableName = tableName.replaceFirst(tablePrefix, "");
-        }
-        return columnToJava(tableName);
-    }
-
-    /**
-     * 设置主键列信息
-     *
-     * @param table 业务表信息
-     */
-//    public void setPkColumn(List<CodeMeta> codeMetas)
-//    {
-//        for (CodeMeta column : codeMetas)
-//        {
-//            if (column.getPrimaryKey())
-//            {
-//                table.setPkColumn(column);
-//                break;
-//            }
-//        }
-//        if (org.apache.commons.lang3.StringUtils.isNull(table.getPkColumn()))
-//        {
-//            table.setPkColumn(table.getColumns().get(0));
-//        }
-//    }
-
-    /**
-     * 获取配置信息
-     */
-    private Configuration getConfig() {
-        try {
-            FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
-                    new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
-                            .configure(new Parameters().properties()
-                                    .setFileName("generator.properties")
-                                    .setThrowExceptionOnMissing(true)
-                                    .setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
-                                    .setIncludesAllowed(false));
-            return builder.getConfiguration();
-        } catch (ConfigurationException e) {
-            throw new StalberException("获取配置文件失败，", e);
-        }
     }
 
     /**

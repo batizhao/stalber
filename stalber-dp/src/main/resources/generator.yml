@@ -1,0 +1,14 @@
+# 代码生成
+gen: 
+  # 作者
+  author: batizhao
+  # 默认项目模板
+  projectKey: pecado
+  # 默认生成包路径
+  packageName: me.batizhao
+  # 默认生成模块名
+  moduleName: system
+  # 自动去除表前缀，默认是false
+  autoRemovePre: false
+  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
+  tablePrefix: sys_
