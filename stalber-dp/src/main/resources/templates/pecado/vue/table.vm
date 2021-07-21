@@ -1,4 +1,4 @@
-<el-table v-loading="loading" :data="${classname}List" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="${classname}List" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
 #foreach($column in $columns)
 #set($javaField=$column.javaField)

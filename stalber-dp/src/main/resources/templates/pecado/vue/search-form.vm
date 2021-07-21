@@ -1,4 +1,4 @@
-<el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
 #foreach($column in $columns)
 #if($column.search)
 #set($dictType=$column.dictType)
@@ -12,11 +12,11 @@
 #if($column.htmlType == "input")
       <el-form-item label="${comment}" prop="${column.javaField}">
         <el-input
-        v-model="queryParams.${column.javaField}"
-        placeholder="请输入${comment}"
-        clearable
-        size="small"
-        @keyup.enter.native="handleQuery"
+          v-model="queryParams.${column.javaField}"
+          placeholder="请输入${comment}"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
         />
       </el-form-item>
 #elseif(($column.htmlType == "select" || $column.htmlType == "radio") && "" != $dictType)

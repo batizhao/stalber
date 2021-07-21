@@ -331,28 +331,20 @@ public class CodeGenUtils {
      */
     private List<String> getTemplates(String template) {
         List<String> templates = new ArrayList<>();
-        templates.add("java/Domain.java.vm");
-        templates.add("java/Mapper.java.vm");
-        templates.add("java/Service.java.vm");
-        templates.add("java/ServiceImpl.java.vm");
-        templates.add("java/Controller.java.vm");
-        templates.add("xml/Mapper.xml.vm");
-        templates.add("test/MapperUnitTest.java.vm");
-        templates.add("test/ServiceUnitTest.java.vm");
-        templates.add("test/ControllerUnitTest.java.vm");
-        templates.add("test/ApiTest.java.vm");
-        templates.add("sql/menu.sql.vm");
-		templates.add("js/api.js.vm");
+        if (StringUtils.isNotBlank(GenConfig.getTemplates())) {
+            templates = Arrays.asList(GenConfig.getTemplates().split(","));
+            templates = new ArrayList<>(templates);
+        }
+
 		if (template.equals(GenConstants.TPL_TREE)) {
             templates.add("vue/index-tree.vue.vm");
-        } else {
-            templates.add("vue/index.vue.vm");
+            templates.remove("vue/index.vue.vm");
         }
         return templates;
     }
 
     private Map<String, Object> prepareContext(Code code) {
-        Map<String, Object> map = new HashMap<>(16);
+        Map<String, Object> map = new HashMap<>(18);
         map.put("tableName", code.getTableName());
         map.put("pk", code.getCodeMetaList().get(0));
         map.put("className", code.getClassName());

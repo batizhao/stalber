@@ -31,11 +31,8 @@ public class GenConfig
      */
     public static String moduleName;
 
-    /** 自动去除表前缀，默认是false */
-    public static boolean autoRemovePre;
-
     /** 表前缀(类名不会包含表前缀) */
-    public static String tablePrefix;
+    public static String templates;
 
     public static String getAuthor()
     {
@@ -77,25 +74,13 @@ public class GenConfig
         GenConfig.moduleName = moduleName;
     }
 
-    public static boolean getAutoRemovePre()
+    public static String getTemplates()
     {
-        return autoRemovePre;
+        return templates;
     }
 
-    @Value("${autoRemovePre}")
-    public void setAutoRemovePre(boolean autoRemovePre)
-    {
-        GenConfig.autoRemovePre = autoRemovePre;
-    }
-
-    public static String getTablePrefix()
-    {
-        return tablePrefix;
-    }
-
-    @Value("${tablePrefix}")
-    public void setTablePrefix(String tablePrefix)
-    {
-        GenConfig.tablePrefix = tablePrefix;
+    @Value("${templates}")
+    public void setTemplates(String templates) {
+        GenConfig.templates = templates;
     }
 }

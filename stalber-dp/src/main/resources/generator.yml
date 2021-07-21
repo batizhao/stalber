@@ -8,7 +8,5 @@ gen:
   packageName: me.batizhao
   # 默认生成模块名
   moduleName: system
-  # 自动去除表前缀，默认是false
-  autoRemovePre: false
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
-  tablePrefix: sys_
+  templates: java/Domain.java.vm,java/Mapper.java.vm,java/Service.java.vm,java/ServiceImpl.java.vm,java/Controller.java.vm,xml/Mapper.xml.vm,test/ControllerUnitTest.java.vm,test/ServiceUnitTest.java.vm,test/MapperUnitTest.java.vm,test/ApiTest.java.vm,sql/menu.sql.vm,js/api.js.vm,vue/index.vue.vm

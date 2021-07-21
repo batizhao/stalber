@@ -1,4 +1,4 @@
-<el-table
+    <el-table
       v-loading="loading"
       :data="${classname}List"
       row-key="id"
