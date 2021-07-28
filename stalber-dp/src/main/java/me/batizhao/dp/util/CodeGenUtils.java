@@ -58,15 +58,21 @@ import java.util.zip.ZipOutputStream;
 @UtilityClass
 public class CodeGenUtils {
 
-    private final String ENTITY_JAVA_VM = "Domain.java.vm";
+    private final String ENTITY_JAVA_VM = "java/Domain.java.vm";
 
-    private final String MAPPER_JAVA_VM = "Mapper.java.vm";
+    private final String ENTITY_DTO_JAVA_VM = "java/DomainDTO.java.vm";
 
-    private final String SERVICE_JAVA_VM = "Service.java.vm";
+    private final String ENTITY_FORM_JAVA_VM = "java/DomainForm.java.vm";
 
-    private final String SERVICE_IMPL_JAVA_VM = "ServiceImpl.java.vm";
+    private final String MAPPER_JAVA_VM = "java/Mapper.java.vm";
 
-    private final String CONTROLLER_JAVA_VM = "Controller.java.vm";
+    private final String SERVICE_JAVA_VM = "java/Service.java.vm";
+
+    private final String SERVICE_IMPL_JAVA_VM = "java/ServiceImpl.java.vm";
+
+    private final String CONTROLLER_JAVA_VM = "java/Controller.java.vm";
+
+    private final String CONTROLLER_BASE_JAVA_VM = "java/BaseController.java.vm";
 
     private final String MAPPER_XML_VM = "Mapper.xml.vm";
 
@@ -349,6 +355,7 @@ public class CodeGenUtils {
         map.put("pk", code.getCodeMetaList().get(0));
         map.put("className", code.getClassName());
         map.put("classname", StringUtils.uncapitalize(code.getClassName()));
+        map.put("classNameLower", StringUtils.lowerCase(code.getClassName()));
         map.put("mappingPath", code.getMappingPath());
         map.put("columns", code.getCodeMetaList());
         map.put("date", DateUtil.today());
@@ -400,16 +407,17 @@ public class CodeGenUtils {
 
         if (StringUtils.isNotBlank(code.getPackageName())) {
             String packagePath = code.getPackageName().replace(".", File.separator) + File.separator + code.getModuleName() + File.separator;
+            if (GenConfig.getProjectKey().equals("jsoa")) packagePath = packagePath + StringUtils.lowerCase(code.getClassName()) + File.separator;
             packageSrcPath += packagePath;
             packageTestPath += packagePath;
         }
 
         if (template.contains(ENTITY_JAVA_VM)) {
-            return packageSrcPath + "domain" + File.separator + code.getClassName() + ".java";
+            return packageSrcPath + GenConfig.getPojoPackageName() + File.separator + code.getClassName() + ".java";
         }
 
         if (template.contains(MAPPER_JAVA_VM)) {
-            return packageSrcPath + "mapper" + File.separator + code.getClassName() + "Mapper.java";
+            return packageSrcPath + GenConfig.getMapperPackageName() + File.separator + code.getClassName() + "Mapper.java";
         }
 
         if (template.contains(MAPPER_UNIT_TEST_JAVA_VM)) {
@@ -430,6 +438,18 @@ public class CodeGenUtils {
 
         if (template.contains(CONTROLLER_JAVA_VM)) {
             return packageSrcPath + "controller" + File.separator + code.getClassName() + "Controller.java";
+        }
+
+        if (template.contains(CONTROLLER_BASE_JAVA_VM)) {
+            return packageSrcPath + "controller" + File.separator + code.getClassName() + "BaseController.java";
+        }
+
+        if (template.contains(ENTITY_DTO_JAVA_VM)) {
+            return packageSrcPath + "controller" + File.separator + code.getClassName() + "DTO.java";
+        }
+
+        if (template.contains(ENTITY_FORM_JAVA_VM)) {
+            return packageSrcPath + "controller" + File.separator + code.getClassName() + "Form.java";
         }
 
         if (template.contains(CONTROLLER_UNIT_TEST_JAVA_VM)) {

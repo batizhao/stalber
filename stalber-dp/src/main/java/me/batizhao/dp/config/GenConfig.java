@@ -31,6 +31,16 @@ public class GenConfig
      */
     public static String moduleName;
 
+    /**
+     * 默认pojo包名
+     */
+    public static String pojoPackageName;
+
+    /**
+     * 默认mapper包名
+     */
+    public static String mapperPackageName;
+
     /** 表前缀(类名不会包含表前缀) */
     public static String templates;
 
@@ -67,6 +77,24 @@ public class GenConfig
 
     public static String getModuleName() {
         return moduleName;
+    }
+
+    public static String getPojoPackageName() {
+        return pojoPackageName;
+    }
+
+    @Value("${pojoPackageName}")
+    public void setPojoPackageName(String pojoPackageName) {
+        GenConfig.pojoPackageName = pojoPackageName;
+    }
+
+    public static String getMapperPackageName() {
+        return mapperPackageName;
+    }
+
+    @Value("${mapperPackageName}")
+    public void setMapperPackageName(String mapperPackageName) {
+        GenConfig.mapperPackageName = mapperPackageName;
     }
 
     @Value("${moduleName}")

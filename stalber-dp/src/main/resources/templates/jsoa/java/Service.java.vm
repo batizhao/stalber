@@ -1,0 +1,86 @@
+package ${package}.${moduleName}.${classNameLower}.service;
+
+import cn.sh.ideal.common.utils.PageUtils;
+import ${package}.${moduleName}.${classNameLower}.entity.${className};
+import cn.sh.ideal.platform.flowable.entity.RestPage;
+import cn.sh.ideal.platform.flowable.entity.RestStartProcessDTO;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.IService;
+
+/**
+ * ${comments}接口类
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${className}Service extends IService<${className}> {
+
+#if($template != "tree")
+    /**
+     * 文件列表分页查询，带排序
+     *
+     * @param page
+     * @param title
+     * @param moduleId
+     * @param loginName
+     * @param type
+     * @param orderParam
+     * @param LCDDGLY    是否为中心（公文）管理员
+     * @return``
+     */
+    PageUtils findByList(RestPage page, String title, String moduleId, String loginName, String type, String orderParam, String sortOrder, String LCDDGLY, String code, String createName, String createOrg, String startTime, String endTime);
+#else
+    /**
+     * 查询${comments}
+     * @return ${comments}树
+     */
+    List<${className}> find${className}Tree(${className} ${classname});
+#end
+
+    /**
+     * 通过id查询${comments}
+     * @param ${pk.javaField} id
+     * @return ${className}
+     */
+    ${className} findById(${pk.javaType} id);
+
+    ${className} findUnique(String p, Object value);
+
+    /**
+     * 添加或编辑${comments}
+     */
+    void save(${className} ${classname}, RestStartProcessDTO restStartProcessDTO, String sendSMS, String sendContent) throws Exception;
+
+    /**
+     * 统计
+     *
+     * @param page
+     * @param title
+     * @param sort
+     * @param order
+     * @param deptId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    PageUtils statistical(Page page, String title, String moduleId, String sort, String order, String deptId, String startTime, String endTime);
+
+#if($template == "tree")
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    Boolean deleteById(Integer id);
+
+    /**
+     * 检查是否有子${comments}
+     * 有返回 true，无返回 false
+     *
+     * @param id
+     * @return
+     */
+    Boolean checkHasChildren(Integer id);
+#end
+}

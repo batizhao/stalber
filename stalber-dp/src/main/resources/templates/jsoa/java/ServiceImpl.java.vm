@@ -1,0 +1,266 @@
+package ${package}.${moduleName}.${classNameLower}.service.impl;
+
+import cn.sh.ideal.common.annotation.FetchEntity;
+import cn.sh.ideal.common.annotation.FetchEntitys;
+import cn.sh.ideal.common.exception.RRException;
+import cn.sh.ideal.common.utils.Empty;
+import cn.sh.ideal.common.utils.PageUtils;
+import cn.sh.ideal.frontend.nanjing.gcydgzjhb.dto.GcydgzjhbDTO;
+import ${package}.${moduleName}.${classNameLower}.dao.${className}Mapper;
+import ${package}.${moduleName}.${classNameLower}.entity.${className};
+import ${package}.${moduleName}.${classNameLower}.service.${className}Service;
+import cn.sh.ideal.modules.sms.ISMSService;
+import cn.sh.ideal.modules.sys.entity.SysUserEntity;
+import cn.sh.ideal.modules.sys.service.SysUserService;
+import cn.sh.ideal.oa.bpmn.runtime.PlatformIRuntimeService;
+import cn.sh.ideal.oa.core.application.entity.Application;
+import cn.sh.ideal.oa.core.application.service.IApplicationService;
+import cn.sh.ideal.platform.flowable.entity.*;
+import cn.sh.ideal.platform.flowable.service.TaskRestService;
+import cn.sh.ideal.platform.flowable.util.JsonUtil;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+/**
+ * ${comments}接口实现类
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Service
+public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements ${className}Service {
+
+    private final String target = "endevent1";
+
+    @Autowired
+    private IApplicationService applicationService;
+    @Autowired
+    private PlatformIRuntimeService platformRuntimeService;
+    @Autowired
+    private ISMSService smsService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private TaskRestService taskRestService;
+
+#if($template != "tree")
+    @Override
+    public PageUtils findByList(RestPage page, String title,
+                                String moduleId, String loginName,
+                                String type, String orderParam,
+                                String sortOrder, String LCDDGLY, String code, String createName, String createOrg, String startTime, String endTime) {
+        RestTaskDTO restTaskDTO = new RestTaskDTO();
+        restTaskDTO.setType("0");
+        restTaskDTO.setStatus("0");
+        restTaskDTO.setTitle(title);
+        restTaskDTO.setUserName(loginName);
+        restTaskDTO.setRealName(createName);
+        restTaskDTO.setModuleId(moduleId);
+        restTaskDTO.setBusinessModuleId(moduleId);
+
+        Page<Object> result = taskRestService.doc(restTaskDTO, page);
+
+        List<Object> list = result.getRecords();
+
+        List<GcydgzjhbDTO> rList = new ArrayList<>();
+
+        for (Object obj : list) {
+            GcydgzjhbDTO dto = new GcydgzjhbDTO();
+            LinkedHashMap linkedHashMap = (LinkedHashMap) obj;
+            String json = JSON.toJSONString(linkedHashMap);
+            RestDocView docView = JsonUtil.parse(json, RestDocView.class);
+            if (docView != null) {
+                dto.setAppId(docView.getAppId());
+                dto.setCode(docView.getCode());
+                dto.setTitle(docView.getTitle());
+                dto.setCreateOrgName(docView.getCreateOrgName());
+                dto.setCreatorName(docView.getCreateName());
+                dto.setCandidateNames(String.join(",", docView.getTodoUserList()));
+                dto.setAssigneeNames(String.join(",", docView.getDoingUserList()));
+                dto.setTaskName(docView.getTaskNameList().size() == 0 ? "已办结" : String.join(",", docView.getTaskNameList()));
+                dto.setCreateTime(docView.getCreateTime());
+                dto.setProcInstId(docView.getProcInstId());
+                rList.add(dto);
+            }
+        }
+        PageUtils pageUtils = new PageUtils(rList, result.getTotal(), result.getSize(), result.getCurrent());
+        return pageUtils;
+    }
+#else
+    @Override
+    public List<${className}> find${className}Tree(${className} ${classname}) {
+        LambdaQueryWrapper<${className}> wrapper = Wrappers.lambdaQuery();
+        if (null != ${classname} && StringUtils.isNotBlank(${classname}.getName())) {
+            wrapper.like(${className}::getName, ${classname}.getName());
+        }
+        wrapper.orderByAsc(${className}::getSort);
+
+        List<${className}> ${classname}s = ${classname}Mapper.selectList(wrapper);
+        int min = ${classname}s.size() > 0 ? Collections.min(${classname}s.stream().map(${className}::getPid).collect(Collectors.toList())) : 0;
+        return TreeUtil.build(${classname}s, min);
+
+    }
+#end
+
+    @Override
+    public ${className} findById(${pk.javaType} id) {
+        ${className} ${classname} = this.selectById(id);
+
+        if(${classname} == null) {
+            throw new RRException(String.format("Record not found '%s'。", id));
+        }
+
+        return ${classname};
+    }
+
+    @Override
+    @FetchEntitys({
+            @FetchEntity(injectProperty = FetchEntity.Type.Application, fetchByColumn = "app_id"),
+            @FetchEntity(injectProperty = FetchEntity.Type.DispatchComm, fetchByColumn = "common_id")
+    })
+    public ${className} selectById(Serializable id) {
+        return super.selectById(id);
+    }
+
+    @Override
+    @FetchEntitys({
+            @FetchEntity(injectProperty = FetchEntity.Type.Application, fetchByColumn = "app_id"),
+            @FetchEntity(injectProperty = FetchEntity.Type.DispatchComm, fetchByColumn = "common_id")
+    })
+    public ${className} selectOne(Wrapper<${className}> wrapper) {
+        return super.selectOne(wrapper);
+    }
+
+    @Override
+    @FetchEntitys({
+            @FetchEntity(injectProperty = FetchEntity.Type.Application, fetchByColumn = "app_id"),
+            @FetchEntity(injectProperty = FetchEntity.Type.DispatchComm, fetchByColumn = "common_id")
+    })
+    public ${className} findUnique(String p, Object value) {
+        ${className} ${classname} = this.selectOne(new EntityWrapper<${className}>().eq(p, value));
+        return ${classname};
+    }
+
+    @Override
+    public void save(${className} ${classname}, RestStartProcessDTO restStartProcessDTO, String sendSMS, String sendContent) throws Exception {
+        //判断是否为流程启动
+        if (Empty.isNotEmpty(restStartProcessDTO)) {
+            if (Empty.isNotEmpty(${classname})) {
+                Application app = ${classname}.getApp();
+                String procInstId = app.getProcessInstanceId();
+
+                if (Empty.isEmpty(procInstId)) {
+                    restStartProcessDTO.setOrgId(app.getCreateOrgId());
+                    restStartProcessDTO.setUserId(app.getCreator());
+                }
+                //后期扩展，通过流程配置在指定环节可以进行表单修改，编号根据环节生成。
+                //通过流程配置在指定环节可以进行表单修改，编号根据环节生成。
+                if (Empty.isEmpty(app.getId())) {
+                    this.insert(${classname});
+                } else {
+                    this.updateById(${classname});
+                }
+                for (RestProcessNodeDTO processNodeDTO : restStartProcessDTO.getProcessNodeDTO()) {
+                    if (target.equals(processNodeDTO.getTarget())) {//办结
+                        app.setState(4);//状态: 1.草稿 2.流转中 3.废止 4.办结
+                        break;
+                    } else {
+                        app.setState(2);//状态: 1.草稿 2.流转中 3.废止 4.办结
+                    }
+                }
+                if (Empty.isEmpty(app.getId())) {
+                    applicationService.insert(app);
+                } else {
+                    applicationService.updateById(app);
+                }
+                RestApplicationDTO dto = restStartProcessDTO.getDto();
+                if (Empty.isEmpty(dto.getId())) {
+                    dto.setId(${classname}.getApp().getId());
+                }
+            }
+            boolean flg = platformRuntimeService.executeSubmitProcesss(restStartProcessDTO);
+            //try/catch短信。不要因为短信异常，造成流程无法进行
+            try {
+                if (sendSMS.equals("Y") && flg) {
+                    StringBuilder mobile = new StringBuilder();
+                    String editContent = "";
+                    for (RestProcessNodeDTO processNodeDTO : restStartProcessDTO.getProcessNodeDTO()) {
+                        for (RestCandidateDTO candidateDTO : processNodeDTO.getCandidate()) {
+                            SysUserEntity userEntity = sysUserService.findUserByUsername(candidateDTO.getUserId());
+                            mobile.append(userEntity.getMobile()).append(";");
+                            editContent = sendContent;
+                        }
+                    }
+                    mobile = new StringBuilder(mobile.substring(0, mobile.length() - 1));
+                    smsService.sendSms(mobile.toString(), editContent);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (Empty.isNotEmpty(${classname}.getId())) {
+                this.updateById(${classname});
+            } else {
+                this.insert(${classname});
+            }
+        }
+    }
+
+    @Override
+    public PageUtils statistical(Page page, String title, String moduleId, String sort, String order, String deptId, String startTime, String endTime) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("moduleId", moduleId);
+        params.put("title", title);
+        params.put("sort", sort);
+        params.put("order", order);
+        params.put("deptId", deptId);
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
+
+        if (cn.sh.ideal.common.utils.StringUtils.isEmpty(startTime) && cn.sh.ideal.common.utils.StringUtils.isNotEmpty(endTime)) {
+            params.put("startTime", "1997-01-01 00:00:00");
+        } else {
+            if (cn.sh.ideal.common.utils.StringUtils.isEmpty(startTime)) {
+                params.put("startTime", startTime);
+            } else {
+                params.put("startTime", startTime + " 00:00:00");
+            }
+
+        }
+        if (cn.sh.ideal.common.utils.StringUtils.isEmpty(endTime) && cn.sh.ideal.common.utils.StringUtils.isNotEmpty(startTime)) {
+            endTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        }
+
+        if (cn.sh.ideal.common.utils.StringUtils.isEmpty(endTime)) {
+            params.put("endTime", endTime);
+        } else {
+            params.put("endTime", endTime + " 23:59:59");
+        }
+
+        return new PageUtils(page);
+    }
+#if($template == "tree")
+
+    @Override
+    @Transactional
+    public Boolean deleteById(Integer id) {
+        if (checkHasChildren(id)) return false;
+        this.removeById(id);
+        return true;
+    }
+
+    @Override
+    public Boolean checkHasChildren(Integer id) {
+        return ${classname}Mapper.selectList(Wrappers.<${className}>lambdaQuery().eq(${className}::getPid, id)).size() > 0;
+    }
+#end
+}

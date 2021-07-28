@@ -1,0 +1,40 @@
+package ${package}.${moduleName}.${classNameLower}.controller;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * ${comments} 实体DTO
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@Accessors(chain = true)
+@NoArgsConstructor
+public class ${className}DTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+#foreach ($column in $columns)
+    #if($template == "tree")
+        #if($column.javaField == "id" || $column.javaField == "pid")
+        #else
+
+    /**
+     * $column.columnComment
+     */
+    private $column.javaType $column.javaField;
+        #end
+    #else
+
+    /**
+     * $column.columnComment
+     */
+    private $column.javaType $column.javaField;
+    #end
+#end
+}

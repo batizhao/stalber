@@ -2,9 +2,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="${package}.${moduleName}.mapper.${className}Mapper">
+<mapper namespace="${package}.${moduleName}.${classNameLower}.dao.${className}Mapper">
 
-  <resultMap id="${classname}Map" type="${package}.${moduleName}.domain.${className}">
+  <resultMap id="${classname}Map" type="${package}.${moduleName}.${classNameLower}.entity.${className}">
 #foreach($column in $columns)
   #if($column.javaField==$pk.javaField)
     <id property="${pk.javaField}" column="${pk.columnName}"/>

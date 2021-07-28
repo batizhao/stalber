@@ -2,11 +2,16 @@
 gen: 
   # 作者
   author: batizhao
-  # 默认项目模板
-  projectKey: pecado
-  # 默认生成包路径
-  packageName: me.batizhao
-  # 默认生成模块名
-  moduleName: system
+  # 默认项目模板 pecado
+  projectKey: jsoa
+  # 默认生成包路径 me.batizhao
+  packageName: cn.sh.ideal
+  # 默认生成模块名 system
+  moduleName: frontend
+  # 默认pojo包名 domain
+  pojoPackageName: entity
+  # 默认mapper包名 mapper
+  mapperPackageName: dao
   # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
-  templates: java/Domain.java.vm,java/Mapper.java.vm,java/Service.java.vm,java/ServiceImpl.java.vm,java/Controller.java.vm,xml/Mapper.xml.vm,test/ControllerUnitTest.java.vm,test/ServiceUnitTest.java.vm,test/MapperUnitTest.java.vm,test/ApiTest.java.vm,sql/menu.sql.vm,js/api.js.vm,vue/index.vue.vm
+  templates: java/Domain.java.vm,java/Mapper.java.vm,java/Service.java.vm,java/ServiceImpl.java.vm,java/Controller.java.vm,java/BaseController.java.vm,java/DomainDTO.java.vm,java/DomainForm.java.vm,xml/Mapper.xml.vm
+#  templates: java/Domain.java.vm,java/Mapper.java.vm,java/Service.java.vm,java/ServiceImpl.java.vm,java/Controller.java.vm,xml/Mapper.xml.vm,test/ControllerUnitTest.java.vm,test/ServiceUnitTest.java.vm,test/MapperUnitTest.java.vm,test/ApiTest.java.vm,sql/menu.sql.vm,js/api.js.vm,vue/index.vue.vm

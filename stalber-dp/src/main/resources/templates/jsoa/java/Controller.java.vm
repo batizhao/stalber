@@ -1,0 +1,85 @@
+package ${package}.${moduleName}.${classNameLower}.controller;
+
+import cn.sh.ideal.common.annotation.SysLog;
+import cn.sh.ideal.common.utils.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSON;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * ${comments} API
+ *
+ * @module ${moduleName}
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Api(tags = "${comments}管理")
+@Controller
+@Slf4j
+@Validated
+@RequestMapping("${mappingPath}")
+public class ${className}Controller extends ${className}BaseController {
+
+    private static final String MODULE_NAME = "";
+
+    @GetMapping({"", "/index"})
+    public String index(HttpServletRequest request, Model model) throws Exception {
+        super.initIndex(request, model);
+        return "frontend/${classNameLower}/index";
+    }
+
+    @Override
+    @GetMapping("/input")
+    public String input(HttpServletRequest request, Model model) throws Exception {
+        return super.input(request, model);
+    }
+
+    @ApiOperation(value = "分页查询用户代码生成测试")
+    @GetMapping("/{moduleId}/{type}/{role}/list")
+    @ResponseBody
+    @Override
+    public GridData list(HttpServletRequest request, @PathVariable String moduleId, @PathVariable String type, @PathVariable String role) {
+        return super.list(request, moduleId, type, role);
+    }
+
+    @GetMapping("/{moduleId}/statistical")
+    @ResponseBody
+    public GridData statistical(HttpServletRequest request, @PathVariable String moduleId) {
+        return super.initStatistical(request, moduleId);
+    }
+
+    @SysLog("删除单子")
+    @PostMapping("/delDraft/{appId}/{title}")
+    @ResponseBody
+    public JSON delDraft(@PathVariable String appId, @PathVariable String title) {
+        super.initDelDraft(appId);
+        return ResultData.success("删除成功！").toJson();
+    }
+
+    /**
+     * 意见获取
+     */
+    @GetMapping("/comment")
+    public String comment(HttpServletRequest request, Model model) {
+        LinkedHashMap<String, String> commentTaskDefKey = new LinkedHashMap<>();
+
+        Map<String, String> rules = new HashMap<>();
+
+        model.addAttribute("comment", commentTaskDefKey);
+        model.addAttribute("rules", rules);
+
+        return "frontend/" + MODULE_NAME + "/approval/approval-comment";
+    }
+
+}

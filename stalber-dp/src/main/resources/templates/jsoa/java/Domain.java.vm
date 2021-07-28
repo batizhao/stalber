@@ -1,0 +1,75 @@
+package ${package}.${moduleName}.${classNameLower}.entity;
+
+import ${package}.${moduleName}.dispatch.entity.DispatchCommon;
+import ${package}.oa.core.application.entity.Application;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * ${comments} 实体对象
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+@Accessors(chain = true)
+@NoArgsConstructor
+@TableName("${tableName}")
+public class ${className}#if($template == "tree") extends TreeNode#end implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+    #if($template == "tree")
+        #if($column.javaField == "id" || $column.javaField == "pid")
+        #else
+
+    /**
+     * $column.columnComment
+     */
+    private $column.javaType $column.javaField;
+        #end
+    #else
+
+    /**
+     * $column.columnComment
+     */
+    private $column.javaType $column.javaField;
+    #end
+#end
+#if($template == "tree")
+
+    public ${className}(Integer id, Integer pid) {
+        this.id = id;
+        this.pid = pid;
+    }
+#end
+
+    /**
+     * 第三方ID
+     */
+    private String uuid;
+
+    private String commonId;
+
+    private String appId;
+
+    /**
+     * 业务主表ID , 必须存在
+     */
+    @TableField(exist = false)
+    private Application app;
+
+    /**
+     * 发文公共字段ID, 必须存在
+     */
+    @TableField(exist = false)
+    private DispatchCommon common;
+
+}

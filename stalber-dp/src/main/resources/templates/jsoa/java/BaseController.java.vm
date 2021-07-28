@@ -1,0 +1,330 @@
+package ${package}.${moduleName}.${classNameLower}.controller;
+
+import cn.sh.ideal.common.utils.*;
+import cn.sh.ideal.frontend.common.PlatformBaseController;
+import cn.sh.ideal.frontend.dispatch.entity.DispatchCommon;
+import cn.sh.ideal.frontend.dispatch.service.IDispatchCommonService;
+import ${package}.${moduleName}.${classNameLower}.entity.${className};
+import ${package}.${moduleName}.${classNameLower}.service.${className}Service;
+import cn.sh.ideal.modules.sys.entity.SysDeptEntity;
+import cn.sh.ideal.modules.sys.entity.SysDeptExtEntity;
+import cn.sh.ideal.modules.sys.entity.SysUserEntity;
+import cn.sh.ideal.modules.sys.service.SysDeptService;
+import cn.sh.ideal.modules.sys.service.SysUserService;
+import cn.sh.ideal.oa.bpmn.runtime.IRuntimeService;
+import cn.sh.ideal.oa.bpmn.runtime.dto.CandidateDTO;
+import cn.sh.ideal.oa.core.application.entity.Application;
+import cn.sh.ideal.oa.core.application.service.IApplicationService;
+import cn.sh.ideal.oa.core.module.entity.Module;
+import cn.sh.ideal.oa.core.module.entity.ModuleExt;
+import cn.sh.ideal.oa.core.module.service.IModuleService;
+import cn.sh.ideal.oa.core.util.entity.SessionUser;
+import cn.sh.ideal.platform.flowable.entity.RestPage;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import net.sf.json.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * ${comments} 管理基类
+ *
+ * @module ${moduleName}
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public class ${className}BaseController extends PlatformBaseController {
+
+    /**
+     * 前缀
+     */
+    protected static final String SUB_PREFIX = "/${classNameLower}";
+
+    /**
+     * index
+     */
+    protected static final String NORMAL = "/index.jsp";
+
+    /**
+     * 表单提交界面路径
+     **/
+    protected static final String INPUT = "/input.jsp";
+
+    /**
+     * 表单只读界面路径
+     **/
+    protected final static String VIEW = "/view.jsp";
+
+    /**
+     * 意见显示页面
+     */
+    protected static final String COMMENT = "/comment.jsp";
+
+    @Autowired
+    private IModuleService moduleService;
+
+    //TODO
+    /**
+     * 流程调度管理员通过配置文件进行关联
+     * 后期调整
+     */
+    @Value("#[[$]]#{app.oa.role.LCDDGLY}")
+    private String LCDDGLY;
+
+    /**
+     * 日志输出
+     */
+    private static final Logger log = LoggerFactory.getLogger(${className}BaseController.class);
+
+    @Autowired
+    private SysDeptService sysDeptService;
+
+    @Autowired
+    private IRuntimeService runtimeService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private IDispatchCommonService dispatchCommonService;
+
+    @Autowired
+    private IApplicationService applicationService;
+
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    protected ${className} prepareModel(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        if (!Empty.isEmpty(id)) {
+            ${className} ${classname} = ${classname}Service.selectById(id);
+            String appId = ${classname}.getAppId();
+            Application app = applicationService.selectById(appId);
+            ${classname}.setApp(app);
+            return ${classname};
+        } else {
+            ${className} b = new ${className}();
+            String appId = request.getParameter("appId");
+            if (Empty.isNotEmpty(appId)) {
+                b = this.${classname}Service.selectOne(new EntityWrapper<${className}>().eq("APP_ID", appId));
+                Application app = applicationService.selectById(appId);
+                b.setApp(app);
+            } else {
+                Application a = new Application();
+                b.setApp(a);
+            }
+            return b;
+        }
+    }
+
+    protected GridData list(HttpServletRequest request, String moduleId,
+                            String type, String LCDDGLY) {
+        GridData data = RespDataFactory.getGridData();
+        Integer current = 1;
+        if (!Empty.isEmpty(request.getParameter("page"))) {
+            current = Integer.valueOf(request.getParameter("page"));
+        }
+        Integer size = 10;
+        if (!Empty.isEmpty(request.getParameter("limit"))) {
+            size = Integer.valueOf(request.getParameter("limit"));
+        }
+
+        Page<${className}DTO> page = new Page<>(current, size);
+        RestPage restPage = new RestPage(current, size);
+        String title = request.getParameter("title");
+        String sort = request.getParameter("sort");
+        String order = request.getParameter("order");
+        String code = request.getParameter("code");//编号
+        String createName = request.getParameter("createName");//起草人
+        String createOrg = request.getParameter("createOrg");//起草部门
+        String startTime = request.getParameter("startTime");//开始时间
+        String endTime = request.getParameter("endTime");//结束时间
+
+        SysUserEntity u = this.getUserEntity();
+
+        PageUtils pageUtils = this.${classname}Service.
+                findByList(restPage, title, moduleId, u.getUsername(), type, order, sort,
+                        LCDDGLY, code, createName, createOrg, startTime, endTime);
+        data.setPageIndex(page.getCurrent());
+        data.setPageCount(page.getSize());
+        data.setRecordCount(page.getTotal());
+        data.addAll(pageUtils.getList());
+        return data;
+    }
+
+    protected String input(HttpServletRequest request, Model model) throws Exception {
+        SysUserEntity u = this.getUserEntity();
+        ${className} entity = prepareModel(request);
+        // 任务Id
+        String taskId = request.getParameter("taskId");
+        // 模块Id
+        String moduleId = request.getParameter("moduleId");
+        // 任务类型
+        String taskType = request.getParameter("taskType");
+        // 是否签收
+        String sign = request.getParameter("sign");
+
+        String userLoginName = u.getUsername();
+        String orgId = u.getCompany().getDeptId();
+
+        // 获取用户部门信息Id 以及部门扩展信息对象
+        List<SysDeptEntity> sysDeptList = sysDeptService.
+                queryCompanySubDeptList(u.getCompany().getCtOu(), u.getUsername());
+        SysDeptExtEntity ext = setDeptIdList(model, sysDeptList, entity.getApp());
+
+        Map<String, Object> params = new HashMap<>();
+        this.packAllParams(taskType, sign, entity.getApp(), params, taskId,
+                orgId, moduleId, userLoginName, "../" + SUB_PREFIX + INPUT,
+                "../" + SUB_PREFIX + VIEW, true, ext.getAbbreviation());
+
+        // 撤回代码
+        String oldTaskId = request.getParameter("oldTaskId");
+        boolean finish = runtimeService.selectProcFinish(entity.getAppId()) > 0;
+
+        if (Empty.isNotEmpty(oldTaskId)) {
+            params.put("oldTaskId", oldTaskId);
+        }
+
+        if (Empty.isEmpty(entity.getApp().getId())
+                || Empty.isEmpty(entity.getApp().getProcessInstanceId())) {
+            model.addAttribute("userOrgList", sysDeptList);
+            entity.getApp().setCreatorName(u.getRealName());
+            if (Empty.isEmpty(entity.getCommon())) {
+                entity.setCommon(super.initCommonDispatch(entity.getCommon(), u));
+            }
+            entity.getCommon().setTelephone(u.getMobile());
+        }
+
+        for (String roleId : u.getRoleIdList()) {
+            if (roleId.equals(LCDDGLY)) {
+                params.put("LCDDGLY", true);
+            }
+        }
+        initCycle(model, entity.getApp());
+        //设置默认会签部门或默会签人
+        Module module = moduleService.get(moduleId);
+        if (module != null) {
+            ModuleExt moduleExt = module.getModuleExt();
+            if (moduleExt != null) {
+                if (StringUtils.isEmpty(entity.getCommon().getReportLeader())) {
+                    entity.getCommon().setReportLeader(moduleExt.getDefaulthcName());
+                    entity.getCommon().setReportLeaderId(moduleExt.getDefaulthc());
+                }
+                String custom = moduleExt.getCustom();
+            }
+        }
+        // 是否拟稿环节判断
+        this.isOfficeDraft(request, model);
+        model.addAttribute("entity", entity);
+        model.addAllAttributes(params);
+        model.addAttribute("finish", finish);
+        List<CandidateDTO> userList = sysUserService.findLeaderByDeptId(u.getFirstDept().getDeptId());
+        model.addAttribute("userList", userList);
+        model.addAttribute("userId", u.getUsername());
+        log.info("路径：" + params.get("url").toString());
+        return params.get("url").toString();
+    }
+
+    // 保存表单数据
+    protected JSON save(HttpServletRequest request, @RequestBody ${className}Form form) throws Exception {
+        try {
+            boolean needEdit = form.needEdit;
+            ${className} ${classname} = null;
+            if (needEdit) {
+                SessionUser u = this.getUser();
+                ${classname} = form.get${className}();
+                DispatchCommon common = ${classname}.getCommon();
+                if (Empty.isEmpty(common)) {
+                    common = new DispatchCommon();
+                }
+                Application app = ${classname}.getApp();
+                if (Empty.isEmpty(app)) {
+                    return ResultData.failureToJson("非法表单数据提交！");
+                }
+
+                if (Empty.isNotEmpty(app.getId())) {
+                    ${className} oldUserTest = ${classname}Service.selectOne(new EntityWrapper<${className}>().eq("APP_ID", app.getId()));
+                    app = applicationService.selectById(app.getId());
+                    oldUserTest.setApp(app);
+                    common = dispatchCommonService.selectById(oldUserTest.getCommonId());
+                    oldUserTest.setCommon(common);
+                    packNewBusiness(oldUserTest, form, u);
+                    ${classname}Service.save(oldUserTest, form.getProcessSubmitDTO(), form.sendSMS, form.sendContent);
+                    applicationService.updateById(app);
+                    dispatchCommonService.updateById(common);
+                } else {
+                    app.setCreatorName(u.getRealName());
+                    app.setCreator(u.getUsername());
+                    app.setCreateTime(new Date());
+                    app.setCompany(u.getCompany().getDeptId());
+                    app.setState(1);//状态: 1.草稿 2.流转中 3.废止 4.办结
+                    app.setTitle(${classname}.getApp().getTitle());
+                    applicationService.insert(app);
+                    dispatchCommonService.insert(common);
+                    ${classname}.setAppId(app.getId());
+                    ${classname}.setCommonId(common.getId());
+                    ${classname}.getApp().setCompany(app.getCompany());
+                    ${classname}Service.save(${classname}, form.getProcessSubmitDTO(), form.sendSMS, form.sendContent);
+                }
+                return ResultData.success("保存成功", app.getId()).toJson();
+            } else {
+                ${classname}Service.save(${classname}, form.getProcessSubmitDTO(), form.sendSMS, form.sendContent);
+            }
+            return ResultData.success("流程提交成功").toJson();
+        } catch (Exception e) {
+            log.error("ERROR:保存异常", e);
+            return ResultData.failureToJson("保存失败");
+        }
+    }
+
+
+    /**
+     * 新老数据交换 默认
+     *
+     * @param
+     * @param form
+     * @param u
+     */
+    private void packNewBusiness(${className} oldSqmjkgl, ${className}Form form, SessionUser u) {
+        Application oldApp = oldSqmjkgl.getApp();
+        Application newApp = form.get${className}().getApp();
+
+        DispatchCommon oldCommon = oldSqmjkgl.getCommon();
+        DispatchCommon newCommon = form.get${className}().getCommon();
+        BeanUtils.copyProperties(newCommon, oldCommon);
+
+        oldCommon.setApp(oldApp);
+        oldCommon.setReportLeader(form.get${className}().getCommon().getReportLeader());
+        oldCommon.setReportLeaderId(form.get${className}().getCommon().getReportLeaderId());
+
+        BeanUtils.copyProperties(form.get${className}(), oldSqmjkgl);
+
+        packNewApp(oldApp, newApp, u);
+    }
+
+    protected GridData initStatistical(HttpServletRequest request, String moduleId) {
+        return RespDataFactory.getGridData();
+    }
+
+    // 删除App表内容  删除entity表内容
+    void initDelDraft(String appId) {
+        applicationService.delete(appId);
+        Wrapper ew = new EntityWrapper();
+        ew.eq("app_id", appId);
+        ${classname}Service.delete(ew);
+    }
+
+}
