@@ -92,6 +92,12 @@ public class CodeGenUtils {
 
     private final String VUE_API_JS_VM = "api.js.vm";
 
+    private final String JSP_COMMENT = "comment.jsp.vm";
+    private final String JSP_INDEX = "index.jsp.vm";
+    private final String JSP_INPUT = "input.jsp.vm";
+    private final String JSP_STATISTICAL = "statistical.jsp.vm";
+    private final String JSP_VIEW = "view.jsp.vm";
+
     /**
      * 初始化数据
      *
@@ -484,6 +490,36 @@ public class CodeGenUtils {
         if (template.contains(VUE_API_JS_VM)) {
             return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" + File.separator
                     + code.getModuleName() + File.separator + code.getMappingPath() + ".js";
+        }
+
+        if (template.contains(JSP_INDEX)) {
+            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+                    + StringUtils.lowerCase(code.getClassName()) + File.separator + "index.jsp";
+        }
+
+        if (template.contains(JSP_COMMENT)) {
+            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+                    + StringUtils.lowerCase(code.getClassName()) + File.separator + "comment.jsp";
+        }
+
+        if (template.contains(JSP_INPUT)) {
+            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+                    + StringUtils.lowerCase(code.getClassName()) + File.separator + "input.jsp";
+        }
+
+        if (template.contains(JSP_STATISTICAL)) {
+            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+                    + StringUtils.lowerCase(code.getClassName()) + File.separator + "statistical.jsp";
+        }
+
+        if (template.contains(JSP_VIEW)) {
+            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+                    + StringUtils.lowerCase(code.getClassName()) + File.separator + "view.jsp";
         }
 
         return null;

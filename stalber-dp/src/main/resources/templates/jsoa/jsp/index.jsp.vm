@@ -1,0 +1,351 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../../common/taglibs.jsp" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+    <title>用户代码生成测试管理</title>
+    <!-- js css 静态资源 -->
+    <%@ include file="../../common/header.jsp" %>
+
+    <style type="text/css">
+    </style>
+<body style="overflow-x: auto;">
+<div id="main" class="container" style="padding-right :0px; padding-left: 0px; margin-right: 0px; margin-left: 0px;">
+    <div class="rows">
+        <!-- 顶部菜单 -->
+        <%@ include file="../../common/menubar.jsp" %>
+    </div>
+
+    <%--    style="position: relative;"--%>
+    <div class="rows">
+        <div id="wrapper" class="wrapper toggled" style="position: absolute; float: left;">
+            <!-- 左侧菜单 -->
+            <%--            <%@ include file="../../common/leftbar.jsp" %>--%>
+        </div>
+        <!-- 右侧主体 -->
+        <%--        <div id="content" style="position: absolute; float: right; left: 200px;">--%>
+        <div id="content" style="position: absolute; width: 100%;padding-top: 80px;">
+            <!-- 路径导航 -->
+            <%@include file="../../common/navbar.jsp" %>
+
+            <div class="container-fluid">
+                <!-- 表格工具栏 -->
+                <div id="toolbar">
+
+                    <shiro:hasPermission name="${permsPrefix}:oa:user:add">
+                        <button class="btn btn-primary" id="btn_add" type="button">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            新增
+                        </button>
+                    </shiro:hasPermission>
+
+                    <button  class="btn btn-primary" id="btn_search" type="button">
+                        <i class="icon-search"></i>
+                        高级查询
+                    </button>
+                    <div id="search_menu"  style="margin-top: 10px" hidden>
+
+                        <div class="row">
+
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">编号</button>
+                                </span>
+                                    <input type="text" id="code" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">起草人</button>
+                                </span>
+                                    <input type="text" id="createName" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">起草部门</button>
+                                </span>
+                                    <input type="text" id="createOrg" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">开始时间</button>
+                                </span>
+                                    <input class="form_date form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">结束时间</button>
+                                </span>
+                                    <input class="form_date1 form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2">
+                                <button type="button" class="btn btn-default" onclick="statistical()">查询</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <c:set var = "roleCode1" value="LCDDGLY" ></c:set>
+
+                    <c:forEach items="${currentUser.roleIdList}" var="code">
+                        <c:if test="${ code eq roleCode1}">
+                            <button class="btn btn-danger" id="btn_all_del" type="button">
+                                <i class="glyphicon glyphicon-alert"></i>
+                                强制删除
+                            </button>
+                        </c:if>
+                    </c:forEach>
+                </div>
+
+                <table id="dataTable">
+
+                </table>
+                <%@ include file="../../common/footer.jsp" %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    function getHeight() {
+        return $(window).height() - ($('#navbarTop').outerHeight(true) + $('.footer').outerHeight(true) + $(".breadcrumb").outerHeight(true))-20;
+    }
+
+    function statistical(){
+        $("#dataTable").bootstrapTable('refresh');
+    }
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+
+        var role = "false";
+        if(${LCDDGLY}){
+            role = "true";
+        }
+
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#dataTable').bootstrapTable({
+                url:"${ctx}/oa/user/test/${param.moduleId}/${param.type}/" + role + "/list",
+                method:'get',
+                contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                checkboxHeader:true,
+                search:true,
+                sortable: true,                    //是否启用排序
+                sortOrder: "desc",                   //排序方式
+                queryParamsType: "limit",
+                pagination: true,                   //是否显示分页（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                        //每页的记录行数（*）
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,            //最少允许的列数
+                clickToSelect: true,               //是否启用点击选中行
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                showToggle:false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                height: getHeight()+50,
+                rowStyle: function (row, index) {
+                    return {css:{'cursor':'pointer'}};
+                },
+                onClickRow:function (row, element, field) {
+                    debugger;
+                    if (field === 'procInstId' && row.procInstId == null) {
+                        delDraft(row.appId);
+                    } else {
+                        //window.open("${ctx}"+row.url+"/input?appId="+row.appId+"&moduleId="+row.moduleId+"&oldTaskId="+row.oldTaskId);
+                        window.open("input.htm?appId="+row.appId+"&moduleId=${param.moduleId}"+"&oldTaskId="+row.oldTaskId);
+                    }
+                },
+                columns: [[
+                    // {field : 'ck',radio :true, cellStyle:"margin: 4px 0 0 !important;"},
+                    {title: '标题', field: 'title', align: 'left', valign: 'middle', sortable: true, formatter:function (value, row, index) {
+                            return value.length>16 ? '<div title="'+value+'">'+value.substring(0,16)+"..." +'</div>': value;
+                        }
+                    },
+                    {title: '模块名称', field: 'moduleName', align: 'center', valign: 'middle'},
+                    {title: '拟稿部门', field: 'createOrgName', align: 'left', valign: 'middle', sortable: true},
+                    {title: '拟稿人', field: 'creatorName', align: 'left', valign: 'middle'},
+                    {title: '待办人', field: 'candidateNames', align: 'left', valign: 'middle'},
+                    {title: '在办人', field: 'assigneeNames', align: 'left', valign: 'middle'},
+                    {title: '当前环节', field: 'taskName', align: 'left', valign: 'middle'},
+                    {title: '拟稿日期', field: 'createTime', align: 'center', valign: 'middle', sortable: true}
+                ]]
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                page: params.offset/params.limit + 1,   //页码
+                title: $(".search").find("input").val(),
+                sort: params.sort,      //排序列名
+                order: params.order, //排位命令（desc，asc）
+                code:$("#code").val(),
+                createName:$("#createName").val(),
+                createOrg:$("#createOrg").val(),
+                startTime:$(".form_date").val(),
+                endTime:$(".form_date1").val()
+            };
+            return temp;
+        };
+
+        return oTableInit;
+    };
+
+    function delDraft(appId){
+        BootstrapDialog.confirm({
+            title: '提示',
+            message: '确认删除选中数据？',
+            type: BootstrapDialog.TYPE_DANGER,
+            btnOKLabel: '确认',
+            btnCancelLabel: '取消',
+            callback: function(result) {
+                if(result) {
+                    $.ajax({
+                        url: "${ctx}/oa/nj/gcydgzjhb/delDraft/" + appId,
+                        type: 'POST',
+                        cache: false,
+                        success: function (r) {
+                            $.notify({title: "<strong>提示:</strong> ", message: r.message}, {type: 'success'});
+                            $("#dataTable").bootstrapTable('refresh');
+                            $('#dataTable').bootstrapTable('resetView');
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    $(function () {
+
+        //初始化日期控件
+        $(".form_date").datetimepicker({
+            language: "zh-CN",
+            autoclose: true,
+            minView: 2,
+            startView:2,
+            clearBtn: true,
+            format: "yyyy-mm-dd",
+            todayBtn:true
+        });
+
+        $(".form_date1").datetimepicker({
+            language: "zh-CN",
+            autoclose: true,
+            minView: 2,
+            startView:2,
+            clearBtn: true,
+            format: "yyyy-mm-dd",
+            todayBtn:true
+        })
+
+        $(".form_date").on("change",function(){
+            $('.form_date1').val('');
+            $('.form_date1').datetimepicker('setStartDate',$('.form_date').val());
+        })
+
+        var oTable = new TableInit();
+        oTable.Init();
+        $('#dataTable').bootstrapTable('resetView');
+
+        $("#btn_add").click(function(){
+            window.open("${ctx}/oa/user/test/input?moduleId=${param.moduleId}");
+        });
+
+        $(".fixed-table-container").css("height", getHeight()-80);
+
+        //调整表单宽度
+        $("#main").css({width: (window.innerWidth - 200) + "px"});
+        //调整菜单高度
+        $("#leftbar").css({height: (window.innerHeight - 170) + "px"});
+
+        $("#btn_all_del").on("click", function () {
+            del(true);
+        });
+
+        var searchMenu = true;
+        $("#btn_search").on("click",function(){
+            if(searchMenu){
+                $("#search_menu").show();
+                searchMenu = false;
+                $(".fixed-table-container").css("height", getHeight()-159);
+            }else{
+                $("#search_menu").hide();
+                searchMenu = true;
+                $(".fixed-table-container").css("height", getHeight()-60);
+            }
+        })
+    });
+
+    //删除
+    function del(flag){
+
+        var selected = $("#dataTable").bootstrapTable('getSelections', function (row) {
+            return row;
+        });
+
+        if(jQuery.isEmptyObject(selected) || selected.length > 1){
+            $.notify({title: "<strong>提示:</strong> ", message: "请选择一条记录进行操作。"}, {type: 'danger'});
+            return ;
+        }
+
+        BootstrapDialog.confirm({
+            title: '提示',
+            message: '确认删除选中数据？',
+            type: BootstrapDialog.TYPE_PRIMARY,
+            btnOKLabel: '确认',
+            btnCancelLabel: '取消',
+            callback: function(result) {
+                if(result) {
+                    $.ajax({
+                        url: "${ctx}/oa/titans/common/" + selected[0].appId + "/delete",
+                        type: 'POST',
+                        cache: false,
+                        data: {"flag" : flag},
+                        success: function (d) {
+                            $.notify({title: "<strong>提示:</strong> ", message: d.message}, {type: 'success'});
+                            $("#dataTable").bootstrapTable('refresh');
+                            $('#dataTable').bootstrapTable('resetView');
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    //当浏览器大小变化时
+    $(window).resize(function () {
+        $(".fixed-table-container").css("height", getHeight()-80);
+
+        $('#dataTable').bootstrapTable('resetView');
+
+        $("#main").css({width: (window.innerWidth - 200) + "px"});
+
+        //调整菜单高度
+        $("#leftbar").css({height: (window.innerHeight - 170) + "px"});
+    });
+</script>
+</body>

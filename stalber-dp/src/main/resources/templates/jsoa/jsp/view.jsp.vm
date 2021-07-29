@@ -1,0 +1,223 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="../../../common/taglibs.jsp" %>
+<html>
+<head>
+    <title>高淳月度工作计划表</title>
+</head>
+<body>
+
+<div style="text-align: center">
+    <span>#[[$]]#{entity.year}年${entity.month}月</span>
+    <span>#[[$]]#{entity.app.createOrgName}</span>
+    <input name="gctdgzjhb.app.createOrgId" id="createOrgId" class="form-control" type="hidden"
+           value="#[[$]]#{entity.app.createOrgId}">
+</div>
+
+<form id="inputForm" class="form-horizontal inputForm" role="form" method="post">
+    <input type="hidden" id="id" name="gctdgzjhb.id" value="#[[$]]#{entity.id}">
+    <input type="hidden" id="appId" name="gctdgzjhb.app.id" value="#[[$]]#{entity.app.id}">
+    <input type="hidden" id="moduleId" name="gctdgzjhb.app.moduleId" value="#[[$]]#{entity.app.moduleId}">
+    <input type="hidden" id="commonId" name="gctdgzjhb.common.id" value="#[[$]]#{entity.common.id}">
+    <input type="hidden" id="processDefinitionId" name="gctdgzjhb.app.processDefinitionId"
+           value="#[[$]]#{entity.app.processDefinitionId}">
+    <input type="hidden" id="processInstanceId" name="gctdgzjhb.app.processInstanceId"
+           value="#[[$]]#{entity.app.processInstanceId}">
+    <input type="hidden" id="processDefinitionKey" name="gctdgzjhb.app.processDefinitionKey"
+           value="#[[$]]#{entity.app.processDefinitionKey}">
+    <input type="hidden" id="topOrgId" name="gctdgzjhb.app.topOrgId" value="#[[$]]#{entity.app.topOrgId}">
+    <input type="hidden" id="company" name="gctdgzjhb.app.company" value="#[[$]]#{entity.app.company}">
+    <input type="hidden" id="topOrgName" name="gctdgzjhb.app.topOrgName" value="#[[$]]#{entity.app.topOrgName}">
+    <input type="hidden" id="creator" name="gctdgzjhb.app.creator" value="#[[$]]#{entity.app.creator}">
+    <input type="hidden" id="commonAppId" name="gctdgzjhb.common.app.id" value="#[[$]]#{entity.common.app.id}">
+    <input type="hidden" id="ontype" name="ontype" value="">
+    <!-- 规则引擎 所需参数 -->
+    <%--是否一级部门--%>
+    <input type="hidden" id="firstDept" name="firstDept"
+           value="#[[$]]#{not empty entity.app.createOrgId && (entity.app.topOrgId eq entity.app.createOrgId)}">
+    <%--登录人公司是否县公司--%>
+    <input type="hidden" id="countyCompany" name="countyCompany">
+
+    <div class="row table-detail-row">
+        <div class="table-responsive col-xs-12">
+
+            <table class="table table-bordered">
+                <thead style="text-align: center;">
+                <tr>
+                    <th class="table-label-number" colspan="5">上月度计划完成情况</th>
+                </tr>
+                <tr>
+                    <th class="table-label-number" style="width: 3%">&nbsp;序号
+                    </th>
+                    <th class="table-label-number">&nbsp;工作内容
+                    </th>
+                    <th class="table-label-number">&nbsp;权重
+                    </th>
+                    <th class="table-label-number">&nbsp;完成情况
+                    </th>
+                </tr>
+                </thead>
+                <c:forEach var="item" items="#[[$]]#{entity.sy}">
+                    <tr id="#[[$]]#{item.id}">
+                        <td class="table-value-number">
+                                #[[$]]#{item.serialNumber}
+                        </td>
+                        <td class="table-value-number">
+                                #[[$]]#{item.content}
+                        </td>
+                        <td class="table-value-number">
+                                #[[$]]#{item.qz}
+                        </td>
+                        <td class="table-value-number">
+                                #[[$]]#{item.completion}
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+
+            <table class="table table-bordered">
+                <thead style="text-align: center;">
+                <tr>
+                    <th class="table-label-number" colspan="5">本月工作计划</th>
+                </tr>
+                <tr>
+                    <th class="table-label-number" style="width: 1.8%">&nbsp;序号
+                    </th>
+                    <th class="table-label-number">&nbsp;计划内容
+                    </th>
+                    <th class="table-label-number">&nbsp;权重
+                    </th>
+                </tr>
+                </thead>
+                <c:forEach var="item" items="#[[$]]#{entity.by}">
+                    <tr id="#[[$]]#{item.id}">
+                        <td class="table-value-number">
+                                #[[$]]#{item.serialNumber}
+                        </td>
+                        <td class="table-value-number">
+                                #[[$]]#{item.content}
+                        </td>
+                        <td class="table-value-number">
+                                #[[$]]#{item.qz}
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+
+            <table class="table table-bordered">
+                <tr>
+                    <td class="table-label">填表人：</td>
+                    <td colspan="3" class="table-value">#[[$]]#{entity.app.creatorName}</td>
+                    <td class="table-label">填表日期：</td>
+                    <td colspan="3" class="table-value"><fmt:formatDate value='#[[$]]#{entity.app.createTime}'
+                                                                        pattern='yyyy-MM-dd'/></td>
+                </tr>
+
+                <tr>
+                    <td class="table-label">附件：</td>
+                    <td id="tdAttachmentList" class="table-value" colspan="7">
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+    <div id="comment">
+
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+    //附件下载
+    function download(id) {
+        var url = ctx + "/oa/upload/file/download?id=" + id;
+        window.open(url, "_blank");
+    }
+
+    $(function () {
+
+        //判断当前登录人部门是否一级部门
+        var orgId = '#[[$]]#{record.nextOrgId}';//当前登录人部门ID
+        $.ajax({
+            url: "#[[$]]#{ctx}/sys/dept/firstDept",
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            async: false,
+            data: {deptId: orgId, directIdFlag: false},
+            success: function (resp) {
+                if (!jQuery.isEmptyObject(resp) && !jQuery.isEmptyObject(resp.rows)) {
+                    var org = resp.rows[0];
+                    //所选部门和返回部门
+                    $("#currentFirstDept").val(orgId == org.deptId);
+
+                    $("#currentTopOrgId").val(org.deptId);
+                }
+            }
+        });
+
+        countyCompany()
+
+        //初始化判断当前部门是否属于县公司
+        function countyCompany() {
+            var orgId = '#[[$]]#{record.nextOrgId}';//当前登录人部门ID
+            if (jQuery.isEmptyObject(orgId)) {
+                orgId = $('select[name="gctdgzjhb.app.createOrgId"] option:selected').val();
+            }
+
+            $.ajax({
+                url: "#[[$]]#{ctx}/sys/dept/queryCountyCompany",
+                type: "GET",
+                dataType: "json",
+                cache: false,
+                async: false,
+                data: {deptId: orgId},
+                success: function (resp) {
+                    if (!jQuery.isEmptyObject(resp)) {
+                        if (resp.rows.length > 1) {
+                            var countyCompany = resp.rows[1];
+                            $("#countyCompany").val(countyCompany);
+                        } else {
+                            var countyCompany = resp.rows[0];
+                            $("#countyCompany").val(countyCompany);
+                        }
+                    }
+                }
+            });
+        }
+
+        function initViewAttachmentList(fileId, type) {
+            $.ajax({
+                type: 'GET',
+                url: ctx + '/oa/upload/file/list?_t=' + new Date().getTime(),
+                data: {appId: $("#appId").val(), type: type},
+                success: function (data) {
+                    for (var i in data) {
+                        var div = "<p>"
+                            + "<a href= 'javascript:download(\"" + data[i].fileId + "\")' class='navbar-li'>" + data[i].fileName + "</a>"
+                            + "</p>";
+
+                        $("#" + fileId).append(div);
+                    }
+                }
+            });
+        }
+
+        //加载附件
+        initViewAttachmentList("tdAttachmentList", "1");
+        initViewAttachmentList("bgAttachmentList", "3");
+
+
+        //意见加载
+        $("#comment").load("#[[$]]#{ctx}/oa/province/gctdgzjhb/comment");
+
+        //打印稿纸
+        $("#printli").on("click", function () {
+            changeDocPrintTemplate('', "");
+        });
+    })
+</script>
+</body>
+</html>

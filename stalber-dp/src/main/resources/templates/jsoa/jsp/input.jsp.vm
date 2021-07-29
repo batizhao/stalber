@@ -1,0 +1,288 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../../common/taglibs.jsp" %>
+<html>
+<head>
+    <title>用户代码生成测试管理</title>
+</head>
+<body>
+
+<form id="inputForm" class="form-horizontal inputForm" role="form" method="post">
+    <input type="hidden" id="id" name="gcydgzjhb.id" value="#[[$]]#{entity.id}">
+    <input type="hidden" id="appId" name="gcydgzjhb.app.id" value="#[[$]]#{entity.app.id}">
+    <input type="hidden" id="moduleId" name="gcydgzjhb.app.moduleId" value="#[[$]]#{entity.app.moduleId}">
+    <input type="hidden" id="commonId" name="gcydgzjhb.common.id" value="#[[$]]#{entity.common.id}">
+    <input type="hidden" id="processDefinitionId" name="gcydgzjhb.app.processDefinitionId"
+           value="#[[$]]#{entity.app.processDefinitionId}">
+    <input type="hidden" id="processInstanceId" name="gcydgzjhb.app.processInstanceId"
+           value="#[[$]]#{entity.app.processInstanceId}">
+    <input type="hidden" id="processDefinitionKey" name="gcydgzjhb.app.processDefinitionKey"
+           value="#[[$]]#{entity.app.processDefinitionKey}">
+    <input type="hidden" id="topOrgId" name="gcydgzjhb.app.topOrgId" value="#[[$]]#{entity.app.topOrgId}">
+    <input type="hidden" id="company" name="gcydgzjhb.app.company" value="#[[$]]#{entity.app.company}">
+    <input type="hidden" id="topOrgName" name="gcydgzjhb.app.topOrgName" value="#[[$]]#{entity.app.topOrgName}">
+    <input type="hidden" id="creator" name="gcydgzjhb.app.creator" value="#[[$]]#{entity.app.creator}">
+    <input type="hidden" id="commonAppId" name="gcydgzjhb.common.app.id" value="#[[$]]#{entity.common.app.id}">
+    <input type="hidden" id="telephone" name="gcydgzjhb.common.telephone" value="#[[$]]#{entity.common.telephone}">
+    <!-- 规则引擎 所需参数 -->
+    <%--拟稿部门是否一级部门--%>
+    <input type="hidden" id="firstDept" name="firstDept"
+           value="#[[$]]#{not empty entity.app.createOrgId && (entity.app.topOrgId eq entity.app.createOrgId)}">
+    <%--登录人公司是否县公司--%>
+    <input type="hidden" id="countyCompany" name="countyCompany">
+
+    <div class="row table-detail-row">
+        <div class="table-responsive col-xs-12">
+            <table class="table table-bordered">
+                <tr>
+                    <td class="table-label" style="padding-top: 12px;">编号：</td>
+                    <td class="table-value" colspan="7">
+                        <c:if test="#[[$]]#{empty config.global.controlCode.number}">
+                            #[[$]]#{entity.app.code}
+                        </c:if>
+                        <c:if test="#[[$]]#{config.global.controlCode.number eq true}">
+                            <c:if test="#[[$]]#{not empty entity.app.code}">
+                                #[[$]]#{entity.app.code}
+                            </c:if>
+                            <c:if test="#[[$]]#{empty entity.app.code}">
+                                <c:forEach items="#[[$]]#{serial}" var="s">
+                                    #[[$]]#{entity.app.code}
+                                    <input class="form-control" id="numberId" name="approval.app.numberId"
+                                           type="hidden" value="#[[$]]#{s.numberId}">
+                                </c:forEach>
+                            </c:if>
+                        </c:if>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table-label" style="padding-top: 12px;">&nbsp;所在部门：</td>
+                    <td class="table-value form-group">
+                        <c:if test="#[[$]]#{empty entity.app.id or empty entity.app.processInstanceId}">
+                            <select name="usertest.app.createOrgId" id="createOrgId" class="form-control" value="#[[$]]#{entity.app.createOrgId}"
+                                    style="padding-right:5px">
+                                <c:forEach items="#[[$]]#{userOrgList}" var="s">
+                                    <option value="#[[$]]#{s.deptId}"  <c:if
+                                            test="#[[$]]#{s.deptId eq entity.app.createOrgId}"> selected = "selected" </c:if>  >#[[$]]#{fn:substring(s.fullName, fn:indexOf(s.fullName, "/")+1, fn:length(s.fullName))}</option>
+                                </c:forEach>
+                            </select>
+                            <input  name="usertest.app.createOrgName" type="hidden" id="createOrgName" value="#[[$]]#{entity.app.createOrgName}">
+                        </c:if>
+
+                        <c:if test="#[[$]]#{not empty entity.app.id and not empty entity.app.processInstanceId}">
+                            <input name="usertest.app.createOrgName" class="form-control" type="text"
+                                   placeholder="拟稿人所属组织"
+                                   value="#[[$]]#{entity.app.createOrgName}" readonly="true">
+                            <input name="usertest.app.createOrgId" id="createOrgId" class="form-control" type="hidden"
+                                   value="#[[$]]#{entity.app.createOrgId}">
+                        </c:if>
+                    </td>
+
+                    <td class="table-label" style="padding-top: 12px;">&nbsp;发单日期：</td>
+                    <td class="table-value form-group">
+                        <input class="form-control" type="text" placeholder="拟稿日期" name="usertest.sendTime"
+                               value="<fmt:formatDate value='#[[$]]#{entity.app.createTime}' pattern='yyyy-MM-dd'/> "
+                               readonly="true" style="border: 0em">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table-label" style="padding-top: 12px;">&nbsp;填表人：</td>
+                    <td class="table-value form-group">
+                        #[[$]]#{entity.app.creatorName}
+                    </td>
+                    <td class="table-label">&nbsp;联系电话：</td>
+                    <td class="table-value form-group">
+                        <input  name="usertest.contact" class="form-control" type="text" placeholder="联系电话"
+                                value="18873535599">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table-label" style="padding-top: 12px;">&nbsp;年龄：</td>
+                    <td class="table-value form-group">
+                        <input  name="usertest.age" class="form-control" type="text" placeholder="年龄"
+                                value="">
+                    </td>
+                    <td class="table-label">&nbsp;性别：</td>
+                    <td class="table-value form-group">
+                        <select name="usertest.sex" id="sex" class="form-control" value=""
+                                style="padding-right:5px">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table-label" style="padding-top: 12px;">&nbsp;邮箱：</td>
+                    <td class="table-value form-group">
+                        <input  name="usertest.email" class="form-control" type="text" placeholder="邮箱" value="">
+                    </td>
+                    <td class="table-label">&nbsp;密码：</td>
+                    <td class="table-value form-group">
+                        <input  name="usertest.password" class="form-control" type="text" placeholder="密码" value="">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table-label">&nbsp;附件：</td>
+                    <td class="table-value form-group" colspan="7">
+                        <div class="col-sm-12" style="padding : 0px" id="attachment">
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <div id="comment">
+
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    function signDeptVaild() {
+        validateField($('#inputForm'), 'usertest.common.send');
+        if ($("#countyCompany").val() == true) {
+            validateField($('#inputForm'), 'usertest.common.assist');
+        }
+    }
+
+    function delDraft() {
+        BootstrapDialog.confirm({
+            title: '提示',
+            message: '确认删除数据？',
+            type: BootstrapDialog.TYPE_DANGER,
+            btnOKLabel: '确认',
+            btnCancelLabel: '取消',
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "#[[$]]#{ctx}/oa/nj/gcydgzjhb/delDraft/#[[$]]#{entity.app.id}/#[[$]]#{entity.app.title}",
+                        type: 'POST',
+                        cache: false,
+                        success: function (r) {
+                            $.notify({title: "<strong>提示:</strong> ", message: r.message}, {type: 'success'});
+                            window.opener.location.href = window.opener.location.href;
+                            window.opener.location.reload();
+                            closeWin();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    //动态封装表单数据
+    function packDynamicData(d) {
+        var flag = true;
+        return flag;
+    }
+
+    $(function () {
+
+        //初始化新增组织人员选择加载
+        function createOrgNameSelect(flag) {
+
+            $("select[name='gcydgzjhb.app.createOrgId']").on('change', function () {
+                var createOrgName = this.options[this.options.selectedIndex].text;
+                $("input[name='gcydgzjhb.app.createOrgName']").each(function () {
+                    $(this).val(createOrgName);
+                });
+                var orgId = $(this).val();
+                //初始化顶层部门
+                findCreatorTopOrgId(orgId, false, false, false);
+                //初始化多部门加载处理人。 调用一单界面的多部门切换方法
+                //changeDeptSelectUser();
+
+                //顶层部门ID
+                var topOrgId = $("#topOrgId").val();
+                //初始化负责人
+                countyCompany()
+
+            });
+            if (flag) {
+                $("input[name='gcydgzjhb.app.createOrgName']").each(function () {
+                    $(this).val($('select[name="gcydgzjhb.app.createOrgId"] option:selected').text());
+                });
+            }
+        }
+
+        //顶层topOrgId
+        var proInstId = "#[[$]]#{entity.app.processInstanceId}";
+        if (jQuery.isEmptyObject(proInstId)) {
+            //初始化界面新增时：组织人选择
+            var createOrgId = "#[[$]]#{entity.app.createOrgId}"
+            var topOrgId = "#[[$]]#{entity.app.topOrgId}";
+            if (!jQuery.isEmptyObject(createOrgId) && !jQuery.isEmptyObject(topOrgId)) {
+                //初始化负责人
+                createOrgNameSelect(false);
+            } else {
+                createOrgNameSelect(true);
+                $("select[name='gcydgzjhb.app.createOrgId'] option:first").prop('selected', 'selected');
+                var orgId = $("select[name='gcydgzjhb.app.createOrgId'] option:selected").val();
+                findCreatorTopOrgId(orgId, false, false, false);
+                //顶层部门ID
+                var topOrgId = $("#topOrgId").val();
+                //初始化负责人
+            }
+        }
+
+        function initValidateForm() {
+            //code 编号有固定环节才能生成
+            var code = {};
+            if ("#[[$]]#{number}" == true) {
+                code = {//验证input项：验证规则
+                    message: '编号校验',
+                    validators: {
+                        notEmpty: {//非空验证：提示消息
+                            message: '编号不能为空'
+                        }
+                    }
+                };
+            }
+
+            //validate是验证的方法
+            $("#inputForm").bootstrapValidator.validators.send = {
+                validate: function (validator, $field, options) {
+                    var value = $field.val();
+                    var arr = value.split("、");
+                    if (arr.length > 1) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            };
+
+            $("#inputForm").bootstrapValidator({
+                live: 'submitted',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+                message: 'This value is not valid',
+                feedbackIcons: {
+                    /*input状态样式图片*/
+                    // valid: 'glyphicon glyphicon-ok',
+                    // invalid: 'glyphicon glyphicon-remove',
+                    // validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    /*'gcydgzjhb.app.code': code,
+                    'gcydgzjhb.title': {
+                        message: '标题校验',
+                        validators: {
+                            notEmpty: {message: '标题不能为空'},
+                            stringLength: {min: 1, max: 100, message: '标题长度必须在1到100之间'}
+                        }
+                    }*/
+                }
+            });
+        }
+        //初始化表单校验规则
+        initValidateForm();
+        //意见加载
+        $("#comment").load("#[[$]]#{ctx}/oa/nj/gcydgzjhb/comment");
+    });
+</script>
+</body>
+</html>

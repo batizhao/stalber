@@ -1,0 +1,350 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../../../common/taglibs.jsp" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+    <title>高淳月度工作计划表</title>
+    <!-- js css 静态资源 -->
+    <%@ include file="../../../common/header.jsp" %>
+
+    <style type="text/css">
+    </style>
+<body style="overflow-x: auto;">
+<div id="main" class="container" style="padding-right :0px; padding-left: 0px; margin-right: 0px; margin-left: 0px;">
+    <div class="rows">
+        <!-- 顶部菜单 -->
+        <%@ include file="../../../common/menubar.jsp" %>
+    </div>
+
+    <div class="rows" style="position: relative;">
+        <div id="wrapper" class="wrapper toggled" style="position: absolute; float: left;">
+            <!-- 左侧菜单 -->
+            <%@ include file="../../../common/leftbar.jsp" %>
+        </div>
+        <!-- 右侧主体 -->
+        <div id="content" style="position: absolute; float: right; left: 200px;">
+
+            <!-- 路径导航 -->
+
+            <div class="container-fluid" hidden="hidden">
+                <!-- 表格工具栏 -->
+                <div id="toolbar">
+                    <button class="btn btn-primary" id="qt" type="button">
+                        <i class="icon-search"></i>
+                        其他营销优惠审批
+                    </button>
+                    <button class="btn btn-primary" id="ty" type="button">
+                        <i class="icon-search"></i>
+                        天翼营销优惠审批
+                    </button>
+                    <button class="btn btn-primary" id="sx" type="button">
+                        <i class="icon-search"></i>
+                        双线营销优惠审批
+                    </button>
+                    <button class="btn btn-primary" id="btn_search" type="button">
+                        <i class="icon-search"></i>
+                        筛选
+                    </button>
+                    <div id="search_menu" style="margin-top: 10px" hidden>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">开始时间</button>
+                                </span>
+                                    <input class="form_date form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">结束时间</button>
+                                </span>
+                                    <input class="form_date1 form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <button type="button" class="btn btn-default" onclick="statistical()">确认筛选</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-show="showList">
+                <div class="col-sm-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">部门筛选</div>
+                        <div class="panel-body treeCss">
+                            <ul id="dataTree" class="ztree" style="overflow:auto"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-9">
+                    <div class="panel-heading">筛选列表</div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table id="dataTable">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var searchMenu = true;
+    var state = 0;
+    var deptId = "";
+
+    function getHeight() {
+        return $(window).height() - ($('#navbarTop').outerHeight(true) + $('.footer').outerHeight(true) + $(".breadcrumb").outerHeight(true)) - 20;
+    }
+
+    $("#btn_search").on("click", function () {
+        if (searchMenu) {
+            $("#search_menu").show();
+            searchMenu = false;
+        } else {
+            $("#search_menu").hide();
+            searchMenu = true;
+        }
+    })
+
+
+    function initTree(type, orgId, node, func) {
+
+        var id = "";
+        if (jQuery.isEmptyObject(orgId)) {
+            if (!jQuery.isEmptyObject(node)) {
+                id = node.id;
+            }
+        } else {
+            id = orgId;
+        }
+
+        $.ajax({
+            url: "#[[$]]#{ctx}/oa/send/tree",
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            data: {id: id},
+            success: function (resp) {
+                if (type == "1") {
+                    $('#dataTree').treeview({
+                        data: resp.nodes,
+                        showBorder: false,
+                        highlightSelected: false,// 选中项不高亮，避免和上述制定的颜色变化规则冲突
+                        multiSelect: true,// 不允许多选，因为我们要通过check框来控制
+                        showCheckbox: false,// 展示checkbox});
+                        showTags: false,
+                        loadingIcon: "fa fa-hourglass",//懒加载过程中显示的沙漏字符图标
+                        lazyLoad: lazyLoadData, //loaddata为点击懒加载节点目录时，运行的函数名称，把后端的数据添加到这个节点下面
+                        onNodeSelected: function (event, node) {
+                            var html = appendData(node.id, node.title.substring(node.title.indexOf("/") + 1, node.title.length));
+                            if (!jQuery.isEmptyObject(html)) {
+                                $("#dataTree").append(html);
+                            }
+                            deptId = node.id;
+                            statistical();
+                        }
+                        // onNodeUnselected:function (event, node) {
+                        //     var id = node.id;
+                        //     var exist = $("#dataTree li[id= '" + id + "']");
+                        //     if(!jQuery.isEmptyObject(exist) && exist.length > 0){
+                        //         //exist.remove();
+                        //     }
+                        // }
+                    });
+                } else {
+                    $("#dataTree").treeview("addNode", [resp.nodes, node, 1, {silent: true, ignoreChildren: true}]);
+                }
+            }
+        });
+    }
+
+    function appendData(id, value) {
+
+        var exist = $("#dataTree li[id= '" + id + "']");
+        if (!jQuery.isEmptyObject(exist) && exist.length > 0) {
+            return "";
+        }
+
+        var html = '<li class="list-group-item" id="' + id + '">'
+            + '<span class="badge">'
+            + '<span class="icon-arrow-up"></span>&nbsp;'
+            + '<span class="icon-arrow-down"></span>&nbsp;'
+            + '<span class="icon-remove"></span>'
+            + '</span>'
+            + value
+            + '</li>';
+        return html;
+    }
+
+    //组织层级数据加载
+    function lazyLoadData(node, func) {
+        initTree(2, null, node, func);
+    }
+
+
+    var TableInit = function () {
+
+        var oTableInit = new Object();
+
+
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#dataTable').bootstrapTable({
+                url: "#[[$]]#{ctx}/oa/province/tyyzysq/#[[$]]#{param.moduleId}/statistical",
+                method: 'get',
+                contentType: "application/x-www-form-urlencoded",//必须要有！！！！
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                checkboxHeader: true,
+                search: false,
+                sortable: true,                    //是否启用排序
+                sortOrder: "desc",                   //排序方式
+                queryParamsType: "limit",
+                pagination: true,                   //是否显示分页（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                        //每页的记录行数（*）
+                strictSearch: true,
+                showColumns: false,                  //是否显示所有的列
+                showRefresh: false,                  //是否显示刷新按钮
+                minimumCountColumns: 2,            //最少允许的列数
+                clickToSelect: false,               //是否启用点击选中行
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+                showToggle: false,                   //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                  //是否显示父子表
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                height: getHeight(),
+                onClickRow: function (row, element) {
+
+                },
+                columns: [[
+                    {field: 'ck', radio: true, cellStyle: "margin: 4px 0 0 !important;"},
+                    {title: '部门', field: 'deptName', align: 'center', valign: 'middle', sortable: true},
+                    {title: '数量', field: 'applyNum', align: 'center', valign: 'middle', sortable: true},
+                ]]
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                rows: params.limit,   //页面大小
+                page: params.offset / params.limit + 1,   //页码
+                title: $(".search").find("input").val(),
+                sort: params.sort,      //排序列名
+                order: params.order, //排位命令（desc，asc）
+                deptId: deptId,
+                startTime: $(".form_date").val(),
+                endTime: $(".form_date1").val()
+            };
+            return temp;
+        };
+
+        return oTableInit;
+    };
+
+    $(".form_date").on("change", function () {
+        $('.form_date1').val('');
+        $('.form_date1').datetimepicker('setStartDate', $('.form_date').val());
+    })
+
+    function setState(name) {
+        state = $("a[name=" + name + "]").html();
+        $("#dropdownMenu1").html(state + "<span class='caret '></span>")
+    }
+
+
+    /**
+     * 统计
+     */
+    function statistical() {
+        $("#dataTable").bootstrapTable('refresh');
+    }
+
+    $("#ty").on("click", function () {
+        $("#dataTable").bootstrapTable('refresh',{url:"#[[$]]#{ctx}/oa/province/tytyyzysq/#[[$]]#{tyModuleId}/statistical"});
+    });
+
+    $("#sx").on("click", function () {
+        $("#dataTable").bootstrapTable('refresh',{url:"#[[$]]#{ctx}/oa/province/sxtyyzysq/#[[$]]#{sxModuleId}/statistical"});
+    });
+
+    $("#qt").on("click", function () {
+        $("#dataTable").bootstrapTable('refresh',{url:"#[[$]]#{ctx}/oa/province/tyyzysq/#[[$]]#{param.moduleId}/statistical"});
+    });
+
+
+    $(function () {
+
+        //初始化日期控件
+        $(".form_date").datetimepicker({
+            language: "zh-CN",
+            autoclose: true,
+            minView: 2,
+            startView: 2,
+            clearBtn: true,
+            format: "yyyy-mm-dd",
+            todayBtn: true
+        });
+
+        $(".form_date1").datetimepicker({
+            language: "zh-CN",
+            autoclose: true,
+            minView: 2,
+            startView: 2,
+            clearBtn: true,
+            format: "yyyy-mm-dd",
+            todayBtn: true
+        })
+
+        var oTable = new TableInit();
+
+        oTable.Init();
+
+
+        $(".fixed-table-container").css("height", getHeight() - 80);
+        //调整表单宽度
+        $("#main").css({width: (window.innerWidth - 200) + "px"});
+        //调整菜单高度
+        $("#leftbar").css({height: (window.innerHeight - 170) + "px"});
+
+        $("#btn_all_del").on("click", function () {
+            del(true);
+        });
+
+        $("#dataTree").css({height: (window.innerHeight - 170) + "px"});
+
+        initTree(1, "#[[$]]#{currentUser.company.deptId}", null, null);
+
+    });
+
+    //当浏览器大小变化时
+    $(window).resize(function () {
+        $(".fixed-table-container").css("height", getHeight() - 80);
+
+        $("#dataTree").css({height: (window.innerHeight - 170) + "px"});
+
+
+        $('#dataTable').bootstrapTable('resetView');
+
+        $("#main").css({width: (window.innerWidth - 200) + "px"});
+
+        //调整菜单高度
+        $("#leftbar").css({height: (window.innerHeight - 170) + "px"});
+    });
+</script>
+</body>

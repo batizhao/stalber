@@ -1,0 +1,174 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../../../common/taglibs.jsp"%>
+<html>
+<head>
+	<title>高淳月度工作计划表意见展示</title>
+</head>
+<body>
+
+<div id="comment">
+	<c:forEach var="item" items="#[[$]]#{comment}" begin="0" varStatus="cou">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="form-group">
+					<div class="panel-group col-sm-12" id="accordion${cou.count}">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<span class="glyphicon glyphicon-list"></span>
+									<a data-toggle="collapse" data-parent="#accordion${cou.count}"
+									   href="#collapseOne${cou.count}" style="font-size: 14px">
+										#[[$]]#{item.value}
+									</a>
+								</h4>
+							</div>
+							<div id="collapseOne${cou.count}" class="panel-collapse collapse in">
+								<table id="#[[$]]#{item.key}" class="table table-condensed table-striped">
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</c:forEach>
+</div>
+
+<div id="messageRules" style="display: none">
+	<c:forEach var="item" items="#[[$]]#{rules}" begin="0" varStatus="cou">
+		<input id="#[[$]]#{item.key}" value="#[[$]]#{item.value}">
+	</c:forEach>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //流转意见显示
+        function queryComment(taskDefKeys, taskDefKey, processInstanceId, rules) {
+			var r = JSON.stringify(rules);
+            $.ajax({
+                url : "#[[$]]#{ctx}/platform/oa/history/comment?_t=" + new Date().getTime(),
+                type : "GET",
+                dataType : "json",
+                cache: false,
+                data:{"processInstanceId" : processInstanceId, "node" : taskDefKey, "rules" : r},
+                success : function(resp) {
+                    if(!jQuery.isEmptyObject(resp) && !jQuery.isEmptyObject(resp.data)){
+						var data = resp.data;
+						//先数据处理
+						for(var i in taskDefKeys){
+							var id = taskDefKeys[i];
+							var keys = id.toString().split(",");
+							if (keys.length>1) {
+								var newDatas = [];
+								var a = 0;
+								for(var j in keys){
+									var key = keys[j];
+									for(var k in data) {
+										var d = data[k];
+										if(key == d.taskDefKey){
+											newDatas[a]=d;
+											a++;
+										}
+									}
+								}
+								newDatas = newDatas.sort(function(a,b){
+									if(a.createTime>b.createTime) return 1 ;
+									if(a.createTime<b.createTime) return -1 ;
+									return 0 ;
+								});
+								for (var k in newDatas) {
+									var d = newDatas[k];
+									var html = "";
+									if (d.leader == "1") {
+										html = '<tr>'
+												+ '<td class="col-md-1" style="text-align: center;min-width: 100px">' + d.userName + '</td>'
+												+ '<td class="col-md-2" style="text-align: right;min-width: 180px">' + d.createTime + '</td>'
+												+ '<td class="col-md-9" colspan="2">' + d.message + '</td>'
+												+ '</tr>';
+									} else {
+										html = '<tr>'
+												// + '<td class="col-md-2" style="max-width: 120px">' + d.orgName + '</td>'
+												+ '<td class="col-md-1" style="text-align: left;min-width: 100px">' + d.userName + '</td>'
+												+ '<td class="col-md-2" style="text-align: left;min-width: 180px">' + d.createTime + '</td>'
+												+ '<td class="col-md-9" style="text-align: left;">' + d.message + '</td>'
+												+ '</tr>';
+									}
+
+									if(keys.length > 1){
+										var reg = new RegExp(",","g");
+										var value = id.replace(reg,"\\,");
+										$("#" + value).append(html);
+									}else{
+										$("#" + id).append(html);
+									}
+								}
+							} else {
+								for(var j in keys){
+									var key = keys[j];
+									for(var k in data){
+										var d = data[k];
+										if(key == d.taskDefKey){
+											var html = "";
+											if (d.leader == "1") {
+												html = '<tr>'
+														+ '<td class="col-md-1" style="text-align: center;min-width: 100px">' + d.userName + '</td>'
+														+ '<td class="col-md-2" style="text-align: right;min-width: 180px">' + d.createTime + '</td>'
+														+ '<td class="col-md-9" colspan="2">' + d.message + '</td>'
+														+ '</tr>';
+											} else {
+												html = '<tr>'
+														// + '<td class="col-md-2" style="max-width: 120px">' + d.orgName + '</td>'
+														+ '<td class="col-md-1" style="text-align: left;min-width: 100px">' + d.userName + '</td>'
+														+ '<td class="col-md-2" style="text-align: left;min-width: 180px">' + d.createTime + '</td>'
+														+ '<td class="col-md-9" style="text-align: left;">' + d.message + '</td>'
+														+ '</tr>';
+											}
+
+											if(keys.length > 1){
+												var reg = new RegExp(",","g");
+												var value = id.replace(reg,"\\,");
+												$("#" + value).append(html);
+											}else{
+												$("#" + id).append(html);
+											}
+										}
+									}
+								}
+							}
+						}
+                    }
+                }
+            });
+        }
+
+        var tables = $("#comment").find("table");
+        var taskDefKey  = "";
+		var taskDefKeys = new Array();
+        tables.each(function () {
+			if(jQuery.isEmptyObject(taskDefKey)){
+                taskDefKey = $(this).attr('id');
+			}else{
+                taskDefKey = taskDefKey + "," + $(this).attr('id');
+			}
+			taskDefKeys.push($(this).attr('id'));
+        });
+
+		//rules获取
+		var messageRules = $("#messageRules").find("input");
+		var rules = {};
+		messageRules.each(function () {
+			var key = $(this).attr("id");
+			var value = $(this).val();
+			rules[key] = value;
+		});
+
+        var processInstanceId = $("#processInstanceId").val();
+		//查询流转意见
+        if(!jQuery.isEmptyObject(taskDefKey) && !jQuery.isEmptyObject(processInstanceId)){
+            queryComment(taskDefKeys, taskDefKey, processInstanceId, rules);
+		}
+    })
+</script>
+</body>
+</html>
