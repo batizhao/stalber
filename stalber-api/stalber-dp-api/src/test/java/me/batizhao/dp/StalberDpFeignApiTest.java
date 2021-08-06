@@ -48,15 +48,15 @@ public class StalberDpFeignApiTest {
         assertThat(stalberServiceProperties.getStalberServiceUrl(), equalTo("http://localhost:8888/"));
     }
 
-    @Test
-    public void givenKey_whenLoadProcessDefinition_thenSuccess() {
-        R<Form> result = stalberDpApi.loadFormByKey("60dac2f1645458df086c00bd");
-
-        assertThat(result.getCode(), equalTo(0));
-
-        Form form = result.getData();
-        log.info("Form: {}", form);
-        assertThat(form.getFormKey(), equalTo("60dac2f1645458df086c00bd"));
-    }
+//    @Test
+//    public void givenKey_whenLoadProcessDefinition_thenSuccess() {
+//        R<Form> result = stalberDpApi.loadFormByKey("60dac2f1645458df086c00bd");
+//
+//        assertThat(result.getCode(), equalTo(0));
+//
+//        Form form = result.getData();
+//        log.info("Form: {}", form);
+//        assertThat(form.getFormKey(), equalTo("60dac2f1645458df086c00bd"));
+//    }
 
 }
