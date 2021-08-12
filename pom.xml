@@ -5,7 +5,7 @@
 
 	<groupId>me.batizhao</groupId>
 	<artifactId>stalber</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>stalber</name>
@@ -20,6 +20,19 @@
 		<module>stalber-oa</module>
 		<module>stalber-system</module>
     </modules>
+
+	<distributionManagement>
+		<repository>
+			<id>maven-releases</id>
+			<name>Release central Repository</name>
+			<url>http://172.31.22.47:8081/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>maven-snapshots</id>
+			<name>Snapshot Repository</name>
+			<url>http://172.31.22.47:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
