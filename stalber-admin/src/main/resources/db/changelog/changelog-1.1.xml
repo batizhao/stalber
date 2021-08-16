@@ -641,4 +641,26 @@
             <column name="menuId" valueNumeric="4200"/>
         </insert>
     </changeSet>
+
+    <changeSet author="batizhao" id="CreateTable-20210812-001">
+        <createTable tableName="form_history" remarks="表单历史记录表">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="formKey" type="VARCHAR(64)" remarks="表单key">
+                <constraints nullable="false" />
+            </column>
+            <column name="metadata" type="CLOB" remarks="表单元数据" />
+            <column name="version" type="INT" remarks="版本" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="form_history"/>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>

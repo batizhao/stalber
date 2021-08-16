@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.dp.domain.Form;
 import me.batizhao.dp.mapper.FormMapper;
+import me.batizhao.dp.service.FormHistoryService;
 import me.batizhao.dp.service.FormService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class FormServiceImpl extends ServiceImpl<FormMapper, Form> implements Fo
 
     @Autowired
     private FormMapper formMapper;
+    @Autowired
+    private FormHistoryService formHistoryService;
 
     @Override
     public IPage<Form> findForms(Page<Form> page, Form form) {
@@ -63,6 +66,7 @@ public class FormServiceImpl extends ServiceImpl<FormMapper, Form> implements Fo
             formMapper.updateById(form);
         }
 
+        formHistoryService.saveFormHistory(form.getFormKey(), form.getMetadata());
         return form;
     }
 
