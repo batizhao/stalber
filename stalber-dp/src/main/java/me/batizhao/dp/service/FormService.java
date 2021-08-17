@@ -42,4 +42,11 @@ public interface FormService extends IService<Form> {
      */
     Boolean updateStatus(Form form);
 
+    /**
+     * 通过id恢复表单历史记录
+     * @param id
+     * @return
+     */
+    Boolean revertFormById(Long id);
+
 }

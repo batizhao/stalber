@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.dp.domain.Form;
+import me.batizhao.dp.domain.FormHistory;
 import me.batizhao.dp.mapper.FormMapper;
 import me.batizhao.dp.service.FormHistoryService;
 import me.batizhao.dp.service.FormService;
@@ -78,4 +79,11 @@ public class FormServiceImpl extends ServiceImpl<FormMapper, Form> implements Fo
         return formMapper.update(null, wrapper) == 1;
     }
 
+    @Override
+    public Boolean revertFormById(Long id) {
+        FormHistory fh = formHistoryService.getById(id);
+        LambdaUpdateWrapper<Form> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(Form::getFormKey, fh.getFormKey()).set(Form::getMetadata, fh.getMetadata());
+        return formMapper.update(null, wrapper) == 1;
+    }
 }

@@ -3,10 +3,10 @@ package me.batizhao.dp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.dp.domain.Form;
 import me.batizhao.dp.domain.FormHistory;
 import me.batizhao.dp.mapper.FormHistoryMapper;
+import me.batizhao.dp.mapper.FormMapper;
 import me.batizhao.dp.service.FormHistoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,8 @@ public class FormHistoryServiceImpl extends ServiceImpl<FormHistoryMapper, FormH
 
     @Autowired
     private FormHistoryMapper formHistoryMapper;
+    @Autowired
+    private FormMapper formMapper;
 
     @Override
     public List<FormHistory> findByFormKey(String formKey) {
@@ -44,5 +46,6 @@ public class FormHistoryServiceImpl extends ServiceImpl<FormHistoryMapper, FormH
         formHistoryMapper.insert(formHistory);
         return formHistory;
     }
+
 
 }
