@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.batizhao.admin.security;
+package me.batizhao.common.constant;
 
 /**
  * @author lengleng
@@ -22,25 +22,13 @@ package me.batizhao.admin.security;
  */
 public class SecurityConstants {
 	/**
-	 * Basic RealmName
+	 * 用户角色字段
 	 */
-	public static final String REALM_NAME = "pecado";
+	public static final String TOKEN_PREFIX = "Bearer ";
 	/**
 	 * 角色前缀
 	 */
 	public static final String ROLE = "ROLE_";
-	/**
-	 * 内部
-	 */
-	public static final String FROM_IN = "Y";
-	/**
-	 * 标志
-	 */
-	public static final String FROM = "from";
-	/***
-	 * 资源服务器默认bean名称
-	 */
-	public static final String RESOURCE_SERVER_CONFIGURER = "resourceServerConfigurerAdapter";
 
 	/**
 	 * 用户ID字段
@@ -61,4 +49,9 @@ public class SecurityConstants {
 	 * 用户角色字段
 	 */
 	public static final String DETAILS_ROLE_ID = "role_id";
+
+	/**
+	 * 用户权限字段
+	 */
+	public static final String DETAILS_AUTHORITIES = "authorities";
 }

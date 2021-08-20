@@ -2,7 +2,6 @@ package me.batizhao.system.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
-import me.batizhao.admin.security.SecurityConstants;
 import me.batizhao.common.constant.ResultEnum;
 import me.batizhao.system.domain.Log;
 import org.junit.jupiter.api.Test;

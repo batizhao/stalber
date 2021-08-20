@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
+import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.common.util.SpringContextHolder;
 import me.batizhao.system.domain.Log;
 import me.batizhao.system.event.SystemLogEvent;
@@ -17,9 +18,6 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -101,37 +99,10 @@ public class SystemLogAspect {
         logDTO.setClassName(method.getDeclaringClass().getName());
         logDTO.setClassMethod(method.getName());
         logDTO.setParameter(getParameter(method.getParameters(), point.getArgs()));
-        logDTO.setClientId(getClientId());
-        logDTO.setUsername(getUsername());
+        logDTO.setClientId("");
+        logDTO.setUsername(SecurityUtils.getUser().getUsername());
         logDTO.setUrl(request.getRequestURL().toString());
         return logDTO;
-    }
-
-    /**
-     * 获取客户端
-     *
-     * @return clientId
-     */
-    private String getClientId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof OAuth2Authentication) {
-            OAuth2Authentication auth2Authentication = (OAuth2Authentication) authentication;
-            return auth2Authentication.getOAuth2Request().getClientId();
-        }
-        return null;
-    }
-
-    /**
-     * 获取用户名称
-     *
-     * @return username
-     */
-    private String getUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        return authentication.getName();
     }
 
     /**

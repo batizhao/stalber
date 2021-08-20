@@ -19,9 +19,16 @@
 package me.batizhao.common.util;
 
 import lombok.experimental.UtilityClass;
+import me.batizhao.common.constant.SecurityConstants;
 import me.batizhao.common.domain.PecadoUser;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * 安全工具类
@@ -43,8 +50,16 @@ public class SecurityUtils {
 	 */
 	public PecadoUser getUser(Authentication authentication) {
 		Object principal = authentication.getPrincipal();
-		if (principal instanceof PecadoUser) {
-			return (PecadoUser) principal;
+		if (principal instanceof Jwt) {
+			Jwt jwt = (Jwt) principal;
+			Long userId = jwt.getClaim(SecurityConstants.DETAILS_USER_ID);
+			List<Integer> deptIds = jwt.getClaim(SecurityConstants.DETAILS_DEPT_ID);
+			List<Long> roleIds = jwt.getClaim(SecurityConstants.DETAILS_ROLE_ID);
+			String username = jwt.getClaimAsString(SecurityConstants.DETAILS_USERNAME);
+			List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(
+					StringUtils.collectionToCommaDelimitedString(jwt.getClaim(SecurityConstants.DETAILS_AUTHORITIES)));
+
+			return new PecadoUser(userId, deptIds, roleIds, username, "", true, true, true, true, authorities);
 		}
 		return null;
 	}

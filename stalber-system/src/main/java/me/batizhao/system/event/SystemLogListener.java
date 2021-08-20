@@ -23,9 +23,9 @@ public class SystemLogListener {
     @Async
     public void saveLog(SystemLogEvent event) {
         Log logDTO = (Log) event.getSource();
-        log.info("Feign async invoke start: {}", logDTO);
+        log.info("Async invoke start: {}", logDTO);
         logService.save(logDTO);
-        log.info("Feign async invoke end.");
+        log.info("Async invoke end.");
     }
 
 }

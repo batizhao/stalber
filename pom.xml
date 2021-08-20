@@ -45,21 +45,21 @@
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-configuration.version>2.7</commons-configuration.version>
 		<commons-fileupload.version>1.4</commons-fileupload.version>
-		<dynamic-datasource.version>3.3.1</dynamic-datasource.version>
+		<dynamic-datasource.version>3.4.1</dynamic-datasource.version>
 		<feign.version>11.2</feign.version>
-		<hutool.version>5.6.5</hutool.version>
+		<hutool.version>5.7.9</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
-		<liquibase.version>4.3.5</liquibase.version>
-		<mybatis-plus.version>3.4.2</mybatis-plus.version>
-		<mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
+		<liquibase.version>4.4.3</liquibase.version>
+		<mybatis-plus.version>3.4.3.1</mybatis-plus.version>
+		<mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
 		<poi.version>5.0.0</poi.version>
-		<spring-boot.version>2.4.6</spring-boot.version>
+		<spring-boot.version>2.5.4</spring-boot.version>
 		<springfox.version>3.0.0</springfox.version>
 		<swagger-annotations.version>1.6.2</swagger-annotations.version>
 		<velocity.version>2.3</velocity.version>
 
 		<jacoco-maven-plugin.verison>0.8.7</jacoco-maven-plugin.verison>
-		<git-commit-id-plugin.version>4.0.4</git-commit-id-plugin.version>
+		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 	</properties>
 
@@ -102,12 +102,6 @@
 				<groupId>me.batizhao</groupId>
 				<artifactId>stalber-system</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.security.oauth.boot</groupId>
-				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-				<version>${spring-boot.version}</version>
 			</dependency>
 
 			<dependency>

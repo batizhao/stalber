@@ -46,7 +46,7 @@ public class DsServiceImpl extends ServiceImpl<DsMapper, Ds> implements DsServic
     private StringEncryptor stringEncryptor;
 
     @Autowired
-    private DataSourceCreator dataSourceCreator;
+    private DataSourceCreator hikariDataSourceCreator;
 
     @Override
     public IPage<Ds> findDss(Page<Ds> page, Ds ds) {
@@ -110,7 +110,8 @@ public class DsServiceImpl extends ServiceImpl<DsMapper, Ds> implements DsServic
         dataSourceProperty.setUsername(ds.getUsername());
         dataSourceProperty.setPassword(ds.getPassword());
         dataSourceProperty.setDriverClassName(DataSourceConstants.DS_DRIVER);
-        DataSource dataSource = dataSourceCreator.createDataSource(dataSourceProperty);
+        dataSourceProperty.setLazy(true);
+        DataSource dataSource = hikariDataSourceCreator.createDataSource(dataSourceProperty);
         SpringContextHolder.getBean(DynamicRoutingDataSource.class).addDataSource(dataSourceProperty.getPoolName(),
                 dataSource);
     }

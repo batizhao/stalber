@@ -13,19 +13,19 @@ public class PecadoUser extends User {
      * 用户ID
      */
     @Getter
-    private Long userId;
+    private final Long userId;
 
     /**
      * 部门ID
      */
     @Getter
-    private List<Integer> deptIds;
+    private final List<Integer> deptIds;
 
     /**
      * 角色ID
      */
     @Getter
-    private List<Long> roleIds;
+    private final List<Long> roleIds;
 
     public PecadoUser(Long userId, List<Integer> deptIds, List<Long> roleIds, String username, String password, boolean enabled,
                    boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
