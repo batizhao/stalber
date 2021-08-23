@@ -20,7 +20,7 @@ public class TokenController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/token")
+    @PostMapping("/uaa/token")
     public R<String> login(@ApiParam(value = "用户名", required = true) @Size(min = 3) @RequestParam String username,
                            @ApiParam(value = "密码", required = true) @Size(min = 6) @RequestParam String password,
                            @ApiParam(value = "验证码", required = true) @Size(min = 3) @RequestParam String code) {
