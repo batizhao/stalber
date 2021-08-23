@@ -32,7 +32,7 @@ public class TokenServiceImpl implements TokenService {
     @Resource
     private AuthenticationManager authenticationManager;
 
-    @Value("${jwt.private-key}")
+    @Value("${pecado.jwt.private-key}")
     RSAPrivateKey key;
 
     @Override

@@ -3,11 +3,10 @@ server:
 #  servlet:
 #    context-path: /api
 
-jwt:
-  private-key: classpath:app.key
-  public-key: classpath:app.pub
-
 pecado:
+  jwt:
+    private-key: classpath:private.key
+    public-key: classpath:public.key
   swagger:
     enabled: true
     title: Pecado API

@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
-    @Value("${jwt.public-key}")
+    @Value("${pecado.jwt.public-key}")
     RSAPublicKey key;
 
     @Override
