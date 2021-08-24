@@ -28,7 +28,7 @@ public class TokenApiTest extends BaseApiTest {
     MockMvc mvc;
 
     @Test
-    public void givenNoPassword_whenGetAccessToken_thenOAuthException() throws Exception {
+    public void givenNoPassword_whenGetAccessToken_thenError() throws Exception {
         mvc.perform(post("/uaa/token")
                 .param("username", "admin"))
                 .andDo(print())
@@ -50,7 +50,7 @@ public class TokenApiTest extends BaseApiTest {
     }
 
     @Test
-    public void givenInValidPassword_whenGetAccessToken_thenSuccess() throws Exception {
+    public void givenInValidPassword_whenGetAccessToken_thenError() throws Exception {
         mvc.perform(post("/uaa/token")
                 .param("username", "admin").param("password", "12345678").param("code", "1234"))
                 .andDo(print())
