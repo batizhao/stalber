@@ -1,9 +1,11 @@
 package me.batizhao.ims.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import me.batizhao.common.util.R;
 import me.batizhao.ims.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +16,9 @@ import javax.validation.constraints.Size;
  * @author batizhao
  * @date 2021/8/18
  */
+@Api(tags = "Token管理")
 @RestController
+@Validated
 public class TokenController {
 
     @Autowired
