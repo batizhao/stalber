@@ -49,6 +49,7 @@
 		<feign.version>11.2</feign.version>
 		<hutool.version>5.7.9</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
+		<kaptcha.version>2.3.2</kaptcha.version>
 		<liquibase.version>4.4.3</liquibase.version>
 		<mybatis-plus.version>3.4.3.1</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
@@ -144,6 +145,11 @@
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
 				<version>${poi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.penggle</groupId>
+				<artifactId>kaptcha</artifactId>
+				<version>${kaptcha.version}</version>
 			</dependency>
 
 			<dependency>

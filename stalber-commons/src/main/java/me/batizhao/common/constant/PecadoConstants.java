@@ -12,4 +12,6 @@ public class PecadoConstants {
 
     public static final String BACK_END_PROJECT = "pecado";
     public static final String FRONT_END_PROJECT = "pecado-ui";
+
+    public static final String CACHE_KEY_CAPTCHA = "pecado:captcha:";
 }

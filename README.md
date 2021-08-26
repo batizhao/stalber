@@ -9,6 +9,7 @@
 * JDK8
 * MySQL8
 * JUnit5
+* Redis6
 
 ## 快速开始
 
@@ -16,14 +17,19 @@
 
 - mvn clean install -Dmaven.test.skip=true
 
+- 启动 Redis
+
 - 运行 StalberAdminApplication
 
   > 启动之前要修改的配置
   >
   > * pecado.upload.location
   > * spring.datasource
+  > * spring.redis
   >
   > 如果要跑单元测试，还有注意 test 下边的这两个配置
+  >
+  > 如果开发环境不需要验证码，pecado.captcha.enabled: false
 
 - Swagger 地址：http://localhost:8888/swagger-ui/
 

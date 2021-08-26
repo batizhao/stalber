@@ -1,7 +1,9 @@
 package me.batizhao.ims.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.ims.domain.LoginDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,21 +29,28 @@ public class TokenApiTest extends BaseApiTest {
     @Autowired
     MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
     public void givenNoPassword_whenGetAccessToken_thenError() throws Exception {
+        LoginDTO loginDTO = new LoginDTO().setUsername("admin");
         mvc.perform(post("/uaa/token")
-                .param("username", "admin"))
+                .content(objectMapper.writeValueAsString(loginDTO))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.PARAMETER_INVALID.getCode()))
-                .andExpect(jsonPath("$.data", containsString("Required request parameter 'password' for method")));
+                .andExpect(jsonPath("$.data[0]", containsString("password is not blank")));
     }
 
     @Test
     public void givenValidPassword_whenGetAccessToken_thenSuccess() throws Exception {
+        LoginDTO loginDTO = new LoginDTO().setUsername("admin").setPassword("123456");
         mvc.perform(post("/uaa/token")
-                .param("username", "admin").param("password", "123456").param("code", "1234"))
+                .content(objectMapper.writeValueAsString(loginDTO))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -51,8 +60,10 @@ public class TokenApiTest extends BaseApiTest {
 
     @Test
     public void givenInValidPassword_whenGetAccessToken_thenError() throws Exception {
+        LoginDTO loginDTO = new LoginDTO().setUsername("admin").setPassword("12345678");
         mvc.perform(post("/uaa/token")
-                .param("username", "admin").param("password", "12345678").param("code", "1234"))
+                .content(objectMapper.writeValueAsString(loginDTO))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
