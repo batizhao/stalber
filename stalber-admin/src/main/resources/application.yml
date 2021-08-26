@@ -115,7 +115,7 @@ spring:
     url: jdbc:mysql://172.31.21.180:30306/stalber?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
   redis:
     host: ${REDIS_HOST:127.0.0.1}
-    port: ${REDIS_PORT:6397}
+    port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:""}
 
 server:
