@@ -4,7 +4,7 @@ node {
   def registry_addr = "harbor.pecado.com:8888"
   def maintainer_name = "stalber"
   def admin_image
-  def version = "1.1-SNAPSHOT"
+  def version = "1.1"
 
   stage('Git Clone') {
     git branch: 'master', credentialsId: 'github', url: 'git@github.com:batizhao/stalber.git'

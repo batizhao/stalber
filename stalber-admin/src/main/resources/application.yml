@@ -10,7 +10,7 @@ pecado:
     enabled: true
     title: Pecado API
     basePackage: me.batizhao
-    version: 1.1-SNAPSHOT
+    version: 1.1
     license: Powered By batizhao
     licenseUrl: https://batizhao.github.io
     terms-of-service-url: https://batizhao.github.io
