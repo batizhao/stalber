@@ -36,7 +36,7 @@ public class AuthController {
     /**
      * 生成验证码
      */
-    @GetMapping("/captcha")
+    @GetMapping("/uaa/captcha")
     public R<Map<String, String>> handleCaptcha() throws IOException {
         return R.ok(authService.getCaptchaImage());
     }
