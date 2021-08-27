@@ -4,7 +4,7 @@
     <parent>
         <artifactId>stalber</artifactId>
         <groupId>me.batizhao</groupId>
-        <version>1.1</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

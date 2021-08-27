@@ -29,7 +29,7 @@
   >
   > 如果要跑单元测试，还有注意 test 下边的这两个配置
   >
-  > 如果开发环境不需要验证码，pecado.captcha.enabled: false
+  > 如果开发环境不需要验证码，pecado.captcha.enabled: false，同时，前端注释掉验证码输入框。
 
 - Swagger 地址：http://localhost:8888/swagger-ui/
 
@@ -39,35 +39,6 @@
 
 - dp\ims\system\commons\admin 五个模块尽量不要修改，方便后续升级。新的业务功能增加新的模块就好了。
 - 避免使用 dp\ims\system 三个命名空间
-
-## 认证和授权
-
-### 获取 access_token
-```shell
-# curl -XPOST localhost:8888/uaa/token\?username=admin\&password=123456\&code=1234
-{
-  "code" : 0,
-  "message" : "成功",
-  "data" : "eyJhbGciOiJSUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJyb2xlX2lkIjpb..."
-}
-```
-
-### 调用 API
-```shell
-# curl -H "authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJyb2xlX2lkIjpb..."  localhost:8888/user/1
-{
-  "code" : 0,
-  "message" : "ok",
-  "data" : {
-    "id" : 1,
-    "username" : "admin",
-    "password" : "$2a$10$rFoOrbWD2p.1CjBoBqTeaOUgpxFmtZknsDEvF78AsMXvsxU1AyAZu",
-    "email" : "admin@qq.com",
-    "name" : "系统管理员",
-    "time" : "2016-09-29 10:00:00"
-  }
-}
-```
 
 ## 数据库版本管理
 
