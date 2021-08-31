@@ -1,6 +1,7 @@
 package me.batizhao.admin.config;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.HttpHeaders;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -28,8 +29,6 @@ import java.util.List;
 @EnableConfigurationProperties(SwaggerProperties.class)
 @ConditionalOnProperty(name = "pecado.swagger.enabled", havingValue = "true")
 public class SwaggerConfiguration {
-
-    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     private static final List<String> DEFAULT_EXCLUDE_PATH = Arrays.asList("/error", "/actuator/**");
 
@@ -69,7 +68,7 @@ public class SwaggerConfiguration {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+        return new ApiKey("JWT", HttpHeaders.AUTHORIZATION, "header");
     }
 
     private SecurityContext securityContext() {

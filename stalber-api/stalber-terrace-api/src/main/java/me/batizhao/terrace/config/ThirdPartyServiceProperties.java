@@ -22,8 +22,8 @@ public class ThirdPartyServiceProperties {
     private String terraceServiceUrl;
 
     /**
-     * 流程平台Token
+     * Token 存储方式（local、redis）
      */
-    private String token;
+    private String tokenStoreLocation;
 
 }

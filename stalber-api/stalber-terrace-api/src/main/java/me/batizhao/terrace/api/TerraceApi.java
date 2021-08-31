@@ -1,10 +1,12 @@
 package me.batizhao.terrace.api;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import feign.Body;
 import feign.Param;
 import feign.RequestLine;
-import me.batizhao.terrace.dto.*;
+import me.batizhao.terrace.dto.AppTodoTaskDTO;
+import me.batizhao.terrace.dto.R;
+import me.batizhao.terrace.dto.StartProcessDTO;
+import me.batizhao.terrace.dto.SubmitProcessDTO;
 import me.batizhao.terrace.vo.InitProcessDefView;
 import me.batizhao.terrace.vo.ProcessRouterView;
 import me.batizhao.terrace.vo.TaskNodeView;
@@ -19,17 +21,6 @@ import java.util.List;
  * @date 2021/6/11
  */
 public interface TerraceApi {
-
-    /**
-     * 登录
-     *
-     * @param appCode
-     * @param privateKey
-     * @return
-     */
-    @RequestLine("POST app/login")
-    @Body("%7B\"appCode\":\"{appCode}\",\"privateKey\":\"{privateKey}\"%7D")
-    R<LoginResult> login(@Param("appCode") String appCode, @Param("privateKey") String privateKey);
 
     /**
      * 通过流程定义 key 获取最新流程定义，并初始化流程起始环节配置

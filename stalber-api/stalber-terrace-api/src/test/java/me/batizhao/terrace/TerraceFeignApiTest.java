@@ -1,8 +1,10 @@
 package me.batizhao.terrace;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import feign.RequestInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.terrace.api.TerraceApi;
+import me.batizhao.terrace.config.RequestInterceptorConfig;
 import me.batizhao.terrace.config.ThirdPartyClientConfig;
 import me.batizhao.terrace.config.ThirdPartyServiceProperties;
 import me.batizhao.terrace.dto.*;
@@ -14,7 +16,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,11 +36,11 @@ import static org.hamcrest.Matchers.*;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 @Tag("api")
-@Import(ThirdPartyClientConfig.class)
+@Import({ThirdPartyClientConfig.class, RequestInterceptorConfig.class})
 @EnableConfigurationProperties(value = ThirdPartyServiceProperties.class)
 @TestPropertySource(properties = {"pecado.third-party.enabled=true",
         "pecado.third-party.terrace-service-url=http://172.31.21.208:8886/terrace/",
-        "pecado.third-party.token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE2MzAwNTk5NTk1NjgiLCJleHAiOjE2MzAxMDMxNTksImFjY291bnQiOiJqc29hIn0.q2bhLa29-V-F8A_n9m3p8bDZJxB5utlZ7CIukA7-qjk"})
+        "pecado.third-party.token-store-location=local"})
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TerraceFeignApiTest {
@@ -46,6 +50,8 @@ public class TerraceFeignApiTest {
 
     @Autowired
     private ThirdPartyServiceProperties thirdPartyServiceProperties;
+    @MockBean
+    private RedisTemplate redisTemplate;
 
     private static String taskId;
     private static String procInstId;

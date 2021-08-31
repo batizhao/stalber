@@ -2,6 +2,7 @@ package me.batizhao.terrace.config;
 
 import feign.Feign;
 import feign.Logger;
+import feign.RequestInterceptor;
 import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
@@ -19,12 +20,13 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/6/11
  */
 @RequiredArgsConstructor
-@Configuration(proxyBeanMethods = false)
+@Configuration
 @EnableConfigurationProperties(value = ThirdPartyServiceProperties.class)
 @ConditionalOnProperty(name = "pecado.third-party.enabled", havingValue = "true")
 public class ThirdPartyClientConfig {
 
     private final ThirdPartyServiceProperties thirdPartyServiceProperties;
+    private final RequestInterceptor requestInterceptor;
 
     @Bean
     public TerraceApi terraceApi() {
@@ -35,14 +37,7 @@ public class ThirdPartyClientConfig {
                 .errorDecoder(new FeignErrorDecoder())
                 .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.FULL)
-                .requestInterceptor(template -> {
-                    template.header(
-                            // not available when building PRs...
-                            // https://docs.travis-ci.com/user/environment-variables/#defining-encrypted-variables-in-travisyml
-                            "Authorization", thirdPartyServiceProperties.getToken())
-                    .header("Content-Type", "application/json");
-                })
+                .requestInterceptor(requestInterceptor)
                 .target(TerraceApi.class, thirdPartyServiceProperties.getTerraceServiceUrl());
     }
-
 }

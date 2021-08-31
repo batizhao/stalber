@@ -9,6 +9,7 @@ import feign.slf4j.Slf4jLogger;
 import lombok.RequiredArgsConstructor;
 import me.batizhao.dp.api.StalberDpApi;
 import me.batizhao.dp.exception.FeignErrorDecoder;
+import org.apache.http.HttpHeaders;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +40,8 @@ public class StalberClientConfig {
                     template.header(
                             // not available when building PRs...
                             // https://docs.travis-ci.com/user/environment-variables/#defining-encrypted-variables-in-travisyml
-                            "Authorization", "Bearer " + stalberServiceProperties.getToken())
-                    .header("Content-Type", "application/json");
+                            HttpHeaders.AUTHORIZATION, "Bearer " + stalberServiceProperties.getToken())
+                    .header(HttpHeaders.CONTENT_TYPE, "application/json");
                 })
                 .target(StalberDpApi.class, stalberServiceProperties.getStalberServiceUrl());
     }
