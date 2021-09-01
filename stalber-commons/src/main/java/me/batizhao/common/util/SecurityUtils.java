@@ -53,8 +53,8 @@ public class SecurityUtils {
 		if (principal instanceof Jwt) {
 			Jwt jwt = (Jwt) principal;
 			Long userId = jwt.getClaim(SecurityConstants.DETAILS_USER_ID);
-			List<Integer> deptIds = jwt.getClaim(SecurityConstants.DETAILS_DEPT_ID);
-			List<Long> roleIds = jwt.getClaim(SecurityConstants.DETAILS_ROLE_ID);
+			List<String> deptIds = jwt.getClaimAsStringList(SecurityConstants.DETAILS_DEPT_ID);
+			List<String> roleIds = jwt.getClaimAsStringList(SecurityConstants.DETAILS_ROLE_ID);
 			String username = jwt.getClaimAsString(SecurityConstants.DETAILS_USERNAME);
 			List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(
 					StringUtils.collectionToCommaDelimitedString(jwt.getClaim(SecurityConstants.DETAILS_AUTHORITIES)));

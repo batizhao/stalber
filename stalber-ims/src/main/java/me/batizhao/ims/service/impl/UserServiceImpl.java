@@ -162,28 +162,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setUser(user);
-        userInfoVO.setDeptIds(departmentService.findDepartmentsByUserId(userId).stream().map(Department::getId).collect(Collectors.toList()));
-        userInfoVO.setRoleIds(roleService.findRolesByUserId(userId).stream().map(Role::getId).collect(Collectors.toList()));
+        userInfoVO.setDeptIds(departmentService.findDepartmentsByUserId(userId).stream().map(Department::getId).map(String::valueOf).collect(Collectors.toList()));
+        userInfoVO.setRoleIds(roleService.findRolesByUserId(userId).stream().map(Role::getId).map(String::valueOf).collect(Collectors.toList()));
         userInfoVO.setRoles(roleService.findRolesByUserId(userId).stream().map(Role::getCode).collect(Collectors.toList()));
         userInfoVO.setPermissions(menuService.findMenusByUserId(userId).stream().map(Menu::getPermission).filter(org.springframework.util.StringUtils::hasText).collect(Collectors.toList()));
         return userInfoVO;
     }
 
     @Override
-    public List<User> findLeadersByDepartmentId(Long departmentId, String type) {
+    public List<User> findLeadersByDepartmentId(Integer departmentId, String type) {
         return userMapper.selectLeadersByDepartmentId(departmentId, type);
     }
 
     @Override
     public List<User> findLeaders() {
-        Integer deptId = SecurityUtils.getUser().getDeptIds().get(0);
-        return this.findLeadersByDepartmentId(deptId.longValue(), null);
+        List<String> depts = SecurityUtils.getUser().getDeptIds();
+        return this.findLeadersByDepartmentId(Integer.valueOf(depts.get(0)), null);
     }
 
     @Override
     public String importUsers(List<User> users, boolean updateSupport) {
-        if (CollectionUtils.isEmpty(users))
-        {
+        if (CollectionUtils.isEmpty(users)) {
             throw new StalberException("Data cannot be empty.");
         }
         int successNum = 0;
