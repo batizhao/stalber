@@ -15,7 +15,6 @@
 
     <modules>
         <module>stalber-dp-api</module>
-        <module>stalber-terrace-api</module>
     </modules>
 
 </project>

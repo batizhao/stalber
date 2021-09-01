@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>me.batizhao</groupId>
-            <artifactId>stalber-terrace-api</artifactId>
+            <artifactId>terrace-sdk-boot-starter</artifactId>
         </dependency>
 
         <dependency>

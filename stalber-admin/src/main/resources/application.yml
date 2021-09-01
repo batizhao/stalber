@@ -23,9 +23,14 @@ pecado:
   captcha:
     enabled: true
     type: math
-  third-party:
+
+client:
+  terrace:
     enabled: true
-    terrace-service-url: http://172.31.21.208:8886/terrace/
+    client-id: jsoa
+    client-secret: 123456
+    url: http://172.31.21.208:8886/terrace/
+    # local or redis
     token-store-location: local
 
 mybatis-plus:

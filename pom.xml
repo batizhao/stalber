@@ -76,8 +76,8 @@
 
 			<dependency>
 				<groupId>me.batizhao</groupId>
-				<artifactId>stalber-terrace-api</artifactId>
-				<version>${project.version}</version>
+				<artifactId>terrace-sdk-boot-starter</artifactId>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>me.batizhao</groupId>
