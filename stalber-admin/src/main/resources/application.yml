@@ -29,6 +29,8 @@ client:
     enabled: true
     client-id: jsoa
     client-secret: 123456
+    key-token: "terrace:token:data"
+    key-expire: "terrace:token:expire"
     url: http://172.31.21.208:8886/terrace/
     # local or redis
     token-store-location: local
