@@ -663,4 +663,40 @@
         </rollback>
     </changeSet>
 
+    <changeSet author="batizhao" id="CreateTable-20210906-001">
+        <createTable tableName="invoice" remarks="发票表">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(64)" remarks="标题">
+                <constraints nullable="false" />
+            </column>
+            <column name="company" type="VARCHAR(64)" remarks="单位名称">
+                <constraints nullable="false" />
+            </column>
+            <column name="companyNumber" type="VARCHAR(64)" remarks="纳税人识别号">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="VARCHAR(32)" remarks="发票类型" />
+            <column name="email" type="VARCHAR(32)" remarks="邮箱" />
+            <column name="mobile" type="VARCHAR(16)" remarks="手机号" />
+            <column name="content" type="VARCHAR(255)" remarks="开票内容" />
+            <column name="deptName" type="VARCHAR(64)" remarks="发单部门" />
+            <column name="username" type="VARCHAR(32)" remarks="发单人" />
+            <column name="phoneNumber" type="VARCHAR(16)" remarks="联系电话" />
+            <column name="deptComment" type="VARCHAR(255)" remarks="部门主任审签" />
+            <column name="financeComment" type="VARCHAR(255)" remarks="财务主任审签" />
+
+            <column name="eInvoiceCode" type="VARCHAR(32)" remarks="电子发票代码" />
+            <column name="eInvoiceNumber" type="VARCHAR(32)" remarks="号码" />
+            <column name="eInvoiceAmount" type="VARCHAR(32)" remarks="金额" />
+            <column name="createTime" type="datetime" remarks="发单日期" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="invoice"/>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
