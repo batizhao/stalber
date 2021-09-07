@@ -57,10 +57,6 @@ export default {
 #if($form == "visual")
       jsonData: {
       },
-      dynamicData: {
-      },
-      remoteFuncs: {
-      },
 #end
       // 遮罩层
       loading: true,
@@ -135,7 +131,6 @@ export default {
         $column.javaField: [
           { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select")"change"#else"blur"#end }
         ]#if($velocityCount != $columns.size()),#end
-
 #end
 #end
       }

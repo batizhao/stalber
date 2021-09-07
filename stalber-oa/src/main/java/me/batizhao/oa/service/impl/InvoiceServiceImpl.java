@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.oa.domain.Invoice;
+import me.batizhao.oa.domain.InvoiceAndTask;
 import me.batizhao.oa.mapper.InvoiceMapper;
 import me.batizhao.oa.service.InvoiceService;
+import me.batizhao.oa.service.TaskService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
 
     @Autowired
     private InvoiceMapper invoiceMapper;
+    @Autowired
+    private TaskService taskService;
 
     @Override
     public IPage<Invoice> findInvoices(Page<Invoice> page, Invoice invoice) {
@@ -66,10 +70,12 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
 
     @Override
     @Transactional
-    public Invoice saveOrUpdateInvoice(Invoice invoice) {
+    public Invoice saveOrUpdateInvoice(InvoiceAndTask invoiceTask) {
+        Invoice invoice = invoiceTask.getInvoice();
         if (invoice.getId() == null) {
             invoice.setCreateTime(LocalDateTime.now());
             invoiceMapper.insert(invoice);
+            taskService.start(invoiceTask.getTask().setId(invoice.getId().toString()).setTitle(invoice.getTitle()));
         } else {
             invoiceMapper.updateById(invoice);
         }

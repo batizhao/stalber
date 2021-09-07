@@ -2,6 +2,7 @@ package me.batizhao.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;
@@ -40,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
     public IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView) {
         AppTodoTaskDTO dto = new AppTodoTaskDTO();
         dto.setBusinessModuleId("12");
-        dto.setUserName("1");
+        dto.setUserName(SecurityUtils.getUser().getUserId().toString());
         dto.setQueryType("1");
 
         return terraceApi.loadTasks(dto).getData();

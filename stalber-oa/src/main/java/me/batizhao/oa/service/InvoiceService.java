@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.oa.domain.Invoice;
+import me.batizhao.oa.domain.InvoiceAndTask;
 
 import java.util.List;
 
@@ -39,8 +40,8 @@ public interface InvoiceService extends IService<Invoice> {
 
     /**
      * 添加或编辑手工开票
-     * @param invoice 手工开票
+     * @param invoiceTask 手工开票
      * @return Invoice
      */
-    Invoice saveOrUpdateInvoice(Invoice invoice);
+    Invoice saveOrUpdateInvoice(InvoiceAndTask invoiceTask);
 }
