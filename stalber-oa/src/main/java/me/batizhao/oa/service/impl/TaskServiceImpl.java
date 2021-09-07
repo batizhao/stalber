@@ -57,8 +57,8 @@ public class TaskServiceImpl implements TaskService {
         StartProcessDTO dto = new StartProcessDTO();
         dto.setProcessDefinitionId(task.getProcessDefinitionId());
         dto.setCurrent(task.getCurrent());
-        dto.setUserId("1");
-        dto.setUserName("admin");
+        dto.setUserId(SecurityUtils.getUser().getUserId().toString());
+        dto.setUserName(SecurityUtils.getUser().getUsername());
         dto.setTenantId("23");
         dto.setOrgId("1");
         dto.setOrgName("jiangsu");
@@ -71,7 +71,7 @@ public class TaskServiceImpl implements TaskService {
         applicationDTO.setModuleId("12");
         applicationDTO.setModuleName("oa");
         applicationDTO.setTitle(task.getTitle());
-        applicationDTO.setCreator("admin");
+        applicationDTO.setCreator(SecurityUtils.getUser().getUsername());
         dto.setDto(applicationDTO);
 
         log.info("StartProcessDTO : {}", dto);
