@@ -39,12 +39,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView) {
-        AppTodoTaskDTO dto = new AppTodoTaskDTO();
-        dto.setBusinessModuleId("12");
-        dto.setUserName(SecurityUtils.getUser().getUserId().toString());
-        dto.setQueryType("1");
-
-        return terraceApi.loadTasks(dto).getData();
+        return terraceApi.loadTasks(SecurityUtils.getUser().getUserId().toString(), "12", "0").getData();
     }
 
     @Override
