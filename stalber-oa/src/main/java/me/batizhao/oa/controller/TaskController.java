@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
-import me.batizhao.terrace.vo.InitProcessDefView;
-import me.batizhao.terrace.vo.ProcessRouterView;
-import me.batizhao.terrace.vo.TaskNodeView;
-import me.batizhao.terrace.vo.TodoTaskView;
+import me.batizhao.terrace.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -97,6 +94,22 @@ public class TaskController {
     @PostMapping("/task")
     public R<String> handleSubmit(@Valid @ApiParam(value = "任务" , required = true) @RequestBody Task task) {
         return R.ok(taskService.submit(task));
+    }
+
+    /**
+     * 获取流程指定环节意见
+     *
+     * @param procInstId 流程实例Id
+     * @param taskDefKeyList 指定环节
+     * @param orderRule 排序规则 0 时间升序排， 1 先按人员职位排序，同级别时间升序排
+     * @return R<List<ProcessMessageView>>
+     */
+    @ApiOperation(value = "获取流程指定环节意见")
+    @PostMapping("/comments")
+    public R<List<ProcessMessageView>> handleComment(@ApiParam(value = "procInstId" , required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
+                                                     @ApiParam(value = "taskDefKeyList" , required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
+                                                     @ApiParam(value = "orderRule" , required = true) @RequestParam("orderRule") @Min(1) Integer orderRule) {
+        return R.ok(taskService.loadMessage(procInstId, taskDefKeyList, orderRule));
     }
 
 }
