@@ -105,10 +105,10 @@ public class TaskController {
      * @return R<List<ProcessMessageView>>
      */
     @ApiOperation(value = "获取流程指定环节意见")
-    @PostMapping("/comments")
+    @GetMapping("/comments")
     public R<List<ProcessMessageView>> handleComment(@ApiParam(value = "procInstId" , required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
                                                      @ApiParam(value = "taskDefKeyList" , required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
-                                                     @ApiParam(value = "orderRule" , required = true) @RequestParam("orderRule") @Min(1) Integer orderRule) {
+                                                     @ApiParam(value = "orderRule" , required = true) @RequestParam("orderRule") Integer orderRule) {
         return R.ok(taskService.loadMessage(procInstId, taskDefKeyList, orderRule));
     }
 

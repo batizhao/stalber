@@ -65,6 +65,7 @@ public class TaskServiceImpl implements TaskService {
         applicationDTO.setTitle(task.getTitle());
         applicationDTO.setCreator(SecurityUtils.getUser().getUsername());
         dto.setDto(applicationDTO);
+        dto.setSuggestion(task.getSuggestion());
 
         log.info("StartProcessDTO : {}", dto);
 
