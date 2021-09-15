@@ -2,7 +2,10 @@ package me.batizhao.oa.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import feign.Param;
+import me.batizhao.oa.domain.Invoice;
 import me.batizhao.oa.domain.Task;
+import me.batizhao.terrace.dto.AppTodoTaskDTO;
 import me.batizhao.terrace.dto.ApplicationDTO;
 import me.batizhao.terrace.vo.*;
 
@@ -24,11 +27,18 @@ public interface TaskService {
     InitProcessDefView findProcessDefinitionByKey(String key);
 
     /**
-     * 分页查询
+     * 待办任务
      * @param todoTaskView 任务对象
      * @return IPage<TodoTaskView>
      */
-    IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView);
+    IPage<TodoTaskView> findTodoTasks(Page page, TodoTaskView todoTaskView);
+
+    /**
+     * 已办任务
+     * @param appTodoTaskDTO
+     * @return
+     */
+    IPage<TodoTaskView> findDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO);
 
     /**
      * 通过id查询

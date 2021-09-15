@@ -1,6 +1,7 @@
 package me.batizhao.oa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
+import me.batizhao.terrace.dto.AppTodoTaskDTO;
 import me.batizhao.terrace.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -63,15 +65,26 @@ public class TaskController {
     }
 
     /**
-     * 分页查询
+     * 待办任务
      * @param taskView 任务对象
      * @return R
      * @real_return R<Page<TodoTaskView>>
      */
-    @ApiOperation(value = "分页查询")
-    @GetMapping("/tasks")
-    public R<IPage<TodoTaskView>> handleTasks(TodoTaskView taskView) {
-        return R.ok(taskService.findTasks(taskView));
+    @ApiOperation(value = "待办任务")
+    @GetMapping("/task/todo")
+    public R<IPage<TodoTaskView>> handleTodoTasks(Page page, TodoTaskView taskView) {
+        return R.ok(taskService.findTodoTasks(page, taskView));
+    }
+
+    /**
+     * 已办任务
+     * @param appTodoTaskDTO
+     * @return
+     */
+    @ApiOperation(value = "已办任务")
+    @GetMapping("/task/done")
+    public R<IPage<TodoTaskView>> handleDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return R.ok(taskService.findDoneTasks(page, appTodoTaskDTO));
     }
 
     /**

@@ -554,94 +554,6 @@
         </insert>
     </changeSet>
 
-    <changeSet author="batizhao" id="CreateTable-20210610-001">
-        <createTable tableName="comment" remarks="审批表">
-            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="title" type="VARCHAR(32)" remarks="标题" defaultValue="">
-                <constraints nullable="false"/>
-            </column>
-            <column name="comment" type="VARCHAR(255)" remarks="意见" defaultValue=""/>
-            <column name="dept" type="VARCHAR(64)" remarks="发单部门" defaultValue="">
-                <constraints nullable="false"/>
-            </column>
-            <column name="date" type="datetime" remarks="发单日期" defaultValueComputed="NOW()">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(64)" remarks="项目名称" defaultValue="">
-                <constraints nullable="false"/>
-            </column>
-            <column name="investment" type="DECIMAL(10,2)" remarks="投资金额" defaultValue="0.00">
-                <constraints nullable="false"/>
-            </column>
-            <column name="plan" type="DECIMAL(10,2)" remarks="年初计划" defaultValue="0.00">
-                <constraints nullable="false"/>
-            </column>
-            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <rollback>
-            <dropTable tableName="comment"/>
-        </rollback>
-
-        <insert tableName="menu">
-            <column name="id" valueNumeric="4000"/>
-            <column name="path" value="/oa"/>
-            <column name="name" value="公文管理"/>
-            <column name="icon" value="documentation"/>
-            <column name="pid" valueNumeric="0"/>
-            <column name="sort" valueNumeric="4"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="4100"/>
-            <column name="path" value="/oa/comment"/>
-            <column name="name" value="发文管理"/>
-            <column name="permission" value="oa:comment:admin"/>
-            <column name="icon" value="guide"/>
-            <column name="pid" valueNumeric="4000"/>
-            <column name="sort" valueNumeric="1"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="4101"/>
-            <column name="name" value="拟稿"/>
-            <column name="permission" value="oa:comment:add"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="4100"/>
-            <column name="sort" valueNumeric="1"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="4200"/>
-            <column name="path" value="/oa/task"/>
-            <column name="name" value="待办公文"/>
-            <column name="permission" value="oa:task:admin"/>
-            <column name="icon" value="documentation"/>
-            <column name="pid" valueNumeric="4000"/>
-            <column name="sort" valueNumeric="2"/>
-        </insert>
-
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="4000"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="4100"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="4101"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="4200"/>
-        </insert>
-    </changeSet>
-
     <changeSet author="batizhao" id="CreateTable-20210812-001">
         <createTable tableName="form_history" remarks="表单历史记录表">
             <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
@@ -686,7 +598,6 @@
             <column name="phoneNumber" type="VARCHAR(16)" remarks="联系电话" />
             <column name="deptComment" type="VARCHAR(255)" remarks="部门主任审签" />
             <column name="financeComment" type="VARCHAR(255)" remarks="财务主任审签" />
-
             <column name="eInvoiceCode" type="VARCHAR(32)" remarks="电子发票代码" />
             <column name="eInvoiceNumber" type="VARCHAR(32)" remarks="号码" />
             <column name="eInvoiceAmount" type="VARCHAR(32)" remarks="金额" />
@@ -697,6 +608,81 @@
         <rollback>
             <dropTable tableName="invoice"/>
         </rollback>
+
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4000"/>
+            <column name="path" value="/oa"/>
+            <column name="name" value="公文管理"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="0"/>
+            <column name="sort" valueNumeric="4"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4100"/>
+            <column name="path" value="/oa/invoice"/>
+            <column name="name" value="手工开票"/>
+            <column name="permission" value="oa:invoice:admin"/>
+            <column name="icon" value="money"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4101"/>
+            <column name="name" value="添加发票"/>
+            <column name="permission" value="oa:invoice:add"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="4100"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4102"/>
+            <column name="name" value="删除发票"/>
+            <column name="permission" value="oa:invoice:delete"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="4100"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4200"/>
+            <column name="path" value="/oa/task/todo"/>
+            <column name="name" value="待办公文"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4300"/>
+            <column name="path" value="/oa/task/done"/>
+            <column name="name" value="已办公文"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4100"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4101"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4102"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4200"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4300"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

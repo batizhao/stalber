@@ -1,6 +1,7 @@
 package me.batizhao.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.oa.domain.Task;
@@ -35,8 +36,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView) {
-        return terraceApi.loadTasks(SecurityUtils.getUser().getUserId().toString(), "12", "0").getData();
+    public IPage<TodoTaskView> findTodoTasks(Page page, TodoTaskView todoTaskView) {
+        return terraceApi.loadTodoTasks(page.getCurrent(), page.getSize(), SecurityUtils.getUser().getUserId().toString(), "12", "0").getData();
+    }
+
+    @Override
+    public IPage<TodoTaskView> findDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return terraceApi.loadDoneTask(page.getCurrent(), page.getSize(),
+                appTodoTaskDTO.getCode(), appTodoTaskDTO.getTitle(), appTodoTaskDTO.getRealName(),
+                appTodoTaskDTO.getUserName(), appTodoTaskDTO.getTaskName(), appTodoTaskDTO.getType(),
+                appTodoTaskDTO.getBusinessModuleId()).getData();
     }
 
     @Override
@@ -52,7 +61,7 @@ public class TaskServiceImpl implements TaskService {
         dto.setUserId(SecurityUtils.getUser().getUserId().toString());
         dto.setUserName(SecurityUtils.getUser().getUsername());
         dto.setTenantId("23");
-        dto.setOrgId("1");
+        dto.setOrgId(SecurityUtils.getUser().getDeptIds().get(0));
         dto.setOrgName("jiangsu");
         dto.setDraft(false);
         dto.setProcessNodeDTO(task.getProcessNodeDTO());
@@ -80,7 +89,7 @@ public class TaskServiceImpl implements TaskService {
         dto.setUserId(SecurityUtils.getUser().getUserId().toString());
         dto.setUserName(SecurityUtils.getUser().getUsername());
         dto.setTenantId("23");
-        dto.setOrgId("1");
+        dto.setOrgId(SecurityUtils.getUser().getDeptIds().get(0));
         dto.setOrgName("jiangsu");
         dto.setTaskId(task.getTaskId());
         dto.setProcInstId(task.getProcInstId());
