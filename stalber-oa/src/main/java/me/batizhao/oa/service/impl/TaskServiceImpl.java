@@ -119,4 +119,9 @@ public class TaskServiceImpl implements TaskService {
     public List<ProcessMessageView> loadMessage(String procInstId, List<String> taskDefKeyList, Integer orderRule) {
         return terraceApi.loadMessage(procInstId, taskDefKeyList, orderRule).getData();
     }
+
+    @Override
+    public Boolean sign(String taskId, String type) {
+        return terraceApi.sign(taskId, type, SecurityUtils.getUser().getUserId().toString()).getData();
+    }
 }

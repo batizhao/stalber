@@ -79,4 +79,12 @@ public interface TaskService {
      * @return
      */
     List<ProcessMessageView> loadMessage(String procInstId, List<String> taskDefKeyList, Integer orderRule);
+
+    /**
+     * 签收
+     * @param taskId
+     * @param type
+     * @return
+     */
+    Boolean sign(String taskId, String type);
 }

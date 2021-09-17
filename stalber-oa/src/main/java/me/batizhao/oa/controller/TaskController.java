@@ -119,10 +119,23 @@ public class TaskController {
      */
     @ApiOperation(value = "获取流程指定环节意见")
     @GetMapping("/comments")
-    public R<List<ProcessMessageView>> handleComment(@ApiParam(value = "procInstId" , required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
-                                                     @ApiParam(value = "taskDefKeyList" , required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
-                                                     @ApiParam(value = "orderRule" , required = true) @RequestParam("orderRule") Integer orderRule) {
+    public R<List<ProcessMessageView>> handleComment(@ApiParam(value = "procInstId", required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
+                                                     @ApiParam(value = "taskDefKeyList", required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
+                                                     @ApiParam(value = "orderRule", required = true) @RequestParam("orderRule") Integer orderRule) {
         return R.ok(taskService.loadMessage(procInstId, taskDefKeyList, orderRule));
+    }
+
+    /**
+     * 签收
+     * @param taskId 任务Id
+     * @param type 任务类型：0 审批任务、 1 传阅任务
+     * @return
+     */
+    @ApiOperation(value = "签收")
+    @PostMapping("/task/sign")
+    public R<Boolean> handleSign(@ApiParam(value = "taskId", required = true) @RequestParam("taskId") String taskId,
+                                 @ApiParam(value = "type", required = true, defaultValue = "0") @RequestParam("type") String type) {
+        return R.ok(taskService.sign(taskId, type));
     }
 
 }
