@@ -28,10 +28,10 @@ public interface TaskService {
 
     /**
      * 待办任务
-     * @param todoTaskView 任务对象
+     * @param appTodoTaskDTO
      * @return IPage<TodoTaskView>
      */
-    IPage<TodoTaskView> findTodoTasks(Page page, TodoTaskView todoTaskView);
+    IPage<TodoTaskView> findTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO);
 
     /**
      * 已办任务

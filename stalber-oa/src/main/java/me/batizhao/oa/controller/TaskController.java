@@ -66,14 +66,14 @@ public class TaskController {
 
     /**
      * 待办任务
-     * @param taskView 任务对象
+     * @param appTodoTaskDTO
      * @return R
      * @real_return R<Page<TodoTaskView>>
      */
     @ApiOperation(value = "待办任务")
     @GetMapping("/task/todo")
-    public R<IPage<TodoTaskView>> handleTodoTasks(Page page, TodoTaskView taskView) {
-        return R.ok(taskService.findTodoTasks(page, taskView));
+    public R<IPage<TodoTaskView>> handleTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return R.ok(taskService.findTodoTasks(page, appTodoTaskDTO));
     }
 
     /**

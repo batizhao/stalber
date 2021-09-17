@@ -36,15 +36,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public IPage<TodoTaskView> findTodoTasks(Page page, TodoTaskView todoTaskView) {
-        return terraceApi.loadTodoTasks(page.getCurrent(), page.getSize(), SecurityUtils.getUser().getUserId().toString(), "12", "0").getData();
+    public IPage<TodoTaskView> findTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return terraceApi.loadTodoTasks(page.getCurrent(), page.getSize(),
+                SecurityUtils.getUser().getUserId().toString(), appTodoTaskDTO.getBusinessModuleId(), appTodoTaskDTO.getQueryType(),
+                appTodoTaskDTO.getStatus(), appTodoTaskDTO.getType(), appTodoTaskDTO.getTitle()).getData();
     }
 
     @Override
     public IPage<TodoTaskView> findDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
         return terraceApi.loadDoneTask(page.getCurrent(), page.getSize(),
                 appTodoTaskDTO.getCode(), appTodoTaskDTO.getTitle(), appTodoTaskDTO.getRealName(),
-                appTodoTaskDTO.getUserName(), appTodoTaskDTO.getTaskName(), appTodoTaskDTO.getType(),
+                SecurityUtils.getUser().getUserId().toString(), appTodoTaskDTO.getTaskName(), appTodoTaskDTO.getType(),
                 appTodoTaskDTO.getBusinessModuleId()).getData();
     }
 

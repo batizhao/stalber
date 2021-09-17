@@ -652,11 +652,19 @@
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="4300"/>
+            <column name="path" value="/oa/task/doing"/>
+            <column name="name" value="在办公文"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4400"/>
             <column name="path" value="/oa/task/done"/>
             <column name="name" value="已办公文"/>
             <column name="icon" value="documentation"/>
             <column name="pid" valueNumeric="4000"/>
-            <column name="sort" valueNumeric="3"/>
+            <column name="sort" valueNumeric="4"/>
         </insert>
 
         <insert tableName="role_menu">
@@ -682,6 +690,10 @@
         <insert tableName="role_menu">
             <column name="roleId" valueNumeric="2"/>
             <column name="menuId" valueNumeric="4300"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4400"/>
         </insert>
     </changeSet>
 
