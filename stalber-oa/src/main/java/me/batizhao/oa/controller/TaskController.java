@@ -134,7 +134,7 @@ public class TaskController {
     @ApiOperation(value = "签收")
     @PostMapping("/task/sign")
     public R<Boolean> handleSign(@ApiParam(value = "taskId", required = true) @RequestParam("taskId") String taskId,
-                                 @ApiParam(value = "type", required = true, defaultValue = "0") @RequestParam("type") String type) {
+                                 @ApiParam(value = "type", defaultValue = "0") @RequestParam("type") String type) {
         return R.ok(taskService.sign(taskId, type));
     }
 

@@ -26,6 +26,7 @@
   > * pecado.upload.location
   > * spring.datasource
   > * spring.redis
+  > * client.terrace
   >
   > 如果要跑单元测试，还有注意 test 下边的这两个配置
   >
@@ -34,11 +35,14 @@
 - Swagger 地址：http://localhost:8888/swagger-ui/
 
   > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。
+  >
+
 
 ## 建议
 
 - dp\ims\system\commons\admin 五个模块尽量不要修改，方便后续升级。新的业务功能增加新的模块就好了。
-- 避免使用 dp\ims\system 三个命名空间
+- 避免使用 dp\ims\system\commons\admin 命名空间
+- oa 模块是整合流程平台的示例
 
 ## 数据库版本管理
 
@@ -110,8 +114,6 @@
 ## 统一异常处理
 
 * 不在业务代码中捕获任何异常, 全部交由 *@RestControllerAdvice* 来处理
-
-* *@RestControllerAdvice* 不会处理 404 异常，所以必须要单独处理，示例 *ErrorHandler*
 
 * 统一处理返回类型和消息，使用 *R* 和 *ResultEnum*
 
