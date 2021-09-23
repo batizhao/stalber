@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.oa.domain.Invoice;
-import me.batizhao.oa.domain.InvoiceAndTask;
 import me.batizhao.oa.mapper.InvoiceMapper;
 import me.batizhao.oa.service.InvoiceService;
 import me.batizhao.oa.service.TaskService;
@@ -70,12 +69,11 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
 
     @Override
     @Transactional
-    public Invoice saveOrUpdateInvoice(InvoiceAndTask invoiceTask) {
-        Invoice invoice = invoiceTask.getInvoice();
+    public Invoice saveOrUpdateInvoice(Invoice invoice) {
         if (invoice.getId() == null) {
             invoice.setCreateTime(LocalDateTime.now());
             invoiceMapper.insert(invoice);
-            taskService.start(invoiceTask.getTask().setId(invoice.getId().toString()).setTitle(invoice.getTitle()));
+            taskService.start(invoice.getTask().setId(invoice.getId().toString()).setTitle(invoice.getTitle()));
         } else {
             invoiceMapper.updateById(invoice);
         }

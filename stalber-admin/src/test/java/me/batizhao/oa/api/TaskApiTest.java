@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.constant.ResultEnum;
 import me.batizhao.oa.domain.Invoice;
-import me.batizhao.oa.domain.InvoiceAndTask;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.terrace.dto.CandidateDTO;
 import me.batizhao.terrace.dto.ProcessNodeDTO;
@@ -32,7 +31,7 @@ public class TaskApiTest extends BaseApiTest {
 
     @Test
     public void givenTask_whenProcessStart_thenSuccess() throws Exception {
-        Invoice invoice = new Invoice().setTitle("ttt").setCompany("ccc").setCompanyNumber("0123456");
+
 
         ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
         processNodeDTO.setTarget("usertask2");
@@ -48,10 +47,10 @@ public class TaskApiTest extends BaseApiTest {
                 .setCurrent("zhuren").setId("1").setTitle("title")
                 .setProcessNodeDTO(processNodeDTOList);
 
-        InvoiceAndTask iat = new InvoiceAndTask().setTask(task).setInvoice(invoice);
+        Invoice invoice = new Invoice().setTitle("ttt").setCompany("ccc").setCompanyNumber("0123456").setTask(task);
 
         mvc.perform(post("/oa/invoice")
-                .content(objectMapper.writeValueAsString(iat))
+                .content(objectMapper.writeValueAsString(invoice))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
                 .andDo(print())

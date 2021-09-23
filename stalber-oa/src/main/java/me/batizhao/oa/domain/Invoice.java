@@ -129,4 +129,10 @@ public class Invoice implements Serializable {
     @ApiModelProperty(value="发单日期")
     private LocalDateTime createTime;
 
+    /**
+     * 流程属性
+     */
+    @ApiModelProperty(value="流程属性")
+    private transient Task task;
+
 }

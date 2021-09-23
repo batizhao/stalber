@@ -108,8 +108,8 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
         return ${classname};
     }
-#if($template == "tree")
 
+#if($template == "tree")
     @Override
     @Transactional
     public Boolean deleteById(Integer id) {
@@ -119,6 +119,8 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
     }
 #end
 
+#foreach ($column in $columns)
+#if($column.columnName == "status"))
     @Override
     @Transactional
     public Boolean updateStatus(${className} ${classname}) {
@@ -126,8 +128,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
         wrapper.eq(${className}::getId, ${classname}.getId()).set(${className}::getStatus, ${classname}.getStatus());
         return ${classname}Mapper.update(null, wrapper) == 1;
     }
-#if($template == "tree")
+#end
+#end
 
+#if($template == "tree")
     @Override
     public Boolean checkHasChildren(Integer id) {
         return ${classname}Mapper.selectList(Wrappers.<${className}>lambdaQuery().eq(${className}::getPid, id)).size() > 0;

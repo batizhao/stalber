@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Invoice;
-import me.batizhao.oa.domain.InvoiceAndTask;
 import me.batizhao.oa.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -76,14 +75,14 @@ public class InvoiceController {
 
     /**
      * 添加或编辑手工开票
-     * @param invoiceTask 手工开票
+     * @param invoice 手工开票
      * @return R
      */
     @ApiOperation(value = "添加或编辑手工开票")
     @PostMapping("/invoice")
     @PreAuthorize("@pms.hasPermission('oa:invoice:add') or @pms.hasPermission('oa:invoice:edit')")
-    public R<Invoice> handleSaveOrUpdate(@Valid @ApiParam(value = "手工开票" , required = true) @RequestBody InvoiceAndTask invoiceTask) {
-        return R.ok(invoiceService.saveOrUpdateInvoice(invoiceTask));
+    public R<Invoice> handleSaveOrUpdate(@Valid @ApiParam(value = "手工开票" , required = true) @RequestBody Invoice invoice) {
+        return R.ok(invoiceService.saveOrUpdateInvoice(invoice));
     }
 
     /**

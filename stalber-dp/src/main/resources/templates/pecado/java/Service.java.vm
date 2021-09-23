@@ -61,14 +61,18 @@ public interface ${className}Service extends IService<${className}> {
     Boolean deleteById(Integer id);
 #end
 
+#foreach ($column in $columns)
+#if($column.columnName == "status"))
     /**
      * 更新${comments}状态
      * @param ${classname} ${comments}
      * @return Boolean
      */
     Boolean updateStatus(${className} ${classname});
-#if($template == "tree")
+#end
+#end
 
+#if($template == "tree")
     /**
      * 检查是否有子${comments}
      * 有返回 true，无返回 false
