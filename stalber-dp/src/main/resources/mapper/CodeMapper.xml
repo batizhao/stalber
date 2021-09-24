@@ -24,6 +24,8 @@
 		<result property="formKey" column="formKey"/>
 		<result property="createTime" column="createTime"/>
 		<result property="updateTime" column="updateTime"/>
+		<result property="workflow" column="workflow"/>
+		<result property="testcase" column="testcase"/>
 	</resultMap>
 
 	<select id="selectTablePageByDs" resultMap="codeMap">

@@ -243,6 +243,7 @@ public class CodeGenUtils {
             tpl.render(map, sw);
 
             // 添加到zip
+            if (getFileName(code, template) == null) continue;
             zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFileName(code, template))));
             IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
             IoUtil.close(sw);
@@ -356,7 +357,7 @@ public class CodeGenUtils {
     }
 
     private Map<String, Object> prepareContext(Code code) {
-        Map<String, Object> map = new HashMap<>(18);
+        Map<String, Object> map = new HashMap<>(20);
         map.put("tableName", code.getTableName());
         map.put("pk", code.getCodeMetaList().get(0));
         map.put("className", code.getClassName());
@@ -376,6 +377,7 @@ public class CodeGenUtils {
         map.put("subMappingPath", code.getSubCode() != null ? code.getSubCode().getMappingPath() : "");
         map.put("form", code.getForm());
         map.put("formKey", code.getFormKey());
+        map.put("workflow", code.getWorkflow());
         return map;
     }
 
@@ -396,7 +398,7 @@ public class CodeGenUtils {
     private String getGenPath(Code code, String template) {
         String genPath = code.getPath();
         if (StringUtils.equals(genPath, "/")) {
-            return System.getProperty("user.dir") + File.separator + "src" + File.separator + getFileName(code, template);
+            return System.getProperty("user.dir") + File.separator + getFileName(code, template);
         }
         return genPath + File.separator + getFileName(code, template);
     }
@@ -405,7 +407,7 @@ public class CodeGenUtils {
      * 获取文件名
      */
     private String getFileName(Code code, String template) {
-        String packageRootPath = PecadoConstants.BACK_END_PROJECT + File.separator + "src" + File.separator;
+        String packageRootPath = "src" + File.separator;
 
         String packageSrcPath = packageRootPath + "main" + File.separator + "java" + File.separator;
 
@@ -426,20 +428,12 @@ public class CodeGenUtils {
             return packageSrcPath + GenConfig.getMapperPackageName() + File.separator + code.getClassName() + "Mapper.java";
         }
 
-        if (template.contains(MAPPER_UNIT_TEST_JAVA_VM)) {
-            return packageTestPath + "unit" + File.separator + "mapper" + File.separator + code.getClassName() + "MapperUnitTest.java";
-        }
-
         if (template.contains(SERVICE_JAVA_VM)) {
             return packageSrcPath + "service" + File.separator + code.getClassName() + "Service.java";
         }
 
         if (template.contains(SERVICE_IMPL_JAVA_VM)) {
             return packageSrcPath + "service" + File.separator + "impl" + File.separator + code.getClassName() + "ServiceImpl.java";
-        }
-
-        if (template.contains(SERVICE_UNIT_TEST_JAVA_VM)) {
-            return packageTestPath + "unit" + File.separator + "service" + File.separator + code.getClassName() + "ServiceUnitTest.java";
         }
 
         if (template.contains(CONTROLLER_JAVA_VM)) {
@@ -458,21 +452,31 @@ public class CodeGenUtils {
             return packageSrcPath + "controller" + File.separator + code.getClassName() + "Form.java";
         }
 
-        if (template.contains(CONTROLLER_UNIT_TEST_JAVA_VM)) {
-            return packageTestPath + "unit" + File.separator + "controller" + File.separator + code.getClassName() + "ControllerUnitTest.java";
-        }
-
-        if (template.contains(API_TEST_JAVA_VM)) {
-            return packageTestPath + "api" + File.separator + code.getClassName() + "ApiTest.java";
-        }
-
         if (template.contains(MAPPER_XML_VM)) {
-            return PecadoConstants.BACK_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+            return "src" + File.separator + "main" + File.separator
                     + "resources" + File.separator + "mapper" + File.separator + code.getClassName() + "Mapper.xml";
         }
 
         if (template.contains(MENU_SQL_VM)) {
             return code.getClassName().toLowerCase() + "_menu.sql";
+        }
+
+        if (code.getTestcase().equals("yes")) {
+            if (template.contains(MAPPER_UNIT_TEST_JAVA_VM)) {
+                return packageTestPath + "unit" + File.separator + "mapper" + File.separator + code.getClassName() + "MapperUnitTest.java";
+            }
+
+            if (template.contains(SERVICE_UNIT_TEST_JAVA_VM)) {
+                return packageTestPath + "unit" + File.separator + "service" + File.separator + code.getClassName() + "ServiceUnitTest.java";
+            }
+
+            if (template.contains(CONTROLLER_UNIT_TEST_JAVA_VM)) {
+                return packageTestPath + "unit" + File.separator + "controller" + File.separator + code.getClassName() + "ControllerUnitTest.java";
+            }
+
+            if (template.contains(API_TEST_JAVA_VM)) {
+                return packageTestPath + "api" + File.separator + code.getClassName() + "ApiTest.java";
+            }
         }
 
         if (template.contains(VUE_INDEX_VUE_VM)) {

@@ -153,6 +153,18 @@ public class Code extends Model<Code> {
     private LocalDateTime updateTime;
 
     /**
+     * 整合工作流引擎
+     */
+    @ApiModelProperty(value="整合工作流引擎")
+    private String workflow;
+
+    /**
+     * 生成测试用例
+     */
+    @ApiModelProperty(value="生成测试用例")
+    private String testcase;
+
+    /**
      * 表元数据
      */
     @ApiModelProperty(value="表元数据")

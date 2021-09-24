@@ -7,10 +7,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.exception.NotFoundException;
+#if($template == "tree")
 import me.batizhao.common.util.TreeUtil;
+#end
 import ${package}.${moduleName}.domain.${className};
 import ${package}.${moduleName}.mapper.${className}Mapper;
 import ${package}.${moduleName}.service.${className}Service;
+#if($workflow == "yes")
+import me.batizhao.oa.service.TaskService;
+#end
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +35,10 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 
     @Autowired
     private ${className}Mapper ${classname}Mapper;
+#if($workflow == "yes")
+    @Autowired
+    private TaskService taskService;
+#end
 
 #if($template != "tree")
     @Override
@@ -101,6 +110,9 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
             ${classname}.setCreateTime(LocalDateTime.now());
             ${classname}.setUpdateTime(LocalDateTime.now());
             ${classname}Mapper.insert(${classname});
+#if($workflow == "yes")
+            taskService.start(${classname}.getTask().setId(${classname}.getId().toString()).setTitle(${classname}.getTitle()));
+#end
         } else {
             ${classname}.setUpdateTime(LocalDateTime.now());
             ${classname}Mapper.updateById(${classname});
@@ -120,7 +132,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 #end
 
 #foreach ($column in $columns)
-#if($column.columnName == "status"))
+#if($column.columnName == "status")
     @Override
     @Transactional
     public Boolean updateStatus(${className} ${classname}) {

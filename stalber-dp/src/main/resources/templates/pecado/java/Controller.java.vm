@@ -158,7 +158,7 @@ public class ${className}Controller {
     }
 
 #foreach ($column in $columns)
-#if($column.columnName == "status"))
+#if($column.columnName == "status")
     /**
      * 更新${comments}状态
      *
