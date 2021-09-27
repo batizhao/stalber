@@ -8,6 +8,7 @@
             <column name="workflow" type="VARCHAR(8)" remarks="整合工作流引擎" defaultValue="no">
                 <constraints nullable="false" />
             </column>
+            <column name="workflowKey" type="VARCHAR(32)" remarks="流程Key" defaultValue="" />
             <column name="testcase" type="VARCHAR(8)" remarks="生成测试用例" defaultValue="no">
                 <constraints nullable="false" />
             </column>

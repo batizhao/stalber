@@ -26,6 +26,7 @@
 		<result property="createTime" column="createTime"/>
 		<result property="updateTime" column="updateTime"/>
 		<result property="workflow" column="workflow"/>
+		<result property="workflowKey" column="workflowKey"/>
 		<result property="testcase" column="testcase"/>
 	</resultMap>
 

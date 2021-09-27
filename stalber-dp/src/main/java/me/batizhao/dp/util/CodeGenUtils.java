@@ -363,7 +363,7 @@ public class CodeGenUtils {
     }
 
     private Map<String, Object> prepareContext(Code code) {
-        Map<String, Object> map = new HashMap<>(20);
+        Map<String, Object> map = new HashMap<>(21);
         map.put("tableName", code.getTableName());
         map.put("pk", code.getCodeMetaList().get(0));
         map.put("className", code.getClassName());
@@ -384,6 +384,7 @@ public class CodeGenUtils {
         map.put("form", code.getForm());
         map.put("formKey", code.getFormKey());
         map.put("workflow", code.getWorkflow());
+        map.put("workflowKey", code.getWorkflowKey());
         return map;
     }
 

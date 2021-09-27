@@ -1,5 +1,28 @@
     <!-- 添加或编辑${comments}对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" v-if="open" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="500px" v-if="open" :close-on-click-modal="false" append-to-body>
+#if($workflow == "yes")    
+      <el-steps :active="active" finish-status="success">
+        <el-step title="步骤1"></el-step>
+        <el-step title="步骤2"></el-step>
+      </el-steps>
+      <el-row class="step-body">
+        <parse
+          v-show="active == 0"
+          :form-conf="jsonData"
+          :edit-data="editData" 
+          :showSubmit="false"
+          ref="form"
+        >
+        </parse>
+        <ExamineDialog v-show="active == 1" ref="examineDialog"/>
+      </el-row>
+      <div slot="footer" class="dialog-footer">
+        <el-button v-if="active == 1" @click="preStep">上一步</el-button>
+        <el-button v-if="active == 0" @click="nextStep">下一步</el-button>
+        <el-button v-if="active == 1" type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+#else      
 #if($form == "visual")
       <parse 
        :form-conf="jsonData" 
@@ -122,4 +145,5 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
+#end      
     </el-dialog>

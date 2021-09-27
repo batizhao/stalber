@@ -27,6 +27,10 @@ import Editor from '@/components/Editor';
 #break
 #end
 #end
+#if($workflow == "yes")
+import { getProcessDefinition } from "@/api/oa/task";
+import ExamineDialog from '@/views/oa/task/examine-dialog/index.vue'
+#end
 
 export default {
   name: "${className}",
@@ -36,7 +40,10 @@ export default {
 #end
 #if($form == "visual")
     Parse,
-#end     
+#end
+#if($workflow == "yes")
+    ExamineDialog,
+#end  
 #foreach($column in $columns)
 #if($column.save && !$column.primaryKey && $column.htmlType == "imageUpload")
     ImageUpload,
@@ -141,6 +148,14 @@ export default {
 #end
       }
 #end
+#if($workflow == "yes")
+      //流程数据
+      processDefinitionData: {},
+      //业务数据
+      invoiceData: {},
+      //步骤数
+      active: 0,
+#end      
     };
   },
   created() {
@@ -149,10 +164,18 @@ export default {
 #end
     this.getList();
 #if($form == "visual")
-    getFormByKey('${formKey}').then( response => {
-      const formObj = JSON.parse(response.data.metadata || '{}');
-      this.jsonData = formObj.formData || {};
+#if($workflow == "yes")
+    getProcessDefinition('${workflowKey}').then(response => {
+      this.processDefinitionData = response.data || {};
+      const formKey = this.processDefinitionData.view.config.config.form.pcPath;
+#end     
+      getFormByKey(formKey || '${formKey}').then(res => {
+        const formObj = JSON.parse(res.data.metadata || '{}');
+        this.jsonData = formObj.formData || {};
+      });
+#if($workflow == "yes")      
     });
+#end      
 #end
 #foreach ($column in $columns)
 #if(${column.dictType} != '')
@@ -281,11 +304,23 @@ export default {
       this.multiple = !selection.length
     },    
     /** 添加按钮操作 */
+#if($workflow == "yes")    
+    handleAdd() {
+      this.reset();
+      this.title = "添加${comments}";
+      this.active = 0;
+      this.$forceUpdate();
+      this.$nextTick( () => {
+        this.open = true;
+      })
+    },
+#else
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加${comments}";
-    },
+    },    
+#end    
     /** 编辑按钮操作 */
     handleUpdate(row) {
       this.reset();
@@ -336,6 +371,49 @@ export default {
     },
 #end
     /** 提交按钮 */
+#if($workflow == "yes")
+    submitForm() {
+      this.#[[$]]#refs.examineDialog.getExamineData().then( flowData => {
+        const submitData = { 
+          task: { 
+            processNodeDTO: flowData.processNodeDTO
+          } 
+        };
+        let { dto, view } = this.processDefinitionData;
+        submitData.task.current = view.dto.id;
+        submitData.task.processDefinitionId = dto.id;
+        Object.assign(submitData, this.invoiceData);
+        submitData.task.id = undefined;
+        console.log("submitData:", submitData);
+
+        addOrUpdate${className}(submitData).then(response => {
+          this.msgSuccess("保存成功");
+          this.getList();
+          this.open = false;
+        });
+      });
+    },
+    /**拟稿弹框下一步 */
+    nextStep(){
+      this.#[[$]]#refs.form.submitForm().then(data => {
+        this.active = 1;
+        this.invoiceData = data;
+        const examineData = {
+          processDefinitionId: this.processDefinitionData.dto.id,
+          taskDefKey: this.processDefinitionData.view.dto.id
+        }
+        this.#[[$]]#nextTick( () => {
+          this.#[[$]]#refs.examineDialog.show(examineData);
+        })
+      }).catch( err => {
+        console.log(err);
+      })
+    },
+    /**拟稿弹框上一步 */
+    preStep(){
+      this.active = 0;
+    },
+#else    
 #if($form == "visual")
     submitForm() {
       this.#[[$]]#refs.form.submitForm().then(data => {
@@ -346,6 +424,7 @@ export default {
           this.getList();
         });
       });
+    },
 #else
     submitForm() {
       this.#[[$]]#refs.form.validate(valid => {
@@ -365,8 +444,9 @@ export default {
           });
         }
       });
-#end
     },
+#end
+#end
     /** 删除按钮操作 */
     handleDelete(row) {
       const ${pk.javaField}s = row.${pk.javaField}#if($template != "tree") || this.ids#end;

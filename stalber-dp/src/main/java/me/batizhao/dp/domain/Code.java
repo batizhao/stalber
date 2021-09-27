@@ -165,6 +165,12 @@ public class Code extends Model<Code> {
     private String workflow;
 
     /**
+     * 流程Key
+     */
+    @ApiModelProperty(value="流程Key")
+    private String workflowKey;
+
+    /**
      * 生成测试用例
      */
     @ApiModelProperty(value="生成测试用例")
