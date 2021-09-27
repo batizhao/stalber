@@ -11,6 +11,9 @@
             <column name="testcase" type="VARCHAR(8)" remarks="生成测试用例" defaultValue="no">
                 <constraints nullable="false" />
             </column>
+            <column name="frontPath" type="VARCHAR(128)" remarks="前端代码路径" defaultValue="/">
+                <constraints nullable="false" />
+            </column>
         </addColumn>
     </changeSet>
 

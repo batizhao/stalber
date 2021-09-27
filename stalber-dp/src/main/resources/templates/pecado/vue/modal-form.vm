@@ -1,14 +1,13 @@
     <!-- 添加或编辑${comments}对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" v-if="open" append-to-body>
 #if($form == "visual")
-      <fm-generate-form
-        :data="jsonData"
-        :remote-option="dynamicData"
-        :remote="remoteFuncs"
-        :value="form"
-        ref="form"
-      >
-      </fm-generate-form>
+      <parse 
+       :form-conf="jsonData" 
+       :edit-data="editData" 
+       @submit="submitForm" 
+       :showSubmit="true" 
+       ref="form">
+      </parse>
 #else
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 #if($template == "tree")
@@ -120,8 +119,10 @@
 #end
       </el-form>
 #end
+#if($form != "visual")
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
+#end      
     </el-dialog>

@@ -210,17 +210,21 @@ public class CodeGenUtils {
 
         // 获取模板列表
         for (String template : getTemplates(code.getTemplate())) {
-            if (!StringUtils.containsAny(template, MENU_SQL_VM, VUE_API_JS_VM, VUE_INDEX_VUE_VM, VUE_TREE_INDEX_VUE_VM)) {
-                // 渲染模板
-                StringWriter sw = new StringWriter();
-                Template tpl = engine.getTemplate(template);
-                tpl.render(map, sw);
-                try {
-                    String path = getGenPath(code, template);
-                    FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
-                } catch (IOException e) {
-                    throw new StalberException("渲染模板失败，表名：" + code.getTableName());
+            // 如果测试用例关闭，有可能返回null
+            if (getFileName(code, template) == null) continue;
+
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(template);
+            tpl.render(map, sw);
+            try {
+                String path = getGenPath(code, template);
+                if (StringUtils.containsAny(template, VUE_API_JS_VM, VUE_INDEX_VUE_VM, VUE_TREE_INDEX_VUE_VM)) {
+                    path = getGenFrontPath(code, template);
                 }
+                FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
+            } catch (IOException e) {
+                throw new StalberException("渲染模板失败，表名：" + code.getTableName());
             }
         }
     }
@@ -237,13 +241,15 @@ public class CodeGenUtils {
 
         // 获取模板列表
         for (String template : getTemplates(code.getTemplate())) {
+            // 如果测试用例关闭，有可能返回null
+            if (getFileName(code, template) == null) continue;
+
             // 渲染模板
             StringWriter sw = new StringWriter();
             Template tpl = engine.getTemplate(template);
             tpl.render(map, sw);
 
             // 添加到zip
-            if (getFileName(code, template) == null) continue;
             zip.putNextEntry(new ZipEntry(Objects.requireNonNull(getFileName(code, template))));
             IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
             IoUtil.close(sw);
@@ -404,6 +410,21 @@ public class CodeGenUtils {
     }
 
     /**
+     * 获取前端代码生成地址
+     *
+     * @param code
+     * @param template
+     * @return 生成地址
+     */
+    private String getGenFrontPath(Code code, String template) {
+        String genPath = code.getFrontPath();
+        if (StringUtils.equals(genPath, "/")) {
+            return System.getProperty("user.dir") + File.separator + getFileName(code, template);
+        }
+        return genPath + File.separator + getFileName(code, template);
+    }
+
+    /**
      * 获取文件名
      */
     private String getFileName(Code code, String template) {
@@ -480,19 +501,19 @@ public class CodeGenUtils {
         }
 
         if (template.contains(VUE_INDEX_VUE_VM)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" + File.separator
+            return "src" + File.separator + "views" + File.separator
                     + code.getModuleName() + File.separator + code.getMappingPath() + File.separator
                     + "index.vue";
         }
 
         if (code.getTemplate().equals(GenConstants.TPL_TREE) && template.contains(VUE_TREE_INDEX_VUE_VM)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "views" + File.separator
+            return "src" + File.separator + "views" + File.separator
                     + code.getModuleName() + File.separator + code.getMappingPath() + File.separator
                     + "index.vue";
         }
 
         if (template.contains(VUE_API_JS_VM)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "api" + File.separator
+            return "src" + File.separator + "api" + File.separator
                     + code.getModuleName() + File.separator + code.getMappingPath() + ".js";
         }
 

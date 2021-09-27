@@ -117,10 +117,16 @@ public class Code extends Model<Code> {
     private String type;
 
     /**
-     * 生成路径（不填默认项目路径）
+     * 后端代码路径（不填默认项目路径）
      */
-    @ApiModelProperty(value="生成路径（不填默认项目路径）")
+    @ApiModelProperty(value="后端代码路径（不填默认项目路径）")
     private String path;
+
+    /**
+     * 前端代码路径
+     */
+    @ApiModelProperty(value="前端代码路径")
+    private String frontPath;
 
     /**
      * 关联子表的code.id
