@@ -4,8 +4,7 @@
       <parse 
        :form-conf="jsonData" 
        :edit-data="editData" 
-       @submit="submitForm" 
-       :showSubmit="true" 
+       :showSubmit="false" 
        ref="form">
       </parse>
 #else
@@ -119,10 +118,8 @@
 #end
       </el-form>
 #end
-#if($form != "visual")
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
-#end      
     </el-dialog>

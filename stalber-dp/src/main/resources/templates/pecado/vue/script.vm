@@ -67,6 +67,8 @@ export default {
 #if($template != "tree")      
       // 选中数组
       ids: [],
+      // 当前id
+      id: null,
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -197,16 +199,16 @@ export default {
     handleStatusChange(row) {
       let text = row.status === "open" ? "启用" : "停用";
       this.$confirm('确认要"' + text + '""' + row.name + '"吗?', "警告", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(function() {
-          return change${className}Status(row.id, row.status);
-        }).then(() => {
-          this.msgSuccess(text + "成功");
-        }).catch(function() {
-          row.status = row.status === "open" ? "close" : "open";
-        });
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function() {
+        return change${className}Status(row.id, row.status);
+      }).then(() => {
+        this.msgSuccess(text + "成功");
+      }).catch(function() {
+        row.status = row.status === "open" ? "close" : "open";
+      });
     },
 #if($template == "tree")     
     /** 转换${comments}数据结构 */
@@ -287,9 +289,13 @@ export default {
     /** 编辑按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const ${pk.javaField} = row.${pk.javaField} || this.ids
-      get${className}(${pk.javaField}).then(response => {
+      this.${pk.javaField} = row.${pk.javaField} || this.ids
+      get${className}(this.${pk.javaField}).then(response => {
+#if($form == "visual")     
+        this.editData = response.data;
+#else
         this.form = response.data;
+#end 
 #foreach ($column in $columns)
 #if($column.htmlType == "checkbox")
         this.form.$column.javaField = this.form.${column.javaField}.split(",");
@@ -315,11 +321,7 @@ export default {
       this.reset();
       this.getTreeselect();
       get${className}(row.id).then(response => {
-#if($form == "visual")      
-        this.editData = response.data;
-#else
         this.form = response.data;
-#end        
         this.open = true;
         this.title = "编辑${comments}";
       });
@@ -335,15 +337,18 @@ export default {
 #end
     /** 提交按钮 */
 #if($form == "visual")
-    submitForm(data) {
-      addOrUpdate${className}(data).then(response => {
-        this.msgSuccess("保存成功");
-        this.open = false;
-        this.getList();
+    submitForm() {
+      this.#[[$]]#refs.form.submitForm().then(data => {
+        data.id = this.id;
+        addOrUpdate${className}(data).then(response => {
+          this.msgSuccess("保存成功");
+          this.open = false;
+          this.getList();
+        });
       });
 #else
     submitForm() {
-      this.#[[$]]#refs["form"].validate(valid => {
+      this.#[[$]]#refs.form.validate(valid => {
         if (valid) {
 #if(!$relationTable.isEmpty())
           this.form.${relationTable[0].subTableFkName} = this.$route.params && this.$route.params.${relationTable[0].subTableFkName};
