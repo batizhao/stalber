@@ -68,6 +68,7 @@ export default {
 #if($form == "visual")
       jsonData: {},
       editData: {},
+      formKey: null,
 #end
       // 遮罩层
       loading: true,
@@ -167,9 +168,9 @@ export default {
 #if($workflow == "yes")
     getProcessDefinition('${workflowKey}').then(response => {
       this.processDefinitionData = response.data || {};
-      const formKey = this.processDefinitionData.view.config.config.form.pcPath;
+      this.formKey = this.processDefinitionData.view.config.config.form.pcPath;
 #end     
-      getFormByKey(formKey || '${formKey}').then(res => {
+      getFormByKey(this.formKey || '${formKey}').then(res => {
         const formObj = JSON.parse(res.data.metadata || '{}');
         this.jsonData = formObj.formData || {};
       });
