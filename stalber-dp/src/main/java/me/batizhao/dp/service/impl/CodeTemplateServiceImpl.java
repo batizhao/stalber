@@ -55,6 +55,16 @@ public class CodeTemplateServiceImpl extends ServiceImpl<CodeTemplateMapper, Cod
     }
 
     @Override
+    public List<CodeTemplate> findCodeTemplates(String projectKey) {
+        LambdaQueryWrapper<CodeTemplate> wrapper = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(projectKey)) {
+            wrapper.eq(CodeTemplate::getProjectKey, projectKey);
+        }
+        wrapper.eq(CodeTemplate::getStatus, "open");
+        return codeTemplateMapper.selectList(wrapper);
+    }
+
+    @Override
     public CodeTemplate findById(Long id) {
         CodeTemplate codeTemplate = codeTemplateMapper.selectById(id);
 

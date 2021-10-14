@@ -12,6 +12,3 @@ gen:
   pojoPackageName: domain
   # 默认mapper包名 mapper
   mapperPackageName: mapper
-  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
-#  templates: java/Domain.java.vm,java/Mapper.java.vm,java/Service.java.vm,java/ServiceImpl.java.vm,java/Controller.java.vm,java/BaseController.java.vm,java/DomainDTO.java.vm,java/DomainForm.java.vm,xml/Mapper.xml.vm,jsp/comment.jsp.vm,jsp/index.jsp.vm,jsp/input.jsp.vm,jsp/statistical.jsp.vm,jsp/view.jsp.vm
-  templates: java/Domain.java.vm,java/Mapper.java.vm,java/Service.java.vm,java/ServiceImpl.java.vm,java/Controller.java.vm,xml/Mapper.xml.vm,test/ControllerUnitTest.java.vm,test/ServiceUnitTest.java.vm,test/MapperUnitTest.java.vm,test/ApiTest.java.vm,sql/menu.sql.vm,js/api.js.vm,vue/index.vue.vm

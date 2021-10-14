@@ -31,6 +31,13 @@ public interface CodeTemplateService extends IService<CodeTemplate> {
     List<CodeTemplate> findCodeTemplates(CodeTemplate codeTemplate);
 
     /**
+     * 通过 projectKey 查询模板配置
+     * @param projectKey
+     * @return List<CodeTemplate>
+     */
+    List<CodeTemplate> findCodeTemplates(String projectKey);
+
+    /**
      * 通过id查询模板配置
      * @param id id
      * @return CodeTemplate

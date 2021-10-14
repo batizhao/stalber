@@ -1,7 +1,12 @@
 package me.batizhao.dp.service.impl;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.extra.template.Template;
+import cn.hutool.extra.template.TemplateConfig;
+import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.extra.template.TemplateUtil;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,16 +15,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.constant.GenConstants;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.common.exception.StalberException;
+import me.batizhao.common.exception.TaskException;
+import me.batizhao.dp.config.GenConfig;
 import me.batizhao.dp.domain.*;
 import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
+import me.batizhao.dp.service.CodeTemplateService;
 import me.batizhao.dp.service.FormService;
 import me.batizhao.dp.util.CodeGenUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,11 +37,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -51,6 +64,8 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     private CodeMetaService codeMetaService;
     @Autowired
     private FormService formService;
+    @Autowired
+    private CodeTemplateService codeTemplateService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -340,7 +355,7 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
         for (Long i : ids) {
-            CodeGenUtils.generateCode(prepareCodeMeta(i), zip);
+            generateCode(prepareCodeMeta(i), zip);
         }
 
         IoUtil.close(zip);
@@ -349,13 +364,13 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
 
     @Override
     public Boolean generateCode(Long id) {
-        CodeGenUtils.generateCode(prepareCodeMeta(id));
+        generateCode(prepareCodeMeta(id));
         return true;
     }
 
     @Override
     public Map<String, String> previewCode(Long id) {
-        return CodeGenUtils.previewCode(prepareCodeMeta(id));
+        return previewCode(prepareCodeMeta(id));
     }
 
     @Override
@@ -407,5 +422,114 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
 
         code.setRelationCode(codeMapper.selectList(Wrappers.<Code>query().lambda().eq(Code::getSubTableId, code.getId())));
         return code;
+    }
+
+    /**
+     * 预览代码
+     */
+    @SneakyThrows
+    private Map<String, String> previewCode(Code code) {
+        Map<String, Object> map = CodeGenUtils.prepareContext(code);
+        TemplateEngine engine = TemplateUtil.createEngine();
+
+        Map<String, String> dataMap = new LinkedHashMap<>();
+        // 获取模板列表
+        for (CodeTemplate template : codeTemplateService.findCodeTemplates(GenConfig.getProjectKey())) {
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(template.getContent());
+            tpl.render(map, sw);
+            dataMap.put(template.getName(), sw.toString());
+        }
+        return dataMap;
+    }
+
+    /**
+     * 生成代码然后下载
+     */
+    @SneakyThrows
+    private void generateCode(Code code, ZipOutputStream zip) {
+        // 封装模板数据
+        Map<String, Object> map = CodeGenUtils.prepareContext(code);
+
+        TemplateEngine engine = TemplateUtil.createEngine();
+
+        // 获取模板列表
+        for (CodeTemplate template : codeTemplateService.findCodeTemplates(GenConfig.getProjectKey())) {
+            // 如果测试用例关闭，有可能返回null
+            if (CodeGenUtils.getFileName(code, template.getName()) == null) continue;
+
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(template.getContent());
+            tpl.render(map, sw);
+
+            // 添加到zip
+            zip.putNextEntry(new ZipEntry(Objects.requireNonNull(CodeGenUtils.getFileName(code, template.getName()))));
+            IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
+            IoUtil.close(sw);
+            zip.closeEntry();
+        }
+    }
+
+    /**
+     * 生成代码到路径
+     */
+    @SneakyThrows
+    private void generateCode(Code code) {
+        // 封装模板数据
+        Map<String, Object> map = CodeGenUtils.prepareContext(code);
+
+        TemplateEngine engine = TemplateUtil.createEngine();
+
+        // 获取模板列表
+        for (CodeTemplate template : codeTemplateService.findCodeTemplates(GenConfig.getProjectKey())) {
+            // 如果测试用例关闭，有可能返回null
+            if (CodeGenUtils.getFileName(code, template.getName()) == null) continue;
+
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(template.getContent());
+            tpl.render(map, sw);
+            try {
+                String path = getGenPath(code, template.getName());
+                if (StringUtils.containsAny(template.getName(), "api.js", "index.vue", "index-tree.vue")) {
+                    path = getGenFrontPath(code, template.getName());
+                }
+                FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
+            } catch (IOException e) {
+                throw new StalberException("渲染模板失败，表名：" + code.getTableName());
+            }
+        }
+    }
+
+    /**
+     * 获取代码生成地址
+     *
+     * @param code
+     * @param template
+     * @return 生成地址
+     */
+    private String getGenPath(Code code, String template) {
+        String genPath = code.getPath();
+        if (StringUtils.equals(genPath, "/")) {
+            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(code, template);
+        }
+        return genPath + File.separator + CodeGenUtils.getFileName(code, template);
+    }
+
+    /**
+     * 获取前端代码生成地址
+     *
+     * @param code
+     * @param template
+     * @return 生成地址
+     */
+    private String getGenFrontPath(Code code, String template) {
+        String genPath = code.getFrontPath();
+        if (StringUtils.equals(genPath, "/")) {
+            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(code, template);
+        }
+        return genPath + File.separator + CodeGenUtils.getFileName(code, template);
     }
 }

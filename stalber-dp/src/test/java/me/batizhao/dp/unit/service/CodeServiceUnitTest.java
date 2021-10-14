@@ -11,6 +11,7 @@ import me.batizhao.dp.domain.Form;
 import me.batizhao.dp.mapper.CodeMapper;
 import me.batizhao.dp.service.CodeMetaService;
 import me.batizhao.dp.service.CodeService;
+import me.batizhao.dp.service.CodeTemplateService;
 import me.batizhao.dp.service.FormService;
 import me.batizhao.dp.service.impl.CodeMetaServiceImpl;
 import me.batizhao.dp.service.impl.CodeServiceImpl;
@@ -57,6 +58,8 @@ public class CodeServiceUnitTest extends BaseServiceUnitTest {
     private CodeMetaService codeMetaService;
     @MockBean
     private FormService formService;
+    @MockBean
+    private CodeTemplateService codeTemplateService;
     @MockBean
     private ObjectMapper objectMapper;
 

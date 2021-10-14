@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 @PropertySource(value = { "classpath:generator.yml" })
 public class GenConfig
 {
-    /** 作者 */
+    /**
+     * 作者
+     */
     public static String author;
 
     /**
@@ -23,7 +25,9 @@ public class GenConfig
      */
     public static String projectKey;
 
-    /** 生成包路径 */
+    /**
+     * 生成包路径
+     */
     public static String packageName;
 
     /**
@@ -40,9 +44,6 @@ public class GenConfig
      * 默认mapper包名
      */
     public static String mapperPackageName;
-
-    /** 表前缀(类名不会包含表前缀) */
-    public static String templates;
 
     public static String getAuthor()
     {
@@ -102,13 +103,4 @@ public class GenConfig
         GenConfig.moduleName = moduleName;
     }
 
-    public static String getTemplates()
-    {
-        return templates;
-    }
-
-    @Value("${templates}")
-    public void setTemplates(String templates) {
-        GenConfig.templates = templates;
-    }
 }

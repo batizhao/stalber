@@ -85,9 +85,6 @@ logging:
       web: debug
       security: debug
     me.batizhao: debug
-    org:
-      apache:
-        velocity: debug
 
 ---
 
