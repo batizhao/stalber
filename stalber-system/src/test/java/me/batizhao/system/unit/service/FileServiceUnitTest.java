@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.exception.StorageException;
 import me.batizhao.common.util.FileNameAndPathUtils;
-import me.batizhao.system.config.FileUploadProperties;
+import me.batizhao.common.config.FileProperties;
 import me.batizhao.system.domain.File;
 import me.batizhao.system.mapper.FileMapper;
 import me.batizhao.system.service.FileService;
@@ -40,14 +40,14 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
      * Spring Boot 提供了 @TestConfiguration 注释，可用于 src/test/java 中的类，以指示不应通过扫描获取它们。
      */
     @TestConfiguration
-    @EnableConfigurationProperties(value = FileUploadProperties.class)
+    @EnableConfigurationProperties(value = FileProperties.class)
     static class TestContextConfiguration {
         @Autowired
-        FileUploadProperties fileUploadProperties;
+        FileProperties fileProperties;
 
         @Bean
         public FileService fileService() {
-            return new FileServiceImpl(fileUploadProperties);
+            return new FileServiceImpl(fileProperties);
         }
     }
 

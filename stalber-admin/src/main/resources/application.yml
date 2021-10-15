@@ -18,8 +18,9 @@ pecado:
       name: batizhao
       email: zhaobati@gmail.com
       url: https://batizhao.github.io
-  upload:
-    location: /Users/batizhao/Documents/upload-dir
+  file:
+    upload-location: /Users/batizhao/Documents/upload-dir
+    code-template-location: /Users/batizhao/Documents/templates/pecado
   captcha:
     enabled: true
     type: math

@@ -17,10 +17,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.config.FileProperties;
 import me.batizhao.common.constant.GenConstants;
 import me.batizhao.common.exception.NotFoundException;
 import me.batizhao.common.exception.StalberException;
-import me.batizhao.common.exception.TaskException;
+import me.batizhao.common.util.FolderUtil;
 import me.batizhao.dp.config.GenConfig;
 import me.batizhao.dp.domain.*;
 import me.batizhao.dp.mapper.CodeMapper;
@@ -41,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,6 +70,8 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     private CodeTemplateService codeTemplateService;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
     public IPage<Code> findCodes(Page<Code> page, Code code) {
@@ -430,16 +434,18 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     @SneakyThrows
     private Map<String, String> previewCode(Code code) {
         Map<String, Object> map = CodeGenUtils.prepareContext(code);
-        TemplateEngine engine = TemplateUtil.createEngine();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(fileProperties.getCodeTemplateLocation(), TemplateConfig.ResourceMode.FILE));
 
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 获取模板列表
-        for (CodeTemplate template : codeTemplateService.findCodeTemplates(GenConfig.getProjectKey())) {
+        for (Path path : FolderUtil.build(fileProperties.getCodeTemplateLocation())) {
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = engine.getTemplate(template.getContent());
+            File file = path.toFile();
+            Template tpl = engine.getTemplate(file.getPath().replace(fileProperties.getCodeTemplateLocation(), ""));
             tpl.render(map, sw);
-            dataMap.put(template.getName(), sw.toString());
+            String filename = file.getName();
+            dataMap.put(filename.substring(0, filename.lastIndexOf(".")), sw.toString());
         }
         return dataMap;
     }

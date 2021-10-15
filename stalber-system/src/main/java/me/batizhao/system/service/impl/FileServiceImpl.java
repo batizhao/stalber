@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.exception.StorageException;
 import me.batizhao.common.util.FileNameAndPathUtils;
-import me.batizhao.system.config.FileUploadProperties;
+import me.batizhao.common.config.FileProperties;
 import me.batizhao.system.domain.File;
 import me.batizhao.system.mapper.FileMapper;
 import me.batizhao.system.service.FileService;
@@ -35,8 +35,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     private final Path rootLocation;
 
     @Autowired
-    public FileServiceImpl(FileUploadProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
+    public FileServiceImpl(FileProperties properties) {
+        this.rootLocation = Paths.get(properties.getUploadLocation());
     }
 
     @Override
