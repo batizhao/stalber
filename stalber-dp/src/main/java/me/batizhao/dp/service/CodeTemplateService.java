@@ -1,8 +1,7 @@
 package me.batizhao.dp.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import me.batizhao.common.domain.FolderTree;
 import me.batizhao.dp.domain.CodeTemplate;
 
 import java.util.List;
@@ -17,18 +16,17 @@ public interface CodeTemplateService extends IService<CodeTemplate> {
 
     /**
      * 分页查询模板配置
-     * @param page 分页对象
      * @param codeTemplate 模板配置
      * @return IPage<CodeTemplate>
      */
-    IPage<CodeTemplate> findCodeTemplates(Page<CodeTemplate> page, CodeTemplate codeTemplate);
+    List<FolderTree> findCodeTemplateTree(CodeTemplate codeTemplate);
 
-    /**
-     * 查询模板配置
-     * @param codeTemplate
-     * @return List<CodeTemplate>
-     */
-    List<CodeTemplate> findCodeTemplates(CodeTemplate codeTemplate);
+//    /**
+//     * 查询模板配置
+//     * @param codeTemplate
+//     * @return List<CodeTemplate>
+//     */
+//    List<CodeTemplate> findCodeTemplates(CodeTemplate codeTemplate);
 
     /**
      * 通过 projectKey 查询模板配置
@@ -39,10 +37,10 @@ public interface CodeTemplateService extends IService<CodeTemplate> {
 
     /**
      * 通过id查询模板配置
-     * @param id id
-     * @return CodeTemplate
+     * @param path path
+     * @return String
      */
-    CodeTemplate findById(Long id);
+    String findByPath(String path);
 
     /**
      * 添加或编辑模板配置

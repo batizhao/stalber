@@ -36,7 +36,7 @@ public class FolderUtil {
      * @param parentFolder
      * @return
      */
-    public FolderTree build(FolderTree parentFolder) {
+    public List<FolderTree> build(FolderTree parentFolder) {
         File node = new File(parentFolder.getLabel());
         if (node.isDirectory()) {
             File[] subNote = node.listFiles();
@@ -53,7 +53,21 @@ public class FolderUtil {
                 }
             }
         }
+        return parentFolder.getChildren();
+    }
 
-        return parentFolder;
+    /**
+     * 处理路径
+     * @param folderTrees
+     * @return
+     */
+    public List<FolderTree> build(List<FolderTree> folderTrees) {
+        for (FolderTree ft : folderTrees) {
+            ft.setLabel(ft.getLabel().substring(ft.getLabel().lastIndexOf("/") + 1));
+            if (!ft.isLeaf()) {
+                build(ft.getChildren());
+            }
+        }
+        return folderTrees;
     }
 }

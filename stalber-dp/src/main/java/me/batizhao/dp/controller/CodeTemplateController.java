@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.domain.FolderTree;
 import me.batizhao.common.util.R;
 import me.batizhao.dp.domain.CodeTemplate;
 import me.batizhao.dp.service.CodeTemplateService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -39,39 +41,38 @@ public class CodeTemplateController {
 
     /**
      * 分页查询模板配置
-     * @param page 分页对象
      * @param codeTemplate 模板配置
      * @return R
-     * @real_return R<Page<CodeTemplate>>
+     * @real_return R<List<FolderTree>>
      */
     @ApiOperation(value = "分页查询模板配置")
     @GetMapping("/code/templates")
     @PreAuthorize("@pms.hasPermission('dp:codeTemplate:admin')")
-    public R<IPage<CodeTemplate>> handleCodeTemplates(Page<CodeTemplate> page, CodeTemplate codeTemplate) {
-        return R.ok(codeTemplateService.findCodeTemplates(page, codeTemplate));
+    public R<List<FolderTree>> handleCodeTemplates(CodeTemplate codeTemplate) {
+        return R.ok(codeTemplateService.findCodeTemplateTree(codeTemplate));
     }
 
-    /**
-     * 查询模板配置
-     * @return R<List<CodeTemplate>>
-     */
-    @ApiOperation(value = "查询模板配置")
-    @GetMapping("/code/template")
-    @PreAuthorize("@pms.hasPermission('dp:codeTemplate:admin')")
-    public R<List<CodeTemplate>> handleCodeTemplates(CodeTemplate codeTemplate) {
-        return R.ok(codeTemplateService.findCodeTemplates(codeTemplate));
-    }
+//    /**
+//     * 查询模板配置
+//     * @return R<List<CodeTemplate>>
+//     */
+//    @ApiOperation(value = "查询模板配置")
+//    @GetMapping("/code/template")
+//    @PreAuthorize("@pms.hasPermission('dp:codeTemplate:admin')")
+//    public R<List<CodeTemplate>> handleCodeTemplates(CodeTemplate codeTemplate) {
+//        return R.ok(codeTemplateService.findCodeTemplates(codeTemplate));
+//    }
 
     /**
      * 通过id查询模板配置
-     * @param id id
+     * @param path 路径
      * @return R
      */
     @ApiOperation(value = "通过id查询模板配置")
-    @GetMapping("/code/template/{id}")
+    @GetMapping("/code/template")
     @PreAuthorize("@pms.hasPermission('dp:codeTemplate:admin')")
-    public R<CodeTemplate> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
-        return R.ok(codeTemplateService.findById(id));
+    public R<String> handlePath(@ApiParam(value = "path" , required = true) @RequestParam @Size(min = 1) String path) {
+        return R.ok(codeTemplateService.findByPath(path));
     }
 
     /**

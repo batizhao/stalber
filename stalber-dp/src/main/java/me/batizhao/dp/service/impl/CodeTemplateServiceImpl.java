@@ -1,12 +1,13 @@
 package me.batizhao.dp.service.impl;
 
+import cn.hutool.core.io.file.FileReader;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.config.FileProperties;
+import me.batizhao.common.domain.FolderTree;
+import me.batizhao.common.util.FolderUtil;
 import me.batizhao.dp.domain.CodeTemplate;
 import me.batizhao.dp.mapper.CodeTemplateMapper;
 import me.batizhao.dp.service.CodeTemplateService;
@@ -29,9 +30,11 @@ public class CodeTemplateServiceImpl extends ServiceImpl<CodeTemplateMapper, Cod
 
     @Autowired
     private CodeTemplateMapper codeTemplateMapper;
+    @Autowired
+    private FileProperties fileProperties;
 
     @Override
-    public IPage<CodeTemplate> findCodeTemplates(Page<CodeTemplate> page, CodeTemplate codeTemplate) {
+    public List<FolderTree> findCodeTemplateTree(CodeTemplate codeTemplate) {
         LambdaQueryWrapper<CodeTemplate> wrapper = Wrappers.lambdaQuery();
         if (StringUtils.isNotBlank(codeTemplate.getProjectKey())) {
             wrapper.like(CodeTemplate::getProjectKey, codeTemplate.getProjectKey());
@@ -39,20 +42,22 @@ public class CodeTemplateServiceImpl extends ServiceImpl<CodeTemplateMapper, Cod
         if (StringUtils.isNotBlank(codeTemplate.getName())) {
             wrapper.like(CodeTemplate::getName, codeTemplate.getName());
         }
-        return codeTemplateMapper.selectPage(page, wrapper);
+
+        List<FolderTree> folderTree = FolderUtil.build(new FolderTree(fileProperties.getCodeTemplateLocation()));
+        return FolderUtil.build(folderTree);
     }
 
-    @Override
-    public List<CodeTemplate> findCodeTemplates(CodeTemplate codeTemplate) {
-        LambdaQueryWrapper<CodeTemplate> wrapper = Wrappers.lambdaQuery();
-        if (StringUtils.isNotBlank(codeTemplate.getProjectKey())) {
-            wrapper.like(CodeTemplate::getProjectKey, codeTemplate.getProjectKey());
-        }
-        if (StringUtils.isNotBlank(codeTemplate.getName())) {
-            wrapper.like(CodeTemplate::getName, codeTemplate.getName());
-        }
-        return codeTemplateMapper.selectList(wrapper);
-    }
+//    @Override
+//    public List<CodeTemplate> findCodeTemplates(CodeTemplate codeTemplate) {
+//        LambdaQueryWrapper<CodeTemplate> wrapper = Wrappers.lambdaQuery();
+//        if (StringUtils.isNotBlank(codeTemplate.getProjectKey())) {
+//            wrapper.like(CodeTemplate::getProjectKey, codeTemplate.getProjectKey());
+//        }
+//        if (StringUtils.isNotBlank(codeTemplate.getName())) {
+//            wrapper.like(CodeTemplate::getName, codeTemplate.getName());
+//        }
+//        return codeTemplateMapper.selectList(wrapper);
+//    }
 
     @Override
     public List<CodeTemplate> findCodeTemplates(String projectKey) {
@@ -65,14 +70,9 @@ public class CodeTemplateServiceImpl extends ServiceImpl<CodeTemplateMapper, Cod
     }
 
     @Override
-    public CodeTemplate findById(Long id) {
-        CodeTemplate codeTemplate = codeTemplateMapper.selectById(id);
-
-        if(codeTemplate == null) {
-            throw new NotFoundException(String.format("Record not found '%s'。", id));
-        }
-
-        return codeTemplate;
+    public String findByPath(String path) {
+        FileReader fileReader = new FileReader(path);
+        return fileReader.readString();
     }
 
     @Override

@@ -14,13 +14,16 @@ public class FolderTree {
 
     private String label;
 
+    private String path;
+
     private boolean isLeaf;
 
     private List<FolderTree> children;
 
-    public FolderTree(String name) {
+    public FolderTree(String path) {
         children = new ArrayList<>();
-        this.label = name;
+        this.label = path;
+        this.path = path;
     }
 
     public void addFile(FolderTree file) {
