@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.config.FileProperties;
 import me.batizhao.dp.domain.Code;
 import me.batizhao.dp.domain.CodeMeta;
 import me.batizhao.dp.domain.Form;
@@ -62,6 +63,8 @@ public class CodeServiceUnitTest extends BaseServiceUnitTest {
     private CodeTemplateService codeTemplateService;
     @MockBean
     private ObjectMapper objectMapper;
+    @MockBean
+    private FileProperties fileProperties;
 
     @Autowired
     private CodeService codeService;
