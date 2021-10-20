@@ -108,7 +108,7 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
 
             log.info("resource: {}", resource);
 
-            assertThat(resource.getURL().toString(), equalTo("file:/tmp/39/ef/56d4728df6cc291449b01f5053bddbad.txt"));
+            assertThat(resource.getURL().toString(), equalTo("file:/tmp/upload/39/ef/56d4728df6cc291449b01f5053bddbad.txt"));
         }
     }
 
