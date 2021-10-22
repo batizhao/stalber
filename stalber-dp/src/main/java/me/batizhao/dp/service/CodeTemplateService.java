@@ -3,6 +3,7 @@ package me.batizhao.dp.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.common.domain.FolderTree;
 import me.batizhao.dp.domain.CodeTemplate;
+import me.batizhao.dp.domain.CodeTemplateDTO;
 
 import java.util.List;
 
@@ -15,25 +16,10 @@ import java.util.List;
 public interface CodeTemplateService extends IService<CodeTemplate> {
 
     /**
-     * 分页查询模板配置
-     * @param codeTemplate 模板配置
-     * @return IPage<CodeTemplate>
+     * 查询模板配置
+     * @return List<FolderTree>
      */
-    List<FolderTree> findCodeTemplateTree(CodeTemplate codeTemplate);
-
-//    /**
-//     * 查询模板配置
-//     * @param codeTemplate
-//     * @return List<CodeTemplate>
-//     */
-//    List<CodeTemplate> findCodeTemplates(CodeTemplate codeTemplate);
-
-    /**
-     * 通过 projectKey 查询模板配置
-     * @param projectKey
-     * @return List<CodeTemplate>
-     */
-    List<CodeTemplate> findCodeTemplates(String projectKey);
+    List<FolderTree> findCodeTemplateTree();
 
     /**
      * 通过id查询模板配置
@@ -44,16 +30,9 @@ public interface CodeTemplateService extends IService<CodeTemplate> {
 
     /**
      * 添加或编辑模板配置
-     * @param codeTemplate 模板配置
-     * @return CodeTemplate
+     * @param codeTemplateDTO 代码
+     * @return boolean
      */
-    CodeTemplate saveOrUpdateCodeTemplate(CodeTemplate codeTemplate);
-
-    /**
-     * 更新模板配置状态
-     * @param codeTemplate 模板配置
-     * @return Boolean
-     */
-    Boolean updateStatus(CodeTemplate codeTemplate);
+    boolean saveOrUpdateCodeTemplate(CodeTemplateDTO codeTemplateDTO);
 
 }

@@ -27,6 +27,7 @@
   > * spring.datasource
   > * spring.redis
   > * client.terrace
+  > * pecado.file.code-template-location 指向根目录下 templates/pecado 的位置
   >
   > 如果要跑单元测试，还有注意 test 下边的这两个配置
   >
@@ -43,6 +44,16 @@
 - dp\ims\system\commons\admin 五个模块尽量不要修改，方便后续升级。新的业务功能增加新的模块就好了。
 - 避免使用 dp\ims\system\commons\admin 命名空间
 - oa 模块是整合流程平台的示例
+
+## 开发平台
+
+### 模板管理
+
+遵循以下规范：
+
+* 在 pecado.file.code-template-location 指定模板根目录（可以是任意路径）；
+* common、commons 为保留目录，把需要 parse 或者 include 的文件放在这里，不会出现在生成代码清单中。
+* 模板文件命名规范为  aaa.bbb.ccc，第一部分描述功能（Controller、Service），bbb 为代码文件类型（java、xml、js、vue），ccc 必须使用 `vm`。
 
 ## 数据库版本管理
 

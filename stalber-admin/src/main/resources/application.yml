@@ -20,7 +20,7 @@ pecado:
       url: https://batizhao.github.io
   file:
     upload-location: /Users/batizhao/Documents/upload-dir
-    code-template-location: /Users/batizhao/Documents/templates/pecado
+    code-template-location: /Users/batizhao/Documents/workspace/stalber/templates/pecado
   captcha:
     enabled: true
     type: math

@@ -439,10 +439,24 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 获取模板列表
         for (Path path : FolderUtil.build(fileProperties.getCodeTemplateLocation())) {
+            if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
+
+            File file = path.toFile();
+            String filePath = file.getPath().replace(fileProperties.getCodeTemplateLocation(), "");
+
+            if (code.getTemplate().equals(GenConstants.TPL_TREE)) {
+                if (filePath.contains("index.vue")) {
+                    continue;
+                }
+            } else {
+                if (filePath.contains("index-tree.vue")) {
+                    continue;
+                }
+            }
+
             // 渲染模板
             StringWriter sw = new StringWriter();
-            File file = path.toFile();
-            Template tpl = engine.getTemplate(file.getPath().replace(fileProperties.getCodeTemplateLocation(), ""));
+            Template tpl = engine.getTemplate(filePath);
             tpl.render(map, sw);
             String filename = file.getName();
             dataMap.put(filename.substring(0, filename.lastIndexOf(".")), sw.toString());
@@ -458,20 +472,24 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         // 封装模板数据
         Map<String, Object> map = CodeGenUtils.prepareContext(code);
 
-        TemplateEngine engine = TemplateUtil.createEngine();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(fileProperties.getCodeTemplateLocation(), TemplateConfig.ResourceMode.FILE));
 
         // 获取模板列表
-        for (CodeTemplate template : codeTemplateService.findCodeTemplates(GenConfig.getProjectKey())) {
-            // 如果测试用例关闭，有可能返回null
-            if (CodeGenUtils.getFileName(code, template.getName()) == null) continue;
+        for (Path path : FolderUtil.build(fileProperties.getCodeTemplateLocation())) {
+            if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
+
+            File file = path.toFile();
+            String filePath = file.getPath().replace(fileProperties.getCodeTemplateLocation(), "");
+            if (CodeGenUtils.getFileName(code, filePath) == null) continue;
 
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = engine.getTemplate(template.getContent());
+            Template tpl = engine.getTemplate(filePath);
             tpl.render(map, sw);
 
             // 添加到zip
-            zip.putNextEntry(new ZipEntry(Objects.requireNonNull(CodeGenUtils.getFileName(code, template.getName()))));
+//            zip.putNextEntry(new ZipEntry(filePath.substring(0, filePath.lastIndexOf("."))));
+            zip.putNextEntry(new ZipEntry(Objects.requireNonNull(CodeGenUtils.getFileName(code, filePath))));
             IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
             IoUtil.close(sw);
             zip.closeEntry();
@@ -486,23 +504,27 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
         // 封装模板数据
         Map<String, Object> map = CodeGenUtils.prepareContext(code);
 
-        TemplateEngine engine = TemplateUtil.createEngine();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(fileProperties.getCodeTemplateLocation(), TemplateConfig.ResourceMode.FILE));
 
         // 获取模板列表
-        for (CodeTemplate template : codeTemplateService.findCodeTemplates(GenConfig.getProjectKey())) {
-            // 如果测试用例关闭，有可能返回null
-            if (CodeGenUtils.getFileName(code, template.getName()) == null) continue;
+        for (Path path : FolderUtil.build(fileProperties.getCodeTemplateLocation())) {
+            if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
+
+            File file = path.toFile();
+            String filePath = file.getPath().replace(fileProperties.getCodeTemplateLocation(), "");
+            if (CodeGenUtils.getFileName(code, filePath) == null) continue;
 
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = engine.getTemplate(template.getContent());
+            Template tpl = engine.getTemplate(filePath);
             tpl.render(map, sw);
+            filePath = filePath.substring(0, filePath.lastIndexOf("."));
             try {
-                String path = getGenPath(code, template.getName());
-                if (StringUtils.containsAny(template.getName(), "api.js", "index.vue", "index-tree.vue")) {
-                    path = getGenFrontPath(code, template.getName());
+                String genPath = getGenPath(code, filePath);
+                if (StringUtils.containsAny(filePath, ".js", ".vue")) {
+                    genPath = getGenFrontPath(code, filePath);
                 }
-                FileUtils.writeStringToFile(new File(path), sw.toString(), CharsetUtil.UTF_8);
+                FileUtils.writeStringToFile(new File(genPath), sw.toString(), CharsetUtil.UTF_8);
             } catch (IOException e) {
                 throw new StalberException("渲染模板失败，表名：" + code.getTableName());
             }
@@ -513,29 +535,29 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
      * 获取代码生成地址
      *
      * @param code
-     * @param template
+     * @param filePath
      * @return 生成地址
      */
-    private String getGenPath(Code code, String template) {
+    private String getGenPath(Code code, String filePath) {
         String genPath = code.getPath();
         if (StringUtils.equals(genPath, "/")) {
-            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(code, template);
+            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(code, filePath);
         }
-        return genPath + File.separator + CodeGenUtils.getFileName(code, template);
+        return genPath + File.separator + CodeGenUtils.getFileName(code, filePath);
     }
 
     /**
      * 获取前端代码生成地址
      *
      * @param code
-     * @param template
+     * @param filePath
      * @return 生成地址
      */
-    private String getGenFrontPath(Code code, String template) {
+    private String getGenFrontPath(Code code, String filePath) {
         String genPath = code.getFrontPath();
         if (StringUtils.equals(genPath, "/")) {
-            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(code, template);
+            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(code, filePath);
         }
-        return genPath + File.separator + CodeGenUtils.getFileName(code, template);
+        return genPath + File.separator + CodeGenUtils.getFileName(code, filePath);
     }
 }

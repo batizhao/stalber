@@ -262,25 +262,6 @@ public class CodeGenUtils {
         }
     }
 
-    /**
-     * 配置
-     *
-     * @return
-     */
-//    private List<String> getTemplates(String template) {
-//        List<String> templates = new ArrayList<>();
-//        if (StringUtils.isNotBlank(GenConfig.getTemplates())) {
-//            templates = Arrays.asList(GenConfig.getTemplates().split(","));
-//            templates = new ArrayList<>(templates);
-//        }
-//
-//		if (template.equals(GenConstants.TPL_TREE)) {
-//            templates.add("vue/index-tree.vue.vm");
-//            templates.remove("vue/index.vue.vm");
-//        }
-//        return templates;
-//    }
-
     public static Map<String, Object> prepareContext(Code code) {
         Map<String, Object> map = new HashMap<>(21);
         map.put("tableName", code.getTableName());
@@ -369,7 +350,7 @@ public class CodeGenUtils {
         }
 
         if (template.contains(MENU_SQL_VM)) {
-            return code.getClassName().toLowerCase() + "_menu.sql";
+            return "db" + File.separator + code.getClassName().toLowerCase() + "_menu.sql";
         }
 
         if (code.getTestcase().equals("yes")) {
