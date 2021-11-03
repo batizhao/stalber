@@ -27,6 +27,11 @@
         </dependency>
 
         <dependency>
+            <groupId>me.batizhao</groupId>
+            <artifactId>spring-boot-starter-oss</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>

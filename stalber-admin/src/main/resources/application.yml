@@ -18,9 +18,17 @@ pecado:
       name: batizhao
       email: zhaobati@gmail.com
       url: https://batizhao.github.io
-  file:
-    upload-location: /Users/batizhao/Documents/upload-dir
-    code-template-location: /Users/batizhao/Documents/workspace/stalber/templates/pecado
+  storage:
+    # das or minio
+    location: das
+    url: /Users/batizhao/Documents/upload-dir
+#    location: minio
+#    url: http://172.31.21.208:9000
+#    bucket: stalber
+#    access-key: minio
+#    secret-key: minio123
+  code:
+    template-url: /Users/batizhao/Documents/workspace/stalber/templates/pecado
   captcha:
     enabled: true
     type: math
