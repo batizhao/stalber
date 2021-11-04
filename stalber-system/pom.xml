@@ -30,6 +30,10 @@
             <groupId>me.batizhao</groupId>
             <artifactId>spring-boot-starter-oss</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>

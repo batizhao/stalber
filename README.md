@@ -37,6 +37,7 @@
 
   > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。
   >
+  > ```curl -X POST -d '{"username":"admin","password":"123456"}' -H "Content-type: application/json" http://localhost:8888/uaa/token```
 
 
 ## 建议
