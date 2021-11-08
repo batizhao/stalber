@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>me.batizhao</groupId>
-            <artifactId>terrace-sdk-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-terrace</artifactId>
         </dependency>
 
         <dependency>

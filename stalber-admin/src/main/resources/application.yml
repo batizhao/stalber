@@ -20,20 +20,15 @@ pecado:
       url: https://batizhao.github.io
   storage:
     # das or minio
-#    location: das
-#    url: /Users/batizhao/Documents/upload-dir
-    location: minio
-    url: http://172.31.21.208:9000
-    bucket: stalber
-    access-key: minio
-    secret-key: minio123
+    location: das
+    url: /Users/batizhao/Documents/upload-dir
+#    location: minio
+#    url: http://172.31.21.208:9000
+#    bucket: stalber
+#    access-key: minio
+#    secret-key: minio123
   code:
     template-url: /Users/batizhao/Documents/workspace/stalber/templates/pecado
-  captcha:
-    enabled: true
-    type: math
-
-client:
   terrace:
     enabled: true
     client-id: jsoa
@@ -41,8 +36,11 @@ client:
     key-token: "terrace:token:data"
     key-expire: "terrace:token:expire"
     url: http://172.31.21.208:8886/terrace/
-    # local or redis
-    token-store-location: local
+    # memory or redis
+    token-store-location: memory
+  captcha:
+    enabled: true
+    type: math
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*Mapper.xml

@@ -47,7 +47,7 @@
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<dynamic-datasource.version>3.4.1</dynamic-datasource.version>
 		<feign.version>11.2</feign.version>
-		<hutool.version>5.7.9</hutool.version>
+		<hutool.version>5.7.15</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
 		<liquibase.version>4.4.3</liquibase.version>
@@ -77,8 +77,8 @@
 
 			<dependency>
 				<groupId>me.batizhao</groupId>
-				<artifactId>terrace-sdk-boot-starter</artifactId>
-				<version>1.1.2-SNAPSHOT</version>
+				<artifactId>spring-boot-starter-terrace</artifactId>
+				<version>1.1.2</version>
 			</dependency>
 
 			<dependency>

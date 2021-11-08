@@ -23,11 +23,11 @@
 
   > 启动之前要修改的配置
   >
-  > * pecado.upload.location
   > * spring.datasource
   > * spring.redis
-  > * client.terrace
-  > * pecado.file.code-template-location 指向根目录下 templates/pecado 的位置
+  > * pecado.terrace
+  > * pecado.code.template-url
+  > * pecado.storage.url
   >
   > 如果要跑单元测试，还有注意 test 下边的这两个配置
   >
