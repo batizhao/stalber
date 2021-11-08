@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -430,15 +431,16 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     @SneakyThrows
     private Map<String, String> previewCode(Code code) {
         Map<String, Object> map = CodeGenUtils.prepareContext(code);
-        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(codeProperties.getTemplateUrl(), TemplateConfig.ResourceMode.FILE));
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(templatePath, TemplateConfig.ResourceMode.FILE));
 
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 获取模板列表
-        for (Path path : FolderUtil.build(codeProperties.getTemplateUrl())) {
+        for (Path path : FolderUtil.build(templatePath)) {
             if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
 
             File file = path.toFile();
-            String filePath = file.getPath().replace(codeProperties.getTemplateUrl(), "");
+            String filePath = file.getPath().replace(templatePath, "");
 
             if (code.getTemplate().equals(GenConstants.TPL_TREE)) {
                 if (filePath.contains("index.vue")) {
@@ -467,15 +469,15 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     private void generateCode(Code code, ZipOutputStream zip) {
         // 封装模板数据
         Map<String, Object> map = CodeGenUtils.prepareContext(code);
-
-        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(codeProperties.getTemplateUrl(), TemplateConfig.ResourceMode.FILE));
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(templatePath, TemplateConfig.ResourceMode.FILE));
 
         // 获取模板列表
-        for (Path path : FolderUtil.build(codeProperties.getTemplateUrl())) {
+        for (Path path : FolderUtil.build(templatePath)) {
             if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
 
             File file = path.toFile();
-            String filePath = file.getPath().replace(codeProperties.getTemplateUrl(), "");
+            String filePath = file.getPath().replace(templatePath, "");
             if (CodeGenUtils.getFileName(code, filePath) == null) continue;
 
             // 渲染模板
@@ -499,15 +501,15 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
     private void generateCode(Code code) {
         // 封装模板数据
         Map<String, Object> map = CodeGenUtils.prepareContext(code);
-
-        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(codeProperties.getTemplateUrl(), TemplateConfig.ResourceMode.FILE));
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(templatePath, TemplateConfig.ResourceMode.FILE));
 
         // 获取模板列表
-        for (Path path : FolderUtil.build(codeProperties.getTemplateUrl())) {
+        for (Path path : FolderUtil.build(templatePath)) {
             if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
 
             File file = path.toFile();
-            String filePath = file.getPath().replace(codeProperties.getTemplateUrl(), "");
+            String filePath = file.getPath().replace(templatePath, "");
             if (CodeGenUtils.getFileName(code, filePath) == null) continue;
 
             // 渲染模板

@@ -28,7 +28,7 @@ pecado:
 #    access-key: minio
 #    secret-key: minio123
   code:
-    template-url: /Users/batizhao/Documents/workspace/stalber/templates/pecado
+    template-url: templates/pecado
   terrace:
     enabled: true
     client-id: jsoa

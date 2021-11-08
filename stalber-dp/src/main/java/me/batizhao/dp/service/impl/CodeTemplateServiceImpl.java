@@ -13,6 +13,7 @@ import me.batizhao.dp.service.CodeTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -29,7 +30,8 @@ public class CodeTemplateServiceImpl extends ServiceImpl<CodeTemplateMapper, Cod
 
     @Override
     public List<FolderTree> findCodeTemplateTree() {
-        List<FolderTree> folderTree = FolderUtil.build(new FolderTree(codeProperties.getTemplateUrl()));
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        List<FolderTree> folderTree = FolderUtil.build(new FolderTree(templatePath));
         return FolderUtil.build(folderTree);
     }
 

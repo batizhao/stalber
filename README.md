@@ -25,9 +25,20 @@
   >
   > * spring.datasource
   > * spring.redis
-  > * pecado.terrace
-  > * pecado.code.template-url
-  > * pecado.storage.url
+  > * pecado.terrace 
+  >   * client-id 流程平台id
+  >   * client-secret 流程平台secret
+  >   * token-store-location 集群环境不要使用 memory，请使用 redis
+  > * pecado.code.template-url 相对路径
+  >   * 要保证在这个路径下，有代码生成模板
+  >   * 如果是开发环境，一般是相对于项目根目录
+  >   * 如果是普通 jar 启动，是你启动 java 命令的路径。
+  >   * 如果是 Docker 环境，默认的启动路径是 /application，所以要把 /application/templates/pecado 这个路径映射到存储实际放模板的路径上。
+  >
+  > * pecado.storage
+  >   * location 支持 das 和 minio，das 是本地路径，minio 是对象存储
+  >   * url 本地路径或者是对象存储的地址
+  >
   >
   > 如果要跑单元测试，还有注意 test 下边的这两个配置
   >
