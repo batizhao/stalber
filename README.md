@@ -19,31 +19,42 @@
 
 - 启动 Redis
 
+  > 如果开发环境不需要验证码，
+  >
+  > 可以不启动 redis（忽略 redis 错误），
+  >
+  > pecado.captcha.enabled 设置为 false，前端注释掉验证码输入框。
+
 - 运行 StalberAdminApplication
 
   > 启动之前要修改的配置
   >
   > * spring.datasource
-  > * spring.redis
+  >* spring.redis
   > * pecado.terrace 
-  >   * client-id 流程平台id
+  >  * client-id 流程平台id
   >   * client-secret 流程平台secret
   >   * token-store-location 集群环境不要使用 memory，请使用 redis
   > * pecado.code.template-url 相对路径
   >   * 要保证在这个路径下，有代码生成模板
-  >   * 如果是开发环境，一般是相对于项目根目录
-  >   * 如果是普通 jar 启动，是你启动 java 命令的路径。
-  >   * 如果是 Docker 环境，默认的启动路径是 /application，所以要把 /application/templates/pecado 这个路径映射到存储实际放模板的路径上。
-  >
+  >     * 如果是开发环境，一般是相对于项目根目录
+  >   * 如果是普通 jar 启动，是你启动 java 命令的路径
+  >   * 如果是 Docker 环境，默认的启动路径是 /application，所以要把 /application/templates/pecado 这个路径映射到存储实际放模板的路径上
   > * pecado.storage
-  >   * location 支持 das 和 minio，das 是本地路径，minio 是对象存储
-  >   * url 本地路径或者是对象存储的地址
-  >
-  >
-  > 如果要跑单元测试，还有注意 test 下边的这两个配置
-  >
-  > 如果开发环境不需要验证码，pecado.captcha.enabled: false，同时，前端注释掉验证码输入框。
-
+  >   * location 支持 das 和 minio，
+  >   * das 是本地路径，
+  >  * minio 是对象存储，
+  >   * url 本地路径或者是对象存储的地址。
+  > * pecado.captcha
+  >     * 默认是打开 true 状态，并且需要 redis 支持
+  >   * type 支持 char 和 math 两种模式，默认是 math
+  >     * 如果开发环境不需要验证码，pecado.captcha.enabled: false，同时，前端注释掉验证码输入框
+  > 
+  >   
+  > 
+  >   
+  >     如果要跑单元测试，还有注意 test 下边的 datasource 配置。
+  
 - Swagger 地址：http://localhost:8888/swagger-ui/
 
   > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。

@@ -30,11 +30,9 @@ public class FileNameAndPathUtils {
         String p1 = secondMD5.substring(0, 2);
         String p2 = secondMD5.substring(2, 4);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(p1)
-                .append("/").append(p2)
-                .append("/").append(hexFileName);
-        return sb.toString();
+        return p1 +
+                "/" + p2 +
+                "/" + hexFileName;
     }
 
 }
