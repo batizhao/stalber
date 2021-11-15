@@ -52,6 +52,12 @@ mybatis-plus:
     map-underscore-to-camel-case: false
 
 management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    minio:
+      enabled: true
   endpoints:
     web:
       exposure:
