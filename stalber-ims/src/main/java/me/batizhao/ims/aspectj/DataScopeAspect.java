@@ -102,11 +102,11 @@ public class DataScopeAspect {
                         " OR %s.departmentId IN ( SELECT departmentId FROM role_department WHERE roleId = %d ) ", deptAlias, role.getId()));
             } else if (DATA_SCOPE_DEPT.equals(dataScope)) {
                 sqlString.append(String.format(" OR %s.departmentId IN ( %s ) ", deptAlias,
-                        user.getDeptIds().stream().map(String::valueOf).collect(Collectors.joining(","))));
+                        user.getDeptIds().stream().collect(Collectors.joining(","))));
             } else if (DATA_SCOPE_DEPT_AND_CHILD.equals(dataScope)) {
                 sqlString.append(String.format(
                         " OR %s.departmentId IN ( SELECT d.id FROM department d LEFT JOIN department_relation dr ON d.id = dr.descendant WHERE dr.ancestor IN ( %s )) ",
-                        deptAlias, user.getDeptIds().stream().map(String::valueOf).collect(Collectors.joining(","))));
+                        deptAlias, user.getDeptIds().stream().collect(Collectors.joining(","))));
             } else if (DATA_SCOPE_SELF.equals(dataScope)) {
                 if (StringUtils.isNotBlank(userAlias)) {
                     sqlString.append(String.format(" OR %s.id = %d ", userAlias, user.getUserId()));

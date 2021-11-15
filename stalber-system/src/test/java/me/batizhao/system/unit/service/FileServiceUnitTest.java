@@ -1,10 +1,11 @@
 package me.batizhao.system.unit.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.exception.StorageException;
 import me.batizhao.common.util.FileNameAndPathUtils;
-import me.batizhao.system.config.FileUploadProperties;
+import me.batizhao.oss.api.StorageService;
 import me.batizhao.system.domain.File;
 import me.batizhao.system.mapper.FileMapper;
 import me.batizhao.system.service.FileService;
@@ -12,7 +13,6 @@ import me.batizhao.system.service.impl.FileServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -20,7 +20,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,25 +43,24 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
      * Spring Boot 提供了 @TestConfiguration 注释，可用于 src/test/java 中的类，以指示不应通过扫描获取它们。
      */
     @TestConfiguration
-    @EnableConfigurationProperties(value = FileUploadProperties.class)
     static class TestContextConfiguration {
-        @Autowired
-        FileUploadProperties fileUploadProperties;
-
         @Bean
         public FileService fileService() {
-            return new FileServiceImpl(fileUploadProperties);
+            return new FileServiceImpl();
         }
     }
 
     @MockBean
     private FileMapper fileMapper;
+    @MockBean
+    private StorageService storageService;
 
     @Autowired
     FileService fileService;
     @SpyBean
     private IService service;
 
+    @SneakyThrows
     @Test
     public void givenFile_whenUpload_thenSuccess() {
         MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "test.txt",
@@ -72,6 +74,8 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
             mockStatic.when(() -> {
                 FileNameAndPathUtils.pathEncode(anyString());
             }).thenReturn("39/ef/56d4728df6cc291449b01f5053bddbad.txt");
+
+            doNothing().when(storageService).upload(any(Path.class), any(InputStream.class));
 
             File result = fileService.upload(mockMultipartFile);
 
@@ -97,6 +101,7 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
         assertThat(exception.getMessage(), containsString("Failed to store empty file"));
     }
 
+    @SneakyThrows
     @Test
     public void givenFileName_whenLoadResource_thenSuccess() throws IOException {
         try (MockedStatic<FileNameAndPathUtils> mockStatic = mockStatic(FileNameAndPathUtils.class)) {
@@ -104,14 +109,18 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
                 FileNameAndPathUtils.pathEncode(anyString());
             }).thenReturn("39/ef/56d4728df6cc291449b01f5053bddbad.txt");
 
-            Resource resource = fileService.loadAsResource("xxx");
+            InputStream inputStream = new ByteArrayInputStream("test data".getBytes());
+            doReturn(inputStream).when(storageService).get(any(Path.class));
+
+            Resource resource = fileService.load("xxx");
 
             log.info("resource: {}", resource);
 
-            assertThat(resource.getURL().toString(), equalTo("file:/tmp/39/ef/56d4728df6cc291449b01f5053bddbad.txt"));
+            assertThat(resource.contentLength(), equalTo(9L));
         }
     }
 
+    @SneakyThrows
     @Test
     public void givenFileName_whenLoadResource_thenNotFound() {
         try (MockedStatic<FileNameAndPathUtils> mockStatic = mockStatic(FileNameAndPathUtils.class)) {
@@ -119,7 +128,9 @@ public class FileServiceUnitTest extends BaseServiceUnitTest {
                 FileNameAndPathUtils.pathEncode(any(String.class));
             }).thenReturn("xxx.txt");
 
-            assertThrows(StorageException.class, () -> fileService.loadAsResource("xxx"));
+            doReturn(null).when(storageService).get(any(Path.class));
+
+            assertThrows(IllegalArgumentException.class, () -> fileService.load("xxx"));
         }
     }
 

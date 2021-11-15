@@ -117,10 +117,16 @@ public class Code extends Model<Code> {
     private String type;
 
     /**
-     * 生成路径（不填默认项目路径）
+     * 后端代码路径（不填默认项目路径）
      */
-    @ApiModelProperty(value="生成路径（不填默认项目路径）")
+    @ApiModelProperty(value="后端代码路径（不填默认项目路径）")
     private String path;
+
+    /**
+     * 前端代码路径
+     */
+    @ApiModelProperty(value="前端代码路径")
+    private String frontPath;
 
     /**
      * 关联子表的code.id
@@ -151,6 +157,24 @@ public class Code extends Model<Code> {
      */
     @ApiModelProperty(value="修改时间")
     private LocalDateTime updateTime;
+
+    /**
+     * 整合工作流引擎
+     */
+    @ApiModelProperty(value="整合工作流引擎")
+    private String workflow;
+
+    /**
+     * 流程Key
+     */
+    @ApiModelProperty(value="流程Key")
+    private String workflowKey;
+
+    /**
+     * 生成测试用例
+     */
+    @ApiModelProperty(value="生成测试用例")
+    private String testcase;
 
     /**
      * 表元数据

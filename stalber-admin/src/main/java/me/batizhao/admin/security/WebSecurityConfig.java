@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests(authz -> authz
-                .antMatchers("/uaa/token", "/captcha",
+                .antMatchers("/uaa/token", "/uaa/captcha",
                         "/actuator/**",
                         "/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**",
                         "/system/file/image/**").permitAll()

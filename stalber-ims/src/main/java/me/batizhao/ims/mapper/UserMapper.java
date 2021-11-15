@@ -22,7 +22,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param type
      * @return
      */
-    List<User> selectLeadersByDepartmentId(@Param("id") Long id, @Param("type") String type);
+    List<User> selectLeadersByDepartmentId(@Param("id") Integer id, @Param("type") String type);
 
     /**
      * 查询用户

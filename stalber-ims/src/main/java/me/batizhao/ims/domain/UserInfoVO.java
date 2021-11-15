@@ -38,11 +38,11 @@ public class UserInfoVO implements Serializable {
 	 * @mock @pick([1,2,3])
 	 */
 	@ApiModelProperty(value = "角色ID串")
-	private List<Long> roleIds;
+	private List<String> roleIds;
 
 	/**
 	 * @mock @pick([1,2,3])
 	 */
 	@ApiModelProperty(value = "部门ID串")
-	private List<Integer> deptIds;
+	private List<String> deptIds;
 }

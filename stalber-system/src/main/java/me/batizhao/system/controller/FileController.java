@@ -58,7 +58,7 @@ public class FileController {
     @ApiOperation(value = "根据文件名显示图片")
     @GetMapping("/file/image/{name:^.+\\.(?:jpeg|jpg|png|JPEG|JPG|PNG)$}")
     public ResponseEntity<Resource> handleImageByName(@ApiParam(value = "图片名", required = true) @PathVariable("name") String name) {
-        Resource resource = fileService.loadAsResource(name);
+        Resource resource = fileService.load(name);
 
         java.io.File file = new java.io.File(name);
         String mimeType = URLConnection.guessContentTypeFromName(file.getName());

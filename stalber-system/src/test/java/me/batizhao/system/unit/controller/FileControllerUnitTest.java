@@ -69,20 +69,20 @@ public class FileControllerUnitTest extends BaseControllerUnitTest {
     @WithMockUser
     public void givenImageFileName_whenLoadResource_thenSuccess() throws Exception {
         Resource file = new ClassPathResource("test.jpg");
-        when(fileService.loadAsResource(anyString())).thenReturn(file);
+        when(fileService.load(anyString())).thenReturn(file);
 
         mvc.perform(get("/system/file/image/test.jpg"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG_VALUE));
 
-        verify(fileService).loadAsResource(anyString());
+        verify(fileService).load(anyString());
     }
 
     @Test
     @WithMockUser
     public void givenPngFileName_whenLoadResource_thenFail() throws Exception {
         Resource file = new ClassPathResource("test.png");
-        when(fileService.loadAsResource(anyString())).thenReturn(file);
+        when(fileService.load(anyString())).thenReturn(file);
 
         mvc.perform(get("/system/file/image/test.png"))
                 .andDo(print())
@@ -96,7 +96,7 @@ public class FileControllerUnitTest extends BaseControllerUnitTest {
     @WithMockUser
     public void givenTxtFileName_whenLoadResource_thenFail() throws Exception {
         Resource file = new ClassPathResource("test.txt");
-        when(fileService.loadAsResource(anyString())).thenReturn(file);
+        when(fileService.load(anyString())).thenReturn(file);
 
         mvc.perform(get("/system/file/image/test.txt"))
                 .andExpect(status().isNotFound());

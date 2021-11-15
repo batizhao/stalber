@@ -16,7 +16,6 @@ import me.batizhao.common.util.RedisUtil;
 import me.batizhao.ims.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,7 +41,6 @@ import java.util.stream.Collectors;
  * @date 2021/8/19
  */
 @Service
-@CacheConfig(cacheNames = "auth")
 public class AuthServiceImpl implements AuthService {
 
     @Resource

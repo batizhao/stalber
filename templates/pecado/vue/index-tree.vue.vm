@@ -1,0 +1,14 @@
+<template>
+  <div class="app-container">
+    #parse( "common/search-form.vue.vm" )
+
+    #parse( "common/toolbar-tree.vue.vm" )
+
+    #parse( "common/table-tree.vue.vm" )
+
+    #parse( "common/modal-form.vue.vm" )
+
+  </div>
+</template>
+
+#parse( "common/script.vue.vm" )

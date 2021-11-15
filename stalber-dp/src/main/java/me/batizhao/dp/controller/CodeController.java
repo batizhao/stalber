@@ -150,7 +150,6 @@ public class CodeController {
     @ApiOperation(value = "生成代码zip")
     @PostMapping(value = "/code/zip")
     @PreAuthorize("@pms.hasPermission('dp:code:gen')")
-    @SystemLog
     public void handleGenerateCode4Zip(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids, HttpServletResponse response) {
         byte[] data = codeService.downloadCode(ids);
         response.reset();
@@ -170,7 +169,6 @@ public class CodeController {
     @ApiOperation(value = "生成代码path")
     @PostMapping("/code/path/{id}")
     @PreAuthorize("@pms.hasPermission('dp:code:gen')")
-    @SystemLog
     public R<Boolean> handleGenerateCode4Path(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(codeService.generateCode(id));
     }

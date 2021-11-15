@@ -19,11 +19,15 @@
 		<result property="form" column="form"/>
 		<result property="type" column="type"/>
 		<result property="path" column="path"/>
+		<result property="frontPath" column="frontPath"/>
 		<result property="subTableId" column="subTableId"/>
 		<result property="subTableFkName" column="subTableFkName"/>
 		<result property="formKey" column="formKey"/>
 		<result property="createTime" column="createTime"/>
 		<result property="updateTime" column="updateTime"/>
+		<result property="workflow" column="workflow"/>
+		<result property="workflowKey" column="workflowKey"/>
+		<result property="testcase" column="testcase"/>
 	</resultMap>
 
 	<select id="selectTablePageByDs" resultMap="codeMap">

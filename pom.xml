@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>me.batizhao</groupId>
 	<artifactId>stalber</artifactId>
-	<version>1.0</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>stalber</name>
@@ -34,6 +33,13 @@
 		</snapshotRepository>
 	</distributionManagement>
 
+	<scm>
+		<url>scm:git:git@github.com:batizhao/stalber.git</url>
+		<connection>scm:git:git@github.com:batizhao/stalber.git</connection>
+		<developerConnection>scm:git:git@github.com:batizhao/stalber.git</developerConnection>
+		<tag>v1.1</tag>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -47,20 +53,22 @@
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<dynamic-datasource.version>3.4.1</dynamic-datasource.version>
 		<feign.version>11.2</feign.version>
-		<hutool.version>5.7.9</hutool.version>
+		<hutool.version>5.7.15</hutool.version>
 		<jasypt.version>3.0.3</jasypt.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
 		<liquibase.version>4.4.3</liquibase.version>
 		<mybatis-plus.version>3.4.3.1</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
+		<okhttp3.version>4.9.2</okhttp3.version>
 		<poi.version>5.0.0</poi.version>
-		<spring-boot.version>2.5.4</spring-boot.version>
+		<spring-boot.version>2.5.6</spring-boot.version>
 		<springfox.version>3.0.0</springfox.version>
 		<swagger-annotations.version>1.6.2</swagger-annotations.version>
 		<velocity.version>2.3</velocity.version>
 
-		<jacoco-maven-plugin.verison>0.8.7</jacoco-maven-plugin.verison>
 		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
+		<jacoco-maven-plugin.verison>0.8.7</jacoco-maven-plugin.verison>
+		<maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
 	</properties>
 
@@ -76,9 +84,27 @@
 
 			<dependency>
 				<groupId>me.batizhao</groupId>
-				<artifactId>stalber-terrace-api</artifactId>
-				<version>${project.version}</version>
+				<artifactId>spring-boot-starter-terrace</artifactId>
+				<version>1.1.2</version>
 			</dependency>
+
+			<dependency>
+				<groupId>me.batizhao</groupId>
+				<artifactId>spring-boot-starter-oss</artifactId>
+				<version>1.0</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.squareup.okhttp3</groupId>
+						<artifactId>okhttp</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>${okhttp3.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>me.batizhao</groupId>
 				<artifactId>stalber-commons</artifactId>
@@ -318,6 +344,14 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<groups>${test-group}</groups>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven-release-plugin.version}</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>

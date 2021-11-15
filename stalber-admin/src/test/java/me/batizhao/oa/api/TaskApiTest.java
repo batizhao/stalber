@@ -3,8 +3,7 @@ package me.batizhao.oa.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.oa.domain.Comment;
-import me.batizhao.oa.domain.CommentAndTask;
+import me.batizhao.oa.domain.Invoice;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.terrace.dto.CandidateDTO;
 import me.batizhao.terrace.dto.ProcessNodeDTO;
@@ -32,7 +31,7 @@ public class TaskApiTest extends BaseApiTest {
 
     @Test
     public void givenTask_whenProcessStart_thenSuccess() throws Exception {
-        Comment comment = new Comment().setTitle("ttt").setComment("ccc");
+
 
         ProcessNodeDTO processNodeDTO = new ProcessNodeDTO();
         processNodeDTO.setTarget("usertask2");
@@ -44,14 +43,14 @@ public class TaskApiTest extends BaseApiTest {
         processNodeDTO.setCandidate(asList(candidateDTO));
 
         List<ProcessNodeDTO> processNodeDTOList = asList(processNodeDTO);
-        Task task = new Task().setProcessDefinitionId("jsoa_njfw:1:1292510")
-                .setCurrent("usertask1").setId("1").setTitle("title")
+        Task task = new Task().setProcessDefinitionId("jsoa_sgkjfpsp:1:1292518")
+                .setCurrent("zhuren").setId("1").setTitle("title")
                 .setProcessNodeDTO(processNodeDTOList);
 
-        CommentAndTask cat = new CommentAndTask().setTask(task).setComment(comment);
+        Invoice invoice = new Invoice().setTitle("ttt").setCompany("ccc").setCompanyNumber("0123456").setTask(task);
 
-        mvc.perform(post("/oa/comment")
-                .content(objectMapper.writeValueAsString(cat))
+        mvc.perform(post("/oa/invoice")
+                .content(objectMapper.writeValueAsString(invoice))
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", adminAccessToken))
                 .andDo(print())

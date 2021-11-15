@@ -1,6 +1,7 @@
 package me.batizhao.oa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -8,10 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
-import me.batizhao.terrace.vo.InitProcessDefView;
-import me.batizhao.terrace.vo.ProcessRouterView;
-import me.batizhao.terrace.vo.TaskNodeView;
-import me.batizhao.terrace.vo.TodoTaskView;
+import me.batizhao.terrace.dto.AppTodoTaskDTO;
+import me.batizhao.terrace.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -66,15 +65,26 @@ public class TaskController {
     }
 
     /**
-     * 分页查询
-     * @param taskView 任务对象
+     * 待办任务
+     * @param appTodoTaskDTO
      * @return R
      * @real_return R<Page<TodoTaskView>>
      */
-    @ApiOperation(value = "分页查询")
-    @GetMapping("/tasks")
-    public R<IPage<TodoTaskView>> handleTasks(TodoTaskView taskView) {
-        return R.ok(taskService.findTasks(taskView));
+    @ApiOperation(value = "待办任务")
+    @GetMapping("/task/todo")
+    public R<IPage<TodoTaskView>> handleTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return R.ok(taskService.findTodoTasks(page, appTodoTaskDTO));
+    }
+
+    /**
+     * 已办任务
+     * @param appTodoTaskDTO
+     * @return
+     */
+    @ApiOperation(value = "已办任务")
+    @GetMapping("/task/done")
+    public R<IPage<TodoTaskView>> handleDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return R.ok(taskService.findDoneTasks(page, appTodoTaskDTO));
     }
 
     /**
@@ -97,6 +107,35 @@ public class TaskController {
     @PostMapping("/task")
     public R<String> handleSubmit(@Valid @ApiParam(value = "任务" , required = true) @RequestBody Task task) {
         return R.ok(taskService.submit(task));
+    }
+
+    /**
+     * 获取流程指定环节意见
+     *
+     * @param procInstId 流程实例Id
+     * @param taskDefKeyList 指定环节
+     * @param orderRule 排序规则 0 时间升序排， 1 先按人员职位排序，同级别时间升序排
+     * @return R<List<ProcessMessageView>>
+     */
+    @ApiOperation(value = "获取流程指定环节意见")
+    @GetMapping("/comments")
+    public R<List<ProcessMessageView>> handleComment(@ApiParam(value = "procInstId", required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
+                                                     @ApiParam(value = "taskDefKeyList", required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
+                                                     @ApiParam(value = "orderRule", required = true) @RequestParam("orderRule") Integer orderRule) {
+        return R.ok(taskService.loadMessage(procInstId, taskDefKeyList, orderRule));
+    }
+
+    /**
+     * 签收
+     * @param taskId 任务Id
+     * @param type 任务类型：0 审批任务、 1 传阅任务
+     * @return
+     */
+    @ApiOperation(value = "签收")
+    @PostMapping("/task/sign")
+    public R<Boolean> handleSign(@ApiParam(value = "taskId", required = true) @RequestParam("taskId") String taskId,
+                                 @ApiParam(value = "type", defaultValue = "0") @RequestParam("type") String type) {
+        return R.ok(taskService.sign(taskId, type));
     }
 
 }

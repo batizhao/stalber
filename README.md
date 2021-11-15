@@ -19,26 +19,67 @@
 
 - 启动 Redis
 
-- 运行 StalberAdminApplication
+  - 如果开发环境不需要验证码，
+  - 可以不启动 redis（忽略 redis 错误），
+  - pecado.captcha.enabled 设置为 false，前端注释掉验证码输入框。
 
-  > 启动之前要修改的配置
-  >
-  > * pecado.upload.location
-  > * spring.datasource
-  > * spring.redis
-  >
-  > 如果要跑单元测试，还有注意 test 下边的这两个配置
-  >
-  > 如果开发环境不需要验证码，pecado.captcha.enabled: false，同时，前端注释掉验证码输入框。
+- 启动之前要修改的配置
+
+  - spring.datasource
+    - 如果要跑单元测试，还有注意 test 下边的 datasource 配置。
+
+  - spring.redis
+
+  - pecado.terrace 
+
+    * client-id 流程平台id
+    * client-secret 流程平台secret
+    * token-store-location 集群环境不要使用 memory，请使用 redis
+
+  - pecado.code.template-url 相对路径
+
+    - 要保证在这个路径下，有代码生成模板
+    - 如果是开发环境，一般是相对于项目根目录
+    - 如果是普通 jar 启动，是你启动 java 命令的路径
+    - 如果是 Docker 环境，默认的启动路径是 /application，所以要把 /application/templates/pecado 这个路径映射到存储实际放模板的路径上
+
+  - pecado.storage
+
+    - location 支持 das 和 minio，
+    - das 是本地路径，
+    - minio 是对象存储，
+    - url 本地路径或者是对象存储的地址。
+
+  - pecado.captcha
+
+    - 默认是打开 true 状态，并且需要 redis 支持
+    - type 支持 char 和 math 两种模式，默认是 math
+    - 如果开发环境不需要验证码，pecado.captcha.enabled: false，同时，前端注释掉验证码输入框
+
+- 运行 StalberAdminApplication
 
 - Swagger 地址：http://localhost:8888/swagger-ui/
 
   > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。
+  >
+  > ```curl -X POST -d '{"username":"admin","password":"123456"}' -H "Content-type: application/json" http://localhost:8888/uaa/token```
+
 
 ## 建议
 
 - dp\ims\system\commons\admin 五个模块尽量不要修改，方便后续升级。新的业务功能增加新的模块就好了。
-- 避免使用 dp\ims\system 三个命名空间
+- 避免使用 dp\ims\system\commons\admin 命名空间
+- oa 模块是整合流程平台的示例
+
+## 开发平台
+
+### 模板管理
+
+遵循以下规范：
+
+* 在 pecado.file.code-template-location 指定模板根目录（可以是任意路径）；
+* common、commons 为保留目录，把需要 parse 或者 include 的文件放在这里，不会出现在生成代码清单中。
+* 模板文件命名规范为  aaa.bbb.ccc，第一部分描述功能（Controller、Service），bbb 为代码文件类型（java、xml、js、vue），ccc 必须使用 `vm`。
 
 ## 数据库版本管理
 
@@ -110,8 +151,6 @@
 ## 统一异常处理
 
 * 不在业务代码中捕获任何异常, 全部交由 *@RestControllerAdvice* 来处理
-
-* *@RestControllerAdvice* 不会处理 404 异常，所以必须要单独处理，示例 *ErrorHandler*
 
 * 统一处理返回类型和消息，使用 *R* 和 *ResultEnum*
 

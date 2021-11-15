@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  me.batizhao.terrace.config.ThirdPartyClientConfig

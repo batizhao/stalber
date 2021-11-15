@@ -67,6 +67,12 @@ public class Task implements Serializable {
     private String current;
 
     /**
+     * 处理意见
+     */
+    @ApiModelProperty(value = "处理意见", name = "suggestion")
+    private String suggestion;
+
+    /**
      * 封装提交不同环节参数
      */
     @NotEmpty(message = "下一环节提交参数不能为空")

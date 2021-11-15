@@ -19,15 +19,15 @@ public class PecadoUser extends User {
      * 部门ID
      */
     @Getter
-    private final List<Integer> deptIds;
+    private final List<String> deptIds;
 
     /**
      * 角色ID
      */
     @Getter
-    private final List<Long> roleIds;
+    private final List<String> roleIds;
 
-    public PecadoUser(Long userId, List<Integer> deptIds, List<Long> roleIds, String username, String password, boolean enabled,
+    public PecadoUser(Long userId, List<String> deptIds, List<String> roleIds, String username, String password, boolean enabled,
                    boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked,
                    Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);

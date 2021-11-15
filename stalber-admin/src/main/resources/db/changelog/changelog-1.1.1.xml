@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="AlterTableCode-20210924-001">
+        <addColumn tableName="code">
+            <column name="workflow" type="VARCHAR(8)" remarks="整合工作流引擎" defaultValue="no">
+                <constraints nullable="false" />
+            </column>
+            <column name="workflowKey" type="VARCHAR(32)" remarks="流程Key" defaultValue="" />
+            <column name="testcase" type="VARCHAR(8)" remarks="生成测试用例" defaultValue="no">
+                <constraints nullable="false" />
+            </column>
+            <column name="frontPath" type="VARCHAR(128)" remarks="前端代码路径" defaultValue="/" afterColumn="path">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

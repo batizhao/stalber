@@ -1,7 +1,9 @@
 package me.batizhao.oa.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.util.SecurityUtils;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;
@@ -9,10 +11,7 @@ import me.batizhao.terrace.dto.AppTodoTaskDTO;
 import me.batizhao.terrace.dto.ApplicationDTO;
 import me.batizhao.terrace.dto.StartProcessDTO;
 import me.batizhao.terrace.dto.SubmitProcessDTO;
-import me.batizhao.terrace.vo.InitProcessDefView;
-import me.batizhao.terrace.vo.ProcessRouterView;
-import me.batizhao.terrace.vo.TaskNodeView;
-import me.batizhao.terrace.vo.TodoTaskView;
+import me.batizhao.terrace.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,13 +36,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public IPage<TodoTaskView> findTasks(TodoTaskView todoTaskView) {
-        AppTodoTaskDTO dto = new AppTodoTaskDTO();
-        dto.setBusinessModuleId("12");
-        dto.setUserName("1");
-        dto.setQueryType("1");
+    public IPage<TodoTaskView> findTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return terraceApi.loadTodoTasks(page.getCurrent(), page.getSize(),
+                SecurityUtils.getUser().getUserId().toString(), appTodoTaskDTO.getBusinessModuleId(), appTodoTaskDTO.getQueryType(),
+                appTodoTaskDTO.getStatus(), appTodoTaskDTO.getType(), appTodoTaskDTO.getTitle()).getData();
+    }
 
-        return terraceApi.loadTasks(dto).getData();
+    @Override
+    public IPage<TodoTaskView> findDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        return terraceApi.loadDoneTask(page.getCurrent(), page.getSize(),
+                appTodoTaskDTO.getCode(), appTodoTaskDTO.getTitle(), appTodoTaskDTO.getRealName(),
+                SecurityUtils.getUser().getUserId().toString(), appTodoTaskDTO.getTaskName(), appTodoTaskDTO.getType(),
+                appTodoTaskDTO.getBusinessModuleId()).getData();
     }
 
     @Override
@@ -56,10 +60,10 @@ public class TaskServiceImpl implements TaskService {
         StartProcessDTO dto = new StartProcessDTO();
         dto.setProcessDefinitionId(task.getProcessDefinitionId());
         dto.setCurrent(task.getCurrent());
-        dto.setUserId("1");
-        dto.setUserName("admin");
+        dto.setUserId(SecurityUtils.getUser().getUserId().toString());
+        dto.setUserName(SecurityUtils.getUser().getUsername());
         dto.setTenantId("23");
-        dto.setOrgId("1");
+        dto.setOrgId(SecurityUtils.getUser().getDeptIds().get(0));
         dto.setOrgName("jiangsu");
         dto.setDraft(false);
         dto.setProcessNodeDTO(task.getProcessNodeDTO());
@@ -70,8 +74,9 @@ public class TaskServiceImpl implements TaskService {
         applicationDTO.setModuleId("12");
         applicationDTO.setModuleName("oa");
         applicationDTO.setTitle(task.getTitle());
-        applicationDTO.setCreator("admin");
+        applicationDTO.setCreator(SecurityUtils.getUser().getUsername());
         dto.setDto(applicationDTO);
+        dto.setSuggestion(task.getSuggestion());
 
         log.info("StartProcessDTO : {}", dto);
 
@@ -83,14 +88,15 @@ public class TaskServiceImpl implements TaskService {
         SubmitProcessDTO dto = new SubmitProcessDTO();
         dto.setProcessDefinitionId(task.getProcessDefinitionId());
         dto.setCurrent(task.getCurrent());
-        dto.setUserId("1");
-        dto.setUserName("admin");
+        dto.setUserId(SecurityUtils.getUser().getUserId().toString());
+        dto.setUserName(SecurityUtils.getUser().getUsername());
         dto.setTenantId("23");
-        dto.setOrgId("1");
+        dto.setOrgId(SecurityUtils.getUser().getDeptIds().get(0));
         dto.setOrgName("jiangsu");
         dto.setTaskId(task.getTaskId());
         dto.setProcInstId(task.getProcInstId());
         dto.setProcessNodeDTO(task.getProcessNodeDTO());
+        dto.setSuggestion(task.getSuggestion());
 
         ApplicationDTO applicationDTO = new ApplicationDTO();
         applicationDTO.setId(task.getId());
@@ -98,7 +104,7 @@ public class TaskServiceImpl implements TaskService {
         applicationDTO.setModuleId("12");
         applicationDTO.setModuleName("oa");
         applicationDTO.setTitle(task.getTitle());
-        applicationDTO.setCreator("admin");
+        applicationDTO.setCreator(SecurityUtils.getUser().getUsername());
         dto.setDto(applicationDTO);
 
         return terraceApi.submit(dto).getData();
@@ -107,5 +113,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<ProcessRouterView> findProcessRouter(String processDefinitionId, String taskDefKey) {
         return terraceApi.loadProcessRouter(taskDefKey, processDefinitionId).getData();
+    }
+
+    @Override
+    public List<ProcessMessageView> loadMessage(String procInstId, List<String> taskDefKeyList, Integer orderRule) {
+        return terraceApi.loadMessage(procInstId, taskDefKeyList, orderRule).getData();
+    }
+
+    @Override
+    public Boolean sign(String taskId, String type) {
+        return terraceApi.sign(taskId, type, SecurityUtils.getUser().getUserId().toString()).getData();
     }
 }
