@@ -1,15 +1,12 @@
 package me.batizhao.ims.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import me.batizhao.common.domain.TreeNode;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 角色数据权限 实体对象
@@ -20,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "角色数据权限")
+@Schema(description = "角色数据权限")
 @TableName("role_department")
 public class RoleDepartment implements Serializable {
 
@@ -29,13 +26,13 @@ public class RoleDepartment implements Serializable {
     /**
      *
      */
-    @ApiModelProperty(value="roleId")
+    @Schema(description="roleId")
     private Long roleId;
 
     /**
      *
      */
-    @ApiModelProperty(value="departmentId")
+    @Schema(description="departmentId")
     private Long departmentId;
 
 }

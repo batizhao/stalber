@@ -1,7 +1,6 @@
 package me.batizhao.ims.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -19,15 +18,15 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "角色")
+@Schema(description = "角色")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色ID", example = "100")
+    @Schema(description = "角色ID", example = "100")
     private Long id;
 
-    @ApiModelProperty(value = "名称", example = "管理员")
+    @Schema(description = "名称", example = "管理员")
     @NotBlank(message = "name is not blank")
     @Size(min = 3, max = 30)
     private String name;
@@ -35,41 +34,41 @@ public class Role implements Serializable {
     /**
      * @mock ROLE_@string("upper", 3, 20)
      */
-    @ApiModelProperty(value = "代码", example = "ROLE_USER")
+    @Schema(description = "代码", example = "ROLE_USER")
     @NotBlank(message = "code is not blank")
     @Size(min = 3, max = 30)
     private String code;
 
-    @ApiModelProperty(value = "说明", example = "This is admin")
+    @Schema(description = "说明", example = "This is admin")
     private String description;
 
     /**
      * 数据范围（all|custom|dept|sub|oneself）
      */
-    @ApiModelProperty(value="数据范围（all|custom|dept|sub|oneself）")
+    @Schema(description="数据范围（all|custom|dept|sub|oneself）")
     private String dataScope;
 
     /**
      * 状态
      */
-    @ApiModelProperty(value="状态")
+    @Schema(description="状态")
     private String status;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value="创建时间")
+    @Schema(description="创建时间")
     private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    @ApiModelProperty(value="修改时间")
+    @Schema(description="修改时间")
     private LocalDateTime updateTime;
 
     /**
      * 数据权限
      */
-    @ApiModelProperty(value = "数据权限")
+    @Schema(description = "数据权限")
     private transient List<RoleDepartment> roleDepartments;
 }

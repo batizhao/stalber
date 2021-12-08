@@ -1,9 +1,9 @@
 package me.batizhao.system.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.util.R;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-02-08
  */
-@Api(tags = "字典管理")
+@Tag(name = "字典管理")
 @RestController
 @Slf4j
 @Validated
@@ -42,9 +42,9 @@ public class DictDataController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询字典")
+    @Operation(description = "通过id查询字典")
     @GetMapping("/dict/data/{id}")
-    public R<DictData> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<DictData> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(dictDataService.findById(id));
     }
 
@@ -53,9 +53,9 @@ public class DictDataController {
      * @param code code
      * @return R
      */
-    @ApiOperation(value = "通过code查询字典")
+    @Operation(description = "通过code查询字典")
     @GetMapping(value = "/dict/data", params = "code")
-    public R<List<DictData>> handleCode(@ApiParam(value = "code", required = true) @RequestParam @Size(min = 1) String code) {
+    public R<List<DictData>> handleCode(@Parameter(name = "code", required = true) @RequestParam @Size(min = 1) String code) {
         return R.ok(dictDataService.list(Wrappers.<DictData>lambdaQuery().eq(DictData::getCode, code)));
     }
 
@@ -64,11 +64,11 @@ public class DictDataController {
      * @param dictData 字典
      * @return R
      */
-    @ApiOperation(value = "添加或编辑字典")
+    @Operation(description = "添加或编辑字典")
     @PostMapping("/dict/data")
     @PreAuthorize("@pms.hasPermission('system:dict:add') or @pms.hasPermission('system:dict:edit')")
     @SystemLog
-    public R<DictData> handleSaveOrUpdate(@Valid @ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
+    public R<DictData> handleSaveOrUpdate(@Valid @Parameter(name = "字典" , required = true) @RequestBody DictData dictData) {
         return R.ok(dictDataService.saveOrUpdateDictData(dictData));
     }
 
@@ -77,11 +77,11 @@ public class DictDataController {
      * @param ids ID串
      * @return R
      */
-    @ApiOperation(value = "通过id删除字典")
+    @Operation(description = "通过id删除字典")
     @DeleteMapping("/dict/data")
     @PreAuthorize("@pms.hasPermission('system:dict:delete')")
     @SystemLog
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(dictDataService.removeByIds(ids));
     }
 
@@ -91,11 +91,11 @@ public class DictDataController {
      * @param dictData 字典
      * @return R
      */
-    @ApiOperation(value = "更新字典状态")
+    @Operation(description = "更新字典状态")
     @PostMapping("/dict/data/status")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "字典" , required = true) @RequestBody DictData dictData) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "字典" , required = true) @RequestBody DictData dictData) {
         return R.ok(dictDataService.updateStatus(dictData));
     }
 

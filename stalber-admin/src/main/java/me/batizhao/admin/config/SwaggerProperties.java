@@ -34,11 +34,6 @@ import java.util.List;
 public class SwaggerProperties {
 
 	/**
-	 * 是否开启swagger
-	 */
-	private Boolean enabled;
-
-	/**
 	 * swagger会解析的包路径
 	 **/
 	private String basePackage = "";
@@ -67,26 +62,6 @@ public class SwaggerProperties {
 	 * 版本
 	 **/
 	private String version = "";
-
-	/**
-	 * 许可证
-	 **/
-	private String license = "";
-
-	/**
-	 * 许可证URL
-	 **/
-	private String licenseUrl = "";
-
-	/**
-	 * 服务条款URL
-	 **/
-	private String termsOfServiceUrl = "";
-
-	/**
-	 * host信息
-	 **/
-	private String host = "";
 
 	/**
 	 * 联系人信息

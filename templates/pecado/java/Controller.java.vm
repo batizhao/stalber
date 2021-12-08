@@ -3,9 +3,9 @@ package ${package}.${moduleName}.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import ${package}.${moduleName}.domain.${className};
@@ -27,7 +27,7 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
-@Api(tags = "${comments}管理")
+@Tag(name = "${comments}管理")
 @RestController
 @Slf4j
 @Validated
@@ -45,7 +45,7 @@ public class ${className}Controller {
      * @return R
      * @real_return R<Page<${className}>>
      */
-    @ApiOperation(value = "分页查询${comments}")
+    @Operation(description = "分页查询${comments}")
     @GetMapping("/${mappingPath}s")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
@@ -61,7 +61,7 @@ public class ${className}Controller {
      * 查询${comments}
      * @return R<List<${className}>>
      */
-    @ApiOperation(value = "查询${comments}")
+    @Operation(description = "查询${comments}")
     @GetMapping("/${mappingPath}")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
@@ -81,14 +81,14 @@ public class ${className}Controller {
      * @param ${pk.javaField} id
      * @return R
      */
-    @ApiOperation(value = "通过id查询${comments}")
+    @Operation(description = "通过id查询${comments}")
     @GetMapping("/${mappingPath}/{${pk.javaField}}")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
-    public R<${className}> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("${pk.javaField}") @Min(1) ${pk.javaType} ${pk.javaField}) {
+    public R<${className}> handleId(@Parameter(name = "ID" , required = true) @PathVariable("${pk.javaField}") @Min(1) ${pk.javaType} ${pk.javaField}) {
         return R.ok(${classname}Service.findById(${pk.javaField}));
     }
 #if(!$relationTable.isEmpty())
@@ -105,9 +105,9 @@ public class ${className}Controller {
      * @param ${fk}
      * @return R
      */
-    @ApiOperation(value = "通过${fk}查询${comments}")
+    @Operation(description = "通过${fk}查询${comments}")
     @GetMapping(value = "/${mappingPath}", params = "${fk}")
-    public R<List<${className}>> handle${AttrName}(@ApiParam(value = "${fk}", required = true) @RequestParam String ${fk}) {
+    public R<List<${className}>> handle${AttrName}(@Parameter(name = "${fk}", required = true) @RequestParam String ${fk}) {
         return R.ok(${classname}Service.list(Wrappers.<${className}>lambdaQuery().eq(${className}::get${AttrName}, ${fk})));
     }
 #end
@@ -118,14 +118,14 @@ public class ${className}Controller {
      * @param ${classname} ${comments}
      * @return R
      */
-    @ApiOperation(value = "添加或编辑${comments}")
+    @Operation(description = "添加或编辑${comments}")
     @PostMapping("/${mappingPath}")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:add') or @pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:edit')")
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:add') or @pms.hasPermission('${moduleName}:${classname}:edit')")
 #end
-    public R<${className}> handleSaveOrUpdate(@Valid @ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
+    public R<${className}> handleSaveOrUpdate(@Valid @Parameter(name = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.saveOrUpdate${className}(${classname}));
     }
 
@@ -138,7 +138,7 @@ public class ${className}Controller {
 #end
      * @return R
      */
-    @ApiOperation(value = "通过id删除${comments}")
+    @Operation(description = "通过id删除${comments}")
     @DeleteMapping("/${mappingPath}")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:delete')")
@@ -146,9 +146,9 @@ public class ${className}Controller {
     @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:delete')")
 #end
 #if($template != "tree")
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
 #else
-    public R<String> handleDelete(@ApiParam(value = "ID", required = true) @RequestParam Integer id) {
+    public R<String> handleDelete(@Parameter(name = "ID", required = true) @RequestParam Integer id) {
 #end
 #if($template != "tree")
         return R.ok(${classname}Service.removeByIds(ids));
@@ -165,14 +165,14 @@ public class ${className}Controller {
      * @param ${classname} ${comments}
      * @return R
      */
-    @ApiOperation(value = "更新${comments}状态")
+    @Operation(description = "更新${comments}状态")
     @PostMapping("/${mappingPath}/status")
 #if(!$relationTable.isEmpty())
     @PreAuthorize("@pms.hasPermission('${relationTable[0].moduleName}:${relationTable[0].className}:admin')")
 #else
     @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #end
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.updateStatus(${classname}));
     }
 #end

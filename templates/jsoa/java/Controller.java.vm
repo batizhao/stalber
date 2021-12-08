@@ -2,8 +2,8 @@ package ${package}.${moduleName}.${classNameLower}.controller;
 
 import cn.sh.ideal.common.annotation.SysLog;
 import cn.sh.ideal.common.utils.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSON;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ import java.util.Map;
  * @author ${author}
  * @since ${date}
  */
-@Api(tags = "${comments}管理")
+@Tag(name = "${comments}管理")
 @Controller
 @Slf4j
 @Validated
@@ -45,7 +45,7 @@ public class ${className}Controller extends ${className}BaseController {
         return super.input(request, model);
     }
 
-    @ApiOperation(value = "分页查询用户代码生成测试")
+    @Operation(description = "分页查询用户代码生成测试")
     @GetMapping("/{moduleId}/{type}/{role}/list")
     @ResponseBody
     @Override

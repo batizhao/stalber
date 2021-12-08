@@ -1,8 +1,7 @@
 package me.batizhao.ims.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -19,7 +18,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "部门")
+@Schema(description = "部门")
 @TableName("department")
 public class Department extends TreeNode implements Serializable {
 
@@ -28,43 +27,43 @@ public class Department extends TreeNode implements Serializable {
     /**
      * 第三方ID
      */
-    @ApiModelProperty(value="第三方ID")
+    @Schema(description="第三方ID")
     private String uuid;
                                                 
     /**
      * 名称
      */
-    @ApiModelProperty(value="名称")
+    @Schema(description="名称")
     private String name;
                         
     /**
      * 全名
      */
-    @ApiModelProperty(value="全名")
+    @Schema(description="全名")
     private String fullName;
                         
     /**
      * 排序
      */
-    @ApiModelProperty(value="排序")
+    @Schema(description="排序")
     private Long sort;
 
     /**
      * 编码
      */
-    @ApiModelProperty(value="编码")
+    @Schema(description="编码")
     private String code;
 
     /**
      * 状态
      */
-    @ApiModelProperty(value="状态")
+    @Schema(description="状态")
     private String status;
 
     /**
      * 类型（C公司 D部门）
      */
-    @ApiModelProperty(value="类型（C公司 D部门）")
+    @Schema(description="类型（C公司 D部门）")
     private String type;
             
     public Department(Integer id, Integer pid) {

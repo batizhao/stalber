@@ -5,9 +5,9 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.constant.PecadoConstants;
 import me.batizhao.common.util.R;
@@ -35,7 +35,7 @@ import java.util.List;
  * @author batizhao
  * @since 2020-03-24
  **/
-@Api(tags = "日志管理")
+@Tag(name = "日志管理")
 @RestController
 @Validated
 @RequestMapping("system")
@@ -51,7 +51,7 @@ public class LogController {
      * @return R
      * @real_return R<Page<Log>>
      */
-    @ApiOperation(value = "分页查询日志")
+    @Operation(description = "分页查询日志")
     @GetMapping("/logs")
     @PreAuthorize("@pms.hasPermission('system:log:admin')")
     public R<IPage<Log>> handleLogs(Page<Log> page, Log log) {
@@ -63,10 +63,10 @@ public class LogController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询日志")
+    @Operation(description = "通过id查询日志")
     @GetMapping("/log/{id}")
     @PreAuthorize("@pms.hasPermission('system:log:admin')")
-    public R<Log> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<Log> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(logService.findById(id));
     }
 
@@ -75,10 +75,10 @@ public class LogController {
      * @param log 日志
      * @return R
      */
-    @ApiOperation(value = "添加日志")
+    @Operation(description = "添加日志")
     @PostMapping("/log")
     @PreAuthorize("@pms.hasPermission('system:log:admin')")
-    public R<Boolean> handleSaveOrUpdate(@Valid @ApiParam(value = "日志" , required = true) @RequestBody Log log) {
+    public R<Boolean> handleSaveOrUpdate(@Valid @Parameter(name = "日志" , required = true) @RequestBody Log log) {
         return R.ok(logService.save(log));
     }
 
@@ -87,11 +87,11 @@ public class LogController {
      * @param ids ID串
      * @return R
      */
-    @ApiOperation(value = "通过id删除日志")
+    @Operation(description = "通过id删除日志")
     @DeleteMapping(value = "/log", params = "ids")
     @PreAuthorize("@pms.hasPermission('system:log:delete')")
     @SystemLog
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(logService.removeByIds(ids));
     }
 
@@ -99,7 +99,7 @@ public class LogController {
      * 清空日志
      * @return R
      */
-    @ApiOperation(value = "清空日志")
+    @Operation(description = "清空日志")
     @DeleteMapping("/log")
     @PreAuthorize("@pms.hasPermission('system:log:clean')")
     @SystemLog
@@ -113,7 +113,7 @@ public class LogController {
      *
      * @param log 过滤条件
      */
-    @ApiOperation(value = "导出")
+    @Operation(description = "导出")
     @PostMapping(value = "/log/export")
     @PreAuthorize("@pms.hasPermission('system:log:export')")
     public void handleExport(Page<Log> page, Log log, HttpServletResponse response) throws IOException {

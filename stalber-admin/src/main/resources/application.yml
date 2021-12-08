@@ -7,13 +7,9 @@ pecado:
     private-key: classpath:private.key
     public-key: classpath:public.key
   swagger:
-    enabled: true
-    title: Pecado API
-    basePackage: me.batizhao
+    title: Stalber API
+    description: 本页面使用 springdoc-openapi 构建
     version: @project.version@
-    license: Powered By batizhao
-    licenseUrl: https://batizhao.github.io
-    terms-of-service-url: https://batizhao.github.io
     contact:
       name: batizhao
       email: zhaobati@gmail.com
@@ -91,6 +87,12 @@ spring:
         awaitTerminationPeriod: PT1M
   web:
     locale: zh_CN
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
 
 logging:
   level:

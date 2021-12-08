@@ -1,6 +1,6 @@
 package me.batizhao.common.domain;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
 
@@ -15,19 +15,19 @@ public class BaseEntity {
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间")
+    @Schema(description = "创建时间")
     private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    @ApiModelProperty(value = "修改时间")
+    @Schema(description = "修改时间")
     private LocalDateTime updateTime;
 
     /**
      * 数据权限
      */
-    @ApiModelProperty(value = "数据权限")
+    @Schema(description = "数据权限")
     private transient String dataPermission;
 
     public LocalDateTime getCreateTime() {

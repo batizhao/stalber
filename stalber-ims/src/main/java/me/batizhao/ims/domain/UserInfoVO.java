@@ -1,7 +1,6 @@
 package me.batizhao.ims.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -14,35 +13,35 @@ import java.util.List;
  **/
 @Data
 @Accessors(chain = true)
-@ApiModel(description = "用户信息")
+@Schema(description = "用户信息")
 public class UserInfoVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@ApiModelProperty(value = "用户基本信息")
+	@Schema(description = "用户基本信息")
 	private User user;
 
 	/**
 	 * @mock @pick(["common","admin"])
 	 */
-	@ApiModelProperty(value = "权限清单")
+	@Schema(description = "权限清单")
 	private List<String> permissions;
 
 	/**
 	 * @mock @pick(["ADMIN","MEMBER","GUEST"])
 	 */
-	@ApiModelProperty(value = "角色清单")
+	@Schema(description = "角色清单")
 	private List<String> roles;
 
 	/**
 	 * @mock @pick([1,2,3])
 	 */
-	@ApiModelProperty(value = "角色ID串")
+	@Schema(description = "角色ID串")
 	private List<String> roleIds;
 
 	/**
 	 * @mock @pick([1,2,3])
 	 */
-	@ApiModelProperty(value = "部门ID串")
+	@Schema(description = "部门ID串")
 	private List<String> deptIds;
 }

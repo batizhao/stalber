@@ -1,8 +1,7 @@
 package me.batizhao.dp.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "表单历史记录")
+@Schema(description = "表单历史记录")
 @TableName("form_history")
 public class FormHistory implements Serializable {
 
@@ -29,31 +28,31 @@ public class FormHistory implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value="主键")
+    @Schema(description="主键")
     private Long id;
 
     /**
      * 表单key
      */
-    @ApiModelProperty(value="表单key")
+    @Schema(description="表单key")
     private String formKey;
 
     /**
      * 表单元数据
      */
-    @ApiModelProperty(value="表单元数据")
+    @Schema(description="表单元数据")
     private String metadata;
 
     /**
      * 版本
      */
-    @ApiModelProperty(value="版本")
+    @Schema(description="版本")
     private Long version;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value="创建时间")
+    @Schema(description="创建时间")
     private LocalDateTime createTime;
 
 }

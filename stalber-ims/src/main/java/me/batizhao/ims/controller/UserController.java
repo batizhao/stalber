@@ -6,9 +6,9 @@ import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.constant.PecadoConstants;
@@ -42,7 +42,7 @@ import java.util.List;
  * @module pecado-ims
  * @since 2016/9/28
  */
-@Api(tags = "用户管理")
+@Tag(name = "用户管理")
 @RestController
 @Slf4j
 @Validated
@@ -67,7 +67,7 @@ public class UserController {
      * @return 用户集合
      * @real_return R<Page < User>>
      */
-    @ApiOperation(value = "分页查询用户")
+    @Operation(description = "分页查询用户")
     @GetMapping("/users")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<IPage<User>> handleUsers(Page<User> page, User user, Long departmentId) {
@@ -80,7 +80,7 @@ public class UserController {
      *
      * @return R<List < User>>
      */
-    @ApiOperation(value = "查询用户")
+    @Operation(description = "查询用户")
     @GetMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     public R<List<User>> handleUsers(User user) {
@@ -93,10 +93,10 @@ public class UserController {
      * @param id id
      * @return R<User>
      */
-    @ApiOperation(value = "通过id查询用户")
+    @Operation(description = "通过id查询用户")
     @GetMapping("/user/{id}")
     @PreAuthorize("isAuthenticated()")
-    public R<User> handleId(@ApiParam(value = "ID", required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<User> handleId(@Parameter(name = "ID", required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(userService.findById(id));
     }
 
@@ -107,11 +107,11 @@ public class UserController {
      * @param username 用户名
      * @return R<UserInfoVO>
      */
-    @ApiOperation(value = "根据用户名查询用户")
+    @Operation(description = "根据用户名查询用户")
     @GetMapping(value = "/user", params = "username")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public R<UserInfoVO> handleUsername(@ApiParam(value = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
+    public R<UserInfoVO> handleUsername(@Parameter(name = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
         User user = userService.findByUsername(username);
         return R.ok(userService.getUserInfo(user.getId()));
     }
@@ -122,11 +122,11 @@ public class UserController {
      * @param user 用户
      * @return R<User>
      */
-    @ApiOperation(value = "添加或编辑用户")
+    @Operation(description = "添加或编辑用户")
     @PostMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:add') or @pms.hasPermission('ims:user:edit')")
     @SystemLog
-    public R<User> handleSaveOrUpdate(@Valid @ApiParam(value = "用户", required = true) @RequestBody User user) {
+    public R<User> handleSaveOrUpdate(@Valid @Parameter(name = "用户", required = true) @RequestBody User user) {
         return R.ok(userService.saveOrUpdateUser(user));
     }
 
@@ -136,11 +136,11 @@ public class UserController {
      *
      * @return R<Boolean>
      */
-    @ApiOperation(value = "删除用户")
+    @Operation(description = "删除用户")
     @DeleteMapping("/user")
     @PreAuthorize("@pms.hasPermission('ims:user:delete')")
     @SystemLog
-    public R<Boolean> handleDelete(@ApiParam(value = "用户ID串", required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "用户ID串", required = true) @RequestParam List<Long> ids) {
         return R.ok(userService.deleteByIds(ids));
     }
 
@@ -150,11 +150,11 @@ public class UserController {
      * @param user 用户
      * @return R<Boolean>
      */
-    @ApiOperation(value = "更新用户状态")
+    @Operation(description = "更新用户状态")
     @PostMapping("/user/status")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "用户", required = true) @RequestBody User user) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "用户", required = true) @RequestBody User user) {
         return R.ok(userService.updateStatus(user));
     }
 
@@ -163,7 +163,7 @@ public class UserController {
      *
      * @return R<UserInfoVO>
      */
-    @ApiOperation(value = "我的信息")
+    @Operation(description = "我的信息")
     @GetMapping("/user/me")
     @PreAuthorize("isAuthenticated()")
     public R<UserInfoVO> handleUserInfo() {
@@ -177,11 +177,11 @@ public class UserController {
      * @param user 用户
      * @return R<User>
      */
-    @ApiOperation(value = "更换我的头像")
+    @Operation(description = "更换我的头像")
     @PostMapping("/user/avatar")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public R<User> handleUpdateAvatar(@ApiParam(value = "用户", required = true) @RequestBody User user) {
+    public R<User> handleUpdateAvatar(@Parameter(name = "用户", required = true) @RequestBody User user) {
         Long userId = SecurityUtils.getUser().getUserId();
         return R.ok(userService.saveOrUpdateUser(user.setId(userId)));
     }
@@ -193,12 +193,12 @@ public class UserController {
      * @param newPassword 新密码
      * @return R<Boolean>
      */
-    @ApiOperation(value = "更新我的密码")
+    @Operation(description = "更新我的密码")
     @PostMapping("/user/password")
     @PreAuthorize("isAuthenticated()")
     @SystemLog
-    public R<Boolean> handleUpdatePassword(@ApiParam(value = "旧密码", required = true) @Size(min = 6) @RequestParam String oldPassword,
-                                           @ApiParam(value = "新密码", required = true) @Size(min = 6) @RequestParam String newPassword) {
+    public R<Boolean> handleUpdatePassword(@Parameter(name = "旧密码", required = true) @Size(min = 6) @RequestParam String oldPassword,
+                                           @Parameter(name = "新密码", required = true) @Size(min = 6) @RequestParam String newPassword) {
         Long userId = SecurityUtils.getUser().getUserId();
         return R.ok(userService.updatePassword(userId, oldPassword, newPassword));
     }
@@ -210,11 +210,11 @@ public class UserController {
      * @param userRoleList 角色清单
      * @return R<Boolean>
      */
-    @ApiOperation(value = "分配用户角色")
+    @Operation(description = "分配用户角色")
     @PostMapping(value = "/user/role")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public R<Boolean> handleAddUserRoles(@ApiParam(value = "关联角色", required = true) @RequestBody List<UserRole> userRoleList) {
+    public R<Boolean> handleAddUserRoles(@Parameter(name = "关联角色", required = true) @RequestBody List<UserRole> userRoleList) {
         return R.ok(userRoleService.updateUserRoles(userRoleList));
     }
 
@@ -225,11 +225,11 @@ public class UserController {
      * @param userPosts 岗位清单
      * @return R<Boolean>
      */
-    @ApiOperation(value = "分配用户岗位")
+    @Operation(description = "分配用户岗位")
     @PostMapping(value = "/user/post")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public R<Boolean> handleAddUserPosts(@ApiParam(value = "关联岗位", required = true) @RequestBody List<UserPost> userPosts) {
+    public R<Boolean> handleAddUserPosts(@Parameter(name = "关联岗位", required = true) @RequestBody List<UserPost> userPosts) {
         return R.ok(userPostService.updateUserPosts(userPosts));
     }
 
@@ -240,11 +240,11 @@ public class UserController {
      * @param userDepartments 部门清单
      * @return R<Boolean>
      */
-    @ApiOperation(value = "分配用户部门")
+    @Operation(description = "分配用户部门")
     @PostMapping(value = "/user/department")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
     @SystemLog
-    public R<Boolean> handleAddUserDepartments(@ApiParam(value = "关联部门", required = true) @RequestBody List<UserDepartment> userDepartments) {
+    public R<Boolean> handleAddUserDepartments(@Parameter(name = "关联部门", required = true) @RequestBody List<UserDepartment> userDepartments) {
         return R.ok(userDepartmentService.updateUserDepartments(userDepartments));
     }
 
@@ -255,11 +255,11 @@ public class UserController {
      * @param departmentId 部门ID
      * @return R<List < User>>
      */
-    @ApiOperation(value = "根据部门ID查询领导")
+    @Operation(description = "根据部门ID查询领导")
     @GetMapping(value = "/user/leader")
     @PreAuthorize("@pms.hasPermission('ims:user:admin')")
-    public R<List<User>> handleLeadersByDepartmentId(@ApiParam(value = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Integer departmentId,
-                                                     @ApiParam(value = "领导类型") @RequestParam("type") String type) {
+    public R<List<User>> handleLeadersByDepartmentId(@Parameter(name = "部门ID", required = true) @RequestParam("departmentId") @Min(1) Integer departmentId,
+                                                     @Parameter(name = "领导类型") @RequestParam("type") String type) {
         return R.ok(userService.findLeadersByDepartmentId(departmentId, type));
     }
 
@@ -269,7 +269,7 @@ public class UserController {
      *
      * @return R<List < User>>
      */
-    @ApiOperation(value = "查询登录用户的部门领导")
+    @Operation(description = "查询登录用户的部门领导")
     @GetMapping(value = "/user/dept/leader")
     @PreAuthorize("isAuthenticated()")
     public R<List<User>> handleLeadersByUserId() {
@@ -283,7 +283,7 @@ public class UserController {
      * @param file Excel文件
      * @param updateSupport 覆盖更新
      */
-    @ApiOperation(value = "导入")
+    @Operation(description = "导入")
     @PostMapping(value = "/user/import")
     @PreAuthorize("@pms.hasPermission('ims:user:import')")
     public R<String> handleImport(MultipartFile file, boolean updateSupport) throws IOException {
@@ -298,7 +298,7 @@ public class UserController {
      *
      * @param user 过滤条件
      */
-    @ApiOperation(value = "导出")
+    @Operation(description = "导出")
     @PostMapping(value = "/user/export")
     @PreAuthorize("@pms.hasPermission('ims:user:export')")
     public void handleExport(Page<User> page, User user, Long departmentId, HttpServletResponse response) throws IOException {

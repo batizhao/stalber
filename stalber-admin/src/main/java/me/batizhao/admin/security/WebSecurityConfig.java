@@ -44,7 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests(authz -> authz
                 .antMatchers("/uaa/token", "/uaa/captcha",
                         "/actuator/**",
-                        "/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**",
+                        "/swagger-ui/**", "/v2/api-docs/**", "/swagger-resources/**", "/webjars/**",
+                        "/swagger-ui.html", "/v3/api-docs/**",
                         "/system/file/image/**").permitAll()
                 .anyRequest().authenticated()
             )

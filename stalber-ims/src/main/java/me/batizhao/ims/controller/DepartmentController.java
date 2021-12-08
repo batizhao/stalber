@@ -1,8 +1,8 @@
 package me.batizhao.ims.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.util.R;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-04-25
  */
-@Api(tags = "部门管理")
+@Tag(name = "部门管理")
 @RestController
 @Slf4j
 @Validated
@@ -43,7 +43,7 @@ public class DepartmentController {
      * 查询部门
      * @return R<List<Department>>
      */
-    @ApiOperation(value = "查询部门")
+    @Operation(description = "查询部门")
     @GetMapping("/department")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
     public R<List<Department>> handleAllDepartment(Department department) {
@@ -55,10 +55,10 @@ public class DepartmentController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询部门")
+    @Operation(description = "通过id查询部门")
     @GetMapping("/department/{id}")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
-    public R<Department> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<Department> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(departmentService.findById(id));
     }
 
@@ -67,10 +67,10 @@ public class DepartmentController {
      * @param department 部门
      * @return R
      */
-    @ApiOperation(value = "添加或编辑部门")
+    @Operation(description = "添加或编辑部门")
     @PostMapping("/department")
     @PreAuthorize("@pms.hasPermission('ims:department:add') or @pms.hasPermission('ims:department:edit')")
-    public R<Department> handleSaveOrUpdate(@Valid @ApiParam(value = "部门" , required = true) @RequestBody Department department) {
+    public R<Department> handleSaveOrUpdate(@Valid @Parameter(name = "部门" , required = true) @RequestBody Department department) {
         return R.ok(departmentService.saveOrUpdateDepartment(department));
     }
 
@@ -79,10 +79,10 @@ public class DepartmentController {
      * @param id ID
      * @return R
      */
-    @ApiOperation(value = "通过id删除部门")
+    @Operation(description = "通过id删除部门")
     @DeleteMapping("/department")
     @PreAuthorize("@pms.hasPermission('ims:department:delete')")
-    public R<String> handleDelete(@ApiParam(value = "ID", required = true) @RequestParam Integer id) {
+    public R<String> handleDelete(@Parameter(name = "ID", required = true) @RequestParam Integer id) {
         return departmentService.deleteById(id) ? R.ok() : R.failed("存在子部门不允许删除！");
     }
 
@@ -92,10 +92,10 @@ public class DepartmentController {
      * @param department 部门
      * @return R
      */
-    @ApiOperation(value = "更新部门状态")
+    @Operation(description = "更新部门状态")
     @PostMapping("/department/status")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "部门" , required = true) @RequestBody Department department) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "部门" , required = true) @RequestBody Department department) {
         return R.ok(departmentService.updateStatus(department));
     }
 
@@ -106,10 +106,10 @@ public class DepartmentController {
      * @param userId 用户id
      * @return R<List<Department>>
      */
-    @ApiOperation(value = "根据用户ID查询部门")
+    @Operation(description = "根据用户ID查询部门")
     @GetMapping(value = "/department", params = "userId")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
-    public R<List<Department>> handleDepartmentsByUserId(@ApiParam(value = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
+    public R<List<Department>> handleDepartmentsByUserId(@Parameter(name = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
         return R.ok(departmentService.findDepartmentsByUserId(userId));
     }
 
@@ -120,10 +120,10 @@ public class DepartmentController {
      * @param roleId 角色id
      * @return R<List<Department>>
      */
-    @ApiOperation(value = "根据角色ID查询部门")
+    @Operation(description = "根据角色ID查询部门")
     @GetMapping(value = "/department", params = "roleId")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
-    public R<List<Department>> handleDepartmentsByRoleId(@ApiParam(value = "角色ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
+    public R<List<Department>> handleDepartmentsByRoleId(@Parameter(name = "角色ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
         return R.ok(departmentService.findDepartmentsByRoleId(roleId));
     }
 
@@ -134,11 +134,11 @@ public class DepartmentController {
      * @param departmentLeaders 部门领导关联
      * @return true or false
      */
-    @ApiOperation(value = "分配部门领导")
+    @Operation(description = "分配部门领导")
     @PostMapping(value = "/department/leader")
     @PreAuthorize("@pms.hasPermission('ims:department:admin')")
     @SystemLog
-    public R<Boolean> handleAddDepartmentLeaders(@ApiParam(value = "关联菜单", required = true) @RequestBody List<DepartmentLeader> departmentLeaders) {
+    public R<Boolean> handleAddDepartmentLeaders(@Parameter(name = "关联菜单", required = true) @RequestBody List<DepartmentLeader> departmentLeaders) {
         return R.ok(departmentLeaderService.updateDepartmentLeaders(departmentLeaders));
     }
 

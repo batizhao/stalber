@@ -6,7 +6,7 @@
 
 package me.batizhao.common.domain;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
@@ -19,10 +19,10 @@ import java.util.List;
  */
 public class TreeNode extends BaseEntity {
 
-    @ApiModelProperty(value = "ID", example = "100")
+    @Schema(description = "ID", example = "100")
     protected Integer id;
 
-    @ApiModelProperty(value = "父ID", example = "100")
+    @Schema(description = "父ID", example = "100")
     @Min(0)
     protected Integer pid;
 

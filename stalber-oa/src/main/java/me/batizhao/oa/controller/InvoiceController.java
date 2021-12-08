@@ -2,9 +2,9 @@ package me.batizhao.oa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Invoice;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-09-06
  */
-@Api(tags = "手工开票管理")
+@Tag(name = "手工开票管理")
 @RestController
 @Slf4j
 @Validated
@@ -43,7 +43,7 @@ public class InvoiceController {
      * @return R
      * @real_return R<Page<Invoice>>
      */
-    @ApiOperation(value = "分页查询手工开票")
+    @Operation(description = "分页查询手工开票")
     @GetMapping("/invoices")
     @PreAuthorize("@pms.hasPermission('oa:invoice:admin')")
     public R<IPage<Invoice>> handleInvoices(Page<Invoice> page, Invoice invoice) {
@@ -54,7 +54,7 @@ public class InvoiceController {
      * 查询手工开票
      * @return R<List<Invoice>>
      */
-    @ApiOperation(value = "查询手工开票")
+    @Operation(description = "查询手工开票")
     @GetMapping("/invoice")
     @PreAuthorize("@pms.hasPermission('oa:invoice:admin')")
     public R<List<Invoice>> handleInvoices(Invoice invoice) {
@@ -66,10 +66,10 @@ public class InvoiceController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询手工开票")
+    @Operation(description = "通过id查询手工开票")
     @GetMapping("/invoice/{id}")
     @PreAuthorize("@pms.hasPermission('oa:invoice:admin')")
-    public R<Invoice> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<Invoice> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(invoiceService.findById(id));
     }
 
@@ -78,10 +78,10 @@ public class InvoiceController {
      * @param invoice 手工开票
      * @return R
      */
-    @ApiOperation(value = "添加或编辑手工开票")
+    @Operation(description = "添加或编辑手工开票")
     @PostMapping("/invoice")
     @PreAuthorize("@pms.hasPermission('oa:invoice:add') or @pms.hasPermission('oa:invoice:edit')")
-    public R<Invoice> handleSaveOrUpdate(@Valid @ApiParam(value = "手工开票" , required = true) @RequestBody Invoice invoice) {
+    public R<Invoice> handleSaveOrUpdate(@Valid @Parameter(name = "手工开票" , required = true) @RequestBody Invoice invoice) {
         return R.ok(invoiceService.saveOrUpdateInvoice(invoice));
     }
 
@@ -90,10 +90,10 @@ public class InvoiceController {
      * @param ids ID串
      * @return R
      */
-    @ApiOperation(value = "通过id删除手工开票")
+    @Operation(description = "通过id删除手工开票")
     @DeleteMapping("/invoice")
     @PreAuthorize("@pms.hasPermission('oa:invoice:delete')")
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(invoiceService.removeByIds(ids));
     }
 

@@ -3,9 +3,9 @@ package me.batizhao.dp.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.dp.domain.Form;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-03-08
  */
-@Api(tags = "表单管理")
+@Tag(name = "表单管理")
 @RestController
 @Slf4j
 @Validated
@@ -45,7 +45,7 @@ public class FormController {
      * @return R
      * @real_return R<Page<Form>>
      */
-    @ApiOperation(value = "分页查询表单")
+    @Operation(description = "分页查询表单")
     @GetMapping("/forms")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
     public R<IPage<Form>> handleForms(Page<Form> page, Form form) {
@@ -57,10 +57,10 @@ public class FormController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询表单")
+    @Operation(description = "通过id查询表单")
     @GetMapping("/form/{id}")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
-    public R<Form> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<Form> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(formService.findById(id));
     }
 
@@ -69,9 +69,9 @@ public class FormController {
      * @param key key
      * @return R
      */
-    @ApiOperation(value = "通过key查询表单")
+    @Operation(description = "通过key查询表单")
     @GetMapping(value = "/form", params = "key")
-    public R<Form> handleKey(@ApiParam(value = "key" , required = true) @RequestParam("key") @Size(min = 1) String key) {
+    public R<Form> handleKey(@Parameter(name = "key" , required = true) @RequestParam("key") @Size(min = 1) String key) {
         return R.ok(formService.getOne(Wrappers.<Form>lambdaQuery().eq(Form::getFormKey, key)));
     }
 
@@ -80,10 +80,10 @@ public class FormController {
      * @param form 表单
      * @return R
      */
-    @ApiOperation(value = "添加或编辑表单")
+    @Operation(description = "添加或编辑表单")
     @PostMapping("/form")
     @PreAuthorize("@pms.hasPermission('dp:form:add') or @pms.hasPermission('dp:form:edit')")
-    public R<Form> handleSaveOrUpdate(@Valid @ApiParam(value = "表单" , required = true) @RequestBody Form form) {
+    public R<Form> handleSaveOrUpdate(@Valid @Parameter(name = "表单" , required = true) @RequestBody Form form) {
         return R.ok(formService.saveOrUpdateForm(form));
     }
 
@@ -92,10 +92,10 @@ public class FormController {
      * @param ids ID串
      * @return R
      */
-    @ApiOperation(value = "通过id删除表单")
+    @Operation(description = "通过id删除表单")
     @DeleteMapping("/form")
     @PreAuthorize("@pms.hasPermission('dp:form:delete')")
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(formService.removeByIds(ids));
     }
 
@@ -105,10 +105,10 @@ public class FormController {
      * @param form 表单
      * @return R
      */
-    @ApiOperation(value = "更新表单状态")
+    @Operation(description = "更新表单状态")
     @PostMapping("/form/status")
     @PreAuthorize("@pms.hasPermission('dp:form:admin')")
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "表单" , required = true) @RequestBody Form form) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "表单" , required = true) @RequestBody Form form) {
         return R.ok(formService.updateStatus(form));
     }
 

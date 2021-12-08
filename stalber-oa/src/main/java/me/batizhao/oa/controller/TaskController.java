@@ -2,9 +2,9 @@ package me.batizhao.oa.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.util.R;
 import me.batizhao.oa.domain.Task;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-06-18
  */
-@Api(tags = "任务管理")
+@Tag(name = "任务管理")
 @RestController
 @Slf4j
 @Validated
@@ -44,9 +44,9 @@ public class TaskController {
      * @return R
      * @real_return R<InitProcessDefView>
      */
-    @ApiOperation(value = "获取流程定义")
+    @Operation(description = "获取流程定义")
     @GetMapping(value = "/process", params = "key")
-    public R<InitProcessDefView> handleProcessDefinition(@ApiParam(value = "key" , required = true) @RequestParam("key") @Size(min = 1) String key) {
+    public R<InitProcessDefView> handleProcessDefinition(@Parameter(name = "key" , required = true) @RequestParam("key") @Size(min = 1) String key) {
         return R.ok(taskService.findProcessDefinitionByKey(key));
     }
 
@@ -57,10 +57,10 @@ public class TaskController {
      * @return R
      * @real_return R<List<ProcessRouterView>>
      */
-    @ApiOperation(value = "获取环节的输出路由及路由后的任务环节配置信息")
+    @Operation(description = "获取环节的输出路由及路由后的任务环节配置信息")
     @GetMapping(value = "/process/{processDefinitionId}/{taskDefKey}")
-    public R<List<ProcessRouterView>> handleProcessRouter(@ApiParam(value = "processDefinitionId" , required = true) @PathVariable("processDefinitionId") @Size(min = 1) String processDefinitionId,
-                                                          @ApiParam(value = "taskDefKey" , required = true) @PathVariable("taskDefKey") @Size(min = 1) String taskDefKey) {
+    public R<List<ProcessRouterView>> handleProcessRouter(@Parameter(name = "processDefinitionId" , required = true) @PathVariable("processDefinitionId") @Size(min = 1) String processDefinitionId,
+                                                          @Parameter(name = "taskDefKey" , required = true) @PathVariable("taskDefKey") @Size(min = 1) String taskDefKey) {
         return R.ok(taskService.findProcessRouter(processDefinitionId, taskDefKey));
     }
 
@@ -70,7 +70,7 @@ public class TaskController {
      * @return R
      * @real_return R<Page<TodoTaskView>>
      */
-    @ApiOperation(value = "待办任务")
+    @Operation(description = "待办任务")
     @GetMapping("/task/todo")
     public R<IPage<TodoTaskView>> handleTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
         return R.ok(taskService.findTodoTasks(page, appTodoTaskDTO));
@@ -81,7 +81,7 @@ public class TaskController {
      * @param appTodoTaskDTO
      * @return
      */
-    @ApiOperation(value = "已办任务")
+    @Operation(description = "已办任务")
     @GetMapping("/task/done")
     public R<IPage<TodoTaskView>> handleDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
         return R.ok(taskService.findDoneTasks(page, appTodoTaskDTO));
@@ -92,9 +92,9 @@ public class TaskController {
      * @param id id
      * @return R<TaskNodeView>
      */
-    @ApiOperation(value = "通过id查询")
+    @Operation(description = "通过id查询")
     @GetMapping(value = "/task", params = "id")
-    public R<TaskNodeView> handleId(@ApiParam(value = "ID" , required = true) @RequestParam("id") @Min(1) Long id) {
+    public R<TaskNodeView> handleId(@Parameter(name = "ID" , required = true) @RequestParam("id") @Min(1) Long id) {
         return R.ok(taskService.findById(id));
     }
 
@@ -103,9 +103,9 @@ public class TaskController {
      * @param task 任务
      * @return R<String>
      */
-    @ApiOperation(value = "提交任务")
+    @Operation(description = "提交任务")
     @PostMapping("/task")
-    public R<String> handleSubmit(@Valid @ApiParam(value = "任务" , required = true) @RequestBody Task task) {
+    public R<String> handleSubmit(@Valid @Parameter(name = "任务" , required = true) @RequestBody Task task) {
         return R.ok(taskService.submit(task));
     }
 
@@ -117,11 +117,11 @@ public class TaskController {
      * @param orderRule 排序规则 0 时间升序排， 1 先按人员职位排序，同级别时间升序排
      * @return R<List<ProcessMessageView>>
      */
-    @ApiOperation(value = "获取流程指定环节意见")
+    @Operation(description = "获取流程指定环节意见")
     @GetMapping("/comments")
-    public R<List<ProcessMessageView>> handleComment(@ApiParam(value = "procInstId", required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
-                                                     @ApiParam(value = "taskDefKeyList", required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
-                                                     @ApiParam(value = "orderRule", required = true) @RequestParam("orderRule") Integer orderRule) {
+    public R<List<ProcessMessageView>> handleComment(@Parameter(name = "procInstId", required = true) @RequestParam("procInstId") @Size(min = 1) String procInstId,
+                                                     @Parameter(name = "taskDefKeyList", required = true) @RequestParam("taskDefKeyList") List<String> taskDefKeyList,
+                                                     @Parameter(name = "orderRule", required = true) @RequestParam("orderRule") Integer orderRule) {
         return R.ok(taskService.loadMessage(procInstId, taskDefKeyList, orderRule));
     }
 
@@ -131,10 +131,10 @@ public class TaskController {
      * @param type 任务类型：0 审批任务、 1 传阅任务
      * @return
      */
-    @ApiOperation(value = "签收")
+    @Operation(description = "签收")
     @PostMapping("/task/sign")
-    public R<Boolean> handleSign(@ApiParam(value = "taskId", required = true) @RequestParam("taskId") String taskId,
-                                 @ApiParam(value = "type", defaultValue = "0") @RequestParam("type") String type) {
+    public R<Boolean> handleSign(@Parameter(name = "taskId", required = true) @RequestParam("taskId") String taskId,
+                                 @Parameter(name = "type") @RequestParam("type") String type) {
         return R.ok(taskService.sign(taskId, type));
     }
 

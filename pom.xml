@@ -51,19 +51,19 @@
 		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-configuration.version>2.7</commons-configuration.version>
 		<commons-fileupload.version>1.4</commons-fileupload.version>
-		<dynamic-datasource.version>3.4.1</dynamic-datasource.version>
+		<dynamic-datasource.version>3.5.0</dynamic-datasource.version>
 		<feign.version>11.7</feign.version>
 		<hutool.version>5.7.16</hutool.version>
 		<jasypt.version>3.0.4</jasypt.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
-		<liquibase.version>4.6.1</liquibase.version>
+		<liquibase.version>4.6.2</liquibase.version>
 		<mybatis-plus.version>3.4.3.4</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
 		<okhttp3.version>4.9.2</okhttp3.version>
 		<poi.version>5.1.0</poi.version>
-		<spring-boot.version>2.5.6</spring-boot.version>
-		<springfox.version>3.0.0</springfox.version>
-		<swagger-annotations.version>1.6.3</swagger-annotations.version>
+		<spring-boot.version>2.6.1</spring-boot.version>
+		<springdoc-openapi-ui.version>1.5.13</springdoc-openapi-ui.version>
+		<swagger-annotations.version>2.1.11</swagger-annotations.version>
 		<velocity.version>2.3</velocity.version>
 
 		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
@@ -190,28 +190,13 @@
 			</dependency>
 
 			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-boot-starter</artifactId>
-				<version>${springfox.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>io.swagger</groupId>
-						<artifactId>swagger-annotations</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>io.swagger</groupId>
-						<artifactId>swagger-models</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${springdoc-openapi-ui.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.swagger</groupId>
+				<groupId>io.swagger.core.v3</groupId>
 				<artifactId>swagger-annotations</artifactId>
-				<version>${swagger-annotations.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-models</artifactId>
 				<version>${swagger-annotations.version}</version>
 			</dependency>
 
