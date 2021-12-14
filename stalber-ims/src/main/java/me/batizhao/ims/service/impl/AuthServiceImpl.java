@@ -13,6 +13,7 @@ import me.batizhao.common.constant.SecurityConstants;
 import me.batizhao.common.domain.PecadoUser;
 import me.batizhao.common.exception.StalberException;
 import me.batizhao.common.util.RedisUtil;
+import me.batizhao.ims.domain.TokenVO;
 import me.batizhao.ims.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
     private RedisUtil redisUtil;
 
     @Override
-    public String login(String username, String password, String code, String uuid) {
+    public TokenVO login(String username, String password, String code, String uuid) {
         if (captchaEnabled) {
             validateCaptcha(code, uuid);
         }
@@ -97,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).build();
         SignedJWT jwt = new SignedJWT(header, claims);
 
-        return sign(jwt).serialize();
+        return new TokenVO().setToken(sign(jwt).serialize()).setExpire(expiry);
     }
 
     SignedJWT sign(SignedJWT jwt) {

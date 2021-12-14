@@ -1,6 +1,7 @@
 package me.batizhao.ims.service;
 
 import me.batizhao.ims.domain.LoginDTO;
+import me.batizhao.ims.domain.TokenVO;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public interface AuthService {
      * @param uuid
      * @return
      */
-    String login(String username, String password, String code, String uuid);
+    TokenVO login(String username, String password, String code, String uuid);
 
     /**
      * 获取验证码
