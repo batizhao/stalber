@@ -484,11 +484,13 @@
 
     <changeSet author="batizhao" id="CreateJobData-20210507-001">
         <insert tableName="dict_type">
+            <column name="id" valueNumeric="5"/>
             <column name="name" value="任务分组"/>
             <column name="code" value="job_group"/>
             <column name="description" value="DEFAULT|SYSTEM"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="9"/>
             <column name="code" value="job_group"/>
             <column name="label" value="默认"/>
             <column name="value" value="DEFAULT"/>
@@ -496,6 +498,7 @@
             <column name="isDefault" value="yes"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="10"/>
             <column name="code" value="job_group"/>
             <column name="label" value="系统"/>
             <column name="value" value="SYSTEM"/>

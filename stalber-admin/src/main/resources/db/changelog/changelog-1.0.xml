@@ -980,26 +980,31 @@
         </rollback>
 
         <insert tableName="dict_type">
+            <column name="id" valueNumeric="1"/>
             <column name="name" value="性别"/>
             <column name="code" value="sex"/>
             <column name="description" value="男|女"/>
         </insert>
         <insert tableName="dict_type">
+            <column name="id" valueNumeric="2"/>
             <column name="name" value="状态"/>
             <column name="code" value="status"/>
             <column name="description" value="启用|禁用"/>
         </insert>
         <insert tableName="dict_type">
+            <column name="id" valueNumeric="3"/>
             <column name="name" value="是否"/>
             <column name="code" value="yes_or_no"/>
             <column name="description" value="是|否"/>
         </insert>
         <insert tableName="dict_type">
+            <column name="id" valueNumeric="4"/>
             <column name="name" value="成败"/>
             <column name="code" value="success_or_fail"/>
             <column name="description" value="成功|失败"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="1"/>
             <column name="code" value="sex"/>
             <column name="label" value="男"/>
             <column name="value" value="male"/>
@@ -1007,12 +1012,14 @@
             <column name="isDefault" value="yes"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="2"/>
             <column name="code" value="sex"/>
             <column name="label" value="女"/>
             <column name="value" value="female"/>
             <column name="sort" valueNumeric="2"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="3"/>
             <column name="code" value="status"/>
             <column name="label" value="启用"/>
             <column name="value" value="open"/>
@@ -1020,12 +1027,14 @@
             <column name="isDefault" value="yes"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="4"/>
             <column name="code" value="status"/>
             <column name="label" value="禁用"/>
             <column name="value" value="close"/>
             <column name="sort" valueNumeric="2"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="5"/>
             <column name="code" value="yes_or_no"/>
             <column name="label" value="是"/>
             <column name="value" value="yes"/>
@@ -1033,12 +1042,14 @@
             <column name="isDefault" value="yes"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="6"/>
             <column name="code" value="yes_or_no"/>
             <column name="label" value="否"/>
             <column name="value" value="no"/>
             <column name="sort" valueNumeric="2"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="7"/>
             <column name="code" value="success_or_fail"/>
             <column name="label" value="成功"/>
             <column name="value" value="success"/>
@@ -1046,6 +1057,7 @@
             <column name="isDefault" value="yes"/>
         </insert>
         <insert tableName="dict_data">
+            <column name="id" valueNumeric="8"/>
             <column name="code" value="success_or_fail"/>
             <column name="label" value="失败"/>
             <column name="value" value="failure"/>

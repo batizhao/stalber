@@ -31,70 +31,83 @@
         </rollback>
 
         <insert tableName="code_template">
+            <column name="id" valueNumeric="1"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="Domain"/>
             <column name="description" value="Java POJO"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="2"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="Mapper"/>
             <column name="description" value="Java Mapper"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="3"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="Service"/>
             <column name="description" value="Java Service"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="4"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="ServiceImpl"/>
             <column name="description" value="Java ServiceImpl"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="5"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="Controller"/>
             <column name="description" value="Java Controller"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="6"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="MapperXML"/>
             <column name="description" value="Mybatis Mapper XML"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="7"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="ControllerUnitTest"/>
             <column name="description" value="Java Controller unit test case"/>
             <column name="status" value="close"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="8"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="ServiceUnitTest"/>
             <column name="description" value="Java Service unit test case"/>
             <column name="status" value="close"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="9"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="MapperUnitTest"/>
             <column name="description" value="Java Mapper unit test case"/>
             <column name="status" value="close"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="10"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="ApiTest"/>
             <column name="description" value="Java Api test case"/>
             <column name="status" value="close"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="11"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="sql"/>
             <column name="description" value="数据库脚本"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="12"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="api"/>
             <column name="description" value="前端API"/>
         </insert>
         <insert tableName="code_template">
+            <column name="id" valueNumeric="13"/>
             <column name="projectKey" value="pecado"/>
             <column name="name" value="vue"/>
             <column name="description" value="VUE代码"/>
