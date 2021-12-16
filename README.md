@@ -58,7 +58,7 @@
 
 - 运行 StalberAdminApplication
 
-- Swagger 地址：http://localhost:8888/swagger-ui/index.html
+- Swagger 地址：http://localhost:8888/swagger-ui.html
 
   因为在新版本的 spring boot 中，springfox bug 太多，并且好久没有更新。这里使用 springdoc-openapi-ui 替换了 springfox-boot-starter。在使用中，annotation 部分有一些差异。
   

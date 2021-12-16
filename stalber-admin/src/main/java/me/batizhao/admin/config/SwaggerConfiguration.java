@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
  * @author batizhao
  * @since 2020-02-19
  */
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(SwaggerProperties.class)
