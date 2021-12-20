@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -268,7 +269,7 @@ public class UserControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenNothing_whenGetUserInfo_thenSuccess() throws Exception {
-        PecadoUser pecadoUser = new PecadoUser(1L, Collections.singletonList("2"), Collections.singletonList("1"), "zhangsan", "N_A", true, true, true, true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", Collections.singletonList("2"), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
 
         try (MockedStatic<SecurityUtils> mockStatic = mockStatic(SecurityUtils.class)) {
             mockStatic.when(SecurityUtils::getUser).thenReturn(pecadoUser);

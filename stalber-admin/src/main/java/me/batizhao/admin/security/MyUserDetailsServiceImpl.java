@@ -48,14 +48,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
             authSet.addAll(userInfoVO.getPermissions());
         }
 
-        Collection<? extends GrantedAuthority> authorities = AuthorityUtils
-                .createAuthorityList(authSet.toArray(new String[0]));
-
-        return new PecadoUser(user.getId(), userInfoVO.getDeptIds(), userInfoVO.getRoleIds(), user.getUsername(), user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                authorities);
+        return new PecadoUser(user.getId(), user.getUsername(), user.getPassword(),
+                userInfoVO.getDeptIds(), userInfoVO.getRoleIds(), authSet);
     }
 }

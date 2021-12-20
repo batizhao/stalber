@@ -56,13 +56,13 @@
 		<hutool.version>5.7.16</hutool.version>
 		<jasypt.version>3.0.4</jasypt.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
-		<liquibase.version>4.6.2</liquibase.version>
+		<liquibase.version>4.6.1</liquibase.version>
 		<mybatis-plus.version>3.4.3.4</mybatis-plus.version>
 		<mybatis-spring-boot.version>2.2.0</mybatis-spring-boot.version>
 		<okhttp3.version>4.9.2</okhttp3.version>
 		<poi.version>5.1.0</poi.version>
 		<spring-boot.version>2.6.1</spring-boot.version>
-		<springdoc-openapi-ui.version>1.5.13</springdoc-openapi-ui.version>
+		<springdoc-openapi-ui.version>1.6.1</springdoc-openapi-ui.version>
 		<swagger-annotations.version>2.1.11</swagger-annotations.version>
 		<velocity.version>2.3</velocity.version>
 

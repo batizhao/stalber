@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since 2020-03-02
  **/
 @DirtiesContext
-public class TokenApiTest extends BaseApiTest {
+public class AuthApiTest extends BaseApiTest {
 
     @Autowired
     MockMvc mvc;

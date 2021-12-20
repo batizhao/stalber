@@ -12,7 +12,9 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -31,7 +33,7 @@ public class FileNameAndPathUtilsUnitTest {
 
     @Test
     public void testFileNameEncode() {
-        PecadoUser pecadoUser = new PecadoUser(1L, Collections.singletonList("2"), Collections.singletonList("1"), "zhangsan", "N_A", true, true, true, true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", Collections.singletonList("2"), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
 
         try (MockedStatic<SecurityUtils> mockStatic = mockStatic(SecurityUtils.class)) {
             mockStatic.when(SecurityUtils::getUser).thenReturn(pecadoUser);
