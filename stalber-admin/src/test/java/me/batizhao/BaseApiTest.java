@@ -1,17 +1,28 @@
 package me.batizhao;
 
+import com.jayway.jsonpath.JsonPath;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.admin.StalberAdminApplication;
+import me.batizhao.common.constant.ResultEnum;
 import me.batizhao.common.exception.WebExceptionHandler;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import javax.annotation.PostConstruct;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * 在集成测试中，不再需要 Mock Bean 和 Stub，
@@ -30,20 +41,50 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(WebExceptionHandler.class)
 @ActiveProfiles("test")
 @Tag("api")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 public abstract class BaseApiTest {
 
-    /**
-     * 使用一个超长时间的 token，隔离获取 token 的操作。避免测试 token 过期！
-     * curl -X POST --user 'test:passw0rd' -d 'grant_type=password&username=admin&password=123456' http://localhost:4000/oauth/token
-     * curl -X POST --user 'test:passw0rd' -d 'grant_type=password&username=tom&password=123456' http://localhost:4000/oauth/token
-     */
-    @Value("${pecado.token.admin}")
     public String adminAccessToken;
-    @Value("${pecado.token.user}")
     public String userAccessToken;
 
     @Autowired
     public MockMvc mvc;
+
+    /**
+     * 获取 token
+     * @throws Exception
+     */
+    @PostConstruct
+    public void init() throws Exception {
+        MvcResult result = mvc.perform(post("/uaa/token")
+                        .content("{\"username\":\"admin\",\"password\":\"123456\"}")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
+                .andExpect(jsonPath("$.data", containsString("eyJhbGciOiJSUzI1NiJ9")))
+                .andReturn();
+
+        String response = result.getResponse().getContentAsString();
+        adminAccessToken = JsonPath.parse(response).read("$.data");
+        log.info("*** adminAccessToken *** : {}", adminAccessToken);
+
+        result = mvc.perform(post("/uaa/token")
+                        .content("{\"username\":\"tom\",\"password\":\"123456\"}")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
+                .andExpect(jsonPath("$.data", containsString("eyJhbGciOiJSUzI1NiJ9")))
+                .andReturn();
+
+        response = result.getResponse().getContentAsString();
+        userAccessToken = JsonPath.parse(response).read("$.data");
+        log.info("*** userAccessToken *** : {}", userAccessToken);
+    }
 
     /**
      * <p>
@@ -63,4 +104,24 @@ public abstract class BaseApiTest {
 //    public void sleep() {
 //        Thread.sleep(5000L);
 //    }
+
+    /**
+     * 在所有测试之前先获取 token
+     * @throws Exception
+     */
+    @Test
+    @Order(1)
+    public void givenValidPassword_whenGetAccessToken_thenSuccess() throws Exception {
+        MvcResult result = mvc.perform(post("/uaa/token")
+                        .content("{\"username\":\"admin\",\"password\":\"123456\"}")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
+                .andExpect(jsonPath("$.data", containsString("eyJhbGciOiJSUzI1NiJ9")))
+                .andReturn();
+
+        adminAccessToken = result.getResponse().getContentAsString();
+    }
 }

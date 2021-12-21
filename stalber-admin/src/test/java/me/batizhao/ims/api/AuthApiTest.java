@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,9 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthApiTest extends BaseApiTest {
 
     @Autowired
-    MockMvc mvc;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     @Test
@@ -43,19 +39,6 @@ public class AuthApiTest extends BaseApiTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.PARAMETER_INVALID.getCode()))
                 .andExpect(jsonPath("$.data[0]", containsString("password is not blank")));
-    }
-
-    @Test
-    public void givenValidPassword_whenGetAccessToken_thenSuccess() throws Exception {
-        LoginDTO loginDTO = new LoginDTO().setUsername("admin").setPassword("123456");
-        mvc.perform(post("/uaa/token")
-                .content(objectMapper.writeValueAsString(loginDTO))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data", containsString("ey")));
     }
 
     @Test
