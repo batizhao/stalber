@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
     @Value("${pecado.jwt.private-key}")
     RSAPrivateKey key;
 
-    @Value("${pecado.jwt.expire}")
+    @Value("${pecado.jwt.expire:30}")
     private int expire;
 
     @Autowired

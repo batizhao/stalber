@@ -59,7 +59,7 @@ public class PecadoUser implements UserDetails {
     public PecadoUser() {
     }
 
-    public PecadoUser(Long userId, String username, String password, List<String> deptIds, List<String> roleIds, Set<String> permissions){
+    public PecadoUser(Long userId, String username, String password, List<String> deptIds, List<String> roleIds, Set<String> permissions) {
         this.userId = userId;
         this.username = username;
         this.password = password;

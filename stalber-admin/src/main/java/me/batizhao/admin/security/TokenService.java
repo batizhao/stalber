@@ -24,7 +24,7 @@ public class TokenService {
     @Autowired
     private RedisUtil redisUtil;
 
-    @Value("${pecado.jwt.expire}")
+    @Value("${pecado.jwt.expire:30}")
     private int expire;
 
     /**
