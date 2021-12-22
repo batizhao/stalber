@@ -33,10 +33,9 @@ public class TokenService {
      * @return 用户信息
      */
     @SneakyThrows
-    public PecadoUser getUser(HttpServletRequest request)
-    {
+    public PecadoUser getUser(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.isNotEmpty(header)) {
+        if (StringUtils.isNotEmpty(header) && header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             String token = header.replace(SecurityConstants.TOKEN_PREFIX, "");
             SignedJWT signed = SignedJWT.parse(token);
             String uid = signed.getJWTClaimsSet().getStringClaim(SecurityConstants.LOGIN_KEY_UID);
@@ -50,8 +49,7 @@ public class TokenService {
      *
      * @param pecadoUser 登录信息
      */
-    private void refreshToken(PecadoUser pecadoUser)
-    {
+    private void refreshToken(PecadoUser pecadoUser) {
         pecadoUser.setLoginTime(System.currentTimeMillis());
         pecadoUser.setExpireTime(pecadoUser.getLoginTime() + expire * 60 * 1000L);
         redisUtil.setCacheObject(SecurityConstants.CACHE_LOGIN_KEY_UID + pecadoUser.getUid(), pecadoUser, expire, TimeUnit.MINUTES);

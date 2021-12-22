@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.admin.StalberAdminApplication;
 import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.constant.SecurityConstants;
 import me.batizhao.common.exception.WebExceptionHandler;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +67,7 @@ public abstract class BaseApiTest {
                 .andReturn();
 
         String response = result.getResponse().getContentAsString();
-        adminAccessToken = JsonPath.parse(response).read("$.data");
+        adminAccessToken = SecurityConstants.TOKEN_PREFIX + JsonPath.parse(response).read("$.data");
         log.info("*** adminAccessToken *** : {}", adminAccessToken);
     }
 

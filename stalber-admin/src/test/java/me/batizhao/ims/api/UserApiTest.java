@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.annotation.SystemLog;
 import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.constant.SecurityConstants;
 import me.batizhao.ims.domain.User;
 import me.batizhao.system.aspect.SystemLogAspect;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -283,7 +284,7 @@ public class UserApiTest extends BaseApiTest {
                 .andReturn();
 
         String response = result.getResponse().getContentAsString();
-        String userAccessToken = JsonPath.parse(response).read("$.data");
+        String userAccessToken = SecurityConstants.TOKEN_PREFIX + JsonPath.parse(response).read("$.data");
 
         log.info("*** userAccessToken *** : {}", userAccessToken);
 
