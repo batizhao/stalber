@@ -55,9 +55,9 @@ public class DsApiTest extends BaseApiTest {
     public void givenJson_whenSaveDs_thenError() throws Exception {
         Ds requestBody = new Ds()
                 .setName("system")
-                .setUrl("jdbc:mysql://172.31.21.180:30306/pecado-system?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai")
+                .setUrl("jdbc:mysql://127.0.0.1:3306/pecado-system?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai")
                 .setUsername("root")
-                .setPassword("root");
+                .setPassword("password");
 
         mvc.perform(post("/dp/ds")
                 .content(objectMapper.writeValueAsString(requestBody))

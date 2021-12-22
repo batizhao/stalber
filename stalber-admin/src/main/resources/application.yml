@@ -118,6 +118,8 @@ spring:
 pecado:
   captcha:
     enabled: false
+  jwt:
+    expire: 5
 
 ---
 
