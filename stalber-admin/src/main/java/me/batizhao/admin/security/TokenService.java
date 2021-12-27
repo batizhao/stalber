@@ -58,7 +58,7 @@ public class TokenService {
     public void verifyToken(PecadoUser pecadoUser) {
         long expireTime = pecadoUser.getExpireTime();
         long currentTime = System.currentTimeMillis();
-        if (expireTime - currentTime <= 5 * 60 * 1000L)
+        if (expireTime - currentTime <= 15 * 60 * 1000L)
         {
             refreshToken(pecadoUser);
         }

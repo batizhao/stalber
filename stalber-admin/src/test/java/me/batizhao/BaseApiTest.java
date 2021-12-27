@@ -52,7 +52,6 @@ public abstract class BaseApiTest {
 
     /**
      * 获取 token
-     * @throws Exception
      */
     @PostConstruct
     public void init() throws Exception {
