@@ -1,6 +1,6 @@
 package me.batizhao.system.util;
 
-import me.batizhao.common.util.SpringContextHolder;
+import me.batizhao.common.core.util.SpringContextHolder;
 import me.batizhao.system.domain.SysJob;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;

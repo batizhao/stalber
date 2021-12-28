@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.oa.domain.Invoice;
 import me.batizhao.oa.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,9 +2,9 @@ package me.batizhao.admin.security;
 
 import com.nimbusds.jwt.SignedJWT;
 import lombok.SneakyThrows;
-import me.batizhao.common.constant.SecurityConstants;
-import me.batizhao.common.domain.PecadoUser;
-import me.batizhao.common.util.RedisUtil;
+import me.batizhao.common.core.constant.SecurityConstants;
+import me.batizhao.common.core.domain.PecadoUser;
+import me.batizhao.common.core.util.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

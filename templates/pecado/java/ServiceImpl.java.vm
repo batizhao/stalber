@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.core.exception.NotFoundException;
 #if($template == "tree")
-import me.batizhao.common.util.TreeUtil;
+import me.batizhao.common.core.util.TreeUtil;
 #end
 import ${package}.${moduleName}.domain.${className};
 import ${package}.${moduleName}.mapper.${className}Mapper;

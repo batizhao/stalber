@@ -1,11 +1,11 @@
 package me.batizhao.ims.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.MenuTypeEnum;
-import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.domain.PecadoUser;
-import me.batizhao.common.domain.TreeNode;
-import me.batizhao.common.util.SecurityUtils;
+import me.batizhao.common.core.constant.MenuTypeEnum;
+import me.batizhao.common.core.constant.ResultEnum;
+import me.batizhao.common.core.domain.PecadoUser;
+import me.batizhao.common.core.domain.TreeNode;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.controller.MenuController;
 import me.batizhao.ims.domain.Menu;
 import me.batizhao.ims.service.MenuService;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 

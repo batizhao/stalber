@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import me.batizhao.common.domain.TreeNode;
+import me.batizhao.common.core.domain.TreeNode;
 
 import java.io.Serializable;
 

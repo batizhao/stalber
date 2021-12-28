@@ -1,7 +1,7 @@
 package me.batizhao.ims.api;
 
 import me.batizhao.BaseApiTest;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;

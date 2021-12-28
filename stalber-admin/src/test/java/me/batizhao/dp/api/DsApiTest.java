@@ -2,7 +2,7 @@ package me.batizhao.dp.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.dp.domain.Ds;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

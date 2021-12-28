@@ -1,7 +1,7 @@
 package me.batizhao.dp.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import me.batizhao.common.domain.FolderTree;
+import me.batizhao.common.core.domain.FolderTree;
 import me.batizhao.dp.domain.CodeTemplate;
 import me.batizhao.dp.domain.CodeTemplateDTO;
 

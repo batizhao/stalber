@@ -3,7 +3,7 @@ package me.batizhao.system.unit.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.system.controller.LogController;
 import me.batizhao.system.domain.Log;
 import me.batizhao.system.service.LogService;

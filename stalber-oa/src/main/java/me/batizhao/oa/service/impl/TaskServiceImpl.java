@@ -3,7 +3,7 @@ package me.batizhao.oa.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.SecurityUtils;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;

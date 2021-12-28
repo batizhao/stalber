@@ -3,7 +3,7 @@ package me.batizhao.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.system.domain.DictData;
 import me.batizhao.system.mapper.DictDataMapper;
 import me.batizhao.system.service.DictDataService;

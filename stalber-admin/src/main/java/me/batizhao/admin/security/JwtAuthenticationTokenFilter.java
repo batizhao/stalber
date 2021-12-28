@@ -1,7 +1,7 @@
 package me.batizhao.admin.security;
 
-import me.batizhao.common.domain.PecadoUser;
-import me.batizhao.common.util.SecurityUtils;
+import me.batizhao.common.core.domain.PecadoUser;
+import me.batizhao.common.core.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

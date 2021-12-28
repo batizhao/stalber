@@ -3,7 +3,7 @@ package ${package}.${moduleName}.unit.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import ${package}.${moduleName}.controller.${className}Controller;
 import ${package}.${moduleName}.domain.${className};
 import ${package}.${moduleName}.service.${className}Service;

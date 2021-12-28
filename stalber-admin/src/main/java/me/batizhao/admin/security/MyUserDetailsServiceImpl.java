@@ -1,20 +1,17 @@
 package me.batizhao.admin.security;
 
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.domain.PecadoUser;
+import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.ims.domain.User;
 import me.batizhao.ims.domain.UserInfoVO;
 import me.batizhao.ims.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 

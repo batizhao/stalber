@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.system.domain.File;
 import me.batizhao.system.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;

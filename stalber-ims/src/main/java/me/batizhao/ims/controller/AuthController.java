@@ -1,7 +1,7 @@
 package me.batizhao.ims.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.ims.domain.LoginDTO;
 import me.batizhao.ims.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;

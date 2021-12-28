@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.system.domain.Log;
 import me.batizhao.system.mapper.LogMapper;
 import me.batizhao.system.service.LogService;

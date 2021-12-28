@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 #if($template == "tree")
-import me.batizhao.common.domain.TreeNode;
+import me.batizhao.common.core.domain.TreeNode;
 #end
 
 import java.io.Serializable;
