@@ -1,7 +1,7 @@
 package me.batizhao.admin.security;
 
 import com.nimbusds.jwt.SignedJWT;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.constant.SecurityConstants;
 import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.common.core.util.RedisUtil;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/12/17
  */
 @Component
+@Slf4j
 public class TokenService {
 
     @Autowired
@@ -32,13 +34,17 @@ public class TokenService {
      *
      * @return 用户信息
      */
-    @SneakyThrows
     public PecadoUser getUser(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.isNotEmpty(header) && header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
             String token = header.replace(SecurityConstants.TOKEN_PREFIX, "");
-            SignedJWT signed = SignedJWT.parse(token);
-            String uid = signed.getJWTClaimsSet().getStringClaim(SecurityConstants.LOGIN_KEY_UID);
+            String uid = null;
+            try {
+                SignedJWT signed = SignedJWT.parse(token);
+                uid = signed.getJWTClaimsSet().getStringClaim(SecurityConstants.LOGIN_KEY_UID);
+            } catch (ParseException e) {
+                log.info("Error in parsing token：->", e);
+            }
             return redisUtil.getCacheObject(SecurityConstants.CACHE_LOGIN_KEY_UID + uid);
         }
         return null;
