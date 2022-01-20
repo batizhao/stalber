@@ -2,12 +2,12 @@ package me.batizhao.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.exception.TaskException;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.exception.TaskException;
+import me.batizhao.common.core.util.R;
 import me.batizhao.system.domain.SysJob;
 import me.batizhao.system.service.JobService;
 import org.quartz.SchedulerException;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-05-07
  */
-@Api(tags = "任务调度管理")
+@Tag(name = "任务调度管理")
 @RestController
 @Slf4j
 @Validated
@@ -45,7 +45,7 @@ public class JobController {
      * @return R
      * @real_return R<Page<Job>>
      */
-    @ApiOperation(value = "分页查询任务调度")
+    @Operation(description = "分页查询任务调度")
     @GetMapping("/jobs")
     @PreAuthorize("@pms.hasPermission('system:job:admin')")
     public R<IPage<SysJob>> handleJobs(Page<SysJob> page, SysJob job) {
@@ -56,7 +56,7 @@ public class JobController {
      * 查询任务调度
      * @return R<List<Job>>
      */
-    @ApiOperation(value = "查询任务调度")
+    @Operation(description = "查询任务调度")
     @GetMapping("/job")
     @PreAuthorize("@pms.hasPermission('system:job:admin')")
     public R<List<SysJob>> handleJobs(SysJob job) {
@@ -68,10 +68,10 @@ public class JobController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询任务调度")
+    @Operation(description = "通过id查询任务调度")
     @GetMapping("/job/{id}")
     @PreAuthorize("@pms.hasPermission('system:job:admin')")
-    public R<SysJob> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<SysJob> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(jobService.findById(id));
     }
 
@@ -80,10 +80,10 @@ public class JobController {
      * @param job 任务调度
      * @return R
      */
-    @ApiOperation(value = "添加或编辑任务调度")
+    @Operation(description = "添加或编辑任务调度")
     @PostMapping("/job")
     @PreAuthorize("@pms.hasPermission('system:job:add') or @pms.hasPermission('system:job:edit')")
-    public R<SysJob> handleSaveOrUpdate(@Valid @ApiParam(value = "任务调度" , required = true) @RequestBody SysJob job) throws SchedulerException, TaskException {
+    public R<SysJob> handleSaveOrUpdate(@Valid @Parameter(name = "任务调度" , required = true) @RequestBody SysJob job) throws SchedulerException, TaskException {
         return R.ok(jobService.saveOrUpdateJob(job));
     }
 
@@ -92,10 +92,10 @@ public class JobController {
      * @param ids ID串
      * @return R
      */
-    @ApiOperation(value = "通过id删除任务调度")
+    @Operation(description = "通过id删除任务调度")
     @DeleteMapping("/job")
     @PreAuthorize("@pms.hasPermission('system:job:delete')")
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(jobService.removeByIds(ids));
     }
 
@@ -105,10 +105,10 @@ public class JobController {
      * @param job 任务调度
      * @return R
      */
-    @ApiOperation(value = "更新任务调度状态")
+    @Operation(description = "更新任务调度状态")
     @PostMapping("/job/status")
     @PreAuthorize("@pms.hasPermission('system:job:admin')")
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "任务调度" , required = true) @RequestBody SysJob job) throws SchedulerException {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "任务调度" , required = true) @RequestBody SysJob job) throws SchedulerException {
         return R.ok(jobService.updateStatus(job));
     }
 
@@ -118,10 +118,10 @@ public class JobController {
      * @param job 任务调度
      * @return R
      */
-    @ApiOperation(value = "立即执行任务")
+    @Operation(description = "立即执行任务")
     @PostMapping("/job/run")
     @PreAuthorize("@pms.hasPermission('system:job:admin')")
-    public R<Boolean> handleJobRun(@ApiParam(value = "任务调度" , required = true) @RequestBody SysJob job) throws SchedulerException {
+    public R<Boolean> handleJobRun(@Parameter(name = "任务调度" , required = true) @RequestBody SysJob job) throws SchedulerException {
         return R.ok(jobService.run(job));
     }
 

@@ -6,14 +6,11 @@ pecado:
   jwt:
     private-key: classpath:private.key
     public-key: classpath:public.key
+    expire: 30
   swagger:
-    enabled: true
-    title: Pecado API
-    basePackage: me.batizhao
+    title: Stalber API
+    description: 本页面使用 springdoc-openapi 构建
     version: @project.version@
-    license: Powered By batizhao
-    licenseUrl: https://batizhao.github.io
-    terms-of-service-url: https://batizhao.github.io
     contact:
       name: batizhao
       email: zhaobati@gmail.com
@@ -92,6 +89,12 @@ spring:
   web:
     locale: zh_CN
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
 logging:
   level:
     org.springframework:
@@ -109,15 +112,18 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: root
-    url: jdbc:mysql://172.31.21.180:30306/stalber-test?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    password: password
+    url: jdbc:mysql://127.0.0.1:3306/stalber-test?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
 
 pecado:
   captcha:
     enabled: false
+  jwt:
+    expire: 5
   token:
-    admin: "Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJyb2xlX2lkIjpbIjEiLCIyIl0sImV4cCI6MTY2NzUxMTk2NiwiZGVwdF9pZCI6WyIxIl0sImlhdCI6MTYzMTUxMTk2NiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiIsImRwOmNvZGU6YWRtaW4iLCJkcDpjb2RlOmRlbGV0ZSIsImRwOmNvZGU6ZWRpdCIsImRwOmNvZGU6Z2VuIiwiZHA6Y29kZTppbXBvcnQiLCJkcDpjb2RlOnByZXZpZXciLCJkcDpjb2RlOnN5bmMiLCJkcDpkczphZGQiLCJkcDpkczphZG1pbiIsImRwOmRzOmRlbGV0ZSIsImRwOmRzOmVkaXQiLCJkcDpmb3JtOmFkZCIsImRwOmZvcm06YWRtaW4iLCJkcDpmb3JtOmRlbGV0ZSIsImRwOmZvcm06ZWRpdCIsImltczpkZXBhcnRtZW50OmFkZCIsImltczpkZXBhcnRtZW50OmFkbWluIiwiaW1zOmRlcGFydG1lbnQ6ZGVsZXRlIiwiaW1zOmRlcGFydG1lbnQ6ZWRpdCIsImltczptZW51OmFkZCIsImltczptZW51OmFkbWluIiwiaW1zOm1lbnU6ZGVsZXRlIiwiaW1zOm1lbnU6ZWRpdCIsImltczpwb3N0OmFkZCIsImltczpwb3N0OmFkbWluIiwiaW1zOnBvc3Q6ZGVsZXRlIiwiaW1zOnBvc3Q6ZWRpdCIsImltczpyb2xlOmFkZCIsImltczpyb2xlOmFkbWluIiwiaW1zOnJvbGU6ZGVsZXRlIiwiaW1zOnJvbGU6ZWRpdCIsImltczp1c2VyOmFkZCIsImltczp1c2VyOmFkbWluIiwiaW1zOnVzZXI6ZGVsZXRlIiwiaW1zOnVzZXI6ZWRpdCIsImltczp1c2VyOmV4cG9ydCIsImltczp1c2VyOmltcG9ydCIsIm9hOmNvbW1lbnQ6YWRkIiwib2E6Y29tbWVudDphZG1pbiIsIm9hOmludm9pY2U6YWRkIiwib2E6aW52b2ljZTphZG1pbiIsIm9hOmludm9pY2U6ZGVsZXRlIiwib2E6aW52b2ljZTplZGl0Iiwib2E6dGFzazphZG1pbiIsInN5c3RlbTpkaWN0OmFkZCIsInN5c3RlbTpkaWN0OmFkbWluIiwic3lzdGVtOmRpY3Q6ZGVsZXRlIiwic3lzdGVtOmRpY3Q6ZWRpdCIsInN5c3RlbTpqb2I6YWRkIiwic3lzdGVtOmpvYjphZG1pbiIsInN5c3RlbTpqb2I6ZGVsZXRlIiwic3lzdGVtOmpvYjplZGl0Iiwic3lzdGVtOmxvZzphZG1pbiIsInN5c3RlbTpsb2c6Y2xlYW4iLCJzeXN0ZW06bG9nOmRlbGV0ZSIsInN5c3RlbTpsb2c6ZXhwb3J0Il0sInVzZXJuYW1lIjoiYWRtaW4ifQ.Nt_Kz5e_2zkiHo136cFUTuVIPyW6tXaEZygv4C7KVUm-Ez43KYXF2ZGtif-_R3SthdVCa4muLBlc_RL2qSGAfIXaq3QDwiXBwIneieDXUxuexKc31tyyE0k6G6fEgcFr72sfLj6xIHg5mkvGk3BgTQmjT-_BAL0N8RAmLBYfobL5j2UrVt_WnxvSszPgAse7IVp39z9VsXE8Kg_i1w29EvE6c_o82T7lE1NFw45VUDczadL853jeqFxXAXlPGBwH5JPSYaMCnKrH909nCah4KCOGGXPw_tY_BStUNzLjS3gmOcl6R1_9m8Xn2Ojk2alfWZSav6gqFJGulJoENlp-ZQ"
-    user: "Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJyb2xlX2lkIjpbIjEiXSwiZXhwIjoxNjY3NTEyMDM2LCJkZXB0X2lkIjpbIjIiXSwiaWF0IjoxNjMxNTEyMDM2LCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiLCJvYTpjb21tZW50OmFkbWluIiwib2E6aW52b2ljZTphZG1pbiIsIm9hOnRhc2s6YWRtaW4iXSwidXNlcm5hbWUiOiJ0b20ifQ.G_t0Batnq1kNBkQ6XUb2mA8xbJAigwKDqGRly-WRwOlVjXaYJKSdg2F0hsAJdL8z2UKW18HbCkQyXeeGpiZD3dQFyoGSUpJ7bsJ8Wb_hwgfR2JE4ZQxC5aMTZ8QbiWJN_wKX9NDgrtMAE-jQkpOt3FQxyyY470f7qAaXE7K_iH4-vl4ew-30ZAyoQhmydWVuGgYP4Ps4VXY1zsAFc2oskLsuRsbuN3qIWfMLd7CE2VeYy-oxNlCBp--KW77fv1aCEmlv3vxs4teByX1-LswO64-lXDfoVqN5vgs40ujNxaus_S6n2HnLh0YSDETlWmimPNNDCTb71LsNRGuz87czxg"
+    admin: Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiJhN2YwYWNiNy03M2MzLTQzOWItOTIwZi1kYTU3ZTIwZGYyM2EifQ.fgkSJLU7Vu2O8cf0Yhfk_lha_VEluGkqXYIPdEs3MaY2T5SyHPyyL5sF_n_Xe3phlE2zNnztKJNZk-sX_Y5rAD35ziTc7we1LcyxmBPLywrvo8T0GzVwazJHJ6wbdhlqxOv-F1-5NUNX23rT8aV4Dx5Ft7dLQ1irVeXG0iVTMSJlEO4lbgbWNgtatGMK1Lmi74KP4TgWqH2u98sgShquly0irApLZ_Wp6IUmnC81htMr0fpG972Wu6smFOMorBAQcNxzh3j8Or_R52YkXjiz73qtqnqjHjOzbJOu6gpL-bG2qsJ5V3URcLTc46micnV3iJVRXxy8Arer2QpSZqOf3g
+    user: Bearer eyJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiI0ZGY4Mjg3NC1kNzljLTQzNjQtYTdlOC04NDhhNGM2NWRhOTUifQ.ftOVCnP3sWmak-D49VFEG_P9fsVuxf87GuUZHRHW0ilwgyTMgdcGykNfBX8Kqw0_A53_ppSLx21lDV-Yzt7HtYRoVFWepca4aVsbWXXfU2CiG-g3NVixpxealGhmZbHZpKCpYuUYMzR82EP-VYu6AQO389qk5wln0XoROqWOA7HvhA-IYIOPLOnZaawJR3CyGZJnnt8Sci3FJ6U5qc_mRwSL19qRVWQvFPxpoS-vPcJkux3rxpi7W5KxUgsq_R2Xuxh_7jG_uPBQG7TEOounX4mTMuQB8b6FVeh4GYUDaEjx6PLbdW8QkmIe7JbEo6p6QpuJzKGr9I_V5IoXQwdTfw
+
 ---
 
 spring:

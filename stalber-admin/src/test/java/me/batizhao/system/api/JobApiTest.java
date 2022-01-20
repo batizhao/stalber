@@ -2,8 +2,8 @@ package me.batizhao.system.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
-import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.constant.ScheduleConstants;
+import me.batizhao.common.core.constant.ResultEnum;
+import me.batizhao.common.core.constant.ScheduleConstants;
 import me.batizhao.system.domain.SysJob;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

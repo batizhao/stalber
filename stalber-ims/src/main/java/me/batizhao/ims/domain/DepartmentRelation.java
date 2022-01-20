@@ -1,8 +1,7 @@
 package me.batizhao.ims.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -18,7 +17,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "部门依赖关系")
+@Schema(description = "部门依赖关系")
 @TableName("department_relation")
 public class DepartmentRelation implements Serializable {
 
@@ -28,13 +27,13 @@ public class DepartmentRelation implements Serializable {
     /**
      * 祖先
      */
-    @ApiModelProperty(value="祖先")
+    @Schema(description="祖先")
     private Integer ancestor;
 
     /**
      * 后代
      */
-    @ApiModelProperty(value="后代")
+    @Schema(description="后代")
     private Integer descendant;
 
 }

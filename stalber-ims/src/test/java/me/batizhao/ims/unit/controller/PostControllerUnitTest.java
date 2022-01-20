@@ -3,7 +3,7 @@ package me.batizhao.ims.unit.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.ims.controller.PostController;
 import me.batizhao.ims.domain.Post;
 import me.batizhao.ims.service.PostService;

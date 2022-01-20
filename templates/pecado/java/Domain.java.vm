@@ -1,13 +1,12 @@
 package ${package}.${moduleName}.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 #if($template == "tree")
-import me.batizhao.common.domain.TreeNode;
+import me.batizhao.common.core.domain.TreeNode;
 #end
 
 import java.io.Serializable;
@@ -22,7 +21,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "${comments}")
+@Schema(description = "${comments}")
 @TableName("${tableName}")
 public class ${className}#if($template == "tree") extends TreeNode#end implements Serializable {
 
@@ -36,7 +35,7 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
     /**
      * $column.columnComment
      */
-    @ApiModelProperty(value="$column.columnComment")
+    @Schema(description="$column.columnComment")
     private $column.javaType $column.javaField;
         #end
     #else
@@ -44,7 +43,7 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
     /**
      * $column.columnComment
      */
-    @ApiModelProperty(value="$column.columnComment")
+    @Schema(description="$column.columnComment")
     private $column.javaType $column.javaField;
     #end
 #end
@@ -60,7 +59,7 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
     /**
      * 流程属性
      */
-    @ApiModelProperty(value="流程属性")
+    @Schema(description="流程属性")
     private transient Task task;
 #end
 }

@@ -1,10 +1,10 @@
 package me.batizhao.dp.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.dp.domain.CodeMeta;
 import me.batizhao.dp.service.CodeMetaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-03-19
  */
-@Api(tags = "生成代码元数据管理")
+@Tag(name = "生成代码元数据管理")
 @RestController
 @Slf4j
 @Validated
@@ -40,9 +40,9 @@ public class CodeMetaController {
      * @param codeId code.id
      * @return R
      */
-    @ApiOperation(value = "通过 codeId 查询生成代码元数据")
+    @Operation(description = "通过 codeId 查询生成代码元数据")
     @GetMapping(value = "/code/meta", params = "codeId")
-    public R<List<CodeMeta>> handleCode(@ApiParam(value = "codeId" , required = true) @RequestParam @Min(1) Long codeId) {
+    public R<List<CodeMeta>> handleCode(@Parameter(name = "codeId" , required = true) @RequestParam @Min(1) Long codeId) {
         return R.ok(codeMetaService.findByCodeId(codeId));
     }
 

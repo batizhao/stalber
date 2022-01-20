@@ -1,7 +1,6 @@
 package me.batizhao.dp.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "表单")
+@Schema(description = "表单")
 public class Form implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,30 +25,30 @@ public class Form implements Serializable {
     /**
      * id
      */
-    @ApiModelProperty(value="id")
+    @Schema(description="id")
     private Long id;
 
     /**
      * 表单key
      */
-    @ApiModelProperty(value="表单key")
+    @Schema(description="表单key")
     private String formKey;
 
     /**
      * 表单名称
      */
-    @ApiModelProperty(value="表单名称")
+    @Schema(description="表单名称")
     private String name;
 
     /**
      * 表单元数据
      */
-    @ApiModelProperty(value="表单元数据")
+    @Schema(description="表单元数据")
     private String metadata;
 
     /**
      * 表单描述
      */
-    @ApiModelProperty(value="表单描述")
+    @Schema(description="表单描述")
     private String description;
 }

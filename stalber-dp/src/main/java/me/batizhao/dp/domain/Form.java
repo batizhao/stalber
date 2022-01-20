@@ -1,8 +1,7 @@
 package me.batizhao.dp.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "表单")
+@Schema(description = "表单")
 @TableName("form")
 public class Form implements Serializable {
 
@@ -28,49 +27,49 @@ public class Form implements Serializable {
     /**
      * id
      */
-    @ApiModelProperty(value="id")
+    @Schema(description="id")
     private Long id;
 
     /**
      * 表单key
      */
-    @ApiModelProperty(value="表单key")
+    @Schema(description="表单key")
     private String formKey;
 
     /**
      * 表单名称
      */
-    @ApiModelProperty(value="表单名称")
+    @Schema(description="表单名称")
     private String name;
 
     /**
      * 表单元数据
      */
-    @ApiModelProperty(value="表单元数据")
+    @Schema(description="表单元数据")
     private String metadata;
 
     /**
      * 表单描述
      */
-    @ApiModelProperty(value="表单描述")
+    @Schema(description="表单描述")
     private String description;
 
     /**
      * 状态
      */
-    @ApiModelProperty(value="状态")
+    @Schema(description="状态")
     private String status;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value="创建时间")
+    @Schema(description="创建时间")
     private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    @ApiModelProperty(value="修改时间")
+    @Schema(description="修改时间")
     private LocalDateTime updateTime;
 
     

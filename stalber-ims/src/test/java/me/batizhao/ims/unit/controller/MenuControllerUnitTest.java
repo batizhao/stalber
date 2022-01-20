@@ -1,11 +1,11 @@
 package me.batizhao.ims.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.MenuTypeEnum;
-import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.domain.PecadoUser;
-import me.batizhao.common.domain.TreeNode;
-import me.batizhao.common.util.SecurityUtils;
+import me.batizhao.common.core.constant.MenuTypeEnum;
+import me.batizhao.common.core.constant.ResultEnum;
+import me.batizhao.common.core.domain.PecadoUser;
+import me.batizhao.common.core.domain.TreeNode;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.controller.MenuController;
 import me.batizhao.ims.domain.Menu;
 import me.batizhao.ims.service.MenuService;
@@ -16,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -69,7 +69,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenNothing_whenFindMenuTree4Me_thenSuccess() throws Exception {
-        PecadoUser pecadoUser = new PecadoUser(1L, Collections.singletonList("2"), Collections.singletonList("1"), "zhangsan", "N_A", true, true, true, true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", Collections.singletonList("2"), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
 
         List<Menu> trees = new ArrayList<>();
         Menu menu = menuList.get(0);
@@ -82,7 +82,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
         try (MockedStatic<SecurityUtils> mockStatic = mockStatic(SecurityUtils.class)) {
             mockStatic.when(SecurityUtils::getUser).thenReturn(pecadoUser);
             SecurityUtils.getUser();
-            mockStatic.verify(times(1), SecurityUtils::getUser);
+//            mockStatic.verify(times(1), SecurityUtils::getUser);
 
             when(menuService.findMenuTreeByUserId(anyLong())).thenReturn(trees);
 

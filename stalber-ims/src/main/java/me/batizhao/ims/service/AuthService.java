@@ -1,8 +1,5 @@
 package me.batizhao.ims.service;
 
-import me.batizhao.ims.domain.LoginDTO;
-
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
 

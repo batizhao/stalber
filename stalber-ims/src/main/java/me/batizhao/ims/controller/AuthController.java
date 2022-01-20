@@ -1,7 +1,7 @@
 package me.batizhao.ims.controller;
 
-import io.swagger.annotations.Api;
-import me.batizhao.common.util.R;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import me.batizhao.common.core.util.R;
 import me.batizhao.ims.domain.LoginDTO;
 import me.batizhao.ims.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author batizhao
  * @date 2021/8/18
  */
-@Api(tags = "认证管理")
+@Tag(name = "认证管理")
 @RestController
 @Validated
 public class AuthController {

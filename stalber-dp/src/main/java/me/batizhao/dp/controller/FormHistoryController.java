@@ -1,10 +1,10 @@
 package me.batizhao.dp.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.dp.domain.FormHistory;
 import me.batizhao.dp.service.FormHistoryService;
 import me.batizhao.dp.service.FormService;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-08-12
  */
-@Api(tags = "表单历史记录管理")
+@Tag(name = "表单历史记录管理")
 @RestController
 @Slf4j
 @Validated
@@ -41,9 +41,9 @@ public class FormHistoryController {
      * @param formKey
      * @return R
      */
-    @ApiOperation(value = "通过key查询表单历史记录")
+    @Operation(description = "通过key查询表单历史记录")
     @GetMapping("/form/history/{formKey}")
-    public R<List<FormHistory>> handleId(@ApiParam(value = "formKey" , required = true) @PathVariable("formKey") String formKey) {
+    public R<List<FormHistory>> handleId(@Parameter(name = "formKey" , required = true) @PathVariable("formKey") String formKey) {
         return R.ok(formHistoryService.findByFormKey(formKey));
     }
 
@@ -52,10 +52,10 @@ public class FormHistoryController {
      * @param id
      * @return R
      */
-    @ApiOperation(value = "通过id恢复表单历史记录")
+    @Operation(description = "通过id恢复表单历史记录")
     @PostMapping("/form/history/{id}")
     @PreAuthorize("@pms.hasPermission('dp:form:edit')")
-    public R<Boolean> handleDelete(@ApiParam(value = "ID" , required = true) @PathVariable @Min(1) Long id) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID" , required = true) @PathVariable @Min(1) Long id) {
         return R.ok(formService.revertFormById(id));
     }
 

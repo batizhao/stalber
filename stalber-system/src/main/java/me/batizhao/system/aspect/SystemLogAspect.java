@@ -1,13 +1,13 @@
 package me.batizhao.system.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.SecurityUtils;
-import me.batizhao.common.util.SpringContextHolder;
+import me.batizhao.common.core.annotation.SystemLog;
+import me.batizhao.common.core.util.SecurityUtils;
+import me.batizhao.common.core.util.SpringContextHolder;
 import me.batizhao.system.domain.Log;
 import me.batizhao.system.event.SystemLogEvent;
 import org.apache.commons.lang3.ArrayUtils;
@@ -84,9 +84,9 @@ public class SystemLogAspect {
 
         if (StringUtils.isNotBlank(systemLog.value())) {
             logDTO.setDescription(systemLog.value());
-        } else if (method.isAnnotationPresent(ApiOperation.class)) {
-            ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
-            logDTO.setDescription(apiOperation.value());
+        } else if (method.isAnnotationPresent(Operation.class)) {
+            Operation apiOperation = method.getAnnotation(Operation.class);
+            logDTO.setDescription(apiOperation.description());
         } else {
             logDTO.setDescription("请使用 @ApiOperation 或者 @SystemLog 的 value 属性。");
         }

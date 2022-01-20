@@ -1,12 +1,12 @@
 package me.batizhao.ims.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.annotation.SystemLog;
-import me.batizhao.common.util.R;
-import me.batizhao.common.util.SecurityUtils;
+import me.batizhao.common.core.annotation.SystemLog;
+import me.batizhao.common.core.util.R;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.domain.Menu;
 import me.batizhao.ims.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author batizhao
  * @since 2020-03-14
  **/
-@Api(tags = "菜单管理")
+@Tag(name = "菜单管理")
 @RestController
 @Slf4j
 @Validated
@@ -43,7 +43,7 @@ public class MenuController {
      *
      * @return 菜单树
      */
-    @ApiOperation(value = "查询当前用户菜单")
+    @Operation(description = "查询当前用户菜单")
     @GetMapping("/menu/me")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree4Me() {
@@ -57,10 +57,10 @@ public class MenuController {
      *
      * @return R<List<Menu>>
      */
-    @ApiOperation(value = "根据角色查询菜单")
+    @Operation(description = "根据角色查询菜单")
     @GetMapping(value = "/menu", params = "roleId")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
-    public R<List<Menu>> handleMenusByRoleId(@ApiParam(value = "菜单ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
+    public R<List<Menu>> handleMenusByRoleId(@Parameter(name = "菜单ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
         return R.ok(menuService.findMenusByRoleId(roleId));
     }
 
@@ -70,7 +70,7 @@ public class MenuController {
      *
      * @return R<List<Menu>>
      */
-    @ApiOperation(value = "查询所有菜单")
+    @Operation(description = "查询所有菜单")
     @GetMapping("/menus")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree(Menu menu) {
@@ -82,10 +82,10 @@ public class MenuController {
      * @param id 菜单 ID
      * @return R<Menu>
      */
-    @ApiOperation(value = "通过id查询菜单")
+    @Operation(description = "通过id查询菜单")
     @GetMapping("/menu/{id}")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
-    public R<Menu> handleMenu(@ApiParam(value = "菜单ID", required = true) @PathVariable("id") @Min(1) Integer id) {
+    public R<Menu> handleMenu(@Parameter(name = "菜单ID", required = true) @PathVariable("id") @Min(1) Integer id) {
         return R.ok(menuService.findMenuById(id));
     }
 
@@ -96,11 +96,11 @@ public class MenuController {
      * @param menu 菜单属性
      * @return R<Menu>
      */
-    @ApiOperation(value = "添加或修改菜单")
+    @Operation(description = "添加或修改菜单")
     @PostMapping("/menu")
     @PreAuthorize("@pms.hasPermission('ims:menu:add') or @pms.hasPermission('ims:menu:edit')")
     @SystemLog
-    public R<Menu> handleSaveOrUpdate(@Valid @ApiParam(value = "菜单", required = true) @RequestBody Menu menu) {
+    public R<Menu> handleSaveOrUpdate(@Valid @Parameter(name = "菜单", required = true) @RequestBody Menu menu) {
         return R.ok(menuService.saveOrUpdateMenu(menu));
     }
 
@@ -110,11 +110,11 @@ public class MenuController {
      *
      * @return R<String>
      */
-    @ApiOperation(value = "删除菜单")
+    @Operation(description = "删除菜单")
     @DeleteMapping("/menu")
     @PreAuthorize("@pms.hasPermission('ims:menu:delete')")
     @SystemLog
-    public R<String> handleDelete(@ApiParam(value = "菜单ID串", required = true) @RequestParam Integer id) {
+    public R<String> handleDelete(@Parameter(name = "菜单ID串", required = true) @RequestParam Integer id) {
         return menuService.deleteById(id) ? R.ok() : R.failed("There are sub menus that cannot be deleted!");
     }
 
@@ -124,11 +124,11 @@ public class MenuController {
      * @param menu 菜单
      * @return R<Boolean>
      */
-    @ApiOperation(value = "更新菜单状态")
+    @Operation(description = "更新菜单状态")
     @PostMapping("/menu/status")
     @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
     @SystemLog
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "菜单" , required = true) @RequestBody Menu menu) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "菜单" , required = true) @RequestBody Menu menu) {
         return R.ok(menuService.updateStatus(menu));
     }
 

@@ -2,7 +2,7 @@ package me.batizhao.oa.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.oa.domain.Invoice;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.terrace.dto.CandidateDTO;

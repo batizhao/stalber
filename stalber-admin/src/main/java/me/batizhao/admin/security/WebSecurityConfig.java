@@ -1,7 +1,6 @@
 package me.batizhao.admin.security;
 
 import lombok.SneakyThrows;
-import me.batizhao.common.constant.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.security.interfaces.RSAPublicKey;
 
@@ -34,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedHandler accessDeniedHandler;
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private JwtAuthenticationTokenFilter authenticationTokenFilter;
 
     @Value("${pecado.jwt.public-key}")
     RSAPublicKey key;
@@ -44,16 +44,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests(authz -> authz
                 .antMatchers("/uaa/token", "/uaa/captcha",
                         "/actuator/**",
-                        "/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**",
+                        "/swagger-ui/**", "/v2/api-docs/**", "/swagger-resources/**", "/webjars/**",
+                        "/swagger-ui.html", "/v3/api-docs/**",
                         "/system/file/image/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()))
+//            .oauth2ResourceServer(oauth2 -> oauth2.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
-            );
+            ).addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
@@ -63,16 +64,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return JwtAuthenticationConverter
      */
-    private JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        // 去掉 SCOPE_ 的前缀
-        authoritiesConverter.setAuthorityPrefix("");
-        // 从jwt claim 中那个字段获取权限，模式是从 scope 或 scp 字段中获取
-        authoritiesConverter.setAuthoritiesClaimName(SecurityConstants.DETAILS_AUTHORITIES);
-        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
-        return converter;
-    }
+//    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+//        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+//        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+//        // 去掉 SCOPE_ 的前缀
+//        authoritiesConverter.setAuthorityPrefix("");
+//        // 从jwt claim 中那个字段获取权限，模式是从 scope 或 scp 字段中获取
+//        authoritiesConverter.setAuthoritiesClaimName(SecurityConstants.DETAILS_AUTHORITIES);
+//        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+//        return converter;
+//    }
 
     @Bean
     JwtDecoder jwtDecoder() {

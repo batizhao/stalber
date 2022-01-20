@@ -1,8 +1,7 @@
 package me.batizhao.ims.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -18,7 +17,7 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "部门领导关联")
+@Schema(description = "部门领导关联")
 @TableName("department_leader")
 public class DepartmentLeader implements Serializable {
 
@@ -27,25 +26,25 @@ public class DepartmentLeader implements Serializable {
     /**
      * 部门ID
      */
-    @ApiModelProperty(value="部门ID")
+    @Schema(description="部门ID")
     private Long departmentId;
 
     /**
      * 领导ID
      */
-    @ApiModelProperty(value="领导ID")
+    @Schema(description="领导ID")
     private Long leaderUserId;
 
     /**
      * 类型（Z正 F副）
      */
-    @ApiModelProperty(value="类型（Z正 F副）")
+    @Schema(description="类型（Z正 F副）")
     private String type;
 
     /**
      * 排序
      */
-    @ApiModelProperty(value="排序")
+    @Schema(description="排序")
     private Long sort;
 
 }

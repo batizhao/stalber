@@ -58,9 +58,12 @@
 
 - 运行 StalberAdminApplication
 
-- Swagger 地址：http://localhost:8888/swagger-ui/
+- Swagger 地址：http://localhost:8888/swagger-ui.html
 
-  > 先用下边的方法拿到 access_token，然后使用  `Bearer access_token` 获取授权才能访问 API。
+  因为在新版本的 spring boot 中，springfox bug 太多，并且好久没有更新。这里使用 springdoc-openapi-ui 替换了 springfox-boot-starter。在使用中，annotation 部分有一些差异。
+  
+  >
+  > 先用下边的方法拿到 access_token，然后使用  `access_token` 获取授权才能访问 API。
   >
   > ```curl -X POST -d '{"username":"admin","password":"123456"}' -H "Content-type: application/json" http://localhost:8888/uaa/token```
 
@@ -77,7 +80,7 @@
 
 遵循以下规范：
 
-* 在 pecado.file.code-template-location 指定模板根目录（可以是任意路径）；
+* 在 pecado.code.template-url 指定模板根目录；
 * common、commons 为保留目录，把需要 parse 或者 include 的文件放在这里，不会出现在生成代码清单中。
 * 模板文件命名规范为  aaa.bbb.ccc，第一部分描述功能（Controller、Service），bbb 为代码文件类型（java、xml、js、vue），ccc 必须使用 `vm`。
 
@@ -219,19 +222,19 @@
 /**
  * @mock @cname
  */
-@ApiModelProperty(value = "姓名", example = "张三")
+@Schema(description = "姓名", example = "张三")
 @NotBlank
 private String name;
 
 /**
  * @mock @word(3,30)
  */
-@ApiModelProperty(value = "用户名", example = "zhangsan")
+@Schema(description = "用户名", example = "zhangsan")
 @NotBlank
 @Size(min = 3, max = 30)
 private String username;
 
-@ApiModelProperty(value = "邮箱", example = "zhangsan@qq.com")
+@Schema(description = "邮箱", example = "zhangsan@qq.com")
 @NotBlank
 @Email
 private String email;
@@ -245,7 +248,7 @@ private String email;
  * @module 这里是 YApi 项目名称
  *
  */
-@Api(tags = "接口分类名称")
+@Tag(name = "接口分类名称")
 @RestController
 @RequestMapping("user")
 public class UserController
@@ -260,9 +263,9 @@ public class UserController
  * @param username 用户名
  * @return 用户详情
  */
-@ApiOperation(value = "接口名称")
+@Operation(description = "接口名称")
 @GetMapping("username")
-public R<UserInfoVO> handleUsername(@ApiParam(value = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
+public R<UserInfoVO> handleUsername(@Parameter(name = "用户名", required = true) @RequestParam @Size(min = 3) String username) {
     User user = userService.findByUsername(username);
     return R.ok(userService.getUserInfo(user.getId()));
 }

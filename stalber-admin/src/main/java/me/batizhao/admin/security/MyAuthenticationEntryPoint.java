@@ -2,8 +2,8 @@ package me.batizhao.admin.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.constant.ResultEnum;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.constant.ResultEnum;
+import me.batizhao.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.InsufficientAuthenticationException;

@@ -1,12 +1,11 @@
 package me.batizhao.system.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import me.batizhao.common.domain.TreeNode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "任务调度")
+@Schema(description = "任务调度")
 @TableName("job")
 public class SysJob implements Serializable {
 
@@ -30,61 +29,61 @@ public class SysJob implements Serializable {
     /**
      * id
      */
-    @ApiModelProperty(value="id")
+    @Schema(description="id")
     private Long id;
         
     /**
      * 名称
      */
-    @ApiModelProperty(value="名称")
+    @Schema(description="名称")
     private String name;
         
     /**
      * 分组
      */
-    @ApiModelProperty(value="分组")
+    @Schema(description="分组")
     private String jobGroup;
         
     /**
      * 调用目标
      */
-    @ApiModelProperty(value="调用目标")
+    @Schema(description="调用目标")
     private String invokeTarget;
         
     /**
      * cron表达式
      */
-    @ApiModelProperty(value="cron表达式")
+    @Schema(description="cron表达式")
     private String cronExpression;
         
     /**
      * 策略（ignore/fire/nothing）
      */
-    @ApiModelProperty(value="策略（ignore/fire/nothing）")
+    @Schema(description="策略（ignore/fire/nothing）")
     private String misfirePolicy;
         
     /**
      * 是否并发（yes/no）
      */
-    @ApiModelProperty(value="是否并发（yes/no）")
+    @Schema(description="是否并发（yes/no）")
     private String concurrent;
         
     /**
      * 状态
      */
-    @ApiModelProperty(value="状态")
+    @Schema(description="状态")
     private String status;
         
     /**
      * 创建时间
      */
-    @ApiModelProperty(value="创建时间")
+    @Schema(description="创建时间")
     private LocalDateTime createTime;
         
     /**
      * 修改时间
      */
-    @ApiModelProperty(value="修改时间")
+    @Schema(description="修改时间")
     private LocalDateTime updateTime;
     
 }

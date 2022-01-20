@@ -1,11 +1,11 @@
 package me.batizhao.system.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.system.domain.File;
 import me.batizhao.system.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.net.URLConnection;
  * @author batizhao
  * @date 2020/9/23
  */
-@Api(tags = "文件管理")
+@Tag(name = "文件管理")
 @RestController
 @Slf4j
 @RequestMapping("system")
@@ -41,7 +41,7 @@ public class FileController {
      * @param file 文件实体
      * @return File
      */
-    @ApiOperation(value = "插入文件")
+    @Operation(description = "插入文件")
     @PostMapping("/file/upload")
     public R<File> handleSave(@RequestParam("file") MultipartFile file) {
         return R.ok(fileService.upload(file));
@@ -55,9 +55,9 @@ public class FileController {
      * @return 返回图片详情
      */
     @SneakyThrows
-    @ApiOperation(value = "根据文件名显示图片")
+    @Operation(description = "根据文件名显示图片")
     @GetMapping("/file/image/{name:^.+\\.(?:jpeg|jpg|png|JPEG|JPG|PNG)$}")
-    public ResponseEntity<Resource> handleImageByName(@ApiParam(value = "图片名", required = true) @PathVariable("name") String name) {
+    public ResponseEntity<Resource> handleImageByName(@Parameter(name = "图片名", required = true) @PathVariable("name") String name) {
         Resource resource = fileService.load(name);
 
         java.io.File file = new java.io.File(name);

@@ -8,18 +8,17 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import me.batizhao.common.constant.PecadoConstants;
-import me.batizhao.common.constant.SecurityConstants;
-import me.batizhao.common.domain.PecadoUser;
-import me.batizhao.common.exception.StalberException;
-import me.batizhao.common.util.RedisUtil;
+import me.batizhao.common.core.constant.PecadoConstants;
+import me.batizhao.common.core.constant.SecurityConstants;
+import me.batizhao.common.core.domain.PecadoUser;
+import me.batizhao.common.core.exception.StalberException;
+import me.batizhao.common.core.util.RedisUtil;
 import me.batizhao.ims.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FastByteArrayOutputStream;
 
@@ -28,13 +27,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.interfaces.RSAPrivateKey;
-import java.time.Instant;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * @author batizhao
@@ -62,6 +57,9 @@ public class AuthServiceImpl implements AuthService {
     @Value("${pecado.jwt.private-key}")
     RSAPrivateKey key;
 
+    @Value("${pecado.jwt.expire:30}")
+    private int expire;
+
     @Autowired
     private RedisUtil redisUtil;
 
@@ -75,27 +73,20 @@ public class AuthServiceImpl implements AuthService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        Instant now = Instant.now();
-        long expiry = 3600L;
-        // @formatter:off
-        List<String> authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
         PecadoUser user = (PecadoUser) authentication.getPrincipal();
 
+        String uid = IdUtil.fastUUID();
         JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                .issueTime(new Date(now.toEpochMilli()))
-                .expirationTime(new Date(now.plusSeconds(expiry).toEpochMilli()))
-                .claim(SecurityConstants.DETAILS_USER_ID, user.getUserId())
-                .claim(SecurityConstants.DETAILS_USERNAME, user.getUsername())
-                .claim(SecurityConstants.DETAILS_DEPT_ID, user.getDeptIds())
-                .claim(SecurityConstants.DETAILS_ROLE_ID, user.getRoleIds())
-                .claim(SecurityConstants.DETAILS_AUTHORITIES, authorities)
+                .claim(SecurityConstants.LOGIN_KEY_UID, uid)
                 .build();
-        // @formatter:on
+
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).build();
         SignedJWT jwt = new SignedJWT(header, claims);
+
+        user.setUid(uid);
+        user.setLoginTime(System.currentTimeMillis());
+        user.setExpireTime(user.getLoginTime() + expire * 60 * 1000L);
+        redisUtil.setCacheObject(SecurityConstants.CACHE_LOGIN_KEY_UID + uid, user, expire, TimeUnit.MINUTES);
 
         return sign(jwt).serialize();
     }

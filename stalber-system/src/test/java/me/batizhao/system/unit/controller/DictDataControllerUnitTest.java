@@ -2,7 +2,7 @@ package me.batizhao.system.unit.controller;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.system.controller.DictDataController;
 import me.batizhao.system.domain.DictData;
 import me.batizhao.system.service.DictDataService;

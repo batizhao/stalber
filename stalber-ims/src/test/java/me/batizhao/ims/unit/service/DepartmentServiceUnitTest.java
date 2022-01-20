@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.mapper.DepartmentMapper;
 import me.batizhao.ims.service.DepartmentLeaderService;

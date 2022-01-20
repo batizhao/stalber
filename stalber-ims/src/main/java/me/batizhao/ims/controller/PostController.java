@@ -2,11 +2,11 @@ package me.batizhao.ims.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.util.R;
+import me.batizhao.common.core.util.R;
 import me.batizhao.ims.domain.Post;
 import me.batizhao.ims.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-04-22
  */
-@Api(tags = "岗位管理")
+@Tag(name = "岗位管理")
 @RestController
 @Slf4j
 @Validated
@@ -43,7 +43,7 @@ public class PostController {
      * @return R
      * @real_return R<Page<Post>>
      */
-    @ApiOperation(value = "分页查询岗位")
+    @Operation(description = "分页查询岗位")
     @GetMapping("/posts")
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
     public R<IPage<Post>> handlePosts(Page<Post> page, Post post) {
@@ -54,7 +54,7 @@ public class PostController {
      * 查询岗位
      * @return R<List<Post>>
      */
-    @ApiOperation(value = "查询岗位")
+    @Operation(description = "查询岗位")
     @GetMapping("/post")
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
     public R<List<Post>> handleAllPost() {
@@ -66,10 +66,10 @@ public class PostController {
      * @param id id
      * @return R
      */
-    @ApiOperation(value = "通过id查询岗位")
+    @Operation(description = "通过id查询岗位")
     @GetMapping("/post/{id}")
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
-    public R<Post> handleId(@ApiParam(value = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<Post> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(postService.findById(id));
     }
 
@@ -78,10 +78,10 @@ public class PostController {
      * @param post 岗位
      * @return R
      */
-    @ApiOperation(value = "添加或编辑岗位")
+    @Operation(description = "添加或编辑岗位")
     @PostMapping("/post")
     @PreAuthorize("@pms.hasPermission('ims:post:add') or @pms.hasPermission('ims:post:edit')")
-    public R<Post> handleSaveOrUpdate(@Valid @ApiParam(value = "岗位" , required = true) @RequestBody Post post) {
+    public R<Post> handleSaveOrUpdate(@Valid @Parameter(name = "岗位" , required = true) @RequestBody Post post) {
         return R.ok(postService.saveOrUpdatePost(post));
     }
 
@@ -90,10 +90,10 @@ public class PostController {
      * @param ids ID串
      * @return R
      */
-    @ApiOperation(value = "通过id删除岗位")
+    @Operation(description = "通过id删除岗位")
     @DeleteMapping("/post")
     @PreAuthorize("@pms.hasPermission('ims:post:delete')")
-    public R<Boolean> handleDelete(@ApiParam(value = "ID串" , required = true) @RequestParam List<Long> ids) {
+    public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(postService.deleteByIds(ids));
     }
 
@@ -103,10 +103,10 @@ public class PostController {
      * @param post 岗位
      * @return R
      */
-    @ApiOperation(value = "更新岗位状态")
+    @Operation(description = "更新岗位状态")
     @PostMapping("/post/status")
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
-    public R<Boolean> handleUpdateStatus(@ApiParam(value = "岗位" , required = true) @RequestBody Post post) {
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "岗位" , required = true) @RequestBody Post post) {
         return R.ok(postService.updateStatus(post));
     }
 
@@ -117,10 +117,10 @@ public class PostController {
      * @param userId 用户id
      * @return R<List<Post>>
      */
-    @ApiOperation(value = "根据用户ID查询岗位")
+    @Operation(description = "根据用户ID查询岗位")
     @GetMapping(value = "/post", params = "userId")
     @PreAuthorize("@pms.hasPermission('ims:post:admin')")
-    public R<List<Post>> handlePostsByUserId(@ApiParam(value = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
+    public R<List<Post>> handlePostsByUserId(@Parameter(name = "用户ID", required = true) @RequestParam("userId") @Min(1) Long userId) {
         return R.ok(postService.findPostsByUserId(userId));
     }
 

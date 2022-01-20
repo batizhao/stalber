@@ -1,7 +1,7 @@
 package me.batizhao.ims.unit.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.batizhao.common.constant.ResultEnum;
+import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.ims.controller.DepartmentController;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.service.DepartmentLeaderService;

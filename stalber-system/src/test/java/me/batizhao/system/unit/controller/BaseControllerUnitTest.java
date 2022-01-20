@@ -1,6 +1,6 @@
 package me.batizhao.system.unit.controller;
 
-import me.batizhao.common.exception.WebExceptionHandler;
+import me.batizhao.common.core.exception.WebExceptionHandler;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

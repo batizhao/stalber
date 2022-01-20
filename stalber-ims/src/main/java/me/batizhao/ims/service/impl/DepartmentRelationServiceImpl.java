@@ -1,25 +1,16 @@
 package me.batizhao.ims.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.exception.NotFoundException;
-import me.batizhao.common.util.TreeUtil;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.domain.DepartmentRelation;
-import me.batizhao.ims.domain.UserDepartment;
 import me.batizhao.ims.mapper.DepartmentRelationMapper;
 import me.batizhao.ims.service.DepartmentRelationService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

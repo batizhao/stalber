@@ -1,13 +1,12 @@
 package me.batizhao.ims.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.annotation.DataScope;
-import me.batizhao.common.exception.NotFoundException;
-import me.batizhao.common.exception.StalberException;
-import me.batizhao.common.util.TreeUtil;
+import me.batizhao.common.core.annotation.DataScope;
+import me.batizhao.common.core.exception.NotFoundException;
+import me.batizhao.common.core.exception.StalberException;
+import me.batizhao.common.core.util.TreeUtil;
 import me.batizhao.ims.domain.Department;
 import me.batizhao.ims.domain.DepartmentLeader;
 import me.batizhao.ims.domain.DepartmentRelation;
@@ -17,7 +16,6 @@ import me.batizhao.ims.service.DepartmentLeaderService;
 import me.batizhao.ims.service.DepartmentRelationService;
 import me.batizhao.ims.service.DepartmentService;
 import me.batizhao.ims.service.UserDepartmentService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

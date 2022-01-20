@@ -1,8 +1,7 @@
 package me.batizhao.dp.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "模板配置")
+@Schema(description = "模板配置")
 @TableName("code_template")
 public class CodeTemplate implements Serializable {
 
@@ -29,48 +28,48 @@ public class CodeTemplate implements Serializable {
     /**
      * id
      */
-    @ApiModelProperty(value="id")
+    @Schema(description="id")
     private Long id;
 
     /**
      * 项目key
      */
-    @ApiModelProperty(value="项目key")
+    @Schema(description="项目key")
     private String projectKey;
 
     /**
      * 模板名称
      */
-    @ApiModelProperty(value="模板名称")
+    @Schema(description="模板名称")
     private String name;
 
     /**
      * 模板内容
      */
-    @ApiModelProperty(value="模板内容")
+    @Schema(description="模板内容")
     private String content;
 
     /**
      * 模板描述
      */
-    @ApiModelProperty(value="模板描述")
+    @Schema(description="模板描述")
     private String description;
 
     /**
      * 状态
      */
-    @ApiModelProperty(value="状态")
+    @Schema(description="状态")
     private String status;
 
     /**
      * 创建时间
      */
-    @ApiModelProperty(value="创建时间")
+    @Schema(description="创建时间")
     private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    @ApiModelProperty(value="修改时间")
+    @Schema(description="修改时间")
     private LocalDateTime updateTime;
 }

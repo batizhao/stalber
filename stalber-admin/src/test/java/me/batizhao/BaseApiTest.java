@@ -1,7 +1,8 @@
 package me.batizhao;
 
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.admin.StalberAdminApplication;
-import me.batizhao.common.exception.WebExceptionHandler;
+import me.batizhao.common.core.exception.WebExceptionHandler;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @Import(WebExceptionHandler.class)
 @ActiveProfiles("test")
 @Tag("api")
+@Slf4j
 public abstract class BaseApiTest {
 
     /**
      * 使用一个超长时间的 token，隔离获取 token 的操作。避免测试 token 过期！
-     * curl -X POST --user 'test:passw0rd' -d 'grant_type=password&username=admin&password=123456' http://localhost:4000/oauth/token
-     * curl -X POST --user 'test:passw0rd' -d 'grant_type=password&username=tom&password=123456' http://localhost:4000/oauth/token
      */
     @Value("${pecado.token.admin}")
     public String adminAccessToken;

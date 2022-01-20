@@ -1,9 +1,9 @@
 package me.batizhao.ims.aspectj;
 
-import me.batizhao.common.annotation.DataScope;
-import me.batizhao.common.domain.BaseEntity;
-import me.batizhao.common.domain.PecadoUser;
-import me.batizhao.common.util.SecurityUtils;
+import me.batizhao.common.core.annotation.DataScope;
+import me.batizhao.common.core.domain.BaseEntity;
+import me.batizhao.common.core.domain.PecadoUser;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.domain.Role;
 import me.batizhao.ims.service.RoleService;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +58,7 @@ public class DataScopeAspect {
     public static final String DATA_SCOPE_SELF = "oneself";
 
     // 配置织入点
-    @Pointcut("@annotation(me.batizhao.common.annotation.DataScope)")
+    @Pointcut("@annotation(me.batizhao.common.core.annotation.DataScope)")
     public void dataScopePointCut() {
     }
 

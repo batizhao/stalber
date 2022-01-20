@@ -1,7 +1,7 @@
 package me.batizhao.oa.domain;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-@ApiModel(description = "任务")
+@Schema(description = "任务")
 public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,54 +29,54 @@ public class Task implements Serializable {
      * 流程定义Id
      */
     @NotEmpty(message = "流程定义Id")
-    @ApiModelProperty(value = "流程定义Id", name = "processDefinitionId")
+    @Schema(description = "流程定义Id")
     private String processDefinitionId;
 
     /**
      * 任务ID
      */
     @NotEmpty
-    @ApiModelProperty(value="任务ID")
+    @Schema(description="任务ID")
     private String taskId;
         
     /**
      * 意见
      */
     @NotEmpty
-    @ApiModelProperty(value="流程实例ID")
+    @Schema(description="流程实例ID")
     private String procInstId;
 
     /**
      * 业务id
      */
     @NotEmpty
-    @ApiModelProperty(value="业务id")
+    @Schema(description="业务id")
     private String id;
 
     /**
      * 业务标题
      */
     @NotEmpty
-    @ApiModelProperty(value="业务标题")
+    @Schema(description="业务标题")
     private String title;
 
     /**
      * 当前节点
      */
-    @ApiModelProperty(value="当前节点")
+    @Schema(description="当前节点")
     private String current;
 
     /**
      * 处理意见
      */
-    @ApiModelProperty(value = "处理意见", name = "suggestion")
+    @Schema(description = "处理意见")
     private String suggestion;
 
     /**
      * 封装提交不同环节参数
      */
     @NotEmpty(message = "下一环节提交参数不能为空")
-    @ApiModelProperty(value = "当前任务处理人角色名")
+    @Schema(description = "当前任务处理人角色名")
     private List<ProcessNodeDTO> processNodeDTO;
 
 }

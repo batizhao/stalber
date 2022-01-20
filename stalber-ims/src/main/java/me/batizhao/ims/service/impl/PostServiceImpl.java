@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.common.exception.NotFoundException;
+import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.ims.domain.Post;
 import me.batizhao.ims.domain.UserPost;
 import me.batizhao.ims.mapper.PostMapper;
