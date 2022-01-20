@@ -4,7 +4,7 @@
 
 	<groupId>me.batizhao</groupId>
 	<artifactId>stalber</artifactId>
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<packaging>pom</packaging>
 
 	<name>stalber</name>
@@ -37,7 +37,7 @@
 		<url>scm:git:git@github.com:batizhao/stalber.git</url>
 		<connection>scm:git:git@github.com:batizhao/stalber.git</connection>
 		<developerConnection>scm:git:git@github.com:batizhao/stalber.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v1.2</tag>
 	</scm>
 
 	<properties>
