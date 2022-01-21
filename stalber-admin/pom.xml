@@ -13,6 +13,10 @@
     <dependencies>
         <dependency>
             <groupId>me.batizhao</groupId>
+            <artifactId>stalber-app</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>me.batizhao</groupId>
             <artifactId>stalber-dp</artifactId>
         </dependency>
         <dependency>

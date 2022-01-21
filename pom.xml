@@ -13,12 +13,13 @@
 	<modules>
 		<module>stalber-admin</module>
 		<module>stalber-api</module>
+		<module>stalber-app</module>
 		<module>stalber-commons</module>
 		<module>stalber-dp</module>
 		<module>stalber-ims</module>
 		<module>stalber-oa</module>
 		<module>stalber-system</module>
-    </modules>
+	</modules>
 
 	<distributionManagement>
 		<repository>
@@ -108,6 +109,11 @@
 			<dependency>
 				<groupId>me.batizhao</groupId>
 				<artifactId>stalber-commons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>me.batizhao</groupId>
+				<artifactId>stalber-app</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
