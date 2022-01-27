@@ -61,11 +61,10 @@
 - Swagger 地址：http://localhost:8888/swagger-ui.html
 
   因为在新版本的 spring boot 中，springfox bug 太多，并且好久没有更新。这里使用 springdoc-openapi-ui 替换了 springfox-boot-starter。在使用中，annotation 部分有一些差异。
-  
-  >
-  > 先用下边的方法拿到 access_token，然后使用  `access_token` 获取授权才能访问 API。
-  >
-  > ```curl -X POST -d '{"username":"admin","password":"123456"}' -H "Content-type: application/json" http://localhost:8888/uaa/token```
+
+* 获取 access_token 的方式
+  * 在验证码关闭的情况下，使用 ```curl -X POST -d '{"username":"admin","password":"123456"}' -H "Content-type: application/json" http://localhost:8888/uaa/token``` 获取正常过期 token；
+  * 在测试用例中，使用 *givenAdmin_whenGetAccessToken_thenSuccess* 或者 *givenUser_whenGetAccessToken_thenSuccess* 获取超长时效 token。
 
 
 ## 建议

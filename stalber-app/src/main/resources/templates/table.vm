@@ -1,0 +1,11 @@
+#if(!$columns.isEmpty())
+CREATE TABLE ${tableName}(
+#foreach($column in $columns)
+#if($column.primaryKey == 1)
+   #set($primaryKey = $column.columnName)
+#end
+  `${column.columnName}` ${column.columnType}#if(${column.length})(${column.length})#end #if(${column.required} == 1)NOT NULL#end #if(${column.increment} == 1)AUTO_INCREMENT#end COMMENT '${column.columnComment}',
+#end
+  PRIMARY KEY (`$primaryKey`)
+) COMMENT='${columns[0].tableComment}';
+#end

@@ -64,6 +64,7 @@ public class ${className}ServiceUnitTest extends BaseServiceUnitTest {
      */
     @BeforeEach
     public void setUp() {
+        ${classname}List = new ArrayList<>();
 #if($template != "tree")
         ${classname}List.add(new ${className}().setId(1L).setName("zhangsan"));
         ${classname}List.add(new ${className}().setId(2L).setName("lisi"));
@@ -72,7 +73,6 @@ public class ${className}ServiceUnitTest extends BaseServiceUnitTest {
         ${classname}PageList = new Page<>();
         ${classname}PageList.setRecords(${classname}List);
 #else
-        ${classname}List = new ArrayList<>();
         ${classname}List.add(new ${className}(1, 0).setName("zhangsan"));
         ${classname}List.add(new ${className}(2, 1).setName("lisi"));
         ${classname}List.add(new ${className}(3, 2).setName("wangwu"));

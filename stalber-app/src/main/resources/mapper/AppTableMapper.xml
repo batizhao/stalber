@@ -1,0 +1,25 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.batizhao.app.mapper.AppTableMapper">
+
+  <resultMap id="appTableMap" type="me.batizhao.app.domain.AppTable">
+    <id property="id" column="id"/>
+    <result property="appId" column="appId"/>
+    <result property="dsName" column="dsName"/>
+    <result property="tableName" column="tableName"/>
+    <result property="tableComment" column="tableComment"/>
+    <result property="columnName" column="columnName"/>
+    <result property="columnComment" column="columnComment"/>
+    <result property="columnType" column="columnType"/>
+    <result property="length" column="length"/>
+    <result property="decimalLength" column="decimalLength"/>
+    <result property="primaryKey" column="primaryKey"/>
+    <result property="increment" column="increment"/>
+    <result property="required" column="required"/>
+    <result property="createTime" column="createTime"/>
+    <result property="updateTime" column="updateTime"/>
+  </resultMap>
+
+</mapper>
