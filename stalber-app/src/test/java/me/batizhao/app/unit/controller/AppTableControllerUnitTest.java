@@ -117,11 +117,13 @@ public class AppTableControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenJson_whenSaveAppTable_thenSuccess() throws Exception {
-        when(appTableService.saveOrUpdateAppTable(anyList()))
-                .thenReturn(true);
+        AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims");
+
+        when(appTableService.saveOrUpdateAppTable(any(AppTable.class)))
+                .thenReturn(appTable);
 
         mvc.perform(post("/app/table").with(csrf())
-                .content(objectMapper.writeValueAsString(appTableList))
+                .content(objectMapper.writeValueAsString(appTable))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -129,17 +131,19 @@ public class AppTableControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data", equalTo(true)));
 
-        verify(appTableService).saveOrUpdateAppTable(anyList());
+        verify(appTableService).saveOrUpdateAppTable(any(AppTable.class));
     }
 
     @Test
     @WithMockUser
     public void givenJson_whenUpdateAppTable_thenSuccess() throws Exception {
-        when(appTableService.saveOrUpdateAppTable(anyList()))
-                .thenReturn(true);
+        AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims");
+
+        when(appTableService.saveOrUpdateAppTable(any(AppTable.class)))
+                .thenReturn(appTable);
 
         mvc.perform(post("/app/table").with(csrf())
-                .content(objectMapper.writeValueAsString(appTableList))
+                .content(objectMapper.writeValueAsString(appTable))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -147,7 +151,7 @@ public class AppTableControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data", equalTo(true)));
 
-        verify(appTableService).saveOrUpdateAppTable(anyList());
+        verify(appTableService).saveOrUpdateAppTable(any(AppTable.class));
     }
 
     @Test

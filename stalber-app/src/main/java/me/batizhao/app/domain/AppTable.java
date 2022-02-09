@@ -56,52 +56,10 @@ public class AppTable implements Serializable {
     private String tableComment;
 
     /**
-     * 列名
+     * 列元数据
      */
-    @Schema(description="列名")
-    private String columnName;
-
-    /**
-     * 列注释
-     */
-    @Schema(description="列注释")
-    private String columnComment;
-
-    /**
-     * 列类型
-     */
-    @Schema(description="列类型")
-    private String columnType;
-
-    /**
-     * 长度
-     */
-    @Schema(description="长度")
-    private Integer length;
-
-    /**
-     * 小数点位数
-     */
-    @Schema(description="小数点位数")
-    private Integer decimalLength;
-
-    /**
-     * 是否主键
-     */
-    @Schema(description="是否主键")
-    private Integer primaryKey;
-
-    /**
-     * 是否自增
-     */
-    @Schema(description="是否自增")
-    private Integer increment;
-
-    /**
-     * 是否必须
-     */
-    @Schema(description="是否必须")
-    private Integer required;
+    @Schema(description="列元数据")
+    private String columnMetadata;
 
     /**
      * 创建时间

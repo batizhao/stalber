@@ -1,15 +1,14 @@
 package me.batizhao.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.common.core.util.R;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.service.AppTableService;
+import me.batizhao.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -76,14 +75,14 @@ public class AppTableController {
 
     /**
      * 添加或编辑应用表
-     * @param appTables 应用表
+     * @param appTable 应用表
      * @return R
      */
     @Operation(description = "添加或编辑应用表")
     @PostMapping("/table")
     @PreAuthorize("@pms.hasPermission('app:dev:add') or @pms.hasPermission('app:dev:edit')")
-    public R<Boolean> handleSaveOrUpdate(@Valid @Parameter(name = "应用表" , required = true) @RequestBody List<AppTable> appTables) {
-        return R.ok(appTableService.saveOrUpdateAppTable(appTables));
+    public R<AppTable> handleSaveOrUpdate(@Valid @Parameter(name = "应用表" , required = true) @RequestBody AppTable appTable) {
+        return R.ok(appTableService.saveOrUpdateAppTable(appTable));
     }
 
     /**

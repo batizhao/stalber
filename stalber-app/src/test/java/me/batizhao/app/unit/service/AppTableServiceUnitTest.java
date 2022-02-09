@@ -3,7 +3,6 @@ package me.batizhao.app.unit.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.mapper.AppTableMapper;
 import me.batizhao.app.service.AppTableService;
@@ -49,9 +48,6 @@ public class AppTableServiceUnitTest extends BaseServiceUnitTest {
 
     @Autowired
     private AppTableService appTableService;
-
-    @MockBean
-    private ServiceImpl service;
 
     private List<AppTable> appTableList;
     private Page<AppTable> appTablePageList;
@@ -113,11 +109,20 @@ public class AppTableServiceUnitTest extends BaseServiceUnitTest {
 
     @Test
     public void givenAppTableJson_whenSaveOrUpdateAppTable_thenSuccess() {
+        AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims");
+
         // insert 不带 id
-        doReturn(true).when(service).saveBatch(anyList());
+        doReturn(1).when(appTableMapper).insert(any(AppTable.class));
 
-        appTableService.saveOrUpdateAppTable(appTableList);
+        appTableService.saveOrUpdateAppTable(appTable);
 
-        verify(service).saveBatch(anyList());
+        verify(appTableMapper).insert(any(AppTable.class));
+
+        // update 需要带 id
+        doReturn(1).when(appTableMapper).updateById(any(AppTable.class));
+
+        appTableService.saveOrUpdateAppTable(appTableList.get(0));
+
+        verify(appTableMapper).updateById(any(AppTable.class));
     }
 }

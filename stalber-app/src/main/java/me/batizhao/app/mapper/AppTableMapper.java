@@ -3,6 +3,7 @@ package me.batizhao.app.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.batizhao.app.domain.AppTable;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 应用表
@@ -12,5 +13,12 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AppTableMapper extends BaseMapper<AppTable> {
+
+    /**
+     * 创建数据库表
+     *
+     * @param script 表脚本
+     */
+    void createTable(@Param("script") String script);
 
 }

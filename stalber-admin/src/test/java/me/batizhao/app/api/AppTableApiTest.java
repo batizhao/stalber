@@ -2,6 +2,7 @@ package me.batizhao.app.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
+import me.batizhao.app.domain.AppTableColumn;
 import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.app.domain.AppTable;
 import org.junit.jupiter.api.Test;
@@ -56,22 +57,15 @@ public class AppTableApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenSaveAppTable_thenSuccess() throws Exception {
-        AppTable at0 = new AppTable()
-                .setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims")
-                .setColumnName("id").setColumnComment("主键").setColumnType("bigint").setRequired(1).setPrimaryKey(1).setIncrement(1);
+        AppTableColumn ac0 = new AppTableColumn().setName("id").setComment("主键").setType("bigint").setRequired(true).setPrimary(true).setIncrement(true);
+        AppTableColumn ac1 = new AppTableColumn().setName("firstname").setComment("First Name").setType("varchar").setLength(20).setRequired(true);
+        AppTableColumn ac2 = new AppTableColumn().setName("lastname").setComment("Last Name").setType("varchar").setLength(10);
+        List<AppTableColumn> appTableColumns = asList(ac0, ac1, ac2);
 
-        AppTable at1 = new AppTable()
-                .setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims")
-                .setColumnName("firstname").setColumnComment("First Name").setColumnType("varchar").setLength(20).setRequired(1);
-
-        AppTable at2 = new AppTable()
-                .setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims")
-                .setColumnName("lastname").setColumnComment("Last Name").setColumnType("varchar").setLength(10);
-
-        List<AppTable> appTables = asList(at0, at1, at2);
+        AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims").setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
 
         mvc.perform(post("/app/table")
-                        .content(objectMapper.writeValueAsString(appTables))
+                        .content(objectMapper.writeValueAsString(appTable))
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", adminAccessToken))
                 .andDo(print())

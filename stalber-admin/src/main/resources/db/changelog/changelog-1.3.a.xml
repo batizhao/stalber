@@ -20,28 +20,7 @@
             <column name="tableComment" type="VARCHAR(255)" remarks="表注释">
                 <constraints nullable="false" />
             </column>
-            <column name="columnName" type="VARCHAR(64)" remarks="列名">
-                <constraints nullable="false" />
-            </column>
-            <column name="columnComment" type="VARCHAR(64)" remarks="列注释">
-                <constraints nullable="false" />
-            </column>
-            <column name="columnType" type="VARCHAR(32)" remarks="列类型">
-                <constraints nullable="false" />
-            </column>
-            <column name="length" type="INT" remarks="长度" defaultValue="10">
-                <constraints nullable="false" />
-            </column>
-            <column name="decimalLength" type="INT" remarks="小数点位数" defaultValue="0">
-                <constraints nullable="false" />
-            </column>
-            <column name="primaryKey" type="TINYINT(1)" remarks="是否主键" defaultValue="0">
-                <constraints nullable="false" />
-            </column>
-            <column name="increment" type="TINYINT(1)" remarks="是否自增" defaultValue="0">
-                <constraints nullable="false" />
-            </column>
-            <column name="required" type="TINYINT(1)" remarks="是否必须" defaultValue="0">
+            <column name="columnMetadata" type="JSON" remarks="列元数据">
                 <constraints nullable="false" />
             </column>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">

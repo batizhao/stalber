@@ -4,18 +4,19 @@ import cn.hutool.extra.template.Template;
 import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.SneakyThrows;
-import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.app.domain.AppTable;
+import me.batizhao.app.domain.AppTableColumn;
 import me.batizhao.app.mapper.AppTableMapper;
 import me.batizhao.app.service.AppTableService;
-import org.apache.commons.lang3.StringUtils;
+import me.batizhao.common.core.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,13 +64,26 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
 
     @Override
     @Transactional
-    public Boolean saveOrUpdateAppTable(List<AppTable> appTables) {
-        Map<String, Object> sqlParamMap = new HashMap<>();
-        sqlParamMap.put("tableName", appTables.get(0).getTableName());
-        sqlParamMap.put("columns", appTables);
+    public AppTable saveOrUpdateAppTable(AppTable appTable) {
+//        Map<String, Object> sqlParamMap = new HashMap<>();
+//        sqlParamMap.put("tableName", appTable.getTableName());
+//        sqlParamMap.put("tableComment", appTable.getTableComment());
+//
+//        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+//        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
+//        sqlParamMap.put("columns", appTableColumns);
+//
+//        writer(sqlParamMap);
 
-        writer(sqlParamMap);
-        return this.saveBatch(appTables);
+        if (appTable.getId() == null) {
+            appTable.setCreateTime(LocalDateTime.now());
+            appTable.setUpdateTime(LocalDateTime.now());
+            appTableMapper.insert(appTable);
+        } else {
+            appTable.setUpdateTime(LocalDateTime.now());
+            appTableMapper.updateById(appTable);
+        }
+        return appTable;
     }
 
     @SneakyThrows

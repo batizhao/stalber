@@ -10,16 +10,15 @@
     <result property="dsName" column="dsName"/>
     <result property="tableName" column="tableName"/>
     <result property="tableComment" column="tableComment"/>
-    <result property="columnName" column="columnName"/>
-    <result property="columnComment" column="columnComment"/>
-    <result property="columnType" column="columnType"/>
-    <result property="length" column="length"/>
-    <result property="decimalLength" column="decimalLength"/>
-    <result property="primaryKey" column="primaryKey"/>
-    <result property="increment" column="increment"/>
-    <result property="required" column="required"/>
+    <result property="columnMetadata" column="columnMetadata"/>
     <result property="createTime" column="createTime"/>
     <result property="updateTime" column="updateTime"/>
   </resultMap>
+
+  <update id="createTable" parameterType="String">
+
+    ${script};
+
+  </update>
 
 </mapper>

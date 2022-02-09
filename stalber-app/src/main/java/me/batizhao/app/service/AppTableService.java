@@ -39,10 +39,10 @@ public interface AppTableService extends IService<AppTable> {
 
     /**
      * 添加或编辑应用表
-     * @param appTables 应用表字段集合
+     * @param appTable 应用表元数据
      * @return AppTable
      */
-    Boolean saveOrUpdateAppTable(List<AppTable> appTables);
+    AppTable saveOrUpdateAppTable(AppTable appTable);
 
 
 }
