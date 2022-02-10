@@ -2,9 +2,9 @@ package me.batizhao.app.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
+import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.domain.AppTableColumn;
 import me.batizhao.common.core.constant.ResultEnum;
-import me.batizhao.app.domain.AppTable;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -59,7 +59,7 @@ public class AppTableApiTest extends BaseApiTest {
     public void givenJson_whenSaveAppTable_thenSuccess() throws Exception {
         AppTableColumn ac0 = new AppTableColumn().setName("id").setComment("主键").setType("bigint").setRequired(true).setPrimary(true).setIncrement(true);
         AppTableColumn ac1 = new AppTableColumn().setName("firstname").setComment("First Name").setType("varchar").setLength(20).setRequired(true);
-        AppTableColumn ac2 = new AppTableColumn().setName("lastname").setComment("Last Name").setType("varchar").setLength(10);
+        AppTableColumn ac2 = new AppTableColumn().setName("lastname").setComment("Last Name").setType("varchar").setLength(10).setDefaultValue("tom");
         List<AppTableColumn> appTableColumns = asList(ac0, ac1, ac2);
 
         AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims").setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
@@ -89,6 +89,16 @@ public class AppTableApiTest extends BaseApiTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()));
     }
+
+//    @Test
+//    public void givenId_whenSyncAppTable_thenSuccess() throws Exception {
+//        mvc.perform(post("/app/table/sync/9")
+//                        .header("Authorization", adminAccessToken))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()));
+//    }
 
 //    @Test
 //    @Transactional

@@ -66,4 +66,10 @@ public class AppTableColumn {
     @Schema(description="是否必须")
     private Boolean required = false;
 
+    /**
+     * 默认值
+     */
+    @Schema(description="默认值")
+    private String defaultValue;
+
 }

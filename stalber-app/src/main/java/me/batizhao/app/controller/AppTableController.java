@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.service.AppTableService;
 import me.batizhao.common.core.util.R;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -95,6 +97,19 @@ public class AppTableController {
     @PreAuthorize("@pms.hasPermission('app:dev:delete')")
     public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(appTableService.removeByIds(ids));
+    }
+
+    /**
+     * 同步表到数据库
+     * @param id AppTable.id
+     * @return R
+     */
+    @Operation(description = "同步表到数据库")
+    @PostMapping("/table/sync/{id}")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public R<Boolean> handleSyncTable(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        AppTable appTable = appTableService.findById(id);
+        return R.ok(appTableService.syncTable(appTable, appTable.getDsName()));
     }
 
 

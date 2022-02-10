@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.batizhao.dp.datasource;
+package me.batizhao.common.core.datasource;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

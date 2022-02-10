@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.exception.DataSourceException;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.common.core.util.SpringContextHolder;
-import me.batizhao.dp.datasource.DataSourceConstants;
+import me.batizhao.common.core.datasource.DataSourceConstants;
 import me.batizhao.dp.domain.Ds;
 import me.batizhao.dp.mapper.DsMapper;
 import me.batizhao.dp.service.DsService;

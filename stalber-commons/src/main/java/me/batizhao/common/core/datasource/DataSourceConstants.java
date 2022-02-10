@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.batizhao.dp.datasource;
+package me.batizhao.common.core.datasource;
 
 /**
  * @author lengleng

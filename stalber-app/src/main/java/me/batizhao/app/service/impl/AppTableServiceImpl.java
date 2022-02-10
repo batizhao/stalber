@@ -6,6 +6,7 @@ import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -17,6 +18,7 @@ import me.batizhao.app.domain.AppTableColumn;
 import me.batizhao.app.mapper.AppTableMapper;
 import me.batizhao.app.service.AppTableService;
 import me.batizhao.common.core.exception.NotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,9 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     @Override
     public IPage<AppTable> findAppTables(Page<AppTable> page, AppTable appTable) {
         LambdaQueryWrapper<AppTable> wrapper = Wrappers.lambdaQuery();
+        if (appTable.getAppId() != null) {
+            wrapper.eq(AppTable::getAppId, appTable.getAppId());
+        }
         return appTableMapper.selectPage(page, wrapper);
     }
 
@@ -65,16 +70,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     @Override
     @Transactional
     public AppTable saveOrUpdateAppTable(AppTable appTable) {
-//        Map<String, Object> sqlParamMap = new HashMap<>();
-//        sqlParamMap.put("tableName", appTable.getTableName());
-//        sqlParamMap.put("tableComment", appTable.getTableComment());
-//
-//        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
-//        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
-//        sqlParamMap.put("columns", appTableColumns);
-//
-//        writer(sqlParamMap);
-
         if (appTable.getId() == null) {
             appTable.setCreateTime(LocalDateTime.now());
             appTable.setUpdateTime(LocalDateTime.now());
@@ -84,6 +79,20 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             appTableMapper.updateById(appTable);
         }
         return appTable;
+    }
+
+    @Override
+    @DS("#last")
+    public Boolean syncTable(AppTable appTable, String dsName) {
+        Map<String, Object> sqlParamMap = new HashMap<>();
+        sqlParamMap.put("tableName", appTable.getTableName());
+        sqlParamMap.put("tableComment", appTable.getTableComment());
+
+        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
+        sqlParamMap.put("columns", appTableColumns);
+
+        return appTableMapper.createTable(writer(sqlParamMap)) >= 0;
     }
 
     @SneakyThrows

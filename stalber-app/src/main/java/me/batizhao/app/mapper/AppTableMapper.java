@@ -19,6 +19,6 @@ public interface AppTableMapper extends BaseMapper<AppTable> {
      *
      * @param script 表脚本
      */
-    void createTable(@Param("script") String script);
+    int createTable(@Param("script") String script);
 
 }
