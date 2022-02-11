@@ -1,6 +1,6 @@
 package me.batizhao.app.unit.mapper;
 
-import me.batizhao.app.mapper.AppTableMapper;
+import me.batizhao.app.mapper.AppMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author batizhao
  * @since 2022-01-27
  */
-public class AppTableMapperUnitTest extends BaseMapperUnitTest {
+public class AppMapperUnitTest extends BaseMapperUnitTest {
 
     @Autowired
-    AppTableMapper appTableMapper;
+    AppMapper appMapper;
 
     @Test
     public void testFindRolesByUserId() {
-        appTableMapper.createTable("CREATE TABLE tname (id bigint NOT NULL)");
+        appMapper.createTable("CREATE TABLE tname (id bigint NOT NULL)");
     }
 
 }

@@ -14,11 +14,4 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface AppTableMapper extends BaseMapper<AppTable> {
 
-    /**
-     * 创建数据库表
-     *
-     * @param script 表脚本
-     */
-    int createTable(@Param("script") String script);
-
 }

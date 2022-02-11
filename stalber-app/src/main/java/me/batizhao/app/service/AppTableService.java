@@ -46,10 +46,9 @@ public interface AppTableService extends IService<AppTable> {
 
     /**
      * 同步表到数据库
-     * @param appTable 应用表元数据
+     * @param id appTable.id
      * @return
      */
-    Boolean syncTable(AppTable appTable, String dsName);
-
+    Boolean syncTable(Long id);
 
 }

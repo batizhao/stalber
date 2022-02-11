@@ -108,9 +108,7 @@ public class AppTableController {
     @PostMapping("/table/sync/{id}")
     @PreAuthorize("@pms.hasPermission('app:dev:admin')")
     public R<Boolean> handleSyncTable(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
-        AppTable appTable = appTableService.findById(id);
-        return R.ok(appTableService.syncTable(appTable, appTable.getDsName()));
+        return R.ok(appTableService.syncTable(id));
     }
-
 
 }

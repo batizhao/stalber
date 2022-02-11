@@ -62,6 +62,12 @@ public class AppTable implements Serializable {
     private String columnMetadata;
 
     /**
+     * 状态
+     */
+    @Schema(description="状态")
+    private String status;
+
+    /**
      * 创建时间
      */
     @Schema(description="创建时间")

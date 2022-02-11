@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.app.domain.App;
+import me.batizhao.app.domain.AppTable;
 
 import java.util.List;
 
@@ -50,5 +51,13 @@ public interface AppService extends IService<App> {
      * @return Boolean
      */
     Boolean updateStatus(App app);
+
+    /**
+     * 同步表到数据库
+     * 这个动态数据源方法要独立封装，不能和调用者放到同一个类中
+     * @param appTable 应用表元数据
+     * @return
+     */
+    Boolean syncTableToDB(AppTable appTable, String dsName);
 
 }

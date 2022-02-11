@@ -23,6 +23,9 @@
             <column name="columnMetadata" type="JSON" remarks="列元数据">
                 <constraints nullable="false" />
             </column>
+            <column name="status" type="ENUM('created', 'nosync', 'synced')" remarks="状态" defaultValue="created">
+                <constraints nullable="false" />
+            </column>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>

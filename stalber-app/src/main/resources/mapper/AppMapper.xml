@@ -17,4 +17,10 @@
     <result property="updateTime" column="updateTime"/>
   </resultMap>
 
+  <update id="createTable" parameterType="String">
+
+    ${script};
+
+  </update>
+
 </mapper>

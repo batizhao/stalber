@@ -62,7 +62,7 @@ public class AppTableApiTest extends BaseApiTest {
         AppTableColumn ac2 = new AppTableColumn().setName("lastname").setComment("Last Name").setType("varchar").setLength(10).setDefaultValue("tom");
         List<AppTableColumn> appTableColumns = asList(ac0, ac1, ac2);
 
-        AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("ims").setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
+        AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("jsoa").setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
 
         mvc.perform(post("/app/table")
                         .content(objectMapper.writeValueAsString(appTable))
@@ -92,7 +92,7 @@ public class AppTableApiTest extends BaseApiTest {
 
 //    @Test
 //    public void givenId_whenSyncAppTable_thenSuccess() throws Exception {
-//        mvc.perform(post("/app/table/sync/9")
+//        mvc.perform(post("/app/table/sync/1")
 //                        .header("Authorization", adminAccessToken))
 //                .andDo(print())
 //                .andExpect(status().isOk())
