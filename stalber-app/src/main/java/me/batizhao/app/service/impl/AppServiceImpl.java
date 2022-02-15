@@ -100,7 +100,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
 
     @Override
     @DS("#last")
-    public Boolean syncTableToDB(AppTable appTable, String dsName) {
+    public Boolean syncCreateOrModifyTable(AppTable appTable, String template, String dsName) {
         Map<String, Object> sqlParamMap = new HashMap<>();
         sqlParamMap.put("tableName", appTable.getTableName());
         sqlParamMap.put("tableComment", appTable.getTableComment());
@@ -109,13 +109,33 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
         sqlParamMap.put("columns", appTableColumns);
 
-        return appMapper.createTable(writer(sqlParamMap)) >= 0;
+        return appMapper.createTable(writer(sqlParamMap, template)) >= 0;
+    }
+
+    @Override
+    @DS("#last")
+    public Boolean syncAlterTable(String tableName, List<AppTableColumn> appTableColumns, String dsName) {
+        Map<String, Object> sqlParamMap = new HashMap<>();
+        sqlParamMap.put("tableName", tableName);
+        sqlParamMap.put("columns", appTableColumns);
+
+        return appMapper.createTable(writer(sqlParamMap, "alter-table.vm")) >= 0;
+    }
+
+    @Override
+    @DS("#last")
+    public Boolean syncDropTable(String tableName, List<String> appTableColumns, String dsName) {
+        Map<String, Object> sqlParamMap = new HashMap<>();
+        sqlParamMap.put("tableName", tableName);
+        sqlParamMap.put("columns", appTableColumns);
+
+        return appMapper.createTable(writer(sqlParamMap, "drop-table.vm")) >= 0;
     }
 
     @SneakyThrows
-    private static String writer(Map<String, Object> sqlParamMap) {
+    private static String writer(Map<String, Object> sqlParamMap, String template) {
         TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("templates", TemplateConfig.ResourceMode.CLASSPATH));
-        Template tpl = engine.getTemplate("table.vm");
+        Template tpl = engine.getTemplate(template);
         try (StringWriter result = new StringWriter()) {
             tpl.render(sqlParamMap, result);
             return result.toString();

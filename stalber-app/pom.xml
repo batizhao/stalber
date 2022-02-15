@@ -17,6 +17,11 @@
             <groupId>me.batizhao</groupId>
             <artifactId>stalber-commons</artifactId>
         </dependency>
+        <!-- 临时方案 -->
+        <dependency>
+            <groupId>me.batizhao</groupId>
+            <artifactId>stalber-dp</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>
