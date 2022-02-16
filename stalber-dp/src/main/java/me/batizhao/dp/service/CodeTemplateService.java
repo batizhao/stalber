@@ -1,8 +1,6 @@
 package me.batizhao.dp.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.common.core.domain.FolderTree;
-import me.batizhao.dp.domain.CodeTemplate;
 import me.batizhao.dp.domain.CodeTemplateDTO;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * @author batizhao
  * @since 2021-10-12
  */
-public interface CodeTemplateService extends IService<CodeTemplate> {
+public interface CodeTemplateService {
 
     /**
      * 查询模板配置
