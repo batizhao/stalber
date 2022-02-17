@@ -3,8 +3,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <changeSet author="wws" id="CreateTable-20220120-001">
-        <createTable remarks="应用表" tableName="app">
+    <changeSet author="wws" id="CreateTableModelTable-20220217-001">
+        <createTable remarks="页面模型" tableName="page_model">
             <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
                 <constraints primaryKey="true" nullable="false" />
             </column>
@@ -14,17 +14,19 @@
             <column name="code" type="VARCHAR(32)" remarks="编码">
                 <constraints nullable="false" unique="true" />
             </column>
-            <column name="typeId" type="BIGINT" remarks="分类ID">
+            <column name="type" type="VARCHAR(16)" remarks="页面类型,首页模型index、主页模型main、列表模型list、表单模型form">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(255)" remarks="描述" defaultValue=""/>
-            <column name="icon" type="VARCHAR(32)" defaultValue="#" remarks="图标"/>
-            <column name="sort" type="INT" remarks="排序" defaultValue="1">
+            <column name="pageMetadata" type="JSON" remarks="列元数据">
                 <constraints nullable="false" />
             </column>
-            <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
+            <column name="modelEvent" type="VARCHAR(255)" remarks="页面事件"/>
+            <column name="beforeEvent" type="VARCHAR(255)" remarks="前置事件"/>
+            <column name="afterEvent" type="VARCHAR(255)" remarks="后置事件"/>
+            <column name="status" type="VARCHAR(32)" remarks="状态:open 激活， close 禁用" defaultValue="open">
                 <constraints nullable="false" />
             </column>
+            <column name="remark" type="VARCHAR(255)" remarks="备注"/>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
@@ -33,174 +35,7 @@
             </column>
         </createTable>
         <rollback>
-            <dropTable tableName="app"/>
+            <dropTable tableName="page_model"/>
         </rollback>
     </changeSet>
-
-    <changeSet author="batizhao" id="InsertTableMenu-20220120-002">
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5000"/>
-            <column name="path" value="/app"/>
-            <column name="name" value="应用管理"/>
-            <column name="icon" value="github"/>
-            <column name="pid" valueNumeric="0"/>
-            <column name="sort" valueNumeric="5"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5100"/>
-            <column name="path" value="/app/type"/>
-            <column name="name" value="应用分类"/>
-            <column name="permission" value="app:type:admin"/>
-            <column name="icon" value="cascader"/>
-            <column name="pid" valueNumeric="5000"/>
-            <column name="sort" valueNumeric="1"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5101"/>
-            <column name="name" value="添加分类"/>
-            <column name="permission" value="app:type:add"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5100"/>
-            <column name="sort" valueNumeric="1"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5102"/>
-            <column name="name" value="编辑分类"/>
-            <column name="permission" value="app:type:edit"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5100"/>
-            <column name="sort" valueNumeric="2"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5103"/>
-            <column name="name" value="删除分类"/>
-            <column name="permission" value="app:type:delete"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5100"/>
-            <column name="sort" valueNumeric="3"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5200"/>
-            <column name="path" value="/app/dev"/>
-            <column name="name" value="应用开发"/>
-            <column name="permission" value="app:dev:admin"/>
-            <column name="icon" value="component"/>
-            <column name="pid" valueNumeric="5000"/>
-            <column name="sort" valueNumeric="1"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5201"/>
-            <column name="name" value="创建应用"/>
-            <column name="permission" value="app:dev:add"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5200"/>
-            <column name="sort" valueNumeric="1"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5202"/>
-            <column name="name" value="编辑应用"/>
-            <column name="permission" value="app:dev:edit"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5200"/>
-            <column name="sort" valueNumeric="2"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5203"/>
-            <column name="name" value="删除应用"/>
-            <column name="permission" value="app:dev:delete"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5200"/>
-            <column name="sort" valueNumeric="3"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5204"/>
-            <column name="name" value="导入应用"/>
-            <column name="permission" value="app:dev:import"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5200"/>
-            <column name="sort" valueNumeric="4"/>
-        </insert>
-        <insert tableName="menu">
-            <column name="id" valueNumeric="5205"/>
-            <column name="name" value="导出应用"/>
-            <column name="permission" value="app:dev:export"/>
-            <column name="type" value="B"/>
-            <column name="pid" valueNumeric="5200"/>
-            <column name="sort" valueNumeric="5"/>
-        </insert>
-        <rollback>
-            delete from menu where id = 5000;
-            delete from menu where id = 5100;
-            delete from menu where id = 5101;
-            delete from menu where id = 5102;
-            delete from menu where id = 5103;
-            delete from menu where id = 5200;
-            delete from menu where id = 5201;
-            delete from menu where id = 5202;
-            delete from menu where id = 5203;
-            delete from menu where id = 5204;
-            delete from menu where id = 5205;
-        </rollback>
-    </changeSet>
-
-    <changeSet author="batizhao" id="InsertTableRoleMenu-20220120-003">
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5000"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5100"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5101"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5102"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5103"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5200"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5201"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5202"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5203"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5204"/>
-        </insert>
-        <insert tableName="role_menu">
-            <column name="roleId" valueNumeric="2"/>
-            <column name="menuId" valueNumeric="5205"/>
-        </insert>
-        <rollback>
-            delete from role_menu where roleId = 2 and menuId = 5000;
-            delete from role_menu where roleId = 2 and menuId = 5100;
-            delete from role_menu where roleId = 2 and menuId = 5101;
-            delete from role_menu where roleId = 2 and menuId = 5102;
-            delete from role_menu where roleId = 2 and menuId = 5103;
-            delete from role_menu where roleId = 2 and menuId = 5200;
-            delete from role_menu where roleId = 2 and menuId = 5201;
-            delete from role_menu where roleId = 2 and menuId = 5202;
-            delete from role_menu where roleId = 2 and menuId = 5203;
-            delete from role_menu where roleId = 2 and menuId = 5204;
-            delete from role_menu where roleId = 2 and menuId = 5205;
-        </rollback>
-    </changeSet>
-
 </databaseChangeLog>
