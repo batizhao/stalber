@@ -11,6 +11,7 @@
     <result property="tableName" column="tableName"/>
     <result property="tableComment" column="tableComment"/>
     <result property="columnMetadata" column="columnMetadata"/>
+    <result property="codeMetadata" column="codeMetadata"/>
     <result property="createTime" column="createTime"/>
     <result property="updateTime" column="updateTime"/>
   </resultMap>
