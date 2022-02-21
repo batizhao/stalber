@@ -62,6 +62,12 @@ public class App implements Serializable {
     private String icon;
 
     /**
+     * 图标背景色
+     */
+    @Schema(description="图标背景色")
+    private String background;
+
+    /**
      * 排序
      */
     @Schema(description="排序")

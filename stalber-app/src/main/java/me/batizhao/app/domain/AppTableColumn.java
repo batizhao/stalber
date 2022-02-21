@@ -72,4 +72,16 @@ public class AppTableColumn {
     @Schema(description="默认值")
     private String defaultValue;
 
+    /**
+     * Java类型
+     */
+    @Schema(description="Java类型")
+    private String javaType;
+
+    /**
+     * Java属性名
+     */
+    @Schema(description="Java属性名")
+    private String javaField;
+
 }
