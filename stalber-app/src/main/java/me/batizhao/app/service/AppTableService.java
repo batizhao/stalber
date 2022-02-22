@@ -51,4 +51,11 @@ public interface AppTableService extends IService<AppTable> {
      */
     Boolean syncTable(Long id);
 
+    /**
+     * 生成代码 zip
+     * @param id
+     * @return byte[]
+     */
+    byte[] downloadCode(Long id);
+
 }

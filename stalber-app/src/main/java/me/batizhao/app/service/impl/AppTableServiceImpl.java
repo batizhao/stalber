@@ -1,5 +1,10 @@
 package me.batizhao.app.service.impl;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.extra.template.Template;
+import cn.hutool.extra.template.TemplateConfig;
+import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,23 +12,42 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import me.batizhao.app.domain.AppTable;
+import me.batizhao.app.domain.AppTableCode;
 import me.batizhao.app.domain.AppTableColumn;
 import me.batizhao.app.mapper.AppTableMapper;
 import me.batizhao.app.service.AppService;
 import me.batizhao.app.service.AppTableService;
+import me.batizhao.app.util.CodeGenUtils;
+import me.batizhao.common.core.constant.GenConstants;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.common.core.exception.StalberException;
+import me.batizhao.common.core.util.FolderUtil;
+import me.batizhao.dp.config.CodeProperties;
+import me.batizhao.dp.config.GenConfig;
 import me.batizhao.dp.domain.CodeMeta;
 import me.batizhao.dp.service.CodeMetaService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 应用表接口实现类
@@ -40,6 +64,10 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     private AppService appService;
     @Autowired
     private CodeMetaService codeMetaService;
+    @Autowired
+    private CodeProperties codeProperties;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public IPage<AppTable> findAppTables(Page<AppTable> page, AppTable appTable) {
@@ -56,6 +84,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return appTableMapper.selectList(wrapper);
     }
 
+    @SneakyThrows
     @Override
     public AppTable findById(Long id) {
         AppTable appTable = appTableMapper.selectById(id);
@@ -63,6 +92,17 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         if(appTable == null) {
             throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
+
+        // 初始化代码生成数据
+        AppTableCode atc = new AppTableCode().setClassName(CodeGenUtils.columnToJava(appTable.getTableName()))
+                .setClassComment(CodeGenUtils.replaceText(appTable.getTableComment()))
+                .setClassAuthor(GenConfig.getAuthor())
+                .setModuleName(GenConfig.getModuleName())
+                .setPackageName(GenConfig.getPackageName())
+                .setTemplate(GenConstants.TPL_CRUD);
+
+        atc.setMappingPath(StringUtils.uncapitalize(atc.getClassName()));
+        appTable.setCodeMetadata(objectMapper.writeValueAsString(atc));
 
         return appTable;
     }
@@ -125,6 +165,63 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         appTable.setStatus("synced");
         appTableMapper.updateById(appTable);
         return true;
+    }
+
+    @SneakyThrows
+    private AppTable prepareCodeMeta(Long id) {
+        AppTable appTable = findById(id);
+
+        if(StringUtils.isBlank(appTable.getCodeMetadata())) {
+            throw new StalberException("没有配置生成信息！");
+        }
+
+        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
+
+        appTableColumns.forEach(CodeGenUtils::initColumnField);
+        appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
+        return appTable;
+    }
+
+    @Override
+    public byte[] downloadCode(Long id) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        generateCode(prepareCodeMeta(id), zip);
+        IoUtil.close(zip);
+        return outputStream.toByteArray();
+    }
+
+    /**
+     * 生成代码然后下载
+     */
+    @SneakyThrows
+    private void generateCode(AppTable appTable, ZipOutputStream zip) {
+        // 封装模板数据
+        Map<String, Object> map = CodeGenUtils.prepareContext(appTable);
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(templatePath, TemplateConfig.ResourceMode.FILE));
+
+        // 获取模板列表
+        for (Path path : FolderUtil.build(templatePath)) {
+            if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
+
+            File file = path.toFile();
+            String filePath = file.getPath().replace(templatePath, "");
+            if (CodeGenUtils.getFileName(appTable, filePath) == null) continue;
+
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(filePath);
+            tpl.render(map, sw);
+
+            // 添加到zip
+//            zip.putNextEntry(new ZipEntry(filePath.substring(0, filePath.lastIndexOf("."))));
+            zip.putNextEntry(new ZipEntry(Objects.requireNonNull(CodeGenUtils.getFileName(appTable, filePath))));
+            IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
+            IoUtil.close(sw);
+            zip.closeEntry();
+        }
     }
 
 }
