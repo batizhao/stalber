@@ -52,19 +52,19 @@ public class AppTableCode {
      * 生成代码方式（zip压缩包 path自定义路径）
      */
     @Schema(description="生成代码方式（zip压缩包 path自定义路径）")
-    private String type;
+    private String type = "zip";
 
     /**
      * 后端代码路径（不填默认项目路径）
      */
     @Schema(description="后端代码路径（不填默认项目路径）")
-    private String path;
+    private String path = "/";
 
     /**
      * 模板类型
      */
     @Schema(description="模板类型")
-    private String template;
+    private String template = "single";
 
     /**
      * 关联子表的id
@@ -88,7 +88,7 @@ public class AppTableCode {
      * 整合工作流引擎
      */
     @Schema(description="整合工作流引擎")
-    private String workflow;
+    private String workflow = "no";
 
     /**
      * 流程Key
@@ -100,6 +100,6 @@ public class AppTableCode {
      * 生成测试用例
      */
     @Schema(description="生成测试用例")
-    private String testcase;
+    private String testcase = "no";
 
 }

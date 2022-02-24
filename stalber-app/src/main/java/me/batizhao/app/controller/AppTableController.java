@@ -1,23 +1,26 @@
 package me.batizhao.app.controller;
 
+import cn.hutool.core.io.IoUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.service.AppTableService;
+import me.batizhao.common.core.constant.PecadoConstants;
 import me.batizhao.common.core.util.R;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -109,6 +112,26 @@ public class AppTableController {
     @PreAuthorize("@pms.hasPermission('app:dev:admin')")
     public R<Boolean> handleSyncTable(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(appTableService.syncTable(id));
+    }
+
+    /**
+     * 生成代码 zip
+     * @param id
+     * @param response
+     */
+    @SneakyThrows
+    @Operation(description = "生成代码zip")
+    @PostMapping(value = "/table/zip/{id}")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public void handleGenerateCode4Zip(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id, HttpServletResponse response) {
+        byte[] data = appTableService.downloadCode(id);
+        response.reset();
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                String.format("attachment; filename=%s.zip", PecadoConstants.BACK_END_PROJECT));
+        response.addHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(data.length));
+        response.setContentType("application/octet-stream; charset=UTF-8");
+
+        IoUtil.write(response.getOutputStream(), true, data);
     }
 
 }
