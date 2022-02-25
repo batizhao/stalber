@@ -1,14 +1,15 @@
-package me.batizhao.app.service.impl;
+package me.batizhao.dp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.app.domain.PageModel;
-import me.batizhao.app.mapper.PageModelMapper;
-import me.batizhao.app.service.PageModelService;
+import me.batizhao.dp.domain.PageModel;
+import me.batizhao.dp.mapper.PageModelMapper;
+import me.batizhao.dp.service.PageModelService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -66,5 +67,12 @@ public class PageModelServiceImpl extends ServiceImpl<PageModelMapper, PageModel
             baseMapper.updateById(pageModel);
         }
         return pageModel;
+    }
+
+    @Override
+    public Boolean updateStatus(PageModel pageModel) {
+        LambdaUpdateWrapper<PageModel> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(PageModel::getId, pageModel.getId()).set(PageModel::getStatus, pageModel.getStatus());
+        return baseMapper.update(null, wrapper) == 1;
     }
 }

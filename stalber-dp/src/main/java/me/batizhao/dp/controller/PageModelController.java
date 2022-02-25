@@ -1,4 +1,4 @@
-package me.batizhao.app.controller;
+package me.batizhao.dp.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -6,8 +6,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import me.batizhao.app.domain.PageModel;
-import me.batizhao.app.service.PageModelService;
+import me.batizhao.common.core.annotation.SystemLog;
+import me.batizhao.dp.domain.Ds;
+import me.batizhao.dp.domain.PageModel;
+import me.batizhao.dp.service.PageModelService;
 import me.batizhao.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +30,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
-@RequestMapping("page/model")
+@RequestMapping("dp")
 public class PageModelController {
 
     @Autowired
@@ -42,8 +44,8 @@ public class PageModelController {
      * @real_return R<Page<PageModel>>
      */
     @Operation(description = "分页查询页面模型表")
-    @GetMapping("/tables")
-    @PreAuthorize("@pms.hasPermission('page:model:dev:admin')")
+    @GetMapping("/page/models")
+    @PreAuthorize("@pms.hasPermission('dp:page:model:admin')")
     public R<IPage<PageModel>> handleAppTables(Page<PageModel> page, PageModel pageModel) {
         return R.ok(pageModelService.findPageModelTables(page, pageModel));
     }
@@ -53,8 +55,8 @@ public class PageModelController {
      * @return R<List<PageModel>>
      */
     @Operation(description = "页面模型表")
-    @GetMapping("/table")
-    @PreAuthorize("@pms.hasPermission('page:model:dev:admin')")
+    @GetMapping("/page/model")
+    @PreAuthorize("@pms.hasPermission('dp:page:model:admin')")
     public R<List<PageModel>> handlePageModelTable(PageModel pageModel) {
         return R.ok(pageModelService.findPageModelTable(pageModel));
     }
@@ -65,8 +67,8 @@ public class PageModelController {
      * @return R
      */
     @Operation(description = "通过id查询页面模型表")
-    @GetMapping("/table/{id}")
-    @PreAuthorize("@pms.hasPermission('page:model:dev:admin')")
+    @GetMapping("/page/model/{id}")
+    @PreAuthorize("@pms.hasPermission('dp:page:model:admin')")
     public R<PageModel> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
         return R.ok(pageModelService.getById(id));
     }
@@ -77,8 +79,8 @@ public class PageModelController {
      * @return R
      */
     @Operation(description = "添加或编辑页面模型表")
-    @PostMapping("/table")
-    @PreAuthorize("@pms.hasPermission('page:model:dev:add') or @pms.hasPermission('page:model:dev:edit')")
+    @PostMapping("/page/model")
+    @PreAuthorize("@pms.hasPermission('dp:page:model:add') or @pms.hasPermission('page:model:dev:edit')")
     public R<PageModel> handleSaveOrUpdate(@Valid @Parameter(name = "页面模型表" , required = true) @RequestBody PageModel pageModel) {
         return R.ok(pageModelService.saveOrUpdatePageModelTable(pageModel));
     }
@@ -89,9 +91,21 @@ public class PageModelController {
      * @return R
      */
     @Operation(description = "通过id删除页面模型表")
-    @DeleteMapping("/table")
-    @PreAuthorize("@pms.hasPermission('page:model:dev:delete')")
+    @DeleteMapping("/page/model")
+    @PreAuthorize("@pms.hasPermission('dp:page:model:delete')")
     public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(pageModelService.removeByIds(ids));
+    }
+
+    /**
+     * 更新数据源状态
+     * @param pageModel 页面模型
+     * @return R
+     */
+    @Operation(description = "更新页面模型状态")
+    @PostMapping("/page/model/status")
+    @PreAuthorize("@pms.hasPermission('dp:page:model:admin')")
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "页面模型" , required = true) @RequestBody PageModel pageModel) {
+        return R.ok(pageModelService.updateStatus(pageModel));
     }
 }

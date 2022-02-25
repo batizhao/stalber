@@ -1,9 +1,9 @@
-package me.batizhao.app.service;
+package me.batizhao.dp.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import me.batizhao.app.domain.PageModel;
+import me.batizhao.dp.domain.PageModel;
 
 import java.util.List;
 
@@ -36,4 +36,11 @@ public interface PageModelService extends IService<PageModel> {
      * @return PageModel
      */
     PageModel saveOrUpdatePageModelTable(PageModel pageModel);
+
+    /**
+     * 更新页面模型状态
+     * @param pageModel 页面模型
+     * @return Boolean
+     */
+    Boolean updateStatus(PageModel pageModel);
 }

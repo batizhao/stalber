@@ -1,7 +1,7 @@
-package me.batizhao.app.mapper;
+package me.batizhao.dp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import me.batizhao.app.domain.PageModel;
+import me.batizhao.dp.domain.PageModel;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
