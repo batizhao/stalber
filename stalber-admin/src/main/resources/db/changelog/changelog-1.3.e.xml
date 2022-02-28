@@ -1,0 +1,34 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="wws" id="CreateTableAppProcess-20220228-001">
+        <createTable remarks="应用流程" tableName="app_process">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(36)" remarks="名称">
+                <constraints nullable="false" />
+            </column>
+            <column name="appId" type="BIGINT" remarks="应用Id">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="key" type="VARCHAR(255)" remarks="流程key"/>
+            <column name="version" type="INT" remarks="流程版本号"/>
+            <column name="status" type="VARCHAR(32)" remarks="状态:open 激活， close 禁用" defaultValue="open">
+                <constraints nullable="false" />
+            </column>
+            <column name="remark" type="VARCHAR(255)" remarks="备注"/>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="app_process"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
