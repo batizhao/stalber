@@ -1,6 +1,7 @@
 package me.batizhao.app.service.impl;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.extra.template.Template;
 import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
@@ -8,6 +9,7 @@ import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -29,6 +31,7 @@ import me.batizhao.dp.config.CodeProperties;
 import me.batizhao.dp.config.GenConfig;
 import me.batizhao.dp.domain.CodeMeta;
 import me.batizhao.dp.service.CodeMetaService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,15 +39,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -84,7 +85,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return appTableMapper.selectList(wrapper);
     }
 
-    @SneakyThrows
     @Override
     public AppTable findById(Long id) {
         AppTable appTable = appTableMapper.selectById(id);
@@ -92,17 +92,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         if(appTable == null) {
             throw new NotFoundException(String.format("Record not found '%s'。", id));
         }
-
-        // 初始化代码生成数据
-        AppTableCode atc = new AppTableCode().setClassName(CodeGenUtils.columnToJava(appTable.getTableName()))
-                .setClassComment(CodeGenUtils.replaceText(appTable.getTableComment()))
-                .setClassAuthor(GenConfig.getAuthor())
-                .setModuleName(GenConfig.getModuleName())
-                .setPackageName(GenConfig.getPackageName())
-                .setTemplate(GenConstants.TPL_CRUD);
-
-        atc.setMappingPath(StringUtils.uncapitalize(atc.getClassName()));
-        appTable.setCodeMetadata(objectMapper.writeValueAsString(atc));
 
         return appTable;
     }
@@ -123,21 +112,41 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     }
 
     @Override
+    public Boolean updateCodeMetadataById(AppTable appTable) {
+        LambdaUpdateWrapper<AppTable> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(AppTable::getId, appTable.getId()).set(AppTable::getCodeMetadata, appTable.getCodeMetadata());
+        return appTableMapper.update(null, wrapper) == 1;
+    }
+
+    @SneakyThrows
+    @Override
     public Boolean syncTable(Long id) {
         AppTable appTable = findById(id);
+
         if (appTable.getStatus().equals("created")) {
             appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
-        } else {
-            // app_table 表元数据
-            JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
-            List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
 
+            // 初始化代码生成数据
+            AppTableCode atc = new AppTableCode().setClassName(CodeGenUtils.columnToJava(appTable.getTableName()))
+                    .setClassComment(CodeGenUtils.replaceText(appTable.getTableComment()))
+                    .setClassAuthor(GenConfig.getAuthor())
+                    .setModuleName(GenConfig.getModuleName())
+                    .setPackageName(GenConfig.getPackageName())
+                    .setTemplate(GenConstants.TPL_SINGLE);
+
+            atc.setMappingPath(StringUtils.uncapitalize(atc.getClassName()));
+            appTable.setCodeMetadata(objectMapper.writeValueAsString(atc));
+        } else {
             // 数据库表元数据
             List<CodeMeta> dbTableColumns = codeMetaService.findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
             if (dbTableColumns.isEmpty()) {
-                throw new StalberException(String.format("Table '%s.%s' doesn't exist 。", appTable.getDsName(), appTable.getTableName()));
+                appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
             }
             List<String> dbTableColumnNames = dbTableColumns.stream().map(CodeMeta::getColumnName).collect(Collectors.toList());
+
+            // app_table 表元数据
+            JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+            List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
 
             // 增加数据库不存在的列
             List<AppTableColumn> appTableAddColumns = new ArrayList<>();
@@ -167,6 +176,26 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return true;
     }
 
+    @Override
+    public byte[] downloadCode(Long id) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        generateCode(prepareCodeMeta(id), zip);
+        IoUtil.close(zip);
+        return outputStream.toByteArray();
+    }
+
+    @Override
+    public Boolean generateCode(Long id) {
+        generateCode(prepareCodeMeta(id));
+        return true;
+    }
+
+    @Override
+    public Map<String, String> previewCode(Long id) {
+        return previewCode(prepareCodeMeta(id));
+    }
+
     @SneakyThrows
     private AppTable prepareCodeMeta(Long id) {
         AppTable appTable = findById(id);
@@ -181,15 +210,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         appTableColumns.forEach(CodeGenUtils::initColumnField);
         appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
         return appTable;
-    }
-
-    @Override
-    public byte[] downloadCode(Long id) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ZipOutputStream zip = new ZipOutputStream(outputStream);
-        generateCode(prepareCodeMeta(id), zip);
-        IoUtil.close(zip);
-        return outputStream.toByteArray();
     }
 
     /**
@@ -222,6 +242,81 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             IoUtil.close(sw);
             zip.closeEntry();
         }
+    }
+
+    /**
+     * 生成代码到路径
+     */
+    @SneakyThrows
+    private void generateCode(AppTable appTable) {
+        // 封装模板数据
+        Map<String, Object> map = CodeGenUtils.prepareContext(appTable);
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(templatePath, TemplateConfig.ResourceMode.FILE));
+
+        // 获取模板列表
+        for (Path path : FolderUtil.build(templatePath)) {
+            if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
+
+            File file = path.toFile();
+            String filePath = file.getPath().replace(templatePath, "");
+            if (CodeGenUtils.getFileName(appTable, filePath) == null) continue;
+
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(filePath);
+            tpl.render(map, sw);
+            filePath = filePath.substring(0, filePath.lastIndexOf("."));
+            try {
+                String genPath = getGenPath(appTable, filePath);
+                FileUtils.writeStringToFile(new File(genPath), sw.toString(), CharsetUtil.UTF_8);
+            } catch (IOException e) {
+                throw new StalberException("渲染模板失败，表名：" + appTable.getTableName());
+            }
+        }
+    }
+
+    /**
+     * 获取代码生成地址
+     *
+     * @param appTable
+     * @param filePath
+     * @return 生成地址
+     */
+    private String getGenPath(AppTable appTable, String filePath) {
+        AppTableCode appTableCode = JSONUtil.toBean(appTable.getCodeMetadata(), AppTableCode.class);
+        String genPath = appTableCode.getPath();
+        if (StringUtils.equals(genPath, "/")) {
+            return System.getProperty("user.dir") + File.separator + CodeGenUtils.getFileName(appTable, filePath);
+        }
+        return genPath + File.separator + CodeGenUtils.getFileName(appTable, filePath);
+    }
+
+    /**
+     * 预览代码
+     */
+    @SneakyThrows
+    private Map<String, String> previewCode(AppTable appTable) {
+        Map<String, Object> map = CodeGenUtils.prepareContext(appTable);
+        String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig(templatePath, TemplateConfig.ResourceMode.FILE));
+
+        Map<String, String> dataMap = new LinkedHashMap<>();
+        // 获取模板列表
+        for (Path path : FolderUtil.build(templatePath)) {
+            if (StringUtils.containsAny(path.toString(), "common", "commons")) continue;
+
+            File file = path.toFile();
+            String filePath = file.getPath().replace(templatePath, "");
+
+            // 渲染模板
+            StringWriter sw = new StringWriter();
+            Template tpl = engine.getTemplate(filePath);
+            tpl.render(map, sw);
+            String filename = file.getName();
+            dataMap.put(filename.substring(0, filename.lastIndexOf(".")), sw.toString());
+        }
+        return dataMap;
     }
 
 }

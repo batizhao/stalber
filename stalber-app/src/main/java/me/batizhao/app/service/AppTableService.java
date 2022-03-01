@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.app.domain.AppTable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 应用表接口类
@@ -45,6 +46,13 @@ public interface AppTableService extends IService<AppTable> {
     AppTable saveOrUpdateAppTable(AppTable appTable);
 
     /**
+     * 更新 codeMetadata
+     * @param appTable 应用表元数据
+     * @return AppTable
+     */
+    Boolean updateCodeMetadataById(AppTable appTable);
+
+    /**
      * 同步表到数据库
      * @param id appTable.id
      * @return
@@ -57,5 +65,19 @@ public interface AppTableService extends IService<AppTable> {
      * @return byte[]
      */
     byte[] downloadCode(Long id);
+
+    /**
+     * 生成代码 path
+     * @param id
+     * @return
+     */
+    Boolean generateCode(Long id);
+
+    /**
+     * 预览代码
+     * @param id
+     * @return
+     */
+    Map<String, String> previewCode(Long id);
 
 }

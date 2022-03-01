@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 应用表 API
@@ -91,6 +92,18 @@ public class AppTableController {
     }
 
     /**
+     * 保存代码生成元数据
+     * @param appTable 应用表
+     * @return R
+     */
+    @Operation(description = "保存代码生成元数据")
+    @PostMapping("/table/code")
+    @PreAuthorize("@pms.hasPermission('app:dev:edit')")
+    public R<Boolean> handleUpdateCodeMetadata(@Valid @Parameter(name = "应用表" , required = true) @RequestBody AppTable appTable) {
+        return R.ok(appTableService.updateCodeMetadataById(appTable));
+    }
+
+    /**
      * 通过id删除应用表
      * @param ids ID串
      * @return R
@@ -132,6 +145,30 @@ public class AppTableController {
         response.setContentType("application/octet-stream; charset=UTF-8");
 
         IoUtil.write(response.getOutputStream(), true, data);
+    }
+
+    /**
+     * 生成代码 path
+     * @param id
+     * @return
+     */
+    @Operation(description = "生成代码path")
+    @PostMapping("/table/path/{id}")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public R<Boolean> handleGenerateCode4Path(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(appTableService.generateCode(id));
+    }
+
+    /**
+     * 预览代码
+     * @param id
+     * @return
+     */
+    @Operation(description = "预览代码")
+    @GetMapping("/table/preview/{id}")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public R<Map<String, String>> handlePreviewCode(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(appTableService.previewCode(id));
     }
 
 }
