@@ -33,17 +33,17 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
         #else
 
     /**
-     * $column.columnComment
+     * $column.comment
      */
-    @Schema(description="$column.columnComment")
+    @Schema(description="$column.comment")
     private $column.javaType $column.javaField;
         #end
     #else
 
     /**
-     * $column.columnComment
+     * $column.comment
      */
-    @Schema(description="$column.columnComment")
+    @Schema(description="$column.comment")
     private $column.javaType $column.javaField;
     #end
 #end

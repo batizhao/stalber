@@ -207,7 +207,7 @@ public class CodeGenUtils {
         map.put("package", appTableCode.getPackageName());
         map.put("parentMenuId", 5000);
         map.put("template", appTableCode.getTemplate());
-        map.put("relationTable", null);
+        map.put("relationTable", "");
         map.put("subTableFkName", appTableCode.getSubTableFkName());
         map.put("subMappingPath", "");
         map.put("form", "");

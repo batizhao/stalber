@@ -25,14 +25,14 @@ public class ${className}DTO implements Serializable {
         #else
 
     /**
-     * $column.columnComment
+     * $column.comment
      */
     private $column.javaType $column.javaField;
         #end
     #else
 
     /**
-     * $column.columnComment
+     * $column.comment
      */
     private $column.javaType $column.javaField;
     #end

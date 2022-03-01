@@ -7,9 +7,9 @@
   <resultMap id="${classname}Map" type="${package}.${moduleName}.domain.${className}">
 #foreach($column in $columns)
   #if($column.javaField==$pk.javaField)
-    <id property="${pk.javaField}" column="${pk.columnName}"/>
+    <id property="${pk.javaField}" column="${pk.name}"/>
   #else
-    <result property="${column.javaField}" column="${column.columnName}"/>
+    <result property="${column.javaField}" column="${column.name}"/>
   #end
 #end
   </resultMap>

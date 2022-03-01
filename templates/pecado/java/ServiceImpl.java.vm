@@ -132,7 +132,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
 #end
 
 #foreach ($column in $columns)
-#if($column.columnName == "status")
+#if($column.name == "status")
     @Override
     @Transactional
     public Boolean updateStatus(${className} ${classname}) {

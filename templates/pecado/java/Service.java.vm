@@ -62,7 +62,7 @@ public interface ${className}Service extends IService<${className}> {
 #end
 
 #foreach ($column in $columns)
-#if($column.columnName == "status")
+#if($column.name == "status")
     /**
      * 更新${comments}状态
      * @param ${classname} ${comments}

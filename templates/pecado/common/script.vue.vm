@@ -97,11 +97,11 @@ export default {
       // 是否显示弹出层
       open: false,
 #foreach ($column in $columns)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#set($parentheseIndex=$column.comment.indexOf("（"))
 #if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#set($comment=$column.comment.substring(0, $parentheseIndex))
 #else
-#set($comment=$column.columnComment)
+#set($comment=$column.comment)
 #end
 #if(${column.dictType} != '')
       // $comment字典
@@ -136,11 +136,11 @@ export default {
 #end
 #foreach ($column in $columns)
 #if($column.required && $column.save)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#set($parentheseIndex=$column.comment.indexOf("（"))
 #if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#set($comment=$column.comment.substring(0, $parentheseIndex))
 #else
-#set($comment=$column.columnComment)
+#set($comment=$column.comment)
 #end
         $column.javaField: [
           { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select")"change"#else"blur"#end }
@@ -255,11 +255,11 @@ export default {
 #end    
 #foreach ($column in $columns)
 #if(${column.dictType} != '')
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#set($parentheseIndex=$column.comment.indexOf("（"))
 #if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#set($comment=$column.comment.substring(0, $parentheseIndex))
 #else
-#set($comment=$column.columnComment)
+#set($comment=$column.comment)
 #end
     // $comment字典翻译
     ${column.javaField}Format(row, column) {

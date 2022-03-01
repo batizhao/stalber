@@ -2,11 +2,11 @@
       <el-table-column type="selection" width="55" align="center" />
 #foreach($column in $columns)
 #set($javaField=$column.javaField)
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#set($parentheseIndex=$column.comment.indexOf("（"))
 #if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#set($comment=$column.comment.substring(0, $parentheseIndex))
 #else
-#set($comment=$column.columnComment)
+#set($comment=$column.comment)
 #end
 #if($column.primaryKey)
       <el-table-column label="${comment}" align="center" prop="${javaField}" />

@@ -3,11 +3,11 @@
 #if($column.search)
 #set($dictType=$column.dictType)
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
-#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#set($parentheseIndex=$column.comment.indexOf("（"))
 #if($parentheseIndex != -1)
-#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#set($comment=$column.comment.substring(0, $parentheseIndex))
 #else
-#set($comment=$column.columnComment)
+#set($comment=$column.comment)
 #end
 #if($column.htmlType == "input")
       <el-form-item label="${comment}" prop="${column.javaField}">
