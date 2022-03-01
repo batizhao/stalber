@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.service.AppTableService;
+import me.batizhao.common.core.annotation.SystemLog;
 import me.batizhao.common.core.constant.PecadoConstants;
 import me.batizhao.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,36 @@ public class AppTableController {
     @PreAuthorize("@pms.hasPermission('app:dev:delete')")
     public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(appTableService.removeByIds(ids));
+    }
+
+    /**
+     * 查询数据源下的所有表
+     *
+     * @param page   分页对象
+     * @param appTable   生成代码
+     * @param dsName 数据源
+     * @return R
+     * @real_return R<Page<Code>>
+     */
+    @Operation(description = "查询数据源下的所有表")
+    @GetMapping("/table/entity")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    @SystemLog
+    public R<IPage<AppTable>> handleTables(Page<AppTable> page, AppTable appTable, String dsName) {
+        return R.ok(appTableService.findTables(page, appTable, dsName));
+    }
+
+    /**
+     * 导入选中的表
+     * @param appTables 表元数据
+     * @return
+     */
+    @Operation(description = "导入选中的表")
+    @PostMapping("/table/import")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    @SystemLog
+    public R<Boolean> handleImportTables(@RequestBody List<AppTable> appTables) {
+        return R.ok(appTableService.importTables(appTables));
     }
 
     /**

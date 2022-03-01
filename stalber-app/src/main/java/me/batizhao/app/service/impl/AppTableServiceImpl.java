@@ -8,12 +8,14 @@ import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import me.batizhao.app.domain.AppTable;
@@ -29,6 +31,7 @@ import me.batizhao.common.core.exception.StalberException;
 import me.batizhao.common.core.util.FolderUtil;
 import me.batizhao.dp.config.CodeProperties;
 import me.batizhao.dp.config.GenConfig;
+import me.batizhao.dp.domain.Code;
 import me.batizhao.dp.domain.CodeMeta;
 import me.batizhao.dp.service.CodeMetaService;
 import org.apache.commons.io.FileUtils;
@@ -126,16 +129,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         if (appTable.getStatus().equals("created")) {
             appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
 
-            // 初始化代码生成数据
-            AppTableCode atc = new AppTableCode().setClassName(CodeGenUtils.columnToJava(appTable.getTableName()))
-                    .setClassComment(CodeGenUtils.replaceText(appTable.getTableComment()))
-                    .setClassAuthor(GenConfig.getAuthor())
-                    .setModuleName(GenConfig.getModuleName())
-                    .setPackageName(GenConfig.getPackageName())
-                    .setTemplate(GenConstants.TPL_SINGLE);
-
-            atc.setMappingPath(StringUtils.uncapitalize(atc.getClassName()));
-            appTable.setCodeMetadata(objectMapper.writeValueAsString(atc));
+            initData(appTable);
         } else {
             // 数据库表元数据
             List<CodeMeta> dbTableColumns = codeMetaService.findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
@@ -194,6 +188,56 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     @Override
     public Map<String, String> previewCode(Long id) {
         return previewCode(prepareCodeMeta(id));
+    }
+
+    @Override
+    @DS("#last")
+    public IPage<AppTable> findTables(Page<AppTable> page, AppTable appTable, String dsName) {
+        IPage<AppTable> p = appTableMapper.selectTablePageByDs(page, appTable);
+        List<AppTable> c = p.getRecords();
+
+        if (StringUtils.isBlank(dsName)) {
+            dsName = "master";
+        }
+
+        String finalDsName = dsName;
+        c.forEach(ll -> ll.setDsName(finalDsName));
+
+        return p;
+    }
+
+    /**
+     * 这里不能开启事务，会导致动态数据源失效。
+     *
+     * @param appTables
+     * @return
+     */
+    @Override
+    public Boolean importTables(List<AppTable> appTables) {
+        if (appTables == null) return false;
+        for (AppTable appTable : appTables) {
+            initData(appTable);
+            saveOrUpdateAppTable(appTable);
+        }
+        return true;
+    }
+
+    /**
+     * 初始化元数据
+     * @param appTable
+     */
+    @SneakyThrows
+    private void initData(AppTable appTable) {
+        // 初始化代码生成数据
+        AppTableCode atc = new AppTableCode().setClassName(CodeGenUtils.columnToJava(appTable.getTableName()))
+                .setClassComment(CodeGenUtils.replaceText(appTable.getTableComment()))
+                .setClassAuthor(GenConfig.getAuthor())
+                .setModuleName(GenConfig.getModuleName())
+                .setPackageName(GenConfig.getPackageName())
+                .setTemplate(GenConstants.TPL_SINGLE);
+
+        atc.setMappingPath(StringUtils.uncapitalize(atc.getClassName()));
+        appTable.setCodeMetadata(objectMapper.writeValueAsString(atc));
     }
 
     @SneakyThrows

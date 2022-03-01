@@ -80,4 +80,19 @@ public interface AppTableService extends IService<AppTable> {
      */
     Map<String, String> previewCode(Long id);
 
+    /**
+     * 查询数据源下的所有表
+     * @param page 分页对象
+     * @param dsName 数据源
+     * @return IPage<AppTable>
+     */
+    IPage<AppTable> findTables(Page<AppTable> page, AppTable appTable, String dsName);
+
+    /**
+     * 导入选中的表
+     * @param appTables
+     * @return
+     */
+    Boolean importTables(List<AppTable> appTables);
+
 }
