@@ -12,14 +12,17 @@
                 <constraints nullable="false" />
             </column>
             <column name="appId" type="BIGINT" remarks="应用Id">
-                <constraints nullable="false" unique="true" />
-            </column>
-            <column name="key" type="VARCHAR(255)" remarks="流程key"/>
-            <column name="version" type="INT" remarks="流程版本号"/>
-            <column name="status" type="VARCHAR(32)" remarks="状态:open 激活， close 禁用" defaultValue="open">
                 <constraints nullable="false" />
             </column>
-            <column name="remark" type="VARCHAR(255)" remarks="备注"/>
+            <column name="processKey" type="VARCHAR(255)" remarks="流程key">
+                <constraints nullable="false" />
+            </column>
+            <column name="version" type="INT" remarks="流程版本号">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="VARCHAR(32)" remarks="状态:open 激活， close 禁用" defaultValue="close">
+                <constraints nullable="false" />
+            </column>
             <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
