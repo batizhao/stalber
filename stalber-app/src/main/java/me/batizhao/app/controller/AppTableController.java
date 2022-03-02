@@ -202,4 +202,16 @@ public class AppTableController {
         return R.ok(appTableService.previewCode(id));
     }
 
+    /**
+     * 查询可以关联的表清单
+     * @param id
+     * @return
+     */
+    @Operation(description = "查询关联表清单")
+    @GetMapping("/table/relations/{id}")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public R<List<AppTable>> handleTableRelations(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(appTableService.listTableRelations(id));
+    }
+
 }

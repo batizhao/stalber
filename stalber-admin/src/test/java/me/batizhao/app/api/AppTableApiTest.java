@@ -58,8 +58,8 @@ public class AppTableApiTest extends BaseApiTest {
     @Transactional
     public void givenJson_whenSaveAppTable_thenSuccess() throws Exception {
         AppTableColumn ac0 = new AppTableColumn().setName("id").setComment("主键").setType("bigint").setRequired(true).setPrimary(true).setIncrement(true);
-        AppTableColumn ac1 = new AppTableColumn().setName("firstname").setComment("First Name").setType("varchar").setLength(20).setRequired(true);
-        AppTableColumn ac2 = new AppTableColumn().setName("lastname").setComment("Last Name").setType("varchar").setLength(10).setDefaultValue("tom");
+        AppTableColumn ac1 = new AppTableColumn().setName("firstname").setComment("First Name").setType("varchar").setLength(20L).setRequired(true);
+        AppTableColumn ac2 = new AppTableColumn().setName("lastname").setComment("Last Name").setType("varchar").setLength(10L).setDefaultValue("tom");
         List<AppTableColumn> appTableColumns = asList(ac0, ac1, ac2);
 
         AppTable appTable = new AppTable().setTableComment("测试表").setTableName("tname").setAppId(1L).setDsName("jsoa").setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));

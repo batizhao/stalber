@@ -40,7 +40,7 @@ public class AppTableColumn {
      * 长度
      */
     @Schema(description="长度")
-    private Integer length = 10;
+    private Long length = 10L;
 
     /**
      * 小数点位数

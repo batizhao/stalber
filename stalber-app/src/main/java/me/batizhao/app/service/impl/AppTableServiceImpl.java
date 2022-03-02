@@ -205,12 +205,20 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
      * @param appTables
      * @return
      */
+    @SneakyThrows
     @Override
     public Boolean importTables(List<AppTable> appTables) {
         if (appTables == null) return false;
         for (AppTable appTable : appTables) {
             initData(appTable);
-            saveOrUpdateAppTable(appTable);
+            // 初始化 columnMetadata
+            List<AppTableColumn> appTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
+            appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
+
+            appTable.setCreateTime(LocalDateTime.now());
+            appTable.setUpdateTime(LocalDateTime.now());
+            appTable.setStatus("synced");
+            appTableMapper.insert(appTable);
         }
         return true;
     }
@@ -221,8 +229,20 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return appTableMapper.selectColumnsByTableName(tableName);
     }
 
+    @Override
+    public List<AppTable> listTableRelations(Long id) {
+        AppTable appTable = appTableMapper.selectById(id);
+
+        LambdaQueryWrapper<AppTable> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(AppTable::getAppId, appTable.getAppId());
+        wrapper.eq(AppTable::getDsName, appTable.getDsName());
+        wrapper.ne(AppTable::getId, id);
+
+        return appTableMapper.selectList(wrapper);
+    }
+
     /**
-     * 初始化元数据
+     * 初始化 codeMetadata
      * @param appTable
      */
     @SneakyThrows

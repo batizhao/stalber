@@ -104,4 +104,10 @@ public interface AppTableService extends IService<AppTable> {
      */
     List<AppTableColumn> findColumnsByTableName(String tableName, String dsName);
 
+    /**
+     * 查询可以关联的表清单
+     * @param id
+     * @return
+     */
+    List<AppTable> listTableRelations(Long id);
 }
