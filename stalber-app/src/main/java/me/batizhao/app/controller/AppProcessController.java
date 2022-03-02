@@ -108,4 +108,16 @@ public class AppProcessController {
     public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
         return R.ok(appProcessService.removeByIds(ids));
     }
+
+    /**
+     * 更新应用流程状态
+     * @param appProcess 应用流程表
+     * @return R
+     */
+    @Operation(description = "更新应用流程表状态")
+    @PostMapping("/process/status")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public R<Boolean> handleUpdateStatus(@Parameter(name = "应用流程表" , required = true) @RequestBody AppProcess appProcess) {
+        return R.ok(appProcessService.updateStatus(appProcess));
+    }
 }
