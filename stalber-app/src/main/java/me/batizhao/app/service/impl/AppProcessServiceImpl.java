@@ -2,6 +2,7 @@ package me.batizhao.app.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -11,6 +12,7 @@ import me.batizhao.app.domain.AppProcess;
 import me.batizhao.app.mapper.AppProcessMapper;
 import me.batizhao.app.service.AppProcessService;
 import me.batizhao.common.core.exception.NotFoundException;
+import me.batizhao.common.core.exception.StalberException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,8 +42,8 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
             wrapper.like(AppProcess::getName, appProcess.getName());
         }
 
-        if (StringUtils.isNotBlank(appProcess.getKey())) {
-            wrapper.like(AppProcess::getKey, appProcess.getKey());
+        if (StringUtils.isNotBlank(appProcess.getProcessKey())) {
+            wrapper.like(AppProcess::getProcessKey, appProcess.getProcessKey());
         }
 
         if (appProcess.getVersion() != null) {
@@ -103,5 +105,17 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
             baseMapper.updateById(appProcess);
         }
         return appProcess;
+    }
+
+    @Override
+    public Boolean updateStatus(AppProcess appProcess) {
+        List<AppProcess> list = findAppProcess(appProcess);
+        if(CollectionUtil.isEmpty(list)){
+            LambdaUpdateWrapper<AppProcess> wrapper = Wrappers.lambdaUpdate();
+            wrapper.eq(AppProcess::getId, appProcess.getId()).set(AppProcess::getStatus, appProcess.getStatus());
+            return baseMapper.update(null, wrapper) == 1;
+        }else{
+            throw new StalberException("已存在激活流程，请先禁用已经激活的流程！！！");
+        }
     }
 }

@@ -51,4 +51,11 @@ public interface AppProcessService extends IService<AppProcess> {
      * @return AppProcess
      */
     AppProcess saveOrUpdateAppProcess(AppProcess appProcess);
+
+    /**
+     * 更新应用流程状态
+     * @param appProcess 应用流程
+     * @return Boolean
+     */
+    Boolean updateStatus(AppProcess appProcess);
 }
