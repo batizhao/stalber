@@ -8,9 +8,6 @@ package me.batizhao.common.core.constant;
 public class GenConstants
 {
     /** 单表（增删改查） */
-    public static final String TPL_CRUD = "crud";
-
-    /** 单表（增删改查） */
     public static final String TPL_SINGLE = "single";
 
     /** 树表（增删改查） */

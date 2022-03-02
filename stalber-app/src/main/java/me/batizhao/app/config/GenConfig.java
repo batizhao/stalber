@@ -1,4 +1,4 @@
-package me.batizhao.dp.config;
+package me.batizhao.app.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,5 +1,6 @@
 package me.batizhao.app.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.extra.template.Template;
@@ -15,9 +16,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import me.batizhao.common.core.config.CodeProperties;
+import me.batizhao.app.config.GenConfig;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.domain.AppTableCode;
 import me.batizhao.app.domain.AppTableColumn;
@@ -29,12 +31,6 @@ import me.batizhao.common.core.constant.GenConstants;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.common.core.exception.StalberException;
 import me.batizhao.common.core.util.FolderUtil;
-import me.batizhao.dp.config.CodeProperties;
-import me.batizhao.dp.config.GenConfig;
-import me.batizhao.dp.domain.Code;
-import me.batizhao.dp.domain.CodeMeta;
-import me.batizhao.dp.service.CodeMetaService;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -66,8 +61,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     private AppTableMapper appTableMapper;
     @Autowired
     private AppService appService;
-    @Autowired
-    private CodeMetaService codeMetaService;
     @Autowired
     private CodeProperties codeProperties;
     @Autowired
@@ -132,11 +125,11 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             initData(appTable);
         } else {
             // 数据库表元数据
-            List<CodeMeta> dbTableColumns = codeMetaService.findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
+            List<AppTableColumn> dbTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
             if (dbTableColumns.isEmpty()) {
                 appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
             }
-            List<String> dbTableColumnNames = dbTableColumns.stream().map(CodeMeta::getColumnName).collect(Collectors.toList());
+            List<String> dbTableColumnNames = dbTableColumns.stream().map(AppTableColumn::getName).collect(Collectors.toList());
 
             // app_table 表元数据
             JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
@@ -220,6 +213,12 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             saveOrUpdateAppTable(appTable);
         }
         return true;
+    }
+
+    @Override
+    @DS("#last")
+    public List<AppTableColumn> findColumnsByTableName(String tableName, String dsName) {
+        return appTableMapper.selectColumnsByTableName(tableName);
     }
 
     /**
@@ -311,12 +310,8 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             Template tpl = engine.getTemplate(filePath);
             tpl.render(map, sw);
             filePath = filePath.substring(0, filePath.lastIndexOf("."));
-            try {
-                String genPath = getGenPath(appTable, filePath);
-                FileUtils.writeStringToFile(new File(genPath), sw.toString(), CharsetUtil.UTF_8);
-            } catch (IOException e) {
-                throw new StalberException("渲染模板失败，表名：" + appTable.getTableName());
-            }
+            String genPath = getGenPath(appTable, filePath);
+            FileUtil.writeString(sw.toString(), new File(genPath), CharsetUtil.UTF_8);
         }
     }
 

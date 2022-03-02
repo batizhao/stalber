@@ -1,4 +1,4 @@
-package me.batizhao.dp.config;
+package me.batizhao.common.core.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

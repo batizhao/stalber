@@ -49,9 +49,10 @@
 		<maven.compiler.source>8</maven.compiler.source>
 		<maven.compiler.target>8</maven.compiler.target>
 
-		<commons-beanutils.version>1.9.4</commons-beanutils.version>
-		<commons-configuration.version>2.7</commons-configuration.version>
-		<commons-fileupload.version>1.4</commons-fileupload.version>
+<!--		<commons-beanutils.version>1.9.4</commons-beanutils.version>-->
+<!--		<commons-configuration.version>2.7</commons-configuration.version>-->
+<!--		<commons-fileupload.version>1.4</commons-fileupload.version>-->
+		<commons-text.version>1.9</commons-text.version>
 		<dynamic-datasource.version>3.5.1</dynamic-datasource.version>
 		<feign.version>11.7</feign.version>
 		<hutool.version>5.7.16</hutool.version>
@@ -184,15 +185,20 @@
 				<version>${kaptcha.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>commons-fileupload</groupId>
-				<artifactId>commons-fileupload</artifactId>
-				<version>${commons-fileupload.version}</version>
-			</dependency>
+<!--			<dependency>-->
+<!--				<groupId>commons-fileupload</groupId>-->
+<!--				<artifactId>commons-fileupload</artifactId>-->
+<!--				<version>${commons-fileupload.version}</version>-->
+<!--			</dependency>-->
+<!--			<dependency>-->
+<!--				<groupId>org.apache.commons</groupId>-->
+<!--				<artifactId>commons-configuration2</artifactId>-->
+<!--				<version>${commons-configuration.version}</version>-->
+<!--			</dependency>-->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-configuration2</artifactId>
-				<version>${commons-configuration.version}</version>
+				<artifactId>commons-text</artifactId>
+				<version>${commons-text.version}</version>
 			</dependency>
 
 			<dependency>

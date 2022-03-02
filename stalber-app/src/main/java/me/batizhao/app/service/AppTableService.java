@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import me.batizhao.app.domain.AppTable;
+import me.batizhao.app.domain.AppTableColumn;
 
 import java.util.List;
 import java.util.Map;
@@ -94,5 +95,13 @@ public interface AppTableService extends IService<AppTable> {
      * @return
      */
     Boolean importTables(List<AppTable> appTables);
+
+    /**
+     * 查询表原始信息
+     * @param tableName 表名
+     * @param dsName 动态数据源名
+     * @return
+     */
+    List<AppTableColumn> findColumnsByTableName(String tableName, String dsName);
 
 }

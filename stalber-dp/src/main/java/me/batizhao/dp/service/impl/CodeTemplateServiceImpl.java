@@ -2,9 +2,9 @@ package me.batizhao.dp.service.impl;
 
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.FileWriter;
+import me.batizhao.common.core.config.CodeProperties;
 import me.batizhao.common.core.domain.FolderTree;
 import me.batizhao.common.core.util.FolderUtil;
-import me.batizhao.dp.config.CodeProperties;
 import me.batizhao.dp.domain.CodeTemplateDTO;
 import me.batizhao.dp.service.CodeTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
