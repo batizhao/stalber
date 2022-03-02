@@ -39,8 +39,8 @@ public class AppProcess implements Serializable {
     /**
      * 流程定义key
      */
-    @Schema(description="流程定义key")
-    private String key;
+    @Schema(description="流程定义processKey")
+    private String processKey;
 
     /**
      * 流程名称
