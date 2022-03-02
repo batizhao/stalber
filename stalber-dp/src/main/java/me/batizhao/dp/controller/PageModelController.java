@@ -98,7 +98,7 @@ public class PageModelController {
     }
 
     /**
-     * 更新数据源状态
+     * 更新页面模型状态
      * @param pageModel 页面模型
      * @return R
      */
