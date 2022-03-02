@@ -1,5 +1,6 @@
 package me.batizhao.app.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -65,6 +66,7 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
         if (appForm.getId() == null) {
             appForm.setCreateTime(LocalDateTime.now());
             appForm.setUpdateTime(LocalDateTime.now());
+            appForm.setFormKey(IdUtil.objectId());
             appFormMapper.insert(appForm);
         } else {
             appForm.setUpdateTime(LocalDateTime.now());

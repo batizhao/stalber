@@ -122,7 +122,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         if (appTable.getStatus().equals("created")) {
             appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
 
-            initData(appTable);
+            initCodeMetadata(appTable);
         } else {
             // 数据库表元数据
             List<AppTableColumn> dbTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
@@ -210,7 +210,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     public Boolean importTables(List<AppTable> appTables) {
         if (appTables == null) return false;
         for (AppTable appTable : appTables) {
-            initData(appTable);
+            initCodeMetadata(appTable);
             // 初始化 columnMetadata
             List<AppTableColumn> appTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
             appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
@@ -246,7 +246,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
      * @param appTable
      */
     @SneakyThrows
-    private void initData(AppTable appTable) {
+    private void initCodeMetadata(AppTable appTable) {
         // 初始化代码生成数据
         AppTableCode atc = new AppTableCode().setClassName(CodeGenUtils.columnToJava(appTable.getTableName()))
                 .setClassComment(CodeGenUtils.replaceText(appTable.getTableComment()))
