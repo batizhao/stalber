@@ -107,10 +107,19 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return appTable;
     }
 
+    @SneakyThrows
     @Override
     public Boolean updateCodeMetadataById(AppTable appTable) {
+        //初始化 ColumnMetadata 属性
+        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
+        appTableColumns.forEach(CodeGenUtils::initColumnField);
+
         LambdaUpdateWrapper<AppTable> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(AppTable::getId, appTable.getId()).set(AppTable::getCodeMetadata, appTable.getCodeMetadata());
+        wrapper.eq(AppTable::getId, appTable.getId())
+                .set(AppTable::getCodeMetadata, appTable.getCodeMetadata())
+                .set(AppTable::getColumnMetadata, objectMapper.writeValueAsString(appTableColumns));
+
         return appTableMapper.update(null, wrapper) == 1;
     }
 

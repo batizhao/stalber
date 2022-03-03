@@ -102,9 +102,16 @@ public class CodeGenUtils {
         // 设置默认类型
         appTableColumn.setJavaType(GenConstants.TYPE_STRING);
 
-        if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
+        if (arraysContains(GenConstants.COLUMNTYPE_STR, dataType) || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType)) {
+            // 字符串长度超过500设置为文本域
+            Integer columnLength = getColumnLength(appTableColumn.getType());
+            String htmlType = columnLength >= 500 || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType) ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
+            appTableColumn.setHtmlType(htmlType);
+        } else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
             appTableColumn.setJavaType(GenConstants.TYPE_DATE);
+            appTableColumn.setHtmlType(GenConstants.HTML_DATETIME);
         } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
+            appTableColumn.setHtmlType(GenConstants.HTML_INPUT);
 
             // 如果是浮点型 统一用BigDecimal
             String[] str = StringUtils.split(StringUtils.substringBetween(appTableColumn.getType(), "(", ")"), ",");
@@ -119,6 +126,33 @@ public class CodeGenUtils {
             else {
                 appTableColumn.setJavaType(GenConstants.TYPE_LONG);
             }
+        }
+
+        // 插入字段
+        if (!arraysContains(GenConstants.COLUMNNAME_NOT_SAVE, columnName) && !appTableColumn.getPrimary()) {
+            appTableColumn.setSave(true);
+        }
+
+        // 状态字段设置单选框
+        if (StringUtils.endsWithIgnoreCase(columnName, "status")) {
+            appTableColumn.setHtmlType(GenConstants.HTML_SWITCH);
+        }
+        // 类型&性别字段设置下拉框
+        else if (StringUtils.endsWithIgnoreCase(columnName, "type")
+                || StringUtils.endsWithIgnoreCase(columnName, "sex")) {
+            appTableColumn.setHtmlType(GenConstants.HTML_SELECT);
+        }
+        // 图片字段设置图片上传控件
+        else if (StringUtils.endsWithIgnoreCase(columnName, "image")) {
+            appTableColumn.setHtmlType(GenConstants.HTML_IMAGE_UPLOAD);
+        }
+        // 文件字段设置文件上传控件
+        else if (StringUtils.endsWithIgnoreCase(columnName, "file")) {
+            appTableColumn.setHtmlType(GenConstants.HTML_FILE_UPLOAD);
+        }
+        // 内容字段设置富文本控件
+        else if (StringUtils.endsWithIgnoreCase(columnName, "content")) {
+            appTableColumn.setHtmlType(GenConstants.HTML_EDITOR);
         }
     }
 

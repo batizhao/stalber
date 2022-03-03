@@ -84,4 +84,16 @@ public class AppTableColumn {
     @Schema(description="Java属性名")
     private String javaField;
 
+    /**
+     * 是否可插入
+     */
+    @Schema(description="是否可插入")
+    private Boolean save;
+
+    /**
+     * 显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）
+     */
+    @Schema(description="显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）")
+    private String htmlType;
+
 }
