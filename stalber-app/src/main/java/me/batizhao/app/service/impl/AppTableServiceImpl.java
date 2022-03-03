@@ -18,7 +18,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import me.batizhao.common.core.config.CodeProperties;
 import me.batizhao.app.config.GenConfig;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.domain.AppTableCode;
@@ -27,9 +26,9 @@ import me.batizhao.app.mapper.AppTableMapper;
 import me.batizhao.app.service.AppService;
 import me.batizhao.app.service.AppTableService;
 import me.batizhao.app.util.CodeGenUtils;
+import me.batizhao.common.core.config.CodeProperties;
 import me.batizhao.common.core.constant.GenConstants;
 import me.batizhao.common.core.exception.NotFoundException;
-import me.batizhao.common.core.exception.StalberException;
 import me.batizhao.common.core.util.FolderUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +80,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return appTableMapper.selectList(wrapper);
     }
 
+    @SneakyThrows
     @Override
     public AppTable findById(Long id) {
         AppTable appTable = appTableMapper.selectById(id);
@@ -92,10 +92,19 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         return appTable;
     }
 
+    @SneakyThrows
     @Override
     @Transactional
     public AppTable saveOrUpdateAppTable(AppTable appTable) {
         if (appTable.getId() == null) {
+            // 初始化 codeMetadata
+            initCodeMetadata(appTable);
+            // 初始化 columnMetadata 属性
+            JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+            List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
+            appTableColumns.forEach(CodeGenUtils::initColumnField);
+
+            appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
             appTable.setCreateTime(LocalDateTime.now());
             appTable.setUpdateTime(LocalDateTime.now());
             appTableMapper.insert(appTable);
@@ -110,7 +119,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     @SneakyThrows
     @Override
     public Boolean updateCodeMetadataById(AppTable appTable) {
-        //初始化 ColumnMetadata 属性
+        // 初始化 columnMetadata 属性
         JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
         List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
         appTableColumns.forEach(CodeGenUtils::initColumnField);
@@ -130,8 +139,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
 
         if (appTable.getStatus().equals("created")) {
             appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
-
-            initCodeMetadata(appTable);
         } else {
             // 数据库表元数据
             List<AppTableColumn> dbTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
@@ -176,20 +183,20 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     public byte[] downloadCode(Long id) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
-        generateCode(prepareCodeMeta(id), zip);
+        generateCode(findById(id), zip);
         IoUtil.close(zip);
         return outputStream.toByteArray();
     }
 
     @Override
     public Boolean generateCode(Long id) {
-        generateCode(prepareCodeMeta(id));
+        generateCode(findById(id));
         return true;
     }
 
     @Override
     public Map<String, String> previewCode(Long id) {
-        return previewCode(prepareCodeMeta(id));
+        return previewCode(findById(id));
     }
 
     @Override
@@ -219,11 +226,13 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     public Boolean importTables(List<AppTable> appTables) {
         if (appTables == null) return false;
         for (AppTable appTable : appTables) {
+            // 初始化 codeMetadata
             initCodeMetadata(appTable);
             // 初始化 columnMetadata
             List<AppTableColumn> appTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
-            appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
+            appTableColumns.forEach(CodeGenUtils::initColumnField);
 
+            appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
             appTable.setCreateTime(LocalDateTime.now());
             appTable.setUpdateTime(LocalDateTime.now());
             appTable.setStatus("synced");
@@ -266,22 +275,6 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
 
         atc.setMappingPath(StringUtils.uncapitalize(atc.getClassName()));
         appTable.setCodeMetadata(objectMapper.writeValueAsString(atc));
-    }
-
-    @SneakyThrows
-    private AppTable prepareCodeMeta(Long id) {
-        AppTable appTable = findById(id);
-
-        if(StringUtils.isBlank(appTable.getCodeMetadata())) {
-            throw new StalberException("没有配置生成信息！");
-        }
-
-        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
-        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
-
-        appTableColumns.forEach(CodeGenUtils::initColumnField);
-        appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
-        return appTable;
     }
 
     /**
