@@ -1,4 +1,4 @@
-package me.batizhao.dp.domain;
+package me.batizhao.app.domain.fg;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

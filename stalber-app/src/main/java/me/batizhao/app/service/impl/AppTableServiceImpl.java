@@ -3,6 +3,7 @@ package me.batizhao.app.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.extra.template.Template;
 import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
@@ -18,11 +19,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.app.config.GenConfig;
+import me.batizhao.app.domain.AppForm;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.domain.AppTableCode;
 import me.batizhao.app.domain.AppTableColumn;
+import me.batizhao.app.domain.fg.*;
 import me.batizhao.app.mapper.AppTableMapper;
+import me.batizhao.app.service.AppFormService;
 import me.batizhao.app.service.AppService;
 import me.batizhao.app.service.AppTableService;
 import me.batizhao.app.util.CodeGenUtils;
@@ -54,12 +59,15 @@ import java.util.zip.ZipOutputStream;
  * @since 2022-01-27
  */
 @Service
+@Slf4j
 public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> implements AppTableService {
 
     @Autowired
     private AppTableMapper appTableMapper;
     @Autowired
     private AppService appService;
+    @Autowired
+    private AppFormService appFormService;
     @Autowired
     private CodeProperties codeProperties;
     @Autowired
@@ -118,11 +126,26 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
 
     @SneakyThrows
     @Override
+    @Transactional
     public Boolean updateCodeMetadataById(AppTable appTable) {
         // 初始化 columnMetadata 属性
         JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
         List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
         appTableColumns.forEach(CodeGenUtils::initColumnField);
+
+        // 生成表单模型
+        AppTableCode appTableCode = JSONUtil.toBean(appTable.getCodeMetadata(), AppTableCode.class);
+        if (appTableCode.getForm().equals("yes")) {
+            FormGenerator fg = generateFormMetadata(appTableColumns);
+            String formMetadata = objectMapper.writeValueAsString(fg);
+            AppForm form = new AppForm()
+                    .setAppId(appTable.getAppId())
+                    .setName(appTable.getDsName() + ":" + appTable.getTableName() + ":" + RandomUtil.randomString(5))
+                    .setDescription(appTableCode.getClassComment())
+                    .setMetadata(formMetadata);
+            form = appFormService.saveOrUpdateAppForm(form);
+            appTableCode.setFormKey(form.getFormKey());
+        }
 
         LambdaUpdateWrapper<AppTable> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(AppTable::getId, appTable.getId())
@@ -378,6 +401,78 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             dataMap.put(filename.substring(0, filename.lastIndexOf(".")), sw.toString());
         }
         return dataMap;
+    }
+
+    private FormGenerator generateFormMetadata(List<AppTableColumn> appTableColumns) {
+        FormGenerator fg = new FormGenerator();
+        List<Fields> fields = new ArrayList<>();
+
+        int[] i = {100};
+        appTableColumns.forEach(cm -> {
+            CodeGenUtils.initColumnField(cm);
+            if (cm.getSave() != null && cm.getSave() && cm.getHtmlType() != null) {
+                Fields field = new Fields();
+                field.setVModel(cm.getName())
+                        .setPlaceholder("请输入" + cm.getComment());
+
+                Style style = new Style();
+                field.setStyle(style);
+
+                switch (cm.getHtmlType()) {
+                    case GenConstants.HTML_TEXTAREA:
+                        Config config = new Config(cm.getComment(),
+                                "el-input",
+                                cm.getHtmlType(),
+                                cm.getRequired() != null && cm.getRequired(),
+                                i[0]++,
+                                RandomUtil.randomNumbers(17));
+
+                        field.setType(GenConstants.HTML_TEXTAREA)
+                                .setAutosize(new Autosize())
+                                .setReadonly(false)
+                                .setShowWordLimit(false)
+                                .setConfig(config);
+
+                        break;
+                    case GenConstants.HTML_SELECT:
+                        config = new Config(cm.getComment(),
+                                "el-select",
+                                cm.getHtmlType(),
+                                cm.getRequired() != null && cm.getRequired(),
+                                i[0]++,
+                                RandomUtil.randomNumbers(17));
+
+                        field.setSlot(new SlotList())
+                                .setMultiple(false)
+                                .setFilterable(false)
+                                .setClearable(true)
+                                .setConfig(config);
+
+                        break;
+                    default:
+                        config = new Config(cm.getComment(),
+                                "el-input",
+                                cm.getHtmlType(),
+                                cm.getRequired() != null && cm.getRequired(),
+                                i[0]++,
+                                RandomUtil.randomNumbers(17));
+
+                        field.setSlot(new InputSlot())
+                                .setConfig(config)
+                                .setClearable(true)
+                                .setReadonly(false)
+                                .setShowWordLimit(false)
+                                .setPrefixIcon("")
+                                .setSuffixIcon("");
+                        break;
+                }
+
+                fields.add(field);
+            }
+        });
+
+        fg.setFields(fields);
+        return fg;
     }
 
 }

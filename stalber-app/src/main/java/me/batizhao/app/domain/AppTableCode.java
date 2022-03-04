@@ -79,10 +79,16 @@ public class AppTableCode {
     private String subTableFkName;
 
     /**
-     * 表单元数据
+     * 表单key
      */
-    @Schema(description="表单元数据")
+    @Schema(description="表单key")
     private String formKey;
+
+    /**
+     * 是否生成表单模型
+     */
+    @Schema(description="是否生成表单模型")
+    private String form = "yes";
 
     /**
      * 整合工作流引擎

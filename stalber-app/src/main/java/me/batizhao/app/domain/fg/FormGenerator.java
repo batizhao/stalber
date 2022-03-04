@@ -1,4 +1,4 @@
-package me.batizhao.dp.domain;
+package me.batizhao.app.domain.fg;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;

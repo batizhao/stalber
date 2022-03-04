@@ -1,4 +1,4 @@
-package me.batizhao.dp.domain;
+package me.batizhao.app.domain.fg;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

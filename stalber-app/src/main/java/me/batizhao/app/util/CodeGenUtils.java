@@ -26,7 +26,6 @@ import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.domain.AppTableCode;
 import me.batizhao.app.domain.AppTableColumn;
 import me.batizhao.common.core.constant.GenConstants;
-import me.batizhao.common.core.constant.PecadoConstants;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
@@ -77,17 +76,17 @@ public class CodeGenUtils {
 
     private final String MENU_SQL_VM = "menu.sql";
 
-    private final String VUE_INDEX_VUE_VM = "index.vue";
-
-    private final String VUE_TREE_INDEX_VUE_VM = "index-tree.vue";
-
-    private final String VUE_API_JS_VM = "api.js";
-
-    private final String JSP_COMMENT = "comment.jsp";
-    private final String JSP_INDEX = "index.jsp";
-    private final String JSP_INPUT = "input.jsp";
-    private final String JSP_STATISTICAL = "statistical.jsp";
-    private final String JSP_VIEW = "view.jsp";
+//    private final String VUE_INDEX_VUE_VM = "index.vue";
+//
+//    private final String VUE_TREE_INDEX_VUE_VM = "index-tree.vue";
+//
+//    private final String VUE_API_JS_VM = "api.js";
+//
+//    private final String JSP_COMMENT = "comment.jsp";
+//    private final String JSP_INDEX = "index.jsp";
+//    private final String JSP_INPUT = "input.jsp";
+//    private final String JSP_STATISTICAL = "statistical.jsp";
+//    private final String JSP_VIEW = "view.jsp";
 
     /**
      * 初始化列属性字段
@@ -336,52 +335,52 @@ public class CodeGenUtils {
             }
         }
 
-        if (template.contains(VUE_INDEX_VUE_VM)) {
-            return "src" + File.separator + "views" + File.separator
-                    + appTableCode.getModuleName() + File.separator + appTableCode.getMappingPath() + File.separator
-                    + "index.vue";
-        }
-
-        if (appTableCode.getTemplate().equals(GenConstants.TPL_TREE) && template.contains(VUE_TREE_INDEX_VUE_VM)) {
-            return "src" + File.separator + "views" + File.separator
-                    + appTableCode.getModuleName() + File.separator + appTableCode.getMappingPath() + File.separator
-                    + "index.vue";
-        }
-
-        if (template.contains(VUE_API_JS_VM)) {
-            return "src" + File.separator + "api" + File.separator
-                    + appTableCode.getModuleName() + File.separator + appTableCode.getMappingPath() + ".js";
-        }
-
-        if (template.contains(JSP_INDEX)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
-                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
-                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "index.jsp";
-        }
-
-        if (template.contains(JSP_COMMENT)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
-                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
-                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "comment.jsp";
-        }
-
-        if (template.contains(JSP_INPUT)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
-                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
-                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "input.jsp";
-        }
-
-        if (template.contains(JSP_STATISTICAL)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
-                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
-                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "statistical.jsp";
-        }
-
-        if (template.contains(JSP_VIEW)) {
-            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
-                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
-                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "view.jsp";
-        }
+//        if (template.contains(VUE_INDEX_VUE_VM)) {
+//            return "src" + File.separator + "views" + File.separator
+//                    + appTableCode.getModuleName() + File.separator + appTableCode.getMappingPath() + File.separator
+//                    + "index.vue";
+//        }
+//
+//        if (appTableCode.getTemplate().equals(GenConstants.TPL_TREE) && template.contains(VUE_TREE_INDEX_VUE_VM)) {
+//            return "src" + File.separator + "views" + File.separator
+//                    + appTableCode.getModuleName() + File.separator + appTableCode.getMappingPath() + File.separator
+//                    + "index.vue";
+//        }
+//
+//        if (template.contains(VUE_API_JS_VM)) {
+//            return "src" + File.separator + "api" + File.separator
+//                    + appTableCode.getModuleName() + File.separator + appTableCode.getMappingPath() + ".js";
+//        }
+//
+//        if (template.contains(JSP_INDEX)) {
+//            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+//                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+//                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "index.jsp";
+//        }
+//
+//        if (template.contains(JSP_COMMENT)) {
+//            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+//                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+//                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "comment.jsp";
+//        }
+//
+//        if (template.contains(JSP_INPUT)) {
+//            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+//                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+//                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "input.jsp";
+//        }
+//
+//        if (template.contains(JSP_STATISTICAL)) {
+//            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+//                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+//                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "statistical.jsp";
+//        }
+//
+//        if (template.contains(JSP_VIEW)) {
+//            return PecadoConstants.FRONT_END_PROJECT + File.separator + "src" + File.separator + "main" + File.separator
+//                    + "webapp" + File.separator + "jsp" + File.separator + "frontend" + File.separator
+//                    + StringUtils.lowerCase(appTableCode.getClassName()) + File.separator + "view.jsp";
+//        }
 
         return null;
     }
