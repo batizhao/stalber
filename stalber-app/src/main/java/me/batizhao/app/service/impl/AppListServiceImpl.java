@@ -29,7 +29,7 @@ public class AppListServiceImpl extends ServiceImpl<AppListMapper, AppList> impl
 
     /**
      * 创建查询表达式
-     * @param appList 应用流程查询参数
+     * @param appList 应用流程列表参数
      * @return LambdaQueryWrapper<AppList>
      */
     private LambdaQueryWrapper<AppList> createAppListLambda(AppList appList){

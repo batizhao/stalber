@@ -127,6 +127,12 @@ public class AppList implements Serializable {
     private String status;
 
     /**
+     * 列表元数据
+     */
+    @Schema(description="列表元数据")
+    private  String listMetadata;
+
+    /**
      * 创建时间
      */
     @Schema(description="创建时间")

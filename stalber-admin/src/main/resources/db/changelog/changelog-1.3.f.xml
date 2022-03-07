@@ -55,119 +55,12 @@
             <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
                 <constraints nullable="false"/>
             </column>
+            <column name="listMetadata" type="JSON" remarks="列表元数据">
+                <constraints nullable="false" />
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="app_list"/>
-        </rollback>
-    </changeSet>
-
-    <changeSet author="wws" id="CreateTableAppListHeader-20220302-002">
-        <createTable remarks="应用列表表头" tableName="app_list_header">
-            <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-            <column name="listId" type="BIGINT" remarks="列表Id">
-                <constraints nullable="false" />
-            </column>
-            <column name="code" type="VARCHAR(32)" remarks="编码">
-                <constraints nullable="false" />
-            </column>
-            <column name="name" type="varchar(36)" remarks="名称">
-                <constraints nullable="false" />
-            </column>
-            <column name="type" type="VARCHAR(32)" remarks="列类型：string 字符串，datetime 日期， number 数字，textare 大文本，binary 二进制" defaultValue="string">
-                <constraints nullable="false" />
-            </column>
-            <column name="alignType" type="VARCHAR(32)" remarks="对齐方式：left 居左， middle 居中，right 居右" defaultValue="left">
-                <constraints nullable="false" />
-            </column>
-            <column name="width" type="INT" remarks="列宽"></column>
-            <column name="display" type="INT" remarks="是否显示：0 否 1 是" defaultValue="1">
-                <constraints nullable="false" />
-            </column>
-            <column name="fixed" type="INT" remarks="是否固定：0 否 1 是" defaultValue="0">
-                <constraints nullable="false" />
-            </column>
-            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <rollback>
-            <dropTable tableName="app_list_header"/>
-        </rollback>
-    </changeSet>
-
-    <changeSet author="wws" id="CreateTableAppListButton-20220302-003">
-        <createTable remarks="应用列表按钮" tableName="app_list_button">
-            <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-            <column name="listId" type="BIGINT" remarks="列表Id">
-                <constraints nullable="false" />
-            </column>
-            <column name="name" type="varchar(36)" remarks="名称">
-                <constraints nullable="false" />
-            </column>
-            <column name="operType" type="VARCHAR(32)" remarks="操作类型： select 查询，edit 编辑，detail 详情，delete 删除， create 新建" defaultValue="create">
-                <constraints nullable="false" />
-            </column>
-            <column name="type" type="VARCHAR(32)" remarks="类型：line 行内 tools 工具栏" defaultValue="tools">
-                <constraints nullable="false" />
-            </column>
-            <column name="style" type="VARCHAR(32)" remarks="样式：primary, default,dashed,danger,link" defaultValue="primary">
-                <constraints nullable="false" />
-            </column>
-            <column name="icon" type="varchar(36)" remarks="图标">
-            </column>
-            <column name="addr" type="VARCHAR(255)" remarks="请求地址">
-            </column>
-            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <rollback>
-            <dropTable tableName="app_list_button"/>
-        </rollback>
-    </changeSet>
-
-    <changeSet author="wws" id="CreateTableAppListParam-20220302-004">
-        <createTable remarks="应用列表参数" tableName="app_list_param">
-            <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
-                <constraints primaryKey="true" nullable="false" />
-            </column>
-            <column name="listId" type="BIGINT" remarks="列表Id">
-                <constraints nullable="false" />
-            </column>
-            <column name="paramKey" type="varchar(36)" remarks="参数key">
-                <constraints nullable="false" />
-            </column>
-            <column name="name" type="varchar(36)" remarks="参数名称">
-                <constraints nullable="false" />
-            </column>
-            <column name="sort" type="INT" remarks="排序号">
-                <constraints nullable="false" />
-            </column>
-            <column name="showType" type="VARCHAR(32)" remarks="展示类型：string 单行文本， number 数字，datetime 日期， time 时间" defaultValue="tools">
-                <constraints nullable="false" />
-            </column>
-            <column name="status" type="VARCHAR(32)" remarks="状态:open 激活， close 禁用" defaultValue="open">
-                <constraints nullable="false" />
-            </column>
-            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-        <rollback>
-            <dropTable tableName="app_list_param"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>
