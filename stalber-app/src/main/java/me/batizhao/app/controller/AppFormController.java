@@ -63,17 +63,17 @@ public class AppFormController {
         return R.ok(appFormService.findAppForms(appForm));
     }
 
-//    /**
-//     * 通过id查询应用表单
-//     * @param id id
-//     * @return R
-//     */
-//    @Operation(description = "通过id查询应用表单")
-//    @GetMapping("/form/{id}")
-//    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
-//    public R<AppForm> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
-//        return R.ok(appFormService.findById(id));
-//    }
+    /**
+     * 通过id查询应用表单
+     * @param id id
+     * @return R
+     */
+    @Operation(description = "通过id查询应用表单")
+    @GetMapping("/form/{id}")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
+    public R<AppForm> handleId(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        return R.ok(appFormService.findById(id));
+    }
 
     /**
      * 通过key查询表单
