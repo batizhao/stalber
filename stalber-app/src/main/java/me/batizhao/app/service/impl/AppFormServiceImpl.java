@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.batizhao.app.domain.AppFormHistory;
+import me.batizhao.app.service.AppFormHistoryService;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.app.domain.AppForm;
 import me.batizhao.app.mapper.AppFormMapper;
@@ -30,6 +32,8 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
 
     @Autowired
     private AppFormMapper appFormMapper;
+    @Autowired
+    private AppFormHistoryService appFormHistoryService;
 
     @Override
     public IPage<AppForm> findAppForms(Page<AppForm> page, AppForm appForm) {
@@ -73,6 +77,7 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
             appFormMapper.updateById(appForm);
         }
 
+        appFormHistoryService.saveFormHistory(appForm.getFormKey(), appForm.getMetadata());
         return appForm;
     }
 
@@ -82,6 +87,14 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
     public Boolean updateStatus(AppForm appForm) {
         LambdaUpdateWrapper<AppForm> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(AppForm::getId, appForm.getId()).set(AppForm::getStatus, appForm.getStatus());
+        return appFormMapper.update(null, wrapper) == 1;
+    }
+
+    @Override
+    public Boolean revertFormById(Long id) {
+        AppFormHistory fh = appFormHistoryService.getById(id);
+        LambdaUpdateWrapper<AppForm> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(AppForm::getFormKey, fh.getFormKey()).set(AppForm::getMetadata, fh.getMetadata());
         return appFormMapper.update(null, wrapper) == 1;
     }
 

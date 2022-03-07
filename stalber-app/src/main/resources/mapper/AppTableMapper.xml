@@ -50,7 +50,7 @@
            ordinal_position as sort,
            column_comment as comment,
            (case when extra = 'auto_increment' then '1' else '0' end) as increment,
-           UPPER(data_type) as type,
+           data_type as type,
            character_maximum_length as length,
            column_default as defaultValue
     from information_schema.columns

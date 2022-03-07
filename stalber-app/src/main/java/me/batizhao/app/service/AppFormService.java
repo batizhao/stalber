@@ -51,4 +51,11 @@ public interface AppFormService extends IService<AppForm> {
      */
     Boolean updateStatus(AppForm appForm);
 
+    /**
+     * 通过id恢复表单历史记录
+     * @param id
+     * @return
+     */
+    Boolean revertFormById(Long id);
+
 }

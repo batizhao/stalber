@@ -104,15 +104,15 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     @Override
     @Transactional
     public AppTable saveOrUpdateAppTable(AppTable appTable) {
+        // 初始化 columnMetadata 属性
+        JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
+        List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
+        appTableColumns.forEach(CodeGenUtils::initColumnField);
+        appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
+
         if (appTable.getId() == null) {
             // 初始化 codeMetadata
             initCodeMetadata(appTable);
-            // 初始化 columnMetadata 属性
-            JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
-            List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
-            appTableColumns.forEach(CodeGenUtils::initColumnField);
-
-            appTable.setColumnMetadata(objectMapper.writeValueAsString(appTableColumns));
             appTable.setCreateTime(LocalDateTime.now());
             appTable.setUpdateTime(LocalDateTime.now());
             appTableMapper.insert(appTable);
@@ -138,18 +138,30 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
         if (appTableCode.getForm().equals("yes")) {
             FormGenerator fg = generateFormMetadata(appTableColumns);
             String formMetadata = objectMapper.writeValueAsString(fg);
-            AppForm form = new AppForm()
-                    .setAppId(appTable.getAppId())
-                    .setName(appTable.getDsName() + ":" + appTable.getTableName() + ":" + RandomUtil.randomString(5))
-                    .setDescription(appTableCode.getClassComment())
-                    .setMetadata(formMetadata);
+
+            AppTable at = findById(appTable.getId());
+            AppTableCode at_appTableCode = JSONUtil.toBean(at.getCodeMetadata(), AppTableCode.class);
+            AppForm form;
+            if (at_appTableCode.getFormId() != null) {
+                form = new AppForm()
+                        .setId(at_appTableCode.getFormId())
+                        .setFormKey(at_appTableCode.getFormKey())
+                        .setMetadata(formMetadata);
+            } else {
+                form = new AppForm()
+                        .setAppId(at.getAppId())
+                        .setName(at.getDsName() + ":" + at.getTableName() + ":" + RandomUtil.randomString(5))
+                        .setDescription(appTableCode.getClassComment())
+                        .setMetadata(formMetadata);
+            }
+
             form = appFormService.saveOrUpdateAppForm(form);
-            appTableCode.setFormKey(form.getFormKey());
+            appTableCode.setFormKey(form.getFormKey()).setFormId(form.getId());
         }
 
         LambdaUpdateWrapper<AppTable> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(AppTable::getId, appTable.getId())
-                .set(AppTable::getCodeMetadata, appTable.getCodeMetadata())
+                .set(AppTable::getCodeMetadata, objectMapper.writeValueAsString(appTableCode))
                 .set(AppTable::getColumnMetadata, objectMapper.writeValueAsString(appTableColumns));
 
         return appTableMapper.update(null, wrapper) == 1;
