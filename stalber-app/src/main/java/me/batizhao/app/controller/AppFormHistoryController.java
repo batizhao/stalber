@@ -54,7 +54,7 @@ public class AppFormHistoryController {
      */
     @Operation(description = "通过id恢复表单历史记录")
     @PostMapping("/form/history/{id}")
-    @PreAuthorize("@pms.hasPermission('dp:form:edit')")
+    @PreAuthorize("@pms.hasPermission('app:dev:admin')")
     public R<Boolean> handleDelete(@Parameter(name = "ID" , required = true) @PathVariable @Min(1) Long id) {
         return R.ok(formService.revertFormById(id));
     }

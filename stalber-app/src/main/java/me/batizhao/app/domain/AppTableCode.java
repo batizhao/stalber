@@ -102,11 +102,11 @@ public class AppTableCode {
     @Schema(description="整合工作流引擎")
     private String workflow = "no";
 
-    /**
-     * 流程Key
-     */
-    @Schema(description="流程Key")
-    private String workflowKey;
+//    /**
+//     * 流程Key
+//     */
+//    @Schema(description="流程Key")
+//    private String workflowKey;
 
     /**
      * 生成测试用例

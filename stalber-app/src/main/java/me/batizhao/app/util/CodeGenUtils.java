@@ -238,15 +238,15 @@ public class CodeGenUtils {
         map.put("author", appTableCode.getClassAuthor());
         map.put("moduleName", appTableCode.getModuleName());
         map.put("package", appTableCode.getPackageName());
-        map.put("parentMenuId", 5000);
+//        map.put("parentMenuId", 5000);
         map.put("template", appTableCode.getTemplate());
-        map.put("relationTable", "");
+//        map.put("relationTable", "");
         map.put("subTableFkName", appTableCode.getSubTableFkName());
         map.put("subMappingPath", "");
         map.put("form", "");
         map.put("formKey", appTableCode.getFormKey());
         map.put("workflow", appTableCode.getWorkflow());
-        map.put("workflowKey", appTableCode.getWorkflowKey());
+//        map.put("workflowKey", appTableCode.getWorkflowKey());
         return map;
     }
 

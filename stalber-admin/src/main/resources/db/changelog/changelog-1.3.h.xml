@@ -1,0 +1,155 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="DeleteTableData-20220308-001">
+        <dropTable tableName="code" />
+        <dropTable tableName="code_meta" />
+        <dropTable tableName="code_template" />
+        <dropTable tableName="form" />
+        <dropTable tableName="form_history" />
+
+        <delete tableName="menu">
+            <where>id=3300</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3301</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3302</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3303</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3100</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3101</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3102</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3103</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3104</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3105</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=3106</where>
+        </delete>
+
+        <delete tableName="role_menu">
+            <where>menuId=3300</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3301</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3302</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3303</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3100</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3101</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3102</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3103</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3104</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3105</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=3106</where>
+        </delete>
+    </changeSet>
+
+    <changeSet author="batizhao" id="InsertTableMenu-20220308-002">
+        <insert tableName="menu">
+            <column name="id" valueNumeric="100000"/>
+            <column name="path" value="/task"/>
+            <column name="name" value="我的任务"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="1"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="110000"/>
+            <column name="path" value="/task/todo"/>
+            <column name="name" value="待办任务"/>
+            <column name="permission" value="task:todo:list"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="100000"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="120000"/>
+            <column name="path" value="/task/doing"/>
+            <column name="name" value="在办任务"/>
+            <column name="permission" value="task:doing:list"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="100000"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="130000"/>
+            <column name="path" value="/task/done"/>
+            <column name="name" value="已办任务"/>
+            <column name="permission" value="task:done:list"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="100000"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="batizhao" id="InsertTableRoleMenu-20220308-003">
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="1"/>
+            <column name="menuId" valueNumeric="100000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="1"/>
+            <column name="menuId" valueNumeric="110000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="1"/>
+            <column name="menuId" valueNumeric="120000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="1"/>
+            <column name="menuId" valueNumeric="130000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="100000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="110000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="120000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="130000"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
