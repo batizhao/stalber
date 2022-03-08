@@ -16,7 +16,7 @@ public interface StalberDpApi {
      * @param key key
      * @return R
      */
-    @RequestLine("GET dp/form?key={key}")
+    @RequestLine("GET app/form?key={key}")
     R<Form> loadFormByKey(@Param("key") String key);
 
 }

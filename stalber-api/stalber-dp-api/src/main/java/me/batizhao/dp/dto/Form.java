@@ -29,16 +29,16 @@ public class Form implements Serializable {
     private Long id;
 
     /**
-     * 表单key
-     */
-    @Schema(description="表单key")
-    private String formKey;
-
-    /**
      * 表单名称
      */
     @Schema(description="表单名称")
     private String name;
+
+    /**
+     * 表单key
+     */
+    @Schema(description="表单key")
+    private String formKey;
 
     /**
      * 表单元数据
@@ -51,4 +51,5 @@ public class Form implements Serializable {
      */
     @Schema(description="表单描述")
     private String description;
+
 }
