@@ -132,4 +132,17 @@ public class MenuController {
         return R.ok(menuService.updateStatus(menu));
     }
 
+    /**
+     * 根据应用查询菜单
+     * 返回菜单树
+     *
+     * @return R<List<Menu>>
+     */
+    @Operation(description = "根据应用查询菜单")
+    @GetMapping(value = "/menu", params = "appId")
+    @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
+    public R<List<Menu>> handleMenusByAppId(@Parameter(name = "应用ID", required = true) @RequestParam("appId") @Min(1) Long appId) {
+        return R.ok(menuService.findMenusByAppId(appId));
+    }
+
 }

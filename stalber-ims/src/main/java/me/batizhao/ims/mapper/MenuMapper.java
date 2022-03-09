@@ -3,6 +3,7 @@ package me.batizhao.ims.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import me.batizhao.ims.domain.Menu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -19,6 +20,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param roleId 角色ID
      * @return
      */
-    @Select("SELECT A.* FROM menu A LEFT JOIN role_menu B ON A.id = B.menuId WHERE B.roleId = #{id}")
-    List<Menu> findMenusByRoleId(Long roleId);
+    @Select("SELECT A.* FROM menu A LEFT JOIN role_menu B ON A.id = B.menuId WHERE B.roleId = #{roleId}")
+    List<Menu> findMenusByRoleId(@Param("roleId") Long roleId);
 }

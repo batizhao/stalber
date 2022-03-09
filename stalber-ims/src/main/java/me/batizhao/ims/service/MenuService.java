@@ -85,4 +85,11 @@ public interface MenuService extends IService<Menu> {
      * @return
      */
     Boolean checkHasChildren(Integer id);
+
+    /**
+     * 查找应用下菜单
+     * @param appId
+     * @return
+     */
+    List<Menu> findMenusByAppId(Long appId);
 }

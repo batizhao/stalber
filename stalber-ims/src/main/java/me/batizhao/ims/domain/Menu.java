@@ -54,22 +54,13 @@ public class Menu extends TreeNode implements Serializable {
     @Schema(description="状态")
     private String status;
 
-//    /**
-//     * 创建时间
-//     */
-//    @Schema(description="创建时间")
-//    private LocalDateTime createTime;
-//
-//    /**
-//     * 修改时间
-//     */
-//    @Schema(description="修改时间")
-//    private LocalDateTime updateTime;
-
     /**
      * 路由元数据
      */
     @Schema(description="路由元数据")
     private transient MetaVO meta;
+
+    @Schema(description = "应用ID")
+    private Long appId;
 
 }

@@ -22,7 +22,7 @@ public class TreeNode extends BaseEntity {
     @Schema(description = "ID", example = "100")
     protected Integer id;
 
-    @Schema(description = "父ID", example = "100")
+    @Schema(description = "父ID,后台根0,前台根1", example = "100")
     @Min(0)
     protected Integer pid;
 

@@ -67,19 +67,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         wrapper.orderByAsc(Menu::getSort);
 
         List<Menu> menus = menuMapper.selectList(wrapper);
-//        List<MenuTree> menuTrees = new ArrayList<>();
-//        MenuTree menuTree;
-//        for (Menu menu : menus) {
-//            menuTree = new MenuTree();
-//            menuTree.setTitle(menu.getName());
-//            menuTree.setKey(menu.getId().toString());
-//            menuTree.setPid(menu.getPid());
-//            menuTree.setId(menu.getId());
-//            menuTrees.add(menuTree);
-//        }
         int min = menus.size() > 0 ? Collections.min(menus.stream().map(Menu::getPid).collect(Collectors.toList())) : 0;
         return TreeUtil.build(menus, min);
-
     }
 
     @Override
@@ -138,5 +127,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public Boolean checkHasChildren(Integer id) {
         return menuMapper.selectList(Wrappers.<Menu>lambdaQuery().eq(Menu::getPid, id)).size() > 0;
+    }
+
+    @Override
+    public List<Menu> findMenusByAppId(Long appId) {
+        LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(Menu::getAppId, appId).orderByAsc(Menu::getSort);
+
+        List<Menu> menus = menuMapper.selectList(wrapper);
+        int min = menus.size() > 0 ? Collections.min(menus.stream().map(Menu::getPid).collect(Collectors.toList())) : 1;
+        return TreeUtil.build(menus, min);
     }
 }
