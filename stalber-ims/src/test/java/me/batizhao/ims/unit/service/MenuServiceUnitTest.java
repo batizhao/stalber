@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.core.constant.MenuScopeEnum;
 import me.batizhao.common.core.constant.MenuTypeEnum;
 import me.batizhao.common.core.domain.TreeNode;
 import me.batizhao.common.core.exception.NotFoundException;
@@ -102,7 +103,7 @@ public class MenuServiceUnitTest extends BaseServiceUnitTest {
         when(roleService.findRolesByUserId(anyLong())).thenReturn(roleList);
         when(menuMapper.findMenusByRoleId(anyLong())).thenReturn(menuList);
 
-        List<Menu> menus = menuService.findMenuTreeByUserId(1L);
+        List<Menu> menus = menuService.findMenuTreeByUserId(1L, MenuScopeEnum.ADMIN.getType());
 
         log.info("menus: {}", menus);
 
@@ -118,7 +119,7 @@ public class MenuServiceUnitTest extends BaseServiceUnitTest {
 
         doReturn(menuList).when(menuMapper).selectList(any());
 
-        List<Menu> menuTree = menuService.findMenuTree(null);
+        List<Menu> menuTree = menuService.findMenuTree(null, MenuScopeEnum.ADMIN.getType());
 
         assertThat(menuTree, hasSize(1));
         assertThat(menuTree, hasItems(hasProperty("name", is("工作台")),
@@ -128,17 +129,17 @@ public class MenuServiceUnitTest extends BaseServiceUnitTest {
         assertThat(treeNodes, hasSize(2));
 
         doReturn(menuList).when(menuMapper).selectList(any(Wrapper.class));
-        menuTree = menuService.findMenuTree(menuList.get(0));
+        menuTree = menuService.findMenuTree(menuList.get(0), MenuScopeEnum.ADMIN.getType());
         assertThat(menuTree, hasSize(1));
 
         doReturn(menuList).when(menuMapper).selectList(any(Wrapper.class));
-        menuTree = menuService.findMenuTree(menuList.get(0).setName(""));
+        menuTree = menuService.findMenuTree(menuList.get(0).setName(""), MenuScopeEnum.ADMIN.getType());
         assertThat(menuTree, hasSize(1));
     }
 
     @Test
     public void givenNonParent_whenFilterMenus_thenSuccess() {
-        List<Menu> menus = menuService.filterMenu((new HashSet<>(menuList)), null);
+        List<Menu> menus = menuService.filterMenu((new HashSet<>(menuList)), null, MenuScopeEnum.ADMIN.getType());
         assertThat(menus, hasSize(1));
         assertThat(menus, hasItems(hasProperty("name", is("工作台")),
                 hasProperty("children", hasSize(1))));
@@ -153,7 +154,7 @@ public class MenuServiceUnitTest extends BaseServiceUnitTest {
 
     @Test
     public void givenParent_whenFilterMenus_thenSuccess() {
-        List<Menu> menus = menuService.filterMenu((new HashSet<>(menuList)), 1);
+        List<Menu> menus = menuService.filterMenu((new HashSet<>(menuList)), 1, MenuScopeEnum.ADMIN.getType());
         assertThat(menus, hasSize(1));
         assertThat(menus, hasItems(hasProperty("name", is("权限管理")),
                 hasProperty("children", hasSize(2))));

@@ -60,7 +60,16 @@ public class Menu extends TreeNode implements Serializable {
     @Schema(description="路由元数据")
     private transient MetaVO meta;
 
+    /**
+     * 应用ID
+     */
     @Schema(description = "应用ID")
     private Long appId;
+
+    /**
+     * 菜单范围
+     */
+    @Schema(description="菜单范围")
+    private String scope;
 
 }

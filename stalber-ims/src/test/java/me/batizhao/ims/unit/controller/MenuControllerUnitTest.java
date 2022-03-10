@@ -6,7 +6,7 @@ import me.batizhao.common.core.constant.ResultEnum;
 import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.common.core.domain.TreeNode;
 import me.batizhao.common.core.util.SecurityUtils;
-import me.batizhao.ims.controller.MenuController;
+import me.batizhao.ims.controller.AdminMenuController;
 import me.batizhao.ims.domain.Menu;
 import me.batizhao.ims.service.MenuService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author batizhao
  * @since 2020-02-10
  */
-@WebMvcTest(MenuController.class)
+@WebMvcTest(AdminMenuController.class)
 public class MenuControllerUnitTest extends BaseControllerUnitTest {
 
     @Autowired
@@ -84,7 +84,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
             SecurityUtils.getUser();
 //            mockStatic.verify(times(1), SecurityUtils::getUser);
 
-            when(menuService.findMenuTreeByUserId(anyLong())).thenReturn(trees);
+            when(menuService.findMenuTreeByUserId(anyLong(), anyString())).thenReturn(trees);
 
             mvc.perform(get("/ims/menu/me"))
                     .andDo(print())
@@ -132,7 +132,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
         menuTree.setChildren(children);
         menuTrees.add(menuTree);
 
-        doReturn(menuTrees).when(menuService).findMenuTree(any(Menu.class));
+        doReturn(menuTrees).when(menuService).findMenuTree(any(Menu.class), anyString());
 
         mvc.perform(get("/ims/menus"))
                 .andDo(print())

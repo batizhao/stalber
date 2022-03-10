@@ -4,29 +4,24 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * @author lengleng
- * @date 2020-02-17
+ * @author batizhao
+ * @date 2022-03-10
  * <p>
- * 菜单类型
+ * 菜单范围
  */
 @Getter
 @RequiredArgsConstructor
-public enum MenuTypeEnum {
+public enum MenuScopeEnum {
 
 	/**
 	 * 左侧菜单
 	 */
-	MENU("M", "menu"),
-
-	/**
-	 * 顶部菜单
-	 */
-//	TOP_MENU("T", "top"),
+	DASHBOARD("dashboard", "工作台"),
 
 	/**
 	 * 按钮
 	 */
-	BUTTON("B", "button");
+	ADMIN("admin", "控制台");
 
 	/**
 	 * 类型

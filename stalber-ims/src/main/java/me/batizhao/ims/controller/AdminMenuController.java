@@ -1,10 +1,11 @@
 package me.batizhao.ims.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.annotation.SystemLog;
+import me.batizhao.common.core.constant.MenuScopeEnum;
 import me.batizhao.common.core.util.R;
 import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.domain.Menu;
@@ -20,7 +21,6 @@ import java.util.List;
 
 /**
  * 菜单管理
- * 这里是菜单管理接口的描述
  *
  * @module pecado-ims
  *
@@ -32,7 +32,7 @@ import java.util.List;
 @Slf4j
 @Validated
 @RequestMapping("ims")
-public class MenuController {
+public class AdminMenuController {
 
     @Autowired
     private MenuService menuService;
@@ -48,7 +48,7 @@ public class MenuController {
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree4Me() {
         Long userId = SecurityUtils.getUser().getUserId();
-        return R.ok(menuService.findMenuTreeByUserId(userId));
+        return R.ok(menuService.findMenuTreeByUserId(userId, MenuScopeEnum.ADMIN.getType()));
     }
 
     /**
@@ -74,7 +74,7 @@ public class MenuController {
     @GetMapping("/menus")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree(Menu menu) {
-        return R.ok(menuService.findMenuTree(menu));
+        return R.ok(menuService.findMenuTree(menu, MenuScopeEnum.ADMIN.getType()));
     }
 
     /**
@@ -130,19 +130,6 @@ public class MenuController {
     @SystemLog
     public R<Boolean> handleUpdateStatus(@Parameter(name = "菜单" , required = true) @RequestBody Menu menu) {
         return R.ok(menuService.updateStatus(menu));
-    }
-
-    /**
-     * 根据应用查询菜单
-     * 返回菜单树
-     *
-     * @return R<List<Menu>>
-     */
-    @Operation(description = "根据应用查询菜单")
-    @GetMapping(value = "/menu", params = "appId")
-    @PreAuthorize("@pms.hasPermission('ims:menu:admin')")
-    public R<List<Menu>> handleMenusByAppId(@Parameter(name = "应用ID", required = true) @RequestParam("appId") @Min(1) Long appId) {
-        return R.ok(menuService.findMenusByAppId(appId));
     }
 
 }

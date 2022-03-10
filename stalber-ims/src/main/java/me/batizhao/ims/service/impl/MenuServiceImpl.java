@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.batizhao.common.core.constant.MenuScopeEnum;
 import me.batizhao.common.core.constant.MenuTypeEnum;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.common.core.util.TreeUtil;
@@ -54,17 +55,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public List<Menu> findMenuTreeByUserId(Long userId) {
-        return filterMenu(this.findMenusByUserId(userId), null);
+    public List<Menu> findMenuTreeByUserId(Long userId, String scope) {
+        return filterMenu(this.findMenusByUserId(userId), null, scope);
     }
 
     @Override
-    public List<Menu> findMenuTree(Menu menu) {
+    public List<Menu> findMenuTree(Menu menu, String scope) {
         LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery();
         if (null != menu && StringUtils.isNotBlank(menu.getName())) {
             wrapper.like(Menu::getName, menu.getName());
         }
-        wrapper.orderByAsc(Menu::getSort);
+        wrapper.eq(Menu::getScope, scope).orderByAsc(Menu::getSort);
 
         List<Menu> menus = menuMapper.selectList(wrapper);
         int min = menus.size() > 0 ? Collections.min(menus.stream().map(Menu::getPid).collect(Collectors.toList())) : 0;
@@ -72,9 +73,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public List<Menu> filterMenu(Set<Menu> all, Integer parentId) {
+    public List<Menu> filterMenu(Set<Menu> all, Integer parentId, String scope) {
         List<Menu> menuTreeList = all.stream()
                 .filter(menu -> MenuTypeEnum.MENU.getType().equals(menu.getType()))
+                .filter(menu -> scope.equals(menu.getScope()))
                 .sorted(Comparator.comparingInt(Menu::getSort))
                 .collect(Collectors.toList());
 
@@ -132,7 +134,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<Menu> findMenusByAppId(Long appId) {
         LambdaQueryWrapper<Menu> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(Menu::getAppId, appId).orderByAsc(Menu::getSort);
+        wrapper.eq(Menu::getAppId, appId).eq(Menu::getScope, MenuScopeEnum.DASHBOARD.getType()).orderByAsc(Menu::getSort);
 
         List<Menu> menus = menuMapper.selectList(wrapper);
         int min = menus.size() > 0 ? Collections.min(menus.stream().map(Menu::getPid).collect(Collectors.toList())) : 1;

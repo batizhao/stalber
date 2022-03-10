@@ -33,13 +33,13 @@ public interface MenuService extends IService<Menu> {
      *
      * @return 菜单树
      */
-    List<Menu> findMenuTreeByUserId(Long userId);
+    List<Menu> findMenuTreeByUserId(Long userId, String scope);
 
     /**
      * 查询所有菜单
      * @return 菜单树
      */
-    List<Menu> findMenuTree(Menu menu);
+    List<Menu> findMenuTree(Menu menu, String scope);
 
     /**
      * 构造菜单树
@@ -47,7 +47,7 @@ public interface MenuService extends IService<Menu> {
      * @param parentId 父节点ID
      * @return 菜单树
      */
-    List<Menu> filterMenu(Set<Menu> all, Integer parentId);
+    List<Menu> filterMenu(Set<Menu> all, Integer parentId, String scope);
 
     /**
      * 查询菜单
