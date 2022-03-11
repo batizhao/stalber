@@ -3,10 +3,14 @@ package me.batizhao.app.unit.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.app.domain.AppTable;
 import me.batizhao.app.mapper.AppTableMapper;
+import me.batizhao.app.service.AppFormService;
+import me.batizhao.app.service.AppService;
 import me.batizhao.app.service.AppTableService;
 import me.batizhao.app.service.impl.AppTableServiceImpl;
+import me.batizhao.common.core.config.CodeProperties;
 import me.batizhao.common.core.exception.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +49,14 @@ public class AppTableServiceUnitTest extends BaseServiceUnitTest {
 
     @MockBean
     private AppTableMapper appTableMapper;
+    @MockBean
+    private AppService appService;
+    @MockBean
+    private AppFormService appFormService;
+    @MockBean
+    private CodeProperties codeProperties;
+    @MockBean
+    private ObjectMapper objectMapper;
 
     @Autowired
     private AppTableService appTableService;

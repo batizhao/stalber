@@ -129,7 +129,7 @@ public class AppTableControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data", equalTo(true)));
+                .andExpect(jsonPath("$.data.tableName").value("tname"));
 
         verify(appTableService).saveOrUpdateAppTable(any(AppTable.class));
     }
@@ -149,7 +149,7 @@ public class AppTableControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.data", equalTo(true)));
+                .andExpect(jsonPath("$.data.tableComment").value("测试表"));
 
         verify(appTableService).saveOrUpdateAppTable(any(AppTable.class));
     }

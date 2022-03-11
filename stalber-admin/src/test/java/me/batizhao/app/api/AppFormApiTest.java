@@ -54,7 +54,7 @@ public class AppFormApiTest extends BaseApiTest {
     @Transactional
     public void givenJson_whenSaveAppForm_thenSuccess() throws Exception {
         AppForm requestBody = new AppForm()
-                .setName("daxia");
+                .setName("daxia").setAppId(1L).setFormKey("xxx");
 
         mvc.perform(post("/app/form")
                 .content(objectMapper.writeValueAsString(requestBody))
@@ -71,7 +71,7 @@ public class AppFormApiTest extends BaseApiTest {
     @Transactional
     public void givenJson_whenUpdateAppForm_thenSuccess() throws Exception {
         AppForm requestBody = new AppForm()
-                .setId(8L).setName("daxia");
+                .setId(8L).setName("daxia").setFormKey("xxx");
 
         mvc.perform(post("/app/form")
                 .content(objectMapper.writeValueAsString(requestBody))

@@ -75,10 +75,10 @@ public class MenuServiceUnitTest extends BaseServiceUnitTest {
     @BeforeEach
     public void setUp() {
         menuList = new ArrayList<>();
-        menuList.add(new Menu(1, 0).setName("工作台").setPermission("user_dashboard").setSort(1).setType(MenuTypeEnum.MENU.getType()));
-        menuList.add(new Menu(2, 1).setName("权限管理").setPermission("ims_root").setSort(1).setType(MenuTypeEnum.MENU.getType()));
-        menuList.add(new Menu(3, 2).setName("用户管理").setPermission("ims_user_admin").setSort(2).setType(MenuTypeEnum.MENU.getType()));
-        menuList.add(new Menu(4, 2).setName("角色管理").setPermission("ims_role_admin").setSort(1).setType(MenuTypeEnum.MENU.getType()));
+        menuList.add(new Menu(1, 0).setName("工作台").setPermission("user_dashboard").setSort(1).setType(MenuTypeEnum.MENU.getType()).setScope(MenuScopeEnum.ADMIN.getType()));
+        menuList.add(new Menu(2, 1).setName("权限管理").setPermission("ims_root").setSort(1).setType(MenuTypeEnum.MENU.getType()).setScope(MenuScopeEnum.ADMIN.getType()));
+        menuList.add(new Menu(3, 2).setName("用户管理").setPermission("ims_user_admin").setSort(2).setType(MenuTypeEnum.MENU.getType()).setScope(MenuScopeEnum.ADMIN.getType()));
+        menuList.add(new Menu(4, 2).setName("角色管理").setPermission("ims_role_admin").setSort(1).setType(MenuTypeEnum.MENU.getType()).setScope(MenuScopeEnum.ADMIN.getType()));
     }
 
     @Test
