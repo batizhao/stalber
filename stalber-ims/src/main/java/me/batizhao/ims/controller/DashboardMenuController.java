@@ -38,12 +38,12 @@ public class DashboardMenuController {
     private MenuService menuService;
 
     /**
-     * 查询当前用户菜单
+     * 查询当前用户工作台菜单
      * 返回菜单树
      *
      * @return 菜单树
      */
-    @Operation(description = "查询当前用户菜单")
+    @Operation(description = "查询当前用户工作台菜单")
     @GetMapping("/menu/me")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree4Me() {
@@ -52,12 +52,12 @@ public class DashboardMenuController {
     }
 
     /**
-     * 查询所有菜单
+     * 查询所有工作台菜单
      * 返回菜单树
      *
      * @return R<List<Menu>>
      */
-    @Operation(description = "查询所有菜单")
+    @Operation(description = "查询所有工作台菜单")
     @GetMapping("/menus")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree(Menu menu) {

@@ -38,12 +38,12 @@ public class AdminMenuController {
     private MenuService menuService;
 
     /**
-     * 查询当前用户菜单
+     * 查询当前用户控制台菜单
      * 返回菜单树
      *
      * @return 菜单树
      */
-    @Operation(description = "查询当前用户菜单")
+    @Operation(description = "查询当前用户控制台菜单")
     @GetMapping("/menu/me")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree4Me() {
@@ -65,12 +65,12 @@ public class AdminMenuController {
     }
 
     /**
-     * 查询所有菜单
+     * 查询所有控制台菜单
      * 返回菜单树
      *
      * @return R<List<Menu>>
      */
-    @Operation(description = "查询所有菜单")
+    @Operation(description = "查询所有控制台菜单")
     @GetMapping("/menus")
     @PreAuthorize("isAuthenticated()")
     public R<List<Menu>> handleMenuTree(Menu menu) {
