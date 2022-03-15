@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.batizhao.ims.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -31,4 +32,12 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     IPage<User> selectUsers(Page<User> page, @Param("user") User user, @Param("departmentId") Long departmentId);
+
+    /**
+     * 查角色用户
+     * @param roleId
+     * @return
+     */
+    @Select("SELECT A.id, A.name, A.username FROM user A LEFT JOIN user_role B ON A.id = B.userId WHERE B.roleId = #{roleId}")
+    List<User> findUsersByRoleId(@Param("roleId") Long roleId);
 }

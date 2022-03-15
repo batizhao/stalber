@@ -64,6 +64,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    public List<User> findUsersByRoleId(Long roleId) {
+        return userMapper.findUsersByRoleId(roleId);
+    }
+
+    @Override
     public User findById(Long id) {
         User user = userMapper.selectById(id);
 

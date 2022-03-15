@@ -9,6 +9,7 @@ import me.batizhao.ims.domain.Role;
 import me.batizhao.ims.domain.RoleMenu;
 import me.batizhao.ims.service.RoleMenuService;
 import me.batizhao.ims.service.RoleService;
+import me.batizhao.ims.service.UserRoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,8 @@ public class RoleControllerUnitTest extends BaseControllerUnitTest {
     RoleService roleService;
     @MockBean
     RoleMenuService roleMenuService;
+    @MockBean
+    UserRoleService userRoleService;
 
     private List<Role> roleList;
     private IPage<Role> rolePageList;

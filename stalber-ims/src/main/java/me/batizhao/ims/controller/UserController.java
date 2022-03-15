@@ -88,6 +88,20 @@ public class UserController {
     }
 
     /**
+     * 根据角色ID查询用户
+     * 返回用户集合
+     *
+     * @param roleId 角色ID
+     * @return R<List<User>>
+     */
+    @Operation(description = "根据角色ID查询用户")
+    @GetMapping(value = "/user", params = "roleId")
+    @PreAuthorize("@pms.hasPermission('ims:user:admin')")
+    public R<List<User>> handleUsersByRoleId(@Parameter(name = "角色ID", required = true) @RequestParam("roleId") @Min(1) Long roleId) {
+        return R.ok(userService.findUsersByRoleId(roleId));
+    }
+
+    /**
      * 通过id查询用户
      *
      * @param id id

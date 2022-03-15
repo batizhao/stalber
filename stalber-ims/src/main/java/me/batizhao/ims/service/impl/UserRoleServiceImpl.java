@@ -23,4 +23,11 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
         this.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getUserId, userRoles.get(0).getUserId()));
         return saveBatch(userRoles);
     }
+
+    @Override
+    @Transactional
+    public Boolean updateRoleUsers(List<UserRole> userRoles) {
+        this.remove(Wrappers.<UserRole>lambdaQuery().eq(UserRole::getRoleId, userRoles.get(0).getRoleId()));
+        return saveBatch(userRoles);
+    }
 }

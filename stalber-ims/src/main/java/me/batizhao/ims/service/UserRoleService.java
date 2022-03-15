@@ -17,4 +17,11 @@ public interface UserRoleService extends IService<UserRole> {
      * @return
      */
     Boolean updateUserRoles(List<UserRole> userRoles);
+
+    /**
+     * 更新角色用户
+     * @param userRoles
+     * @return
+     */
+    Boolean updateRoleUsers(List<UserRole> userRoles);
 }
