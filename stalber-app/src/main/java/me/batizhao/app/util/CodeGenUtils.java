@@ -74,7 +74,7 @@ public class CodeGenUtils {
 
     private final String API_TEST_JAVA_VM = "ApiTest.java";
 
-    private final String MENU_SQL_VM = "menu.sql";
+//    private final String MENU_SQL_VM = "menu.sql";
 
 //    private final String VUE_INDEX_VUE_VM = "index.vue";
 //
@@ -240,7 +240,6 @@ public class CodeGenUtils {
         map.put("package", appTableCode.getPackageName());
 //        map.put("parentMenuId", 5000);
         map.put("template", appTableCode.getTemplate());
-//        map.put("relationTable", "");
         map.put("subTableFkName", appTableCode.getSubTableFkName());
         map.put("subMappingPath", "");
         map.put("form", "");
@@ -313,9 +312,9 @@ public class CodeGenUtils {
                     + "resources" + File.separator + "mapper" + File.separator + appTableCode.getClassName() + "Mapper.xml";
         }
 
-        if (template.contains(MENU_SQL_VM)) {
-            return "db" + File.separator + appTableCode.getClassName().toLowerCase() + "_menu.sql";
-        }
+//        if (template.contains(MENU_SQL_VM)) {
+//            return "db" + File.separator + appTableCode.getClassName().toLowerCase() + "_menu.sql";
+//        }
 
         if (appTableCode.getTestcase().equals("yes")) {
             if (template.contains(MAPPER_UNIT_TEST_JAVA_VM)) {

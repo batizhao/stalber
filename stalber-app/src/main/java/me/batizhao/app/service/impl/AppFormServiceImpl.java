@@ -3,16 +3,16 @@ package me.batizhao.app.service.impl;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import me.batizhao.app.domain.AppFormHistory;
-import me.batizhao.app.service.AppFormHistoryService;
-import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.app.domain.AppForm;
+import me.batizhao.app.domain.AppFormHistory;
 import me.batizhao.app.mapper.AppFormMapper;
+import me.batizhao.app.service.AppFormHistoryService;
 import me.batizhao.app.service.AppFormService;
+import me.batizhao.common.core.exception.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +41,9 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
         if (StringUtils.isNotBlank(appForm.getName())) {
             wrapper.like(AppForm::getName, appForm.getName());
         }
+        if (appForm.getAppId() != null) {
+            wrapper.eq(AppForm::getAppId, appForm.getAppId());
+        }
         return appFormMapper.selectPage(page, wrapper);
     }
 
@@ -49,6 +52,9 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
         LambdaQueryWrapper<AppForm> wrapper = Wrappers.lambdaQuery();
         if (StringUtils.isNotBlank(appForm.getName())) {
             wrapper.like(AppForm::getName, appForm.getName());
+        }
+        if (appForm.getAppId() != null) {
+            wrapper.eq(AppForm::getAppId, appForm.getAppId());
         }
         return appFormMapper.selectList(wrapper);
     }
