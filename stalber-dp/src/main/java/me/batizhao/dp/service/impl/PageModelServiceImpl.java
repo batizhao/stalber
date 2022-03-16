@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.dp.domain.PageModel;
 import me.batizhao.dp.mapper.PageModelMapper;
 import me.batizhao.dp.service.PageModelService;
@@ -42,6 +43,10 @@ public class PageModelServiceImpl extends ServiceImpl<PageModelMapper, PageModel
         if (StringUtils.isNotBlank(pageModel.getType())) {
             wrapper.eq(PageModel::getType, pageModel.getType());
         }
+
+        if(StringUtils.isNotBlank(pageModel.getStatus())){
+            wrapper.eq(PageModel::getStatus, pageModel.getStatus());
+        }
         return wrapper;
     }
 
@@ -74,5 +79,15 @@ public class PageModelServiceImpl extends ServiceImpl<PageModelMapper, PageModel
         LambdaUpdateWrapper<PageModel> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(PageModel::getId, pageModel.getId()).set(PageModel::getStatus, pageModel.getStatus());
         return baseMapper.update(null, wrapper) == 1;
+    }
+
+    @Override
+    public PageModel getByPageModel(PageModel pageModel) {
+        List<PageModel> list = baseMapper.selectList(createPageModelLambda(pageModel));
+        if(list != null && list.size() > 0){
+            return list.get(0);
+        }else{
+            throw new NotFoundException("未查询到符合条件的页面模板：" + pageModel.getType());
+        }
     }
 }

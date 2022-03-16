@@ -74,6 +74,19 @@ public class PageModelController {
     }
 
     /**
+     * 初始页面接口：获取指定类型激活的页面模型,后续可扩展关联用户实现自定义首页与主页
+     * @param pageModel 页面模型表
+     * @return R
+     */
+    @Operation(description = "初始页面接口：获取指定类型激活的页面模型,后续可扩展关联用户实现自定义页面")
+    @GetMapping("/page/model/by")
+    @PreAuthorize("isAuthenticated()")
+    public R<PageModel> handlePageModel(PageModel pageModel) {
+        return R.ok(pageModelService.getByPageModel(pageModel));
+    }
+
+
+    /**
      * 添加或编辑页面模型表
      * @param pageModel 页面模型表
      * @return R
@@ -108,4 +121,6 @@ public class PageModelController {
     public R<Boolean> handleUpdateStatus(@Parameter(name = "页面模型" , required = true) @RequestBody PageModel pageModel) {
         return R.ok(pageModelService.updateStatus(pageModel));
     }
+
+
 }

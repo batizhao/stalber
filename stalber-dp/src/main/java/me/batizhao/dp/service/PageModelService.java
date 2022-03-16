@@ -43,4 +43,11 @@ public interface PageModelService extends IService<PageModel> {
      * @return Boolean
      */
     Boolean updateStatus(PageModel pageModel);
+
+    /**
+     * 根据查询条件获取页面模型
+     * @param pageModel 查询参数
+     * @return PageModel
+     */
+    PageModel getByPageModel(PageModel pageModel);
 }
