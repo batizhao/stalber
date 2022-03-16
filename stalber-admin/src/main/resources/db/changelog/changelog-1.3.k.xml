@@ -5,8 +5,8 @@
 
     <changeSet author="batizhao" id="AlterTable-20220315-001">
         <addColumn tableName="menu">
-            <column name="pageKey" type="VARCHAR(64)" remarks="页面模型编码" afterColumn="appId" />
-            <column name="formKey" type="VARCHAR(64)" remarks="表单编码" afterColumn="appId" />
+            <column name="pageModelCode" type="VARCHAR(64)" remarks="页面模型编码" afterColumn="appId" />
+            <column name="appPageCode" type="VARCHAR(64)" remarks="应用页面编码" afterColumn="appId" />
         </addColumn>
     </changeSet>
 

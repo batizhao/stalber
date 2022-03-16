@@ -48,6 +48,12 @@ public class Menu extends TreeNode implements Serializable {
     @Schema(description = "排序", example = "1")
     private Integer sort;
 
+    @Schema(description = "页面模型编码")
+    private String pageModelCode;
+
+    @Schema(description = "应用页面编码")
+    private String appPageCode;
+
     /**
      * 状态
      */
