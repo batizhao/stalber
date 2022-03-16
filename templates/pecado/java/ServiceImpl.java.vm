@@ -111,7 +111,7 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${c
             ${classname}.setUpdateTime(LocalDateTime.now());
             ${classname}Mapper.insert(${classname});
 #if($workflow == "yes")
-            taskService.start(${classname}.getTask().setId(${classname}.getId().toString()).setTitle(${classname}.getTitle()));
+            taskService.start(${classname}.getTask().setId(${classname}.getId().toString()).setTitle(${classname}.getName()));
 #end
         } else {
             ${classname}.setUpdateTime(LocalDateTime.now());
