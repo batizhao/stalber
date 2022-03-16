@@ -72,7 +72,9 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
     public AppProcess findAppProcess(Long appId, Integer version) {
         AppProcess appProcess = new AppProcess();
         appProcess.setAppId(appId);
-        appProcess.setVersion(version);
+        if(version != null){
+            appProcess.setVersion(version);
+        }
         appProcess.setStatus("open");
         LambdaQueryWrapper<AppProcess> wrapper  = createAppProcessLambda(appProcess);
         List<AppProcess> list = baseMapper.selectList(wrapper);
