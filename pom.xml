@@ -40,7 +40,7 @@
 		<spring-boot-starter-oss.version>1.1</spring-boot-starter-oss.version>
 
 		<git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
-		<liquibase-maven-plugin.version>4.8.0</liquibase-maven-plugin.version>
+		<liquibase-maven-plugin.version>4.6.1</liquibase-maven-plugin.version>
 		<jacoco-maven-plugin.verison>0.8.7</jacoco-maven-plugin.verison>
 		<maven-deploy-plugin.version>3.0.0-M2</maven-deploy-plugin.version>
 		<maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
@@ -190,6 +190,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
 					<groups>${test-group}</groups>
 				</configuration>
