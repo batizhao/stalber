@@ -1,0 +1,21 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="InsertTable-20220317-001">
+        <insert tableName="dict_data">
+            <column name="id" valueNumeric="14"/>
+            <column name="code" value="db_column_type"/>
+            <column name="label" value="小数"/>
+            <column name="value" value="decimal"/>
+            <column name="sort" valueNumeric="4"/>
+            <column name="isDefault" value="no"/>
+        </insert>
+        <update tableName="dict_data">
+            <column name="label" value="整数"/>
+            <where>id=12</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>
