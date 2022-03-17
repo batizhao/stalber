@@ -1,47 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
     <changeSet author="batizhao" id="CreateTableDepartment-20210422-001">
         <addColumn tableName="user">
             <column name="uuid" type="varchar(36)" remarks="第三方ID" valueComputed="${uuid}">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
         </addColumn>
         <createTable remarks="部门表" tableName="department">
             <column autoIncrement="true" name="id" type="BIGINT" remarks="部门ID">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="uuid" type="varchar(36)" remarks="第三方ID" valueComputed="${uuid}">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="pid" type="BIGINT" remarks="父ID">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="name" type="VARCHAR(64)" remarks="名称">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="fullName" type="VARCHAR(255)" remarks="全名">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="true" />
             </column>
             <column name="code" type="VARCHAR(32)" remarks="编码">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="true" />
             </column>
             <column name="type" type="VARCHAR(8)" remarks="类型（C公司 D部门）" defaultValue="D">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="sort" type="INT" remarks="排序" defaultValue="1">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
-            <column name="createTime" type="datetime" remarks="创建时间">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updateTime" type="datetime" remarks="修改时间">
+            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -50,24 +49,24 @@
         </rollback>
         <createTable remarks="岗位表" tableName="post">
             <column autoIncrement="true" name="id" type="BIGINT" remarks="岗位ID">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="name" type="VARCHAR(64)" remarks="名称">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="true" />
             </column>
             <column name="code" type="VARCHAR(64)" remarks="编码">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false" unique="true" />
             </column>
             <column name="sort" type="INT" remarks="排序" defaultValue="1">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>
-            <column name="createTime" type="datetime" remarks="创建时间">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updateTime" type="datetime" remarks="修改时间">
+            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -104,10 +103,10 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DEPARTMENT_LEADER"/>
             </column>
             <column name="type" type="VARCHAR(8)" remarks="类型（Z正 F副）" defaultValue="F">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
             <column name="sort" type="INT" remarks="排序" defaultValue="1">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
             </column>
         </createTable>
         <rollback>
@@ -135,8 +134,6 @@
             <column name="icon" value="post"/>
             <column name="pid" valueNumeric="1000"/>
             <column name="sort" valueNumeric="4"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="1401"/>
@@ -145,8 +142,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="1400"/>
             <column name="sort" valueNumeric="1"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="1402"/>
@@ -155,8 +150,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="1400"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="1403"/>
@@ -165,8 +158,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="1400"/>
             <column name="sort" valueNumeric="3"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <rollback>
             delete from menu where id = 1400;
@@ -210,8 +201,6 @@
             <column name="icon" value="tree"/>
             <column name="pid" valueNumeric="1000"/>
             <column name="sort" valueNumeric="5"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="1501"/>
@@ -220,8 +209,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="1500"/>
             <column name="sort" valueNumeric="1"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="1502"/>
@@ -230,8 +217,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="1500"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="1503"/>
@@ -240,8 +225,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="1500"/>
             <column name="sort" valueNumeric="3"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <rollback>
             delete from menu where id = 1500;
@@ -285,8 +268,6 @@
             <column name="code" value="000000"/>
             <column name="type" value="root"/>
             <column name="sort" valueNumeric="0"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="2"/>
@@ -297,8 +278,6 @@
             <column name="code" value="000001"/>
             <column name="type" value="C"/>
             <column name="sort" valueNumeric="1"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="3"/>
@@ -309,8 +288,6 @@
             <column name="code" value="000002"/>
             <column name="type" value="C"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="4"/>
@@ -321,8 +298,6 @@
             <column name="code" value="000003"/>
             <column name="type" value="C"/>
             <column name="sort" valueNumeric="3"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="5"/>
@@ -333,8 +308,6 @@
             <column name="code" value="000004"/>
             <column name="type" value="C"/>
             <column name="sort" valueNumeric="4"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="6"/>
@@ -345,8 +318,6 @@
             <column name="code" value="000005"/>
             <column name="type" value="C"/>
             <column name="sort" valueNumeric="1"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="7"/>
@@ -357,8 +328,6 @@
             <column name="code" value="000006"/>
             <column name="type" value="C"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="8"/>
@@ -369,8 +338,6 @@
             <column name="code" value="000007"/>
             <column name="type" value="D"/>
             <column name="sort" valueNumeric="1"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="department">
             <column name="id" valueNumeric="9"/>
@@ -381,8 +348,6 @@
             <column name="code" value="000008"/>
             <column name="type" value="D"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <rollback>
             delete from department where id = 1;
@@ -523,8 +488,6 @@
             <column name="name" value="任务分组"/>
             <column name="code" value="job_group"/>
             <column name="description" value="DEFAULT|SYSTEM"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="dict_data">
             <column name="id" valueNumeric="9"/>
@@ -533,8 +496,6 @@
             <column name="value" value="DEFAULT"/>
             <column name="sort" valueNumeric="1"/>
             <column name="isDefault" value="yes"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="dict_data">
             <column name="id" valueNumeric="10"/>
@@ -542,8 +503,6 @@
             <column name="label" value="系统"/>
             <column name="value" value="SYSTEM"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
 
         <insert tableName="menu">
@@ -554,8 +513,6 @@
             <column name="icon" value="job"/>
             <column name="pid" valueNumeric="2000"/>
             <column name="sort" valueNumeric="3"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="2301"/>
@@ -564,8 +521,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="2300"/>
             <column name="sort" valueNumeric="1"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="2302"/>
@@ -574,8 +529,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="2300"/>
             <column name="sort" valueNumeric="2"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
         <insert tableName="menu">
             <column name="id" valueNumeric="2303"/>
@@ -584,8 +537,6 @@
             <column name="type" value="B"/>
             <column name="pid" valueNumeric="2300"/>
             <column name="sort" valueNumeric="3"/>
-            <column name="createTime" valueDate="2022-01-02 10:08:01"/>
-            <column name="updateTime" valueDate="2022-01-02 10:08:01"/>
         </insert>
 
         <insert tableName="role_menu">
@@ -605,4 +556,148 @@
             <column name="menuId" valueNumeric="2303"/>
         </insert>
     </changeSet>
+
+    <changeSet author="batizhao" id="CreateTable-20210812-001">
+        <createTable tableName="form_history" remarks="表单历史记录表">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="formKey" type="VARCHAR(64)" remarks="表单key">
+                <constraints nullable="false" />
+            </column>
+            <column name="metadata" type="CLOB" remarks="表单元数据" />
+            <column name="version" type="INT" remarks="版本" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="form_history"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="batizhao" id="CreateTable-20210906-001">
+        <createTable tableName="invoice" remarks="发票表">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="VARCHAR(64)" remarks="标题">
+                <constraints nullable="false" />
+            </column>
+            <column name="company" type="VARCHAR(64)" remarks="单位名称">
+                <constraints nullable="false" />
+            </column>
+            <column name="companyNumber" type="VARCHAR(64)" remarks="纳税人识别号">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="VARCHAR(32)" remarks="发票类型" />
+            <column name="email" type="VARCHAR(32)" remarks="邮箱" />
+            <column name="mobile" type="VARCHAR(16)" remarks="手机号" />
+            <column name="content" type="VARCHAR(255)" remarks="开票内容" />
+            <column name="deptName" type="VARCHAR(64)" remarks="发单部门" />
+            <column name="username" type="VARCHAR(32)" remarks="发单人" />
+            <column name="phoneNumber" type="VARCHAR(16)" remarks="联系电话" />
+            <column name="deptComment" type="VARCHAR(255)" remarks="部门主任审签" />
+            <column name="financeComment" type="VARCHAR(255)" remarks="财务主任审签" />
+            <column name="eInvoiceCode" type="VARCHAR(32)" remarks="电子发票代码" />
+            <column name="eInvoiceNumber" type="VARCHAR(32)" remarks="号码" />
+            <column name="eInvoiceAmount" type="VARCHAR(32)" remarks="金额" />
+            <column name="createTime" type="datetime" remarks="发单日期" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="invoice"/>
+        </rollback>
+
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4000"/>
+            <column name="path" value="/oa"/>
+            <column name="name" value="公文管理"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="0"/>
+            <column name="sort" valueNumeric="4"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4100"/>
+            <column name="path" value="/oa/invoice"/>
+            <column name="name" value="手工开票"/>
+            <column name="permission" value="oa:invoice:admin"/>
+            <column name="icon" value="money"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4101"/>
+            <column name="name" value="添加发票"/>
+            <column name="permission" value="oa:invoice:add"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="4100"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4102"/>
+            <column name="name" value="删除发票"/>
+            <column name="permission" value="oa:invoice:delete"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="4100"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4200"/>
+            <column name="path" value="/oa/task/todo"/>
+            <column name="name" value="待办公文"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4300"/>
+            <column name="path" value="/oa/task/doing"/>
+            <column name="name" value="在办公文"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="4400"/>
+            <column name="path" value="/oa/task/done"/>
+            <column name="name" value="已办公文"/>
+            <column name="icon" value="documentation"/>
+            <column name="pid" valueNumeric="4000"/>
+            <column name="sort" valueNumeric="4"/>
+        </insert>
+
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4000"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4100"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4101"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4102"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4200"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4300"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="4400"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

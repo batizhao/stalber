@@ -1,0 +1,66 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="wws" id="CreateTableAppList-20220302-001">
+        <createTable remarks="应用列表模型" tableName="app_list">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="appId" type="BIGINT" remarks="应用Id">
+                <constraints nullable="false" />
+            </column>
+            <column name="code" type="VARCHAR(32)" remarks="编码">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="name" type="varchar(36)" remarks="名称">
+                <constraints nullable="false" />
+            </column>
+            <column name="addr" type="VARCHAR(255)" remarks="数据列表接口请求地址">
+                <constraints nullable="false" />
+            </column>
+            <column name="page" type="INT" remarks="是否分页 0 否 1 是" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
+            <column name="pageSize" type="INT" remarks="页面大小">
+            </column>
+            <column name="lineNum" type="INT" remarks="是否行号 0 否 1 是" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
+            <column name="sideScroll" type="INT" remarks="是否横向滚动 0 否 1 是" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
+            <column name="scrollWidth" type="INT" remarks="滚动宽度">
+            </column>
+            <column name="operField" type="INT" remarks="是否操作列 0 否 1 是" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="fixedOperField" type="INT" remarks="操作列是否固定 0 否 1 是" defaultValue="0">
+                <constraints nullable="false" />
+            </column>
+            <column name="operFieldWidth" type="INT" remarks="操作列宽度">
+            </column>
+            <column name="beforeEvent" type="VARCHAR(255)" remarks="前置事件"/>
+            <column name="afterEvent" type="VARCHAR(255)" remarks="后置事件"/>
+            <column name="type" type="VARCHAR(32)" remarks="页面类型:pc 电脑端， app 移动端" defaultValue="pc">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="VARCHAR(32)" remarks="状态:open 激活， close 禁用" defaultValue="close">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="listMetadata" type="JSON" remarks="列表元数据">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="app_list"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

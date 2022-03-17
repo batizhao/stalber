@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="AlterTable-20220315-001">
+        <addColumn tableName="menu">
+            <column name="pageModelCode" type="VARCHAR(64)" remarks="页面模型编码" afterColumn="appId" />
+            <column name="appPageCode" type="VARCHAR(64)" remarks="应用页面编码" afterColumn="appId" />
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

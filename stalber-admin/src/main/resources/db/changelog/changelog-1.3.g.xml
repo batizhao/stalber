@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="UpdateTableDictData-20220307-001">
+        <update tableName="dict_data">
+            <column name="value" value="varchar"/>
+            <where>id=11</where>
+        </update>
+        <update tableName="dict_data">
+            <column name="value" value="int"/>
+            <where>id=12</where>
+        </update>
+        <update tableName="dict_data">
+            <column name="value" value="datetime"/>
+            <where>id=13</where>
+        </update>
+    </changeSet>
+
+    <changeSet author="batizhao" id="CreateTable-20220307-002">
+        <createTable tableName="app_form_history" remarks="表单历史记录表">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="formKey" type="VARCHAR(64)" remarks="表单key">
+                <constraints nullable="false" />
+            </column>
+            <column name="metadata" type="JSON" remarks="表单元数据" />
+            <column name="version" type="INT" remarks="版本" defaultValue="1">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="app_form_history"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

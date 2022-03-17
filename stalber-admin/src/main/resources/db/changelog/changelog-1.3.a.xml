@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet author="batizhao" id="CreateTableAppTable-20220126-001">
+        <createTable remarks="应用所属表" tableName="app_table">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="ID">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="appId" type="BIGINT" remarks="应用ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dsName" type="VARCHAR(64)" remarks="数据源">
+                <constraints nullable="false" />
+            </column>
+            <column name="tableName" type="VARCHAR(64)" remarks="表名">
+                <constraints nullable="false" />
+            </column>
+            <column name="tableComment" type="VARCHAR(255)" remarks="表注释">
+                <constraints nullable="false" />
+            </column>
+            <column name="columnMetadata" type="JSON" remarks="列元数据">
+                <constraints nullable="false" />
+            </column>
+            <column name="status" type="ENUM('created', 'nosync', 'synced')" remarks="状态" defaultValue="created">
+                <constraints nullable="false" />
+            </column>
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="app_table"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
