@@ -2,6 +2,7 @@ package me.batizhao.dp.service.impl;
 
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.FileWriter;
+import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.config.CodeProperties;
 import me.batizhao.common.core.domain.FolderTree;
 import me.batizhao.common.core.util.FolderUtil;
@@ -20,6 +21,7 @@ import java.util.List;
  * @since 2021-10-12
  */
 @Service
+@Slf4j
 public class CodeTemplateServiceImpl implements CodeTemplateService {
 
     @Autowired
@@ -28,6 +30,7 @@ public class CodeTemplateServiceImpl implements CodeTemplateService {
     @Override
     public List<FolderTree> findCodeTemplateTree() {
         String templatePath = Paths.get(".", codeProperties.getTemplateUrl()).toAbsolutePath().toString();
+        log.info("####### templatePath: {}", templatePath);
         List<FolderTree> folderTree = FolderUtil.build(new FolderTree(templatePath));
         return FolderUtil.build(folderTree);
     }
