@@ -60,29 +60,6 @@
 
 			<dependency>
 				<groupId>me.batizhao</groupId>
-				<artifactId>spring-boot-starter-terrace</artifactId>
-				<version>1.1.4-SNAPSHOT</version>
-			</dependency>
-
-			<dependency>
-				<groupId>me.batizhao</groupId>
-				<artifactId>spring-boot-starter-oss</artifactId>
-				<version>1.1</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.squareup.okhttp3</groupId>
-						<artifactId>okhttp</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>com.squareup.okhttp3</groupId>
-				<artifactId>okhttp</artifactId>
-				<version>${okhttp3.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>me.batizhao</groupId>
 				<artifactId>stalber-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
