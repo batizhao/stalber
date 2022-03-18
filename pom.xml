@@ -45,6 +45,7 @@
 		<maven-deploy-plugin.version>3.0.0-M2</maven-deploy-plugin.version>
 		<maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
 		<maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+		<spring-boot-maven-plugin.version>2.6.4</spring-boot-maven-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -147,6 +148,19 @@
 		</resources>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring-boot-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>repackage</id>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 				<plugin>
 					<groupId>org.liquibase</groupId>
 					<artifactId>liquibase-maven-plugin</artifactId>
