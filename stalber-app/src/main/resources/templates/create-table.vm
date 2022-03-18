@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS ${tableName}(
 #if($column.primary)
    #set($primaryKey = $column.name)
 #end
-  `${column.name}` ${column.type}#if(${column.length})(${column.length})#end#if(${column.required}) NOT NULL#end#if(${column.defaultValue}) DEFAULT '${column.defaultValue}'#end#if(${column.increment}) AUTO_INCREMENT#end COMMENT '${column.comment}',
+  `${column.name}` ${column.type}#if(${column.length})(${column.length}#if(${column.type}=="decimal"),${column.decimal}#end)#end#if(${column.required}) NOT NULL#end#if(${column.defaultValue}) DEFAULT '${column.defaultValue}'#end#if(${column.increment}) AUTO_INCREMENT#end COMMENT '${column.comment}',
 #end
   PRIMARY KEY (`$primaryKey`)
 ) COMMENT='${tableComment}';

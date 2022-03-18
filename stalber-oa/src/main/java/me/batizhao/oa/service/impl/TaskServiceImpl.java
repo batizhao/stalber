@@ -7,10 +7,7 @@ import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.api.TerraceApi;
-import me.batizhao.terrace.dto.AppTodoTaskDTO;
-import me.batizhao.terrace.dto.ApplicationDTO;
-import me.batizhao.terrace.dto.StartProcessDTO;
-import me.batizhao.terrace.dto.SubmitProcessDTO;
+import me.batizhao.terrace.dto.*;
 import me.batizhao.terrace.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -123,5 +120,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Boolean sign(String taskId, String type) {
         return terraceApi.sign(taskId, type, SecurityUtils.getUser().getUserId().toString()).getData();
+    }
+
+    @Override
+    public List<QueryCandidateView> loadCandidate(String processInstId, String taskDefKey, String taskId, Boolean back, String processDefId, String orgId) {
+        return terraceApi.loadCandidate(processInstId, taskDefKey, taskId, back, processDefId, orgId).getData();
     }
 }

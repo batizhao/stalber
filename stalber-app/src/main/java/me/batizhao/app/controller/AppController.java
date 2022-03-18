@@ -7,9 +7,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.app.domain.AppProcess;
+import me.batizhao.app.domain.AppType;
+import me.batizhao.app.service.AppProcessService;
+import me.batizhao.app.service.AppTypeService;
+import me.batizhao.app.view.InitApp;
 import me.batizhao.common.core.util.R;
 import me.batizhao.app.domain.App;
 import me.batizhao.app.service.AppService;
+import me.batizhao.terrace.api.TerraceApi;
+import me.batizhao.terrace.vo.InitProcessDefView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -36,6 +43,15 @@ public class AppController {
 
     @Autowired
     private AppService appService;
+
+    @Autowired
+    private TerraceApi terraceApi;
+
+    @Autowired
+    private AppTypeService appTypeService;
+
+    @Autowired
+    private AppProcessService appProcessService;
 
     /**
      * 分页查询应用
@@ -111,4 +127,26 @@ public class AppController {
         return R.ok(appService.updateStatus(app));
     }
 
+
+    /**
+     * 通过应用Id初始化应用表单与组件默认值
+     * @param id id
+     * @return R
+     */
+    @Operation(description = "通过应用Id初始化应用表单与组件默认值")
+    @GetMapping("/init/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public R<InitApp> init(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+        App app = appService.getById(id);
+
+        AppProcess appProcess = appProcessService.findAppProcess(app.getId(), null);
+        InitProcessDefView process = terraceApi.loadProcessDefinitionByKey(appProcess.getProcessKey()).getData();
+
+        InitApp initApp = new InitApp();
+        initApp.setCode(app.getCode());
+        initApp.setName(app.getName());
+        initApp.setProcess(process);
+
+        return R.ok(initApp);
+    }
 }

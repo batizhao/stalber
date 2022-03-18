@@ -81,5 +81,9 @@
             <artifactId>spring-webmvc</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>me.batizhao</groupId>
+            <artifactId>spring-boot-starter-terrace</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,6 @@
 #if(!$columns.isEmpty())
 ALTER TABLE ${tableName}
 #foreach($column in $columns)
-  MODIFY `${column.name}` ${column.type}#if(${column.length})(${column.length})#end#if(${column.required}) NOT NULL#end#if(${column.defaultValue}) DEFAULT '${column.defaultValue}'#end#if(${column.increment}) AUTO_INCREMENT#end COMMENT '${column.comment}'#if( $foreach.hasNext ),#end
+  MODIFY `${column.name}` ${column.type}#if(${column.length})(${column.length}#if(${column.type}=="decimal"),${column.decimal}#end)#end#if(${column.required}) NOT NULL#end#if(${column.defaultValue}) DEFAULT '${column.defaultValue}'#end#if(${column.increment}) AUTO_INCREMENT#end COMMENT '${column.comment}'#if( $foreach.hasNext ),#end
 #end;
 #end

@@ -50,4 +50,11 @@ public interface AppListService extends IService<AppList> {
      * @return Boolean
      */
     Boolean updateStatus(AppList appList);
+
+    /**
+     * 通过编号查询应用列表
+     * @param code 列表编号
+     * @return R
+     */
+    AppList findByCode(String code);
 }

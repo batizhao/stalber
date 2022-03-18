@@ -72,6 +72,18 @@ public class AppListController {
     }
 
     /**
+     * 通过编号查询应用列表
+     * @param code 列表编号
+     * @return R
+     */
+    @Operation(description = "通过编号查询应用列表")
+    @GetMapping("/list/by/{code}")
+    @PreAuthorize("isAuthenticated()")
+    public R<AppList> handleId(@Parameter(name = "code" , required = true) @PathVariable("code") String code) {
+        return R.ok(appListService.findByCode(code));
+    }
+
+    /**
      * 添加或编辑应用列表
      * @param appList 应用列表
      * @return R

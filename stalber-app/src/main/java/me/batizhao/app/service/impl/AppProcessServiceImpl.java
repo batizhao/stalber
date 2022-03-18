@@ -35,7 +35,7 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
     private LambdaQueryWrapper<AppProcess> createAppProcessLambda(AppProcess appProcess){
         LambdaQueryWrapper<AppProcess> wrapper = Wrappers.lambdaQuery();
         if (appProcess.getAppId() != null) {
-            wrapper.like(AppProcess::getAppId, appProcess.getAppId());
+            wrapper.eq(AppProcess::getAppId, appProcess.getAppId());
         }
 
         if (StringUtils.isNotBlank(appProcess.getName())) {

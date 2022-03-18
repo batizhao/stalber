@@ -2,11 +2,8 @@ package me.batizhao.oa.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import feign.Param;
-import me.batizhao.oa.domain.Invoice;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.terrace.dto.AppTodoTaskDTO;
-import me.batizhao.terrace.dto.ApplicationDTO;
 import me.batizhao.terrace.vo.*;
 
 import java.util.List;
@@ -87,4 +84,16 @@ public interface TaskService {
      * @return
      */
     Boolean sign(String taskId, String type);
+
+    /**
+     * 候选人
+     * @param processInstId 流程实例Id
+     * @param taskDefKey 流程定义Id
+     * @param taskId 任务Id
+     * @param back 是否退回
+     * @param processDefId 流程定义Id
+     * @param orgId 任务组织Id
+     * @return
+     */
+    List<QueryCandidateView> loadCandidate(String processInstId, String taskDefKey, String taskId, Boolean back, String processDefId, String orgId);
 }

@@ -113,12 +113,11 @@ public class CodeGenUtils {
             appTableColumn.setHtmlType(GenConstants.HTML_INPUT);
 
             // 如果是浮点型 统一用BigDecimal
-            String[] str = StringUtils.split(StringUtils.substringBetween(appTableColumn.getType(), "(", ")"), ",");
-            if (str != null && str.length == 2 && Integer.parseInt(str[1]) > 0) {
+            if (appTableColumn.getDecimal() > 0) {
                 appTableColumn.setJavaType(GenConstants.TYPE_BIGDECIMAL);
             }
             // 如果是整形
-            else if (str != null && str.length == 1 && Integer.parseInt(str[0]) <= 10) {
+            else if (appTableColumn.getDecimal() == 0) {
                 appTableColumn.setJavaType(GenConstants.TYPE_INTEGER);
             }
             // 长整形

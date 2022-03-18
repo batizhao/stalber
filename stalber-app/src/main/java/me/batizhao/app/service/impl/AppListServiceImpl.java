@@ -99,4 +99,17 @@ public class AppListServiceImpl extends ServiceImpl<AppListMapper, AppList> impl
             throw new StalberException("已存在激活应用列表，请先禁用已经激活的列表！！！");
         }
     }
+
+    @Override
+    public AppList findByCode(String code) {
+        LambdaQueryWrapper<AppList> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(AppList::getCode, code);
+        List<AppList> list = baseMapper.selectList(wrapper);
+
+        if(list != null && list.size() > 0){
+            return list.get(0);
+        }
+
+        throw new NotFoundException("未有该编号的应用列表数据！！！");
+    }
 }

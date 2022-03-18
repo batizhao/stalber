@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 8899
   shutdown: graceful
 
 pecado:
@@ -28,11 +28,11 @@ pecado:
     template-url: templates/pecado
   terrace:
     enabled: true
-    client-id: jsoa
+    client-id: ylgj
     client-secret: 123456
     key-token: "terrace:token:data"
     key-expire: "terrace:token:expire"
-    url: http://172.31.21.208:8886/terrace/
+    url: http://172.168.0.200:8886/terrace/
     # memory or redis
     token-store-location: memory
   captcha:
@@ -73,13 +73,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: password
-    url: jdbc:mysql://127.0.0.1:3306/stalber?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    password: root
+    url: jdbc:mysql://172.168.0.200:13306/stalber-test?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
   liquibase:
     change-log: classpath:db/changelog-master.xml
   redis:
-    host: 127.0.0.1
+    host: 172.168.0.200
     port: 6379
+    password: 123456
   task:
     execution:
       threadNamePrefix: pecadoTask-
@@ -137,9 +138,9 @@ spring:
     password: root
     url: jdbc:mysql://172.31.21.180:30306/stalber?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
   redis:
-    host: ${REDIS_HOST:127.0.0.1}
+    host: ${REDIS_HOST:172.168.0.200}
     port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:""}
+    password: ${REDIS_PASSWORD:"123456"}
 
 server:
   port: 8080

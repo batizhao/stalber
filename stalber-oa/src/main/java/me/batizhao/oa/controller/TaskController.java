@@ -138,4 +138,24 @@ public class TaskController {
         return R.ok(taskService.sign(taskId, type));
     }
 
+    /**
+     * 候选人
+     * @param processInstId 流程实例Id
+     * @param taskDefKey 流程定义Id
+     * @param taskId 任务Id
+     * @param back 是否退回
+     * @param processDefId 流程定义Id
+     * @param orgId 任务组织Id
+     * @return
+     */
+    @Operation(description = "获取候选人")
+    @GetMapping("/candidate")
+    public R<List<QueryCandidateView>> candidate(@Parameter(name = "processInstId") String processInstId,
+                                @Parameter(name = "taskDefKey") String taskDefKey,
+                                @Parameter(name = "taskId") String taskId,
+                                @Parameter(name = "back") Boolean back,
+                                @Parameter(name = "processDefId") String processDefId,
+                                @Parameter(name = "orgId") String orgId) {
+        return R.ok(taskService.loadCandidate(processInstId == null ? "0":processInstId, taskDefKey, taskId, back == null ? false:back, processDefId, orgId));
+    }
 }
