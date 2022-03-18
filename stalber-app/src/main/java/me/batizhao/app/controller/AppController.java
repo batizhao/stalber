@@ -48,9 +48,6 @@ public class AppController {
     private TerraceApi terraceApi;
 
     @Autowired
-    private AppTypeService appTypeService;
-
-    @Autowired
     private AppProcessService appProcessService;
 
     /**
