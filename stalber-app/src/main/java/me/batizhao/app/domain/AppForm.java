@@ -50,6 +50,12 @@ public class AppForm implements Serializable {
     private String formKey;
 
     /**
+     * 表单保存URL
+     */
+    @Schema(description="表单保存URL")
+    private String submitURL;
+
+    /**
      * 表单元数据
      */
     @Schema(description="表单元数据")
