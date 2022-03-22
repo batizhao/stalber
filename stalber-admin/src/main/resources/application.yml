@@ -101,6 +101,7 @@ logging:
       web: debug
       security: debug
     me.batizhao: debug
+    liquibase.executor: debug
 
 ---
 

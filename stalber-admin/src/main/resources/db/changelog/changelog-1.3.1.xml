@@ -54,6 +54,50 @@
             <column name="roleId" valueNumeric="2"/>
             <column name="menuId" valueNumeric="3103"/>
         </insert>
+
+        <delete tableName="menu">
+            <where>id=4000</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=4100</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=4101</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=4102</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=4200</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=4300</where>
+        </delete>
+        <delete tableName="menu">
+            <where>id=4400</where>
+        </delete>
+
+        <delete tableName="role_menu">
+            <where>menuId=4000</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=4100</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=4101</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=4102</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=4200</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=4300</where>
+        </delete>
+        <delete tableName="role_menu">
+            <where>menuId=4400</where>
+        </delete>
     </changeSet>
 
 </databaseChangeLog>
