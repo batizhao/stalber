@@ -1,0 +1,59 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet author="batizhao" id="InsertTable-20220321-001">
+        <insert tableName="menu">
+            <column name="id" valueNumeric="3100"/>
+            <column name="path" value="/dp/page/model"/>
+            <column name="name" value="页面模型"/>
+            <column name="permission" value="dp:page:model:admin"/>
+            <column name="icon" value="cascader"/>
+            <column name="pid" valueNumeric="3000"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="3101"/>
+            <column name="name" value="添加页面模型"/>
+            <column name="permission" value="dp:page:model:add"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="3100"/>
+            <column name="sort" valueNumeric="1"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="3102"/>
+            <column name="name" value="编辑页面模型"/>
+            <column name="permission" value="dp:page:model:edit"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="3100"/>
+            <column name="sort" valueNumeric="2"/>
+        </insert>
+        <insert tableName="menu">
+            <column name="id" valueNumeric="3103"/>
+            <column name="name" value="删除页面模型"/>
+            <column name="permission" value="dp:page:model:delete"/>
+            <column name="type" value="B"/>
+            <column name="pid" valueNumeric="3100"/>
+            <column name="sort" valueNumeric="3"/>
+        </insert>
+
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="3100"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="3101"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="3102"/>
+        </insert>
+        <insert tableName="role_menu">
+            <column name="roleId" valueNumeric="2"/>
+            <column name="menuId" valueNumeric="3103"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
