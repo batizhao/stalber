@@ -2,21 +2,18 @@ package me.batizhao.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.app.domain.App;
 import me.batizhao.app.domain.AppProcess;
-import me.batizhao.app.domain.AppType;
 import me.batizhao.app.service.AppProcessService;
-import me.batizhao.app.service.AppTypeService;
+import me.batizhao.app.service.AppService;
 import me.batizhao.app.view.InitApp;
 import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.common.core.util.R;
-import me.batizhao.app.domain.App;
-import me.batizhao.app.service.AppService;
 import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.terrace.api.TerraceApi;
 import me.batizhao.terrace.vo.InitProcessDefView;
@@ -141,9 +138,7 @@ public class AppController {
                            @RequestParam(name = "taskId", required = false, defaultValue = "") String taskId,
                            @RequestParam(name = "taskType", required = false, defaultValue = "") String taskType) {
         App app = appService.getById(id);
-        InitApp initApp = new InitApp();
-        initApp.setCode(app.getCode());
-        initApp.setName(app.getName());
+        InitApp initApp = new InitApp().setCode(app.getCode()).setName(app.getName());
 
         if(StringUtils.isNotBlank(taskId)){
             PecadoUser user = SecurityUtils.getUser();
