@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.terrace.dto.AppTodoTaskDTO;
+import me.batizhao.terrace.dto.StartProcessDTO;
+import me.batizhao.terrace.dto.SubmitProcessDTO;
 import me.batizhao.terrace.vo.*;
 
 import java.util.List;
@@ -46,17 +48,17 @@ public interface TaskService {
 
     /**
      * 启动流程
-     * @param task 任务
+     * @param dto 任务
      * @return
      */
-    String start(Task task);
+    String start(StartProcessDTO dto);
 
     /**
      * 提交任务
-     * @param task 任务
+     * @param dto 任务
      * @return
      */
-    String submit(Task task);
+    String submit(SubmitProcessDTO dto);
 
     /**
      * 获取环节的输出路由及路由后的任务环节配置信息

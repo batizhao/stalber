@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public IPage<TodoTaskView> findTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
         return terraceApi.loadTodoTasks(page.getCurrent(), page.getSize(),
-                SecurityUtils.getUser().getUserId().toString(), appTodoTaskDTO.getBusinessModuleId(), appTodoTaskDTO.getQueryType(),
+                appTodoTaskDTO.getUserName(), appTodoTaskDTO.getBusinessModuleId(), appTodoTaskDTO.getQueryType(),
                 appTodoTaskDTO.getStatus(), appTodoTaskDTO.getType(), appTodoTaskDTO.getTitle()).getData();
     }
 
@@ -43,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
     public IPage<TodoTaskView> findDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
         return terraceApi.loadDoneTask(page.getCurrent(), page.getSize(),
                 appTodoTaskDTO.getCode(), appTodoTaskDTO.getTitle(), appTodoTaskDTO.getRealName(),
-                SecurityUtils.getUser().getUserId().toString(), appTodoTaskDTO.getTaskName(), appTodoTaskDTO.getType(),
+                appTodoTaskDTO.getUserName(), appTodoTaskDTO.getTaskName(), appTodoTaskDTO.getType(),
                 appTodoTaskDTO.getBusinessModuleId()).getData();
     }
 
@@ -53,57 +53,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public String start(Task task) {
-        StartProcessDTO dto = new StartProcessDTO();
-        dto.setProcessDefinitionId(task.getProcessDefinitionId());
-        dto.setCurrent(task.getCurrent());
-        dto.setUserId(SecurityUtils.getUser().getUserId().toString());
-        dto.setUserName(SecurityUtils.getUser().getUsername());
-        dto.setTenantId("23");
-        dto.setOrgId(SecurityUtils.getUser().getDeptIds().get(0));
-        dto.setOrgName("jiangsu");
-        dto.setDraft(false);
-        dto.setProcessNodeDTO(task.getProcessNodeDTO());
-
-        ApplicationDTO applicationDTO = new ApplicationDTO();
-        applicationDTO.setId(task.getId());
-        applicationDTO.setCode("xxx");
-        applicationDTO.setModuleId("12");
-        applicationDTO.setModuleName("oa");
-        applicationDTO.setTitle(task.getTitle());
-        applicationDTO.setCreator(SecurityUtils.getUser().getUsername());
-        dto.setDto(applicationDTO);
-        dto.setSuggestion(task.getSuggestion());
-
-        log.info("StartProcessDTO : {}", dto);
-
+    public String start(StartProcessDTO dto) {
         return terraceApi.start(dto).getData();
     }
 
     @Override
-    public String submit(Task task) {
-        SubmitProcessDTO dto = new SubmitProcessDTO();
-        dto.setProcessDefinitionId(task.getProcessDefinitionId());
-        dto.setCurrent(task.getCurrent());
-        dto.setUserId(SecurityUtils.getUser().getUserId().toString());
-        dto.setUserName(SecurityUtils.getUser().getUsername());
-        dto.setTenantId("23");
-        dto.setOrgId(SecurityUtils.getUser().getDeptIds().get(0));
-        dto.setOrgName("jiangsu");
-        dto.setTaskId(task.getTaskId());
-        dto.setProcInstId(task.getProcInstId());
-        dto.setProcessNodeDTO(task.getProcessNodeDTO());
-        dto.setSuggestion(task.getSuggestion());
-
-        ApplicationDTO applicationDTO = new ApplicationDTO();
-        applicationDTO.setId(task.getId());
-        applicationDTO.setCode("xxx");
-        applicationDTO.setModuleId("12");
-        applicationDTO.setModuleName("oa");
-        applicationDTO.setTitle(task.getTitle());
-        applicationDTO.setCreator(SecurityUtils.getUser().getUsername());
-        dto.setDto(applicationDTO);
-
+    public String submit(SubmitProcessDTO dto) {
         return terraceApi.submit(dto).getData();
     }
 

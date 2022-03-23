@@ -6,10 +6,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
+import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.common.core.util.R;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.oa.domain.Task;
 import me.batizhao.oa.service.TaskService;
 import me.batizhao.terrace.dto.AppTodoTaskDTO;
+import me.batizhao.terrace.dto.StartProcessDTO;
+import me.batizhao.terrace.dto.SubmitProcessDTO;
 import me.batizhao.terrace.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +77,8 @@ public class TaskController {
     @Operation(description = "待办任务")
     @GetMapping("/task/todo")
     public R<IPage<TodoTaskView>> handleTodoTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        PecadoUser user = SecurityUtils.getUser();
+        appTodoTaskDTO.setUserName(user.getUsername());
         return R.ok(taskService.findTodoTasks(page, appTodoTaskDTO));
     }
 
@@ -84,6 +90,8 @@ public class TaskController {
     @Operation(description = "已办任务")
     @GetMapping("/task/done")
     public R<IPage<TodoTaskView>> handleDoneTasks(Page page, AppTodoTaskDTO appTodoTaskDTO) {
+        PecadoUser user = SecurityUtils.getUser();
+        appTodoTaskDTO.setUserName(user.getUsername());
         return R.ok(taskService.findDoneTasks(page, appTodoTaskDTO));
     }
 
@@ -99,14 +107,29 @@ public class TaskController {
     }
 
     /**
-     * 提交任务
-     * @param task 任务
+     * 流程提交
+     * @param dto 流程提交对象
      * @return R<String>
      */
-    @Operation(description = "提交任务")
-    @PostMapping("/task")
-    public R<String> handleSubmit(@Valid @Parameter(name = "任务" , required = true) @RequestBody Task task) {
-        return R.ok(taskService.submit(task));
+    @Operation(description = "流程提交")
+    @PostMapping("/submit")
+    public R<String> handleSubmit(@Valid @Parameter(name = "任务" , required = true) @RequestBody SubmitProcessDTO dto) {
+        return R.ok(taskService.submit(dto));
+    }
+
+    /**
+     * 流程启动
+     * @param dto 启动对象
+     * @return R<String>
+     */
+    @Operation(description = "流程启动")
+    @PostMapping("/start")
+    public R<String> handleStart(@Valid @Parameter(name = "任务" , required = true) @RequestBody StartProcessDTO dto) {
+        PecadoUser user = SecurityUtils.getUser();
+        dto.setUserId(user.getUsername());
+        dto.setUserName(user.getUsername());
+        dto.getDto().setCreator(user.getUsername());
+        return R.ok(taskService.start(dto));
     }
 
     /**
@@ -140,7 +163,7 @@ public class TaskController {
 
     /**
      * 候选人
-     * @param processInstId 流程实例Id
+     * @param procInstId 流程实例Id
      * @param taskDefKey 流程定义Id
      * @param taskId 任务Id
      * @param back 是否退回
@@ -150,12 +173,12 @@ public class TaskController {
      */
     @Operation(description = "获取候选人")
     @GetMapping("/candidate")
-    public R<List<QueryCandidateView>> candidate(@Parameter(name = "processInstId") String processInstId,
+    public R<List<QueryCandidateView>> candidate(@Parameter(name = "procInstId") String procInstId,
                                 @Parameter(name = "taskDefKey") String taskDefKey,
                                 @Parameter(name = "taskId") String taskId,
                                 @Parameter(name = "back") Boolean back,
                                 @Parameter(name = "processDefId") String processDefId,
                                 @Parameter(name = "orgId") String orgId) {
-        return R.ok(taskService.loadCandidate(processInstId == null ? "0":processInstId, taskDefKey, taskId, back == null ? false:back, processDefId, orgId));
+        return R.ok(taskService.loadCandidate(procInstId == null ? "0":procInstId, taskDefKey, taskId, back == null ? false:back, processDefId, orgId));
     }
 }

@@ -73,7 +73,7 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
         if (invoice.getId() == null) {
             invoice.setCreateTime(LocalDateTime.now());
             invoiceMapper.insert(invoice);
-            taskService.start(invoice.getTask().setId(invoice.getId().toString()).setTitle(invoice.getTitle()));
+            //taskService.start(invoice.getTask().setId(invoice.getId().toString()).setTitle(invoice.getTitle()));
         } else {
             invoiceMapper.updateById(invoice);
         }
