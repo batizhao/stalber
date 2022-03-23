@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.TaskNodeView;
 
 import java.io.Serializable;
 
@@ -37,4 +38,10 @@ public class InitApp implements Serializable {
      */
     @Schema(description="流程初始对象")
     private InitProcessDefView process;
+
+    /**
+     * 流程任务对象
+     */
+    @Schema(description="流程任务对象")
+    private TaskNodeView task;
 }

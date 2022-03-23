@@ -1,6 +1,7 @@
 package me.batizhao.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,11 +13,14 @@ import me.batizhao.app.domain.AppType;
 import me.batizhao.app.service.AppProcessService;
 import me.batizhao.app.service.AppTypeService;
 import me.batizhao.app.view.InitApp;
+import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.common.core.util.R;
 import me.batizhao.app.domain.App;
 import me.batizhao.app.service.AppService;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.terrace.api.TerraceApi;
 import me.batizhao.terrace.vo.InitProcessDefView;
+import me.batizhao.terrace.vo.TaskNodeView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -133,16 +137,27 @@ public class AppController {
     @Operation(description = "通过应用Id初始化应用表单与组件默认值")
     @GetMapping("/init/{id}")
     @PreAuthorize("isAuthenticated()")
-    public R<InitApp> init(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id) {
+    public R<InitApp> init(@Parameter(name = "ID" , required = true) @PathVariable("id") @Min(1) Long id,
+                           @RequestParam(name = "taskId", required = false, defaultValue = "") String taskId,
+                           @RequestParam(name = "taskType", required = false, defaultValue = "") String taskType) {
         App app = appService.getById(id);
-
-        AppProcess appProcess = appProcessService.findAppProcess(app.getId(), null);
-        InitProcessDefView process = terraceApi.loadProcessDefinitionByKey(appProcess.getProcessKey()).getData();
-
         InitApp initApp = new InitApp();
         initApp.setCode(app.getCode());
         initApp.setName(app.getName());
-        initApp.setProcess(process);
+
+        if(StringUtils.isNotBlank(taskId)){
+            PecadoUser user = SecurityUtils.getUser();
+
+            //任务签收
+            terraceApi.sign(taskId, user.getUsername(),StringUtils.isBlank(taskType) ? "0" : taskType);
+            TaskNodeView tasks = terraceApi.loadTaskDetail(taskId, StringUtils.isBlank(taskType) ? "0" : taskType).getData();
+
+            initApp.setTask(tasks);
+        }else{
+            AppProcess appProcess = appProcessService.findAppProcess(app.getId(), null);
+            InitProcessDefView process = terraceApi.loadProcessDefinitionByKey(appProcess.getProcessKey()).getData();
+            initApp.setProcess(process);
+        }
 
         return R.ok(initApp);
     }
