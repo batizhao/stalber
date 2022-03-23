@@ -179,6 +179,6 @@ public class TaskController {
                                 @Parameter(name = "back") Boolean back,
                                 @Parameter(name = "processDefId") String processDefId,
                                 @Parameter(name = "orgId") String orgId) {
-        return R.ok(taskService.loadCandidate(procInstId == null ? "0":procInstId, taskDefKey, taskId, back == null ? false:back, processDefId, orgId));
+        return R.ok(taskService.loadCandidate(procInstId == null ? "0":procInstId, taskDefKey, taskId, back != null && back, processDefId, orgId));
     }
 }

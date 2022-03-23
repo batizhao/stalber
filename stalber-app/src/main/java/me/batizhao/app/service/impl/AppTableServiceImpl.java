@@ -146,11 +146,13 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
                 form = new AppForm()
                         .setId(at_appTableCode.getFormId())
                         .setFormKey(at_appTableCode.getFormKey())
+                        .setSubmitURL(at_appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
                         .setMetadata(formMetadata);
             } else {
                 form = new AppForm()
                         .setAppId(at.getAppId())
                         .setName(at.getDsName() + ":" + at.getTableName() + ":" + RandomUtil.randomString(5))
+                        .setSubmitURL(at_appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
                         .setDescription(appTableCode.getClassComment())
                         .setMetadata(formMetadata);
             }
@@ -179,6 +181,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
             List<AppTableColumn> dbTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
             if (dbTableColumns.isEmpty()) {
                 appService.syncCreateOrModifyTable(appTable, "create-table.vm", appTable.getDsName());
+                dbTableColumns = findColumnsByTableName(appTable.getTableName(), appTable.getDsName());
             }
             List<String> dbTableColumnNames = dbTableColumns.stream().map(AppTableColumn::getName).collect(Collectors.toList());
 
