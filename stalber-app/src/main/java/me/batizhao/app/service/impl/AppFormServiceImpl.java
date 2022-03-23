@@ -56,6 +56,9 @@ public class AppFormServiceImpl extends ServiceImpl<AppFormMapper, AppForm> impl
         if (appForm.getAppId() != null) {
             wrapper.eq(AppForm::getAppId, appForm.getAppId());
         }
+        if(appForm.getStatus() != null){
+            wrapper.eq(AppForm::getStatus, appForm.getStatus());
+        }
         return appFormMapper.selectList(wrapper);
     }
 
