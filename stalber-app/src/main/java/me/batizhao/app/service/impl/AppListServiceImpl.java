@@ -35,7 +35,7 @@ public class AppListServiceImpl extends ServiceImpl<AppListMapper, AppList> impl
     private LambdaQueryWrapper<AppList> createAppListLambda(AppList appList){
         LambdaQueryWrapper<AppList> wrapper = Wrappers.lambdaQuery();
         if (appList.getAppId() != null) {
-            wrapper.like(AppList::getAppId, appList.getAppId());
+            wrapper.eq(AppList::getAppId, appList.getAppId());
         }
 
         if (StringUtils.isNotBlank(appList.getName())) {
