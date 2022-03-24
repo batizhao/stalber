@@ -152,7 +152,7 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
                 form = new AppForm()
                         .setAppId(at.getAppId())
                         .setName(at.getDsName() + ":" + at.getTableName() + ":" + RandomUtil.randomString(5))
-                        .setSubmitURL(at_appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
+                        .setSubmitURL(appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
                         .setDescription(appTableCode.getClassComment())
                         .setMetadata(formMetadata);
             }
