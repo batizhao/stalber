@@ -18,7 +18,6 @@
         <module>stalber-commons</module>
         <module>stalber-dp</module>
         <module>stalber-ims</module>
-        <module>stalber-oa</module>
         <module>stalber-system</module>
     </modules>
 
@@ -82,13 +81,14 @@
             </dependency>
             <dependency>
                 <groupId>me.batizhao</groupId>
-                <artifactId>stalber-oa</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>me.batizhao</groupId>
                 <artifactId>stalber-system</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>me.batizhao</groupId>
+                <artifactId>mylta-oa</artifactId>
+                <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>

@@ -8,6 +8,9 @@ import lombok.experimental.Accessors;
 #if($template == "tree")
 import me.batizhao.common.core.domain.TreeNode;
 #end
+#if($workflow == "yes")
+import me.batizhao.terrace.task.Task;
+#end
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

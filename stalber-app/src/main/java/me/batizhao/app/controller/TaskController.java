@@ -1,16 +1,15 @@
-package me.batizhao.oa.controller;
+package me.batizhao.app.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.domain.PecadoUser;
 import me.batizhao.common.core.util.R;
 import me.batizhao.common.core.util.SecurityUtils;
-import me.batizhao.oa.domain.Task;
-import me.batizhao.oa.service.TaskService;
+import me.batizhao.terrace.api.TaskService;
 import me.batizhao.terrace.dto.AppTodoTaskDTO;
 import me.batizhao.terrace.dto.StartProcessDTO;
 import me.batizhao.terrace.dto.SubmitProcessDTO;
@@ -158,7 +157,7 @@ public class TaskController {
     @PostMapping("/task/sign")
     public R<Boolean> handleSign(@Parameter(name = "taskId", required = true) @RequestParam("taskId") String taskId,
                                  @Parameter(name = "type") @RequestParam("type") String type) {
-        return R.ok(taskService.sign(taskId, type));
+        return R.ok(taskService.sign(taskId, type, SecurityUtils.getUser().getUserId().toString()));
     }
 
     /**

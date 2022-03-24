@@ -26,11 +26,12 @@
         </dependency>
         <dependency>
             <groupId>me.batizhao</groupId>
-            <artifactId>stalber-oa</artifactId>
+            <artifactId>stalber-system</artifactId>
         </dependency>
+
         <dependency>
             <groupId>me.batizhao</groupId>
-            <artifactId>stalber-system</artifactId>
+            <artifactId>mylta-oa</artifactId>
         </dependency>
 
         <dependency>

@@ -14,7 +14,7 @@ import ${package}.${moduleName}.domain.${className};
 import ${package}.${moduleName}.mapper.${className}Mapper;
 import ${package}.${moduleName}.service.${className}Service;
 #if($workflow == "yes")
-import me.batizhao.oa.service.TaskService;
+import me.batizhao.terrace.api.TaskService;
 #end
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
