@@ -1,5 +1,6 @@
 package me.batizhao.app.mapper;
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,6 +32,7 @@ public interface AppTableMapper extends BaseMapper<AppTable> {
      * @param tableName 表名称
      * @return
      */
-    List<AppTableColumn> selectColumnsByTableName(@Param("tableName") String tableName);
+    @DS("#last")
+    List<AppTableColumn> selectColumnsByTableName(@Param("tableName") String tableName, String dsName);
 
 }

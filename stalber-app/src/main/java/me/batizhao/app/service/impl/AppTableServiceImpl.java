@@ -280,9 +280,9 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     }
 
     @Override
-    @DS("#last")
     public List<AppTableColumn> findColumnsByTableName(String tableName, String dsName) {
-        return appTableMapper.selectColumnsByTableName(tableName);
+        log.info("###### dsName: {}", dsName);
+        return appTableMapper.selectColumnsByTableName(tableName, dsName);
     }
 
     @Override

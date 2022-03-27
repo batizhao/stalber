@@ -83,6 +83,14 @@
 * common、commons 为保留目录，把需要 parse 或者 include 的文件放在这里，不会出现在生成代码清单中。
 * 模板文件命名规范为  aaa.bbb.ccc，第一部分描述功能（Controller、Service），bbb 为代码文件类型（java、xml、js、vue），ccc 必须使用 `vm`。
 
+## 关于动态数据源
+
+两种无效情况注意：
+
+* 在一个方法中，事务开启的情况下，无论是上级方法，还是当前方法，都不能开启事务。
+
+* 在同一个类中，方法之间的调用。例 `findColumnsByTableName`。
+
 ## 数据库版本管理
 
 使用 Liquibase 对数据库版本进行管理。
