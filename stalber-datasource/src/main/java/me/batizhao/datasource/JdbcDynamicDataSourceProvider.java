@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.batizhao.common.core.datasource;
+package me.batizhao.datasource;
 
 import com.baomidou.dynamic.datasource.provider.AbstractJdbcDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DataSourceProperty;

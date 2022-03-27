@@ -14,43 +14,44 @@
  * limitations under the License.
  */
 
-package me.batizhao.common.core.datasource;
-
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+package me.batizhao.datasource;
 
 /**
  * @author lengleng
- * @date 2019-05-14
+ * @date 2019-04-01
  * <p>
+ * 数据源相关常量
  */
-@Data
-@ConfigurationProperties("spring.datasource")
-public class DataSourceProperties {
+public class DataSourceConstants {
 
 	/**
-	 * 用户名
+	 * 数据源名称
 	 */
-	private String username;
+	public static final String DS_NAME = "name";
 
 	/**
-	 * 密码
+	 * 默认驱动
 	 */
-	private String password;
+	public static final String DS_DRIVER = "com.mysql.cj.jdbc.Driver";
+
+	/**
+	 * 默认数据源（master）
+	 */
+	public static final String DS_MASTER = "master";
 
 	/**
 	 * jdbcurl
 	 */
-	private String url;
+	public static final String DS_JDBC_URL = "url";
 
 	/**
-	 * 驱动类型
+	 * 用户名
 	 */
-	private String driverClassName;
+	public static final String DS_USER_NAME = "username";
 
 	/**
-	 * 查询数据源的SQL
+	 * 密码
 	 */
-	private String queryDsSql = "select * from ds where status = 'open'";
+	public static final String DS_USER_PWD = "password";
 
 }

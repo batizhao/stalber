@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.batizhao.common.core.datasource;
+package me.batizhao.datasource;
 
 import com.baomidou.dynamic.datasource.processor.DsProcessor;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;

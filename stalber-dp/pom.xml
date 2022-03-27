@@ -16,6 +16,10 @@
             <groupId>me.batizhao</groupId>
             <artifactId>stalber-commons</artifactId>
         </dependency>
+        <dependency>
+            <groupId>me.batizhao</groupId>
+            <artifactId>stalber-datasource</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>
