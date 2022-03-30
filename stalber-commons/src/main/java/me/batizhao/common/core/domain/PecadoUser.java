@@ -22,6 +22,11 @@ public class PecadoUser implements UserDetails {
     private String username;
 
     /**
+     * 姓名
+     */
+    private String name;
+
+    /**
      * 密码
      */
     private String password;
@@ -59,9 +64,10 @@ public class PecadoUser implements UserDetails {
     public PecadoUser() {
     }
 
-    public PecadoUser(Long userId, String username, String password, List<String> deptIds, List<String> roleIds, Set<String> permissions) {
+    public PecadoUser(Long userId, String username, String password, String name, List<String> deptIds, List<String> roleIds, Set<String> permissions) {
         this.userId = userId;
         this.username = username;
+        this.name = name;
         this.password = password;
         this.deptIds = deptIds;
         this.roleIds = roleIds;
@@ -78,6 +84,10 @@ public class PecadoUser implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {

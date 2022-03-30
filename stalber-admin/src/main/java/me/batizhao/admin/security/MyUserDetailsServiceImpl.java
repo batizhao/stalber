@@ -46,6 +46,6 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         }
 
         return new PecadoUser(user.getId(), user.getUsername(), user.getPassword(),
-                userInfoVO.getDeptIds(), userInfoVO.getRoleIds(), authSet);
+                user.getName(), userInfoVO.getDeptIds(), userInfoVO.getRoleIds(), authSet);
     }
 }
