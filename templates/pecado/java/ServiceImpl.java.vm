@@ -1,5 +1,8 @@
 package ${package}.${moduleName}.service.impl;
 
+#if($dsName != "master")
+import com.baomidou.dynamic.datasource.annotation.DS;
+#end
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -31,6 +34,9 @@ import java.util.List;
  * @since ${date}
  */
 @Service
+#if($dsName != "master")
+@DS("${dsName}")
+#end
 public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements ${className}Service {
 
     @Autowired

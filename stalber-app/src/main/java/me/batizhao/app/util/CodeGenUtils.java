@@ -224,7 +224,7 @@ public class CodeGenUtils {
         JSONArray array = JSONUtil.parseArray(appTable.getColumnMetadata());
         List<AppTableColumn> appTableColumns = JSONUtil.toList(array, AppTableColumn.class);
 
-        Map<String, Object> map = new HashMap<>(21);
+        Map<String, Object> map = new HashMap<>(19);
         map.put("tableName", appTable.getTableName());
         map.put("pk", appTableColumns.get(0));
         map.put("className", appTableCode.getClassName());
@@ -245,6 +245,7 @@ public class CodeGenUtils {
         map.put("formKey", appTableCode.getFormKey());
         map.put("workflow", appTableCode.getWorkflow());
 //        map.put("workflowKey", appTableCode.getWorkflowKey());
+        map.put("dsName", appTable.getDsName());
         return map;
     }
 
