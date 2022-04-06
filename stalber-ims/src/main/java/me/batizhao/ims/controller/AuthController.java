@@ -2,9 +2,11 @@ package me.batizhao.ims.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.batizhao.common.core.util.R;
+import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.domain.LoginDTO;
 import me.batizhao.ims.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +41,15 @@ public class AuthController {
     @GetMapping("/uaa/captcha")
     public R<Map<String, String>> handleCaptcha() throws IOException {
         return R.ok(authService.getCaptchaImage());
+    }
+
+    /**
+     * 生成验证码
+     */
+    @PostMapping("/uaa/logout")
+    @PreAuthorize("isAuthenticated()")
+    public R<Boolean> handleLogout() {
+        return R.ok(authService.logout(SecurityUtils.getUser().getUid()));
     }
 
 }

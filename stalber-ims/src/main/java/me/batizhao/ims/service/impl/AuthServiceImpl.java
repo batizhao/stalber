@@ -95,8 +95,7 @@ public class AuthServiceImpl implements AuthService {
         try {
             jwt.sign(new RSASSASigner(this.key));
             return jwt;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalArgumentException(ex);
         }
     }
@@ -112,8 +111,7 @@ public class AuthServiceImpl implements AuthService {
             capStr = capText.substring(0, capText.lastIndexOf("@"));
             code = capText.substring(capText.lastIndexOf("@") + 1);
             image = captchaProducerMath.createImage(capStr);
-        }
-        else if ("char".equals(captchaType)) {
+        } else if ("char".equals(captchaType)) {
             capStr = code = captchaProducer.createText();
             image = captchaProducer.createImage(capStr);
         }
@@ -140,5 +138,10 @@ public class AuthServiceImpl implements AuthService {
         if (!code.equalsIgnoreCase(captcha)) {
             throw new StalberException("验证码错误");
         }
+    }
+
+    @Override
+    public boolean logout(String uid) {
+        return redisUtil.deleteObject(SecurityConstants.CACHE_LOGIN_KEY_UID + uid);
     }
 }

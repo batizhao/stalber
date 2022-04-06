@@ -25,4 +25,11 @@ public interface AuthService {
      * @throws IOException
      */
     Map<String, String> getCaptchaImage() throws IOException;
+
+    /**
+     * 退出
+     * @param uid
+     * @return
+     */
+    boolean logout(String uid);
 }

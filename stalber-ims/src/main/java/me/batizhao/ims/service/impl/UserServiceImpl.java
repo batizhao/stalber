@@ -71,6 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User findById(Long id) {
         User user = userMapper.selectById(id);
+        user.setPassword(null);
 
         if(user == null) {
             throw new NotFoundException(String.format("Record not found '%s'。", id));
@@ -165,12 +166,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public UserInfoVO getUserInfo(Long userId) {
-        User user = userMapper.selectById(userId);
-
-        if(user == null) {
-            throw new NotFoundException(String.format("Record not found '%s'。", userId));
-        }
-
+        User user = findById(userId);
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setUser(user);
         userInfoVO.setDeptIds(departmentService.findDepartmentsByUserId(userId).stream().map(Department::getId).map(String::valueOf).collect(Collectors.toList()));
