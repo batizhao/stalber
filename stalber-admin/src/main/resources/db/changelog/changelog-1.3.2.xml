@@ -1,0 +1,209 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet author="batizhao" id="CreateTableDictionary-20220401-001">
+        <createTable tableName="dictionary" remarks="字典表">
+            <column autoIncrement="true" name="id" type="BIGINT" remarks="主键">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(32)" remarks="名称">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="code" type="VARCHAR(32)" remarks="代码">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="data" type="JSON" remarks="字典内容" />
+            <column name="status" type="VARCHAR(32)" remarks="状态" defaultValue="open">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="VARCHAR(255)" remarks="描述" defaultValue="" />
+            <column name="createTime" type="datetime" remarks="创建时间" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updateTime" type="datetime" remarks="修改时间" defaultValueComputed="NOW() ON UPDATE NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="dictionary"/>
+        </rollback>
+
+        <update tableName="menu">
+            <column name="path" value="/system/dictionary"/>
+            <where>id=2200</where>
+        </update>
+
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="性别"/>
+            <column name="code" value="sex"/>
+            <column name="description" value="男|女"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "男",
+		"value": "male",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "女",
+		"value": "female",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=1</where>
+        </update>
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="状态"/>
+            <column name="code" value="status"/>
+            <column name="description" value="启用|禁用"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "启用",
+		"value": "open",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "禁用",
+		"value": "close",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=2</where>
+        </update>
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="是否"/>
+            <column name="code" value="yes_or_no"/>
+            <column name="description" value="是|否"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "是",
+		"value": "yes",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "否",
+		"value": "no",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=3</where>
+        </update>
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="成败"/>
+            <column name="code" value="success_or_fail"/>
+            <column name="description" value="成功|失败"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "成功",
+		"value": "success",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "失败",
+		"value": "failure",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=4</where>
+        </update>
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="5"/>
+            <column name="name" value="任务分组"/>
+            <column name="code" value="job_group"/>
+            <column name="description" value="DEFAULT|SYSTEM"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "默认",
+		"value": "DEFAULT",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "系统",
+		"value": "SYSTEM",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=5</where>
+        </update>
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="6"/>
+            <column name="name" value="字段类型"/>
+            <column name="code" value="db_column_type"/>
+            <column name="description" value="VARCHAR|INT"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "字符串",
+		"value": "varchar",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "整数",
+		"value": "int",
+		"sort": 2
+	},
+	{
+		"label": "日期",
+		"value": "datetime",
+		"sort": 3
+	},
+	{
+		"label": "小数",
+		"value": "decimal",
+		"sort": 4
+	}
+] ]]></column>
+            <where>id=6</where>
+        </update>
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="7"/>
+            <column name="name" value="表同步状态"/>
+            <column name="code" value="table_sync_status"/>
+            <column name="description" value="created|nosync|synced"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "已创建",
+		"value": "created",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "未同步",
+		"value": "nosync",
+		"sort": 2
+	},
+	{
+		"label": "已同步",
+		"value": "synced",
+		"sort": 3
+	}
+] ]]></column>
+            <where>id=7</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

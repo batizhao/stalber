@@ -3,7 +3,7 @@ package me.batizhao.system.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.core.constant.ResultEnum;
-import me.batizhao.system.domain.DictType;
+import me.batizhao.system.domain.Dictionary;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author batizhao
  * @since 2020-02-11
  */
-public class DictTypeApiTest extends BaseApiTest {
+public class DictionaryApiTest extends BaseApiTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -53,7 +53,7 @@ public class DictTypeApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenSaveDictType_thenSuccess() throws Exception {
-        DictType requestBody = new DictType()
+        Dictionary requestBody = new Dictionary()
                 .setName("daxia").setCode("daxia@gmail.com");
 
         mvc.perform(post("/system/dict/type")
@@ -70,7 +70,7 @@ public class DictTypeApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenUpdateDictType_thenSuccess() throws Exception {
-        DictType requestBody = new DictType()
+        Dictionary requestBody = new Dictionary()
                 .setId(8L).setName("daxia").setCode("daxia@gmail.com");
 
         mvc.perform(post("/system/dict/type")

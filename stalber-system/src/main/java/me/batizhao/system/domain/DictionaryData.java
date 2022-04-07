@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 字典 实体对象
@@ -19,63 +19,33 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @NoArgsConstructor
 @Schema(description = "字典")
-public class DictData implements Serializable {
+public class DictionaryData implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键
-     */
-    @Schema(description="主键")
-    private Long id;
-
-    /**
-     * 代码
-     */
-    @Schema(description="代码")
-    private String code;
 
     /**
      * 标签
      */
     @Schema(description="标签")
+    @NotBlank(message = "label is not blank")
     private String label;
 
     /**
      * 值
      */
     @Schema(description="值")
+    @NotBlank(message = "value is not blank")
     private String value;
 
     /**
      * 是否默认
      */
     @Schema(description="是否默认")
-    private String isDefault;
+    private String isDefault = "no";
 
     /**
      * 排序
      */
     @Schema(description="排序")
-    private Long sort;
-
-    /**
-     * 状态
-     */
-    @Schema(description="状态")
-    private String status;
-
-    /**
-     * 创建时间
-     */
-    @Schema(description="创建时间")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @Schema(description="修改时间")
-    private LocalDateTime updateTime;
-
-    
+    private Long sort = 1L;
 }

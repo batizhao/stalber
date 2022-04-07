@@ -3,7 +3,7 @@ package me.batizhao.system.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.core.constant.ResultEnum;
-import me.batizhao.system.domain.DictData;
+import me.batizhao.system.domain.DictionaryData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author batizhao
  * @since 2020-02-11
  */
-public class DictDataApiTest extends BaseApiTest {
+public class DictionaryDataApiTest extends BaseApiTest {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,8 +43,8 @@ public class DictDataApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenSaveDictData_thenSuccess() throws Exception {
-        DictData requestBody = new DictData()
-                .setLabel("daxia").setValue("daxia@gmail.com").setCode("xxx");
+        DictionaryData requestBody = new DictionaryData()
+                .setLabel("daxia").setValue("daxia@gmail.com");
 
         mvc.perform(post("/system/dict/data")
                 .content(objectMapper.writeValueAsString(requestBody))
@@ -60,8 +60,7 @@ public class DictDataApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenUpdateDictData_thenSuccess() throws Exception {
-        DictData requestBody = new DictData()
-                .setId(8L).setLabel("daxia").setValue("daxia@gmail.com");
+        DictionaryData requestBody = new DictionaryData().setLabel("daxia").setValue("daxia@gmail.com");
 
         mvc.perform(post("/system/dict/data")
                 .content(objectMapper.writeValueAsString(requestBody))

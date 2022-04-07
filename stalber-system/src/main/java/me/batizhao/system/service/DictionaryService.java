@@ -3,7 +3,8 @@ package me.batizhao.system.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import me.batizhao.system.domain.DictType;
+import me.batizhao.system.domain.Dictionary;
+import me.batizhao.system.domain.DictionaryData;
 
 import java.util.List;
 
@@ -13,41 +14,42 @@ import java.util.List;
  * @author batizhao
  * @since 2021-02-07
  */
-public interface DictTypeService extends IService<DictType> {
+public interface DictionaryService extends IService<Dictionary> {
 
     /**
      * 分页查询
      * @param page 分页对象
-     * @param dictType 字典类型
+     * @param dictionary 字典类型
      * @return IPage<DictType>
      */
-    IPage<DictType> findDictTypes(Page<DictType> page, DictType dictType);
+    IPage<Dictionary> findDictTypes(Page<Dictionary> page, Dictionary dictionary);
+
+    /**
+     * 根据标识查询字典
+     * @param code
+     * @return
+     */
+    List<DictionaryData> findByCode(String code);
 
     /**
      * 通过id查询字典类型
      * @param id id
      * @return DictType
      */
-    DictType findById(Long id);
+    Dictionary findById(Long id);
 
     /**
      * 添加或修改字典类型
-     * @param dictType 字典类型
+     * @param dictionary 字典类型
      * @return DictType
      */
-    DictType saveOrUpdateDictType(DictType dictType);
-
-    /**
-     * 删除
-     * @param codes
-     * @return
-     */
-    Boolean deleteByIds(List<String> codes);
+    Dictionary saveOrUpdateDictType(Dictionary dictionary);
 
     /**
      * 更新字典类型状态
-     * @param dictType 字典类型
+     * @param dictionary 字典类型
      * @return Boolean
      */
-    Boolean updateStatus(DictType dictType);
+    Boolean updateStatus(Dictionary dictionary);
+
 }

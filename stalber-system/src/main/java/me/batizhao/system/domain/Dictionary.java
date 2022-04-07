@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
 @Schema(description = "字典类型")
-public class DictType implements Serializable {
+public class Dictionary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,6 +42,13 @@ public class DictType implements Serializable {
      */
     @Schema(description="代码")
     private String code;
+
+    /**
+     * 数据
+     */
+    @Schema(description="数据")
+    @NotBlank(message = "data is not blank")
+    private String data;
 
     /**
      * 状态
@@ -70,5 +78,5 @@ public class DictType implements Serializable {
      * 字典数据
      */
     @Schema(description="字典数据")
-    private transient List<DictData> dictDataList;
+    private transient List<DictionaryData> dictionaryDataList;
 }
