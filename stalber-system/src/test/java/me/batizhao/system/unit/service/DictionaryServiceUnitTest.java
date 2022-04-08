@@ -75,7 +75,7 @@ public class DictionaryServiceUnitTest extends BaseServiceUnitTest {
         when(dictionaryMapper.selectPage(any(Page.class), any(Wrapper.class)))
                 .thenReturn(dictTypePageList);
 
-        IPage<Dictionary> dictTypes = dictTypeService.findDictTypes(new Page<>(), new Dictionary());
+        IPage<Dictionary> dictTypes = dictTypeService.findDictionaries(new Page<>(), new Dictionary());
 
         assertThat(dictTypes.getRecords(), iterableWithSize(3));
         assertThat(dictTypes.getRecords(), hasItems(hasProperty("name", equalTo("zhangsan")),
@@ -86,7 +86,7 @@ public class DictionaryServiceUnitTest extends BaseServiceUnitTest {
         when(dictionaryMapper.selectPage(any(Page.class), any(Wrapper.class)))
                 .thenReturn(dictTypePageList);
 
-        dictTypes = dictTypeService.findDictTypes(new Page<>(), new Dictionary().setName("lname"));
+        dictTypes = dictTypeService.findDictionaries(new Page<>(), new Dictionary().setName("lname"));
         assertThat(dictTypes.getRecords(), iterableWithSize(1));
         assertThat(dictTypes.getRecords(), hasItems(hasProperty("name", equalTo("lisi"))));
     }
@@ -118,14 +118,14 @@ public class DictionaryServiceUnitTest extends BaseServiceUnitTest {
         // insert 不带 id
         doReturn(1).when(dictionaryMapper).insert(any(Dictionary.class));
 
-        Dictionary dictionary = dictTypeService.saveOrUpdateDictType(dictionary_test_data);
+        Dictionary dictionary = dictTypeService.saveOrUpdateDictionary(dictionary_test_data);
 
         verify(dictionaryMapper).insert(any(Dictionary.class));
 
         // update 需要带 id
         doReturn(1).when(dictionaryMapper).updateById(any(Dictionary.class));
 
-        dictionary = dictTypeService.saveOrUpdateDictType(dictionaryList.get(0));
+        dictionary = dictTypeService.saveOrUpdateDictionary(dictionaryList.get(0));
 
         verify(dictionaryMapper).updateById(any(Dictionary.class));
     }

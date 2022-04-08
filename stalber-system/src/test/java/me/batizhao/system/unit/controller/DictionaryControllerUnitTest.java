@@ -67,7 +67,7 @@ public class DictionaryControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenNothing_whenFindDictTypes_thenSuccess() throws Exception {
-        when(dictTypeService.findDictTypes(any(Page.class), any(Dictionary.class))).thenReturn(dictTypePageList);
+        when(dictTypeService.findDictionaries(any(Page.class), any(Dictionary.class))).thenReturn(dictTypePageList);
 
         mvc.perform(get("/system/dict/types"))
                 .andDo(print())
@@ -78,7 +78,7 @@ public class DictionaryControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.data.records", hasSize(3)))
                 .andExpect(jsonPath("$.data.records[0].name", equalTo("zhangsan")));
 
-        verify(dictTypeService).findDictTypes(any(Page.class), any(Dictionary.class));
+        verify(dictTypeService).findDictionaries(any(Page.class), any(Dictionary.class));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class DictionaryControllerUnitTest extends BaseControllerUnitTest {
     public void givenJson_whenSaveDictType_thenSuccess() throws Exception {
         Dictionary requestBody = new Dictionary().setName("zhaoliu");
 
-        when(dictTypeService.saveOrUpdateDictType(any(Dictionary.class)))
+        when(dictTypeService.saveOrUpdateDictionary(any(Dictionary.class)))
                 .thenReturn(dictionaryList.get(0));
 
         mvc.perform(post("/system/dict/type").with(csrf())
@@ -132,7 +132,7 @@ public class DictionaryControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data.id", equalTo(1)));
 
-        verify(dictTypeService).saveOrUpdateDictType(any(Dictionary.class));
+        verify(dictTypeService).saveOrUpdateDictionary(any(Dictionary.class));
     }
 
     @Test
@@ -140,7 +140,7 @@ public class DictionaryControllerUnitTest extends BaseControllerUnitTest {
     public void givenJson_whenUpdateDictType_thenSuccess() throws Exception {
         Dictionary requestBody = new Dictionary().setId(2L).setName("zhaoliu");
 
-        when(dictTypeService.saveOrUpdateDictType(any(Dictionary.class)))
+        when(dictTypeService.saveOrUpdateDictionary(any(Dictionary.class)))
                 .thenReturn(dictionaryList.get(1));
 
         mvc.perform(post("/system/dict/type").with(csrf())
@@ -152,7 +152,7 @@ public class DictionaryControllerUnitTest extends BaseControllerUnitTest {
                 .andExpect(jsonPath("$.code").value(ResultEnum.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.data.id", equalTo(2)));
 
-        verify(dictTypeService).saveOrUpdateDictType(any(Dictionary.class));
+        verify(dictTypeService).saveOrUpdateDictionary(any(Dictionary.class));
     }
 
 //    @Test

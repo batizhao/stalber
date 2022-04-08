@@ -22,7 +22,7 @@ public interface DictionaryService extends IService<Dictionary> {
      * @param dictionary 字典类型
      * @return IPage<DictType>
      */
-    IPage<Dictionary> findDictTypes(Page<Dictionary> page, Dictionary dictionary);
+    IPage<Dictionary> findDictionaries(Page<Dictionary> page, Dictionary dictionary);
 
     /**
      * 根据标识查询字典
@@ -43,7 +43,7 @@ public interface DictionaryService extends IService<Dictionary> {
      * @param dictionary 字典类型
      * @return DictType
      */
-    Dictionary saveOrUpdateDictType(Dictionary dictionary);
+    Dictionary saveOrUpdateDictionary(Dictionary dictionary);
 
     /**
      * 更新字典类型状态

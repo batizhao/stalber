@@ -2,9 +2,9 @@ package me.batizhao.system.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.annotation.SystemLog;
 import me.batizhao.common.core.util.R;
@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
@@ -49,8 +48,8 @@ public class DictionaryController {
     @GetMapping("/dictionaries")
     @PreAuthorize("@pms.hasPermission('system:dict:admin')")
     @SystemLog
-    public R<IPage<Dictionary>> handleDictTypes(Page<Dictionary> page, Dictionary dictionary) {
-        return R.ok(dictionaryService.findDictTypes(page, dictionary));
+    public R<IPage<Dictionary>> handleDictionaries(Page<Dictionary> page, Dictionary dictionary) {
+        return R.ok(dictionaryService.findDictionaries(page, dictionary));
     }
 
     /**
@@ -60,7 +59,7 @@ public class DictionaryController {
     @Operation(description = "查询所有字典")
     @GetMapping("/dictionary")
     @SystemLog
-    public R<List<Dictionary>> handleDictType() {
+    public R<List<Dictionary>> handleDictionaries() {
         return R.ok(dictionaryService.list());
     }
 
@@ -96,7 +95,7 @@ public class DictionaryController {
     @PreAuthorize("@pms.hasPermission('system:dict:add') or @pms.hasPermission('system:dict:edit')")
     @SystemLog
     public R<Dictionary> handleSaveOrUpdate(@Valid @Parameter(name = "字典" , required = true) @RequestBody Dictionary dictionary) {
-        return R.ok(dictionaryService.saveOrUpdateDictType(dictionary));
+        return R.ok(dictionaryService.saveOrUpdateDictionary(dictionary));
     }
 
     /**

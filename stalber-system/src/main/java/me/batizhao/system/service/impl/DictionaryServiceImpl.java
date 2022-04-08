@@ -38,7 +38,7 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     private ObjectMapper objectMapper;
 
     @Override
-    public IPage<Dictionary> findDictTypes(Page<Dictionary> page, Dictionary dictionary) {
+    public IPage<Dictionary> findDictionaries(Page<Dictionary> page, Dictionary dictionary) {
         LambdaQueryWrapper<Dictionary> wrapper = Wrappers.lambdaQuery();
         if (StringUtils.isNotBlank(dictionary.getName())) {
             wrapper.like(Dictionary::getName, dictionary.getName());
@@ -71,7 +71,7 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     @SneakyThrows
     @Override
     @Transactional
-    public Dictionary saveOrUpdateDictType(Dictionary dictionary) {
+    public Dictionary saveOrUpdateDictionary(Dictionary dictionary) {
         // 初始化 data 属性
         JSONArray array = JSONUtil.parseArray(dictionary.getData());
         List<DictionaryData> dictionaryData = JSONUtil.toList(array, DictionaryData.class);
