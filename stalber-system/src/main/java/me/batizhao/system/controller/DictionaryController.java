@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.batizhao.common.core.annotation.SystemLog;
 import me.batizhao.common.core.util.R;
 import me.batizhao.system.domain.Dictionary;
-import me.batizhao.system.domain.DictionaryData;
 import me.batizhao.system.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 字典类型 API
+ * 字典 API
  *
  * @module system
  *
@@ -81,7 +80,7 @@ public class DictionaryController {
      */
     @Operation(description = "通过code查询字典")
     @GetMapping("/dictionary/{code}")
-    public R<List<DictionaryData>> handleCode(@Parameter(name = "code" , required = true) @PathVariable("code") String code) {
+    public R<List<Dictionary.DictionaryData>> handleCode(@Parameter(name = "code" , required = true) @PathVariable("code") String code) {
         return R.ok(dictionaryService.findByCode(code));
     }
 

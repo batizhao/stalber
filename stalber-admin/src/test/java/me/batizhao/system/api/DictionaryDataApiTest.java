@@ -3,7 +3,7 @@ package me.batizhao.system.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.batizhao.BaseApiTest;
 import me.batizhao.common.core.constant.ResultEnum;
-import me.batizhao.system.domain.DictionaryData;
+import me.batizhao.system.domain.Dictionary;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,7 +43,7 @@ public class DictionaryDataApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenSaveDictData_thenSuccess() throws Exception {
-        DictionaryData requestBody = new DictionaryData()
+        Dictionary.DictionaryData requestBody = new Dictionary.DictionaryData()
                 .setLabel("daxia").setValue("daxia@gmail.com");
 
         mvc.perform(post("/system/dict/data")
@@ -60,7 +60,7 @@ public class DictionaryDataApiTest extends BaseApiTest {
     @Test
     @Transactional
     public void givenJson_whenUpdateDictData_thenSuccess() throws Exception {
-        DictionaryData requestBody = new DictionaryData().setLabel("daxia").setValue("daxia@gmail.com");
+        Dictionary.DictionaryData requestBody = new Dictionary.DictionaryData().setLabel("daxia").setValue("daxia@gmail.com");
 
         mvc.perform(post("/system/dict/data")
                 .content(objectMapper.writeValueAsString(requestBody))

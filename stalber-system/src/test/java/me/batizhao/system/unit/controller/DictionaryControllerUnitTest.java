@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * 字典类型
+ * 字典
  *
  * @author batizhao
  * @since 2021-02-07

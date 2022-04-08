@@ -29,7 +29,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
 /**
- * 字典类型
+ * 字典
  *
  * @author batizhao
  * @since 2021-02-07

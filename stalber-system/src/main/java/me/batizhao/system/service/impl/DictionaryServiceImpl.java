@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.system.domain.Dictionary;
-import me.batizhao.system.domain.DictionaryData;
 import me.batizhao.system.mapper.DictionaryMapper;
 import me.batizhao.system.service.DictionaryService;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 字典类型接口实现类
+ * 字典接口实现类
  *
  * @author batizhao
  * @since 2021-02-07
@@ -47,14 +46,14 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     }
 
     @Override
-    public List<DictionaryData> findByCode(String code) {
+    public List<Dictionary.DictionaryData> findByCode(String code) {
         LambdaQueryWrapper<Dictionary> wrapper = Wrappers.lambdaQuery();
         if (StringUtils.isNotBlank(code)) {
             wrapper.eq(Dictionary::getCode, code);
         }
         Dictionary dictionary = dictionaryMapper.selectOne(wrapper);
         JSONArray array = JSONUtil.parseArray(dictionary.getData());
-        return JSONUtil.toList(array, DictionaryData.class);
+        return JSONUtil.toList(array, Dictionary.DictionaryData.class);
     }
 
     @Override
@@ -72,11 +71,6 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
     @Override
     @Transactional
     public Dictionary saveOrUpdateDictionary(Dictionary dictionary) {
-        // 初始化 data 属性
-        JSONArray array = JSONUtil.parseArray(dictionary.getData());
-        List<DictionaryData> dictionaryData = JSONUtil.toList(array, DictionaryData.class);
-        dictionary.setData(objectMapper.writeValueAsString(dictionaryData));
-
         if (dictionary.getId() == null) {
             dictionary.setCreateTime(LocalDateTime.now());
             dictionary.setUpdateTime(LocalDateTime.now());

@@ -5,7 +5,7 @@ import me.batizhao.system.domain.Dictionary;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 字典类型
+ * 字典
  *
  * @author batizhao
  * @since 2021-02-07
