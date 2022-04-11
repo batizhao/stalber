@@ -96,4 +96,10 @@ public class AppTableColumn {
     @Schema(description="显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）")
     private String htmlType;
 
+    /**
+     * 配置项
+     */
+    @Schema(description="配置项")
+    private String config;
+
 }

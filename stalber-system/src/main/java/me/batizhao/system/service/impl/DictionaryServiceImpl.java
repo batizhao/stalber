@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.system.domain.Dictionary;
@@ -33,8 +32,6 @@ public class DictionaryServiceImpl extends ServiceImpl<DictionaryMapper, Diction
 
     @Autowired
     private DictionaryMapper dictionaryMapper;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Override
     public IPage<Dictionary> findDictionaries(Page<Dictionary> page, Dictionary dictionary) {

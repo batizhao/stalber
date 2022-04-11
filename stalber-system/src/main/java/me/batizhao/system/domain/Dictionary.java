@@ -81,10 +81,8 @@ public class Dictionary implements Serializable {
     @Data
     @Accessors(chain = true)
     @NoArgsConstructor
-    @Schema(description = "字典")
-    public static class DictionaryData implements Serializable {
-
-        private static final long serialVersionUID = 1L;
+    @Schema(description = "字典数据")
+    public static class DictionaryData {
 
         /**
          * 标签
