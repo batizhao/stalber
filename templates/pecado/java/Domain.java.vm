@@ -30,6 +30,20 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
 
     private static final long serialVersionUID = 1L;
 
+#if($template == "tree")
+    public ${className}(Integer id, Integer pid) {
+        this.id = id;
+        this.pid = pid;
+    }
+#end
+#if($workflow == "yes")
+
+    /**
+     * 流程属性
+     */
+    @Schema(description="流程属性")
+    private transient Task task;
+#end
 #foreach ($column in $columns)
     #if($template == "tree")
         #if($column.javaField == "id" || $column.javaField == "pid")
@@ -49,20 +63,29 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
     @Schema(description="$column.comment")
     private $column.javaType $column.javaField;
     #end
-#end
-#if($template == "tree")
 
-    public ${className}(Integer id, Integer pid) {
-        this.id = id;
-        this.pid = pid;
-    }
-#end
-#if($workflow == "yes")
-
+    #if (${column.config})
+        #set ($jf = ${column.javaField})
+        #set ($jf = $jf.substring(0,1).toUpperCase() + ${jf.substring(1)})
     /**
-     * 流程属性
+     * ${column.comment}数据
      */
-    @Schema(description="流程属性")
-    private transient Task task;
+    @Data
+    @Accessors(chain = true)
+    @NoArgsConstructor
+    @Schema(description = "${column.comment}数据")
+    public static class ${jf}Data {
+
+        #foreach($configItem in ${column.config})
+
+        /**
+         * ${configItem.comment}
+         */
+        @Schema(description="${configItem.comment}")
+        private ${configItem.type} ${configItem.name};
+        #end
+    }
+    #end
 #end
+
 }

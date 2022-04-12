@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 /**
  * @author batizhao
  * @date 2021/7/9
@@ -100,6 +102,6 @@ public class AppTableColumn {
      * 配置项
      */
     @Schema(description="配置项")
-    private String config;
+    private List<AppTableColumnConfig> config;
 
 }
