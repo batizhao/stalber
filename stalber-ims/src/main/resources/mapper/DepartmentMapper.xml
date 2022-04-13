@@ -14,6 +14,7 @@
     <result property="code" column="code"/>
     <result property="status" column="status"/>
     <result property="type" column="type"/>
+    <result property="level" column="level"/>
     <result property="createTime" column="createTime"/>
     <result property="updateTime" column="updateTime"/>
   </resultMap>

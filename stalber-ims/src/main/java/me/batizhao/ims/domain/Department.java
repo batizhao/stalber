@@ -65,6 +65,12 @@ public class Department extends TreeNode implements Serializable {
      */
     @Schema(description="类型（C公司 D部门）")
     private String type;
+
+    /**
+     * 级别（in内部 out外部）
+     */
+    @Schema(description="级别（in内部 out外部）")
+    private String level;
             
     public Department(Integer id, Integer pid) {
         this.id = id;

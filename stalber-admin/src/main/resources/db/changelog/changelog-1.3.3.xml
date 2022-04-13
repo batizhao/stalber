@@ -1,0 +1,93 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet author="batizhao" id="UpdateTable-20220413-001">
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "字符串",
+		"value": "varchar",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "整数",
+		"value": "int",
+		"sort": 2
+	},
+	{
+		"label": "日期",
+		"value": "datetime",
+		"sort": 3
+	},
+	{
+		"label": "小数",
+		"value": "decimal",
+		"sort": 4
+	},
+	{
+		"sort": 5,
+		"label": "集合",
+		"value": "json",
+		"isDefault": "no"
+	}
+] ]]></column>
+            <where>id=6</where>
+        </update>
+
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="8"/>
+            <column name="name" value="部门级别"/>
+            <column name="code" value="dept_level"/>
+            <column name="description" value="in|out"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "内部",
+		"value": "in",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "外部",
+		"value": "out",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=8</where>
+        </update>
+
+        <insert tableName="dictionary">
+            <column name="id" valueNumeric="9"/>
+            <column name="name" value="部门类型"/>
+            <column name="code" value="dept_type"/>
+            <column name="description" value="C|D"/>
+        </insert>
+        <update tableName="dictionary">
+            <column name="data"><![CDATA[ [
+	{
+		"label": "单位",
+		"value": "C",
+		"sort": 1,
+		"isDefault": "yes"
+	},
+	{
+		"label": "部门",
+		"value": "D",
+		"sort": 2
+	}
+] ]]></column>
+            <where>id=9</where>
+        </update>
+
+        <addColumn tableName="department">
+            <column name="level" type="varchar(16)" remarks="部门级别" defaultValue="in" afterColumn="type">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
