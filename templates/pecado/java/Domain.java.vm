@@ -14,6 +14,7 @@ import me.batizhao.terrace.task.Task;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * ${comments} 实体对象
@@ -56,12 +57,17 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
     private $column.javaType $column.javaField;
         #end
     #else
-
     /**
      * $column.comment
      */
     @Schema(description="$column.comment")
+        #if (${column.config})
+            #set ($jf = ${column.javaField})
+            #set ($jf = $jf.substring(0,1).toUpperCase() + ${jf.substring(1)})
+    private List<${jf}Data> $column.javaField;
+        #else
     private $column.javaType $column.javaField;
+        #end
     #end
 
     #if (${column.config})
