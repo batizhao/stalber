@@ -107,7 +107,7 @@ public class ${className}Controller {
      */
     @Operation(description = "添加或编辑${comments}")
     @PostMapping("/${mappingPath}")
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:add') or @pms.hasPermission('${moduleName}:${classname}:edit')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
     public R<${className}> handleSaveOrUpdate(@Valid @Parameter(name = "${comments}" , required = true) @RequestBody ${className} ${classname}) {
         return R.ok(${classname}Service.saveOrUpdate${className}(${classname}));
     }
@@ -123,7 +123,7 @@ public class ${className}Controller {
      */
     @Operation(description = "通过id删除${comments}")
     @DeleteMapping("/${mappingPath}")
-    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:delete')")
+    @PreAuthorize("@pms.hasPermission('${moduleName}:${classname}:admin')")
 #if($template != "tree")
     public R<Boolean> handleDelete(@Parameter(name = "ID串" , required = true) @RequestParam List<Long> ids) {
 #else
