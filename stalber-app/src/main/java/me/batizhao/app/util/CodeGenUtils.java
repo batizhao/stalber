@@ -64,7 +64,7 @@ public class CodeGenUtils {
 
     private final String CONTROLLER_BASE_JAVA_VM = "BaseController.java";
 
-    private final String MAPPER_XML_VM = "Mapper.xml";
+//    private final String MAPPER_XML_VM = "Mapper.xml";
 
     private final String CONTROLLER_UNIT_TEST_JAVA_VM = "ControllerUnitTest.java";
 
@@ -106,7 +106,10 @@ public class CodeGenUtils {
             Integer columnLength = getColumnLength(appTableColumn.getType());
             String htmlType = columnLength >= 500 || arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType) ? GenConstants.HTML_TEXTAREA : GenConstants.HTML_INPUT;
             appTableColumn.setHtmlType(htmlType);
-        } else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
+        } else if (arraysContains(GenConstants.COLUMNTYPE_JSON, dataType)) {
+            appTableColumn.setJavaType(GenConstants.TYPE_LIST);
+            appTableColumn.setHtmlType(GenConstants.HTML_SUBFORM);
+        }else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
             appTableColumn.setJavaType(GenConstants.TYPE_DATE);
             appTableColumn.setHtmlType(GenConstants.HTML_DATETIME);
         } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
@@ -305,10 +308,10 @@ public class CodeGenUtils {
             return packageSrcPath + "controller" + File.separator + appTableCode.getClassName() + "Form.java";
         }
 
-        if (template.contains(MAPPER_XML_VM)) {
-            return "src" + File.separator + "main" + File.separator
-                    + "resources" + File.separator + "mapper" + File.separator + appTableCode.getClassName() + "Mapper.xml";
-        }
+//        if (template.contains(MAPPER_XML_VM)) {
+//            return "src" + File.separator + "main" + File.separator
+//                    + "resources" + File.separator + "mapper" + File.separator + appTableCode.getClassName() + "Mapper.xml";
+//        }
 
 //        if (template.contains(MENU_SQL_VM)) {
 //            return "db" + File.separator + appTableCode.getClassName().toLowerCase() + "_menu.sql";

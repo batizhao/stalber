@@ -1,5 +1,6 @@
 package ${package}.${moduleName}.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -11,6 +12,8 @@ import me.batizhao.common.core.domain.TreeNode;
 #if($workflow == "yes")
 import me.batizhao.terrace.task.Task;
 #end
+import me.batizhao.common.core.util.ListToStringHandler;
+import org.apache.ibatis.type.JdbcType;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -26,7 +29,7 @@ import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
 @Schema(description = "${comments}")
-@TableName("${tableName}")
+@TableName(value = "${tableName}"#if($template == "onetomany"), autoResultMap = true#end)
 public class ${className}#if($template == "tree") extends TreeNode#end implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,6 +67,7 @@ public class ${className}#if($template == "tree") extends TreeNode#end implement
         #if (${column.config})
             #set ($jf = ${column.javaField})
             #set ($jf = $jf.substring(0,1).toUpperCase() + ${jf.substring(1)})
+    @TableField(jdbcType = JdbcType.VARCHAR, typeHandler = ListToStringHandler.class)
     private List<${jf}Data> $column.javaField;
         #else
     private $column.javaType $column.javaField;

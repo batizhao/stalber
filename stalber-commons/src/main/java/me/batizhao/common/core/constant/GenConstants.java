@@ -58,6 +58,9 @@ public class GenConstants
     public static final String[] COLUMNNAME_NOT_QUERY = { "id", "create_by", "create_time", "del_flag", "update_by",
             "update_time", "remark", "createTime", "updateTime" };
 
+    /** 数据库JSON类型 */
+    public static final String[] COLUMNTYPE_JSON = { "json" };
+
     /** Entity基类字段 */
     public static final String[] BASE_ENTITY = { "createBy", "createTime", "updateBy", "updateTime", "remark" };
 
@@ -94,6 +97,9 @@ public class GenConstants
     /** 富文本控件 */
     public static final String HTML_EDITOR = "editor";
 
+    /** 子表单控件 */
+    public static final String HTML_SUBFORM = "subform";
+
     /** 字符串类型 */
     public static final String TYPE_STRING = "String";
 
@@ -111,6 +117,9 @@ public class GenConstants
 
     /** 时间类型 */
     public static final String TYPE_DATE = "LocalDateTime";
+
+    /** 集合类型 */
+    public static final String TYPE_LIST = "List";
 
     /** 模糊查询 */
     public static final String QUERY_LIKE = "LIKE";
