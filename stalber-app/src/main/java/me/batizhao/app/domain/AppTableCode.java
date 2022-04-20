@@ -82,7 +82,7 @@ public class AppTableCode {
      * 是否生成表单模型
      */
     @Schema(description="是否生成表单模型")
-    private String form = "yes";
+    private String form = "no";
 
     /**
      * 表单key

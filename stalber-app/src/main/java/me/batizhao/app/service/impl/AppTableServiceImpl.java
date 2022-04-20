@@ -66,8 +66,8 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
     private AppTableMapper appTableMapper;
     @Autowired
     private AppService appService;
-    @Autowired
-    private AppFormService appFormService;
+//    @Autowired
+//    private AppFormService appFormService;
     @Autowired
     private CodeProperties codeProperties;
     @Autowired
@@ -135,31 +135,31 @@ public class AppTableServiceImpl extends ServiceImpl<AppTableMapper, AppTable> i
 
         // 生成表单模型
         AppTableCode appTableCode = JSONUtil.toBean(appTable.getCodeMetadata(), AppTableCode.class);
-        if (appTableCode.getForm().equals("yes")) {
-            FormGenerator fg = generateFormMetadata(appTableColumns);
-            String formMetadata = objectMapper.writeValueAsString(fg);
-
-            AppTable at = findById(appTable.getId());
-            AppTableCode at_appTableCode = JSONUtil.toBean(at.getCodeMetadata(), AppTableCode.class);
-            AppForm form;
-            if (at_appTableCode.getFormId() != null) {
-                form = new AppForm()
-                        .setId(at_appTableCode.getFormId())
-                        .setFormKey(at_appTableCode.getFormKey())
-                        .setSubmitURL(at_appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
-                        .setMetadata(formMetadata);
-            } else {
-                form = new AppForm()
-                        .setAppId(at.getAppId())
-                        .setName(at.getDsName() + ":" + at.getTableName() + ":" + RandomUtil.randomString(5))
-                        .setSubmitURL(appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
-                        .setDescription(appTableCode.getClassComment())
-                        .setMetadata(formMetadata);
-            }
-
-            form = appFormService.saveOrUpdateAppForm(form);
-            appTableCode.setFormKey(form.getFormKey()).setFormId(form.getId());
-        }
+//        if (appTableCode.getForm().equals("yes")) {
+//            FormGenerator fg = generateFormMetadata(appTableColumns);
+//            String formMetadata = objectMapper.writeValueAsString(fg);
+//
+//            AppTable at = findById(appTable.getId());
+//            AppTableCode at_appTableCode = JSONUtil.toBean(at.getCodeMetadata(), AppTableCode.class);
+//            AppForm form;
+//            if (at_appTableCode.getFormId() != null) {
+//                form = new AppForm()
+//                        .setId(at_appTableCode.getFormId())
+//                        .setFormKey(at_appTableCode.getFormKey())
+//                        .setSubmitURL(at_appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
+//                        .setMetadata(formMetadata);
+//            } else {
+//                form = new AppForm()
+//                        .setAppId(at.getAppId())
+//                        .setName(at.getDsName() + ":" + at.getTableName() + ":" + RandomUtil.randomString(5))
+//                        .setSubmitURL(appTableCode.getModuleName() + "/" + StringUtils.uncapitalize(at_appTableCode.getClassName()))
+//                        .setDescription(appTableCode.getClassComment())
+//                        .setMetadata(formMetadata);
+//            }
+//
+//            form = appFormService.saveOrUpdateAppForm(form);
+//            appTableCode.setFormKey(form.getFormKey()).setFormId(form.getId());
+//        }
 
         LambdaUpdateWrapper<AppTable> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(AppTable::getId, appTable.getId())
