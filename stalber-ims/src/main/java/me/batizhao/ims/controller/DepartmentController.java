@@ -68,7 +68,7 @@ public class DepartmentController {
      * @return R
      */
     @Operation(description = "通过level查询部门")
-    @GetMapping("/department")
+    @GetMapping(value = "/department", params = "level")
     @PreAuthorize("isAuthenticated()")
     public R<List<Department>> handleLevel(@Parameter(name = "level" , required = true) @RequestParam("id") String level) {
         return R.ok(departmentService.findByLevel(level));
