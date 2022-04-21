@@ -63,6 +63,18 @@ public class DepartmentController {
     }
 
     /**
+     * 通过level查询部门
+     * @param level 级别
+     * @return R
+     */
+    @Operation(description = "通过level查询部门")
+    @GetMapping("/department")
+    @PreAuthorize("isAuthenticated()")
+    public R<List<Department>> handleLevel(@Parameter(name = "level" , required = true) @RequestParam("id") String level) {
+        return R.ok(departmentService.findByLevel(level));
+    }
+
+    /**
      * 添加或编辑部门
      * @param department 部门
      * @return R
