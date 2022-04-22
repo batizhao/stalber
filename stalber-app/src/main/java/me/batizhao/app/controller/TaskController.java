@@ -180,4 +180,17 @@ public class TaskController {
                                 @Parameter(name = "orgId") String orgId) {
         return R.ok(taskService.loadCandidate(procInstId == null ? "0":procInstId, taskDefKey, taskId, back != null && back, processDefId, orgId));
     }
+
+    /**
+     * 获取流程资源
+     * @param processDefId 流程定义Id
+     * @param sourceType 资源类型
+     * @return
+     */
+    @Operation(description = "获取流程资源")
+    @GetMapping("/repository/resource")
+    public R<byte[]> processResource(@Parameter(name = "processDefId") String processDefId,
+                                                 @Parameter(name = "sourceType") String sourceType) {
+        return R.ok(taskService.loadProcessResource(processDefId, sourceType));
+    }
 }
