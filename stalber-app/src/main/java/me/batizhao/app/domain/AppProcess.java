@@ -49,6 +49,12 @@ public class AppProcess implements Serializable {
     private String name;
 
     /**
+     * 关联表单
+     */
+    @Schema(description="关联表单")
+    private String formId;
+
+    /**
      * 状态
      */
     @Schema(description="状态")
