@@ -52,7 +52,7 @@ public class AppProcess implements Serializable {
      * 关联表单
      */
     @Schema(description="关联表单")
-    private String formId;
+    private Long formId;
 
     /**
      * 状态

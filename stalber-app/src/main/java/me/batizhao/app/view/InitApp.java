@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import me.batizhao.app.domain.AppForm;
 import me.batizhao.terrace.vo.InitProcessDefView;
 import me.batizhao.terrace.vo.TaskNodeView;
 
@@ -32,6 +33,9 @@ public class InitApp implements Serializable {
      */
     @Schema(description="编码")
     private String code;
+
+    /** 表单对象 **/
+    private AppForm appForm;
 
     /**
      * 流程初始对象

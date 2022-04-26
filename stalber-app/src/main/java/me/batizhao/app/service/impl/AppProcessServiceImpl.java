@@ -34,6 +34,7 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
      */
     private LambdaQueryWrapper<AppProcess> createAppProcessLambda(AppProcess appProcess){
         LambdaQueryWrapper<AppProcess> wrapper = Wrappers.lambdaQuery();
+
         if (appProcess.getAppId() != null) {
             wrapper.eq(AppProcess::getAppId, appProcess.getAppId());
         }
@@ -53,6 +54,10 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
         if(StringUtils.isNotBlank(appProcess.getStatus())){
             wrapper.eq(AppProcess::getStatus, appProcess.getStatus());
         }
+
+        if(appProcess.getFormId() != null){
+            wrapper.eq(AppProcess::getFormId, appProcess.getFormId());
+        }
         return wrapper;
     }
     
@@ -65,6 +70,7 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
     @Override
     public List<AppProcess> findAppProcess(AppProcess appProcess) {
         LambdaQueryWrapper<AppProcess> wrapper  = createAppProcessLambda(appProcess);
+        wrapper.orderByDesc(true, AppProcess::getVersion);
         return baseMapper.selectList(wrapper);
     }
 
@@ -111,13 +117,8 @@ public class AppProcessServiceImpl extends ServiceImpl<AppProcessMapper, AppProc
 
     @Override
     public Boolean updateStatus(AppProcess appProcess) {
-        List<AppProcess> list = findAppProcess(appProcess);
-        if(CollectionUtil.isEmpty(list)){
-            LambdaUpdateWrapper<AppProcess> wrapper = Wrappers.lambdaUpdate();
-            wrapper.eq(AppProcess::getId, appProcess.getId()).set(AppProcess::getStatus, appProcess.getStatus());
-            return baseMapper.update(null, wrapper) == 1;
-        }else{
-            throw new StalberException("已存在激活流程，请先禁用已经激活的流程！！！");
-        }
+        LambdaUpdateWrapper<AppProcess> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(AppProcess::getId, appProcess.getId()).set(AppProcess::getStatus, appProcess.getStatus());
+        return baseMapper.update(null, wrapper) == 1;
     }
 }
