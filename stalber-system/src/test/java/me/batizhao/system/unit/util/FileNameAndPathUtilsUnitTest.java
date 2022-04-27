@@ -11,6 +11,7 @@ import org.mockito.MockedStatic;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -30,7 +31,7 @@ public class FileNameAndPathUtilsUnitTest {
 
     @Test
     public void testFileNameEncode() {
-        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", "张三", Collections.singletonList("2"), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
+        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", "张三", new ArrayList<>(), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
 
         try (MockedStatic<SecurityUtils> mockStatic = mockStatic(SecurityUtils.class)) {
             mockStatic.when(SecurityUtils::getUser).thenReturn(pecadoUser);

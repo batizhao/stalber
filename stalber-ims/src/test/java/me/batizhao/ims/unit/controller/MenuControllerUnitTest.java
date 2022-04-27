@@ -69,7 +69,7 @@ public class MenuControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenNothing_whenFindMenuTree4Me_thenSuccess() throws Exception {
-        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", "张三", Collections.singletonList("2"), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
+        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", "张三", new ArrayList<>(), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
 
         List<Menu> trees = new ArrayList<>();
         Menu menu = menuList.get(0);

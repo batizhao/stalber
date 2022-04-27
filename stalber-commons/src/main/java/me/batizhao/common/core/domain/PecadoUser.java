@@ -49,7 +49,7 @@ public class PecadoUser implements UserDetails {
     /**
      * 部门ID
      */
-    private List<String> deptIds;
+    private List<IdName> departmentList;
 
     /**
      * 角色ID
@@ -64,12 +64,12 @@ public class PecadoUser implements UserDetails {
     public PecadoUser() {
     }
 
-    public PecadoUser(Long userId, String username, String password, String name, List<String> deptIds, List<String> roleIds, Set<String> permissions) {
+    public PecadoUser(Long userId, String username, String password, String name, List<IdName> departmentList, List<String> roleIds, Set<String> permissions) {
         this.userId = userId;
         this.username = username;
         this.name = name;
         this.password = password;
-        this.deptIds = deptIds;
+        this.departmentList = departmentList;
         this.roleIds = roleIds;
         this.permissions = permissions;
     }
@@ -118,12 +118,12 @@ public class PecadoUser implements UserDetails {
         this.expireTime = expireTime;
     }
 
-    public List<String> getDeptIds() {
-        return deptIds;
+    public List<IdName> getDepartmentList() {
+        return departmentList;
     }
 
-    public void setDeptIds(List<String> deptIds) {
-        this.deptIds = deptIds;
+    public void setDepartmentList(List<IdName> departmentList) {
+        this.departmentList = departmentList;
     }
 
     public List<String> getRoleIds() {

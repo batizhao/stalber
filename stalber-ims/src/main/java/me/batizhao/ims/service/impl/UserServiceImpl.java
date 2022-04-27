@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import me.batizhao.common.core.annotation.DataScope;
+import me.batizhao.common.core.domain.IdName;
 import me.batizhao.common.core.exception.NotFoundException;
 import me.batizhao.common.core.exception.StalberException;
+import me.batizhao.common.core.util.BeanCopyUtil;
 import me.batizhao.common.core.util.SecurityUtils;
 import me.batizhao.ims.domain.*;
 import me.batizhao.ims.mapper.UserMapper;
@@ -169,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = findById(userId);
         UserInfoVO userInfoVO = new UserInfoVO();
         userInfoVO.setUser(user);
-        userInfoVO.setDeptIds(departmentService.findDepartmentsByUserId(userId).stream().map(Department::getId).map(String::valueOf).collect(Collectors.toList()));
+        userInfoVO.setDepartmentList(BeanCopyUtil.copyListProperties(departmentService.findDepartmentsByUserId(userId), IdName::new));
         userInfoVO.setRoleIds(roleService.findRolesByUserId(userId).stream().map(Role::getId).map(String::valueOf).collect(Collectors.toList()));
         userInfoVO.setRoles(roleService.findRolesByUserId(userId).stream().map(Role::getCode).collect(Collectors.toList()));
         userInfoVO.setPermissions(menuService.findMenusByUserId(userId).stream().map(Menu::getPermission).filter(org.springframework.util.StringUtils::hasText).collect(Collectors.toList()));
@@ -183,8 +185,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<User> findLeaders() {
-        List<String> depts = SecurityUtils.getUser().getDeptIds();
-        return this.findLeadersByDepartmentId(Integer.valueOf(depts.get(0)), null);
+        List<IdName> departmentList = SecurityUtils.getUser().getDepartmentList();
+        return this.findLeadersByDepartmentId(departmentList.get(0).getId(), null);
     }
 
     @Override

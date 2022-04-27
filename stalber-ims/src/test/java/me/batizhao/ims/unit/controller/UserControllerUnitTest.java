@@ -268,7 +268,7 @@ public class UserControllerUnitTest extends BaseControllerUnitTest {
     @Test
     @WithMockUser
     public void givenNothing_whenGetUserInfo_thenSuccess() throws Exception {
-        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", "张三", Collections.singletonList("2"), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
+        PecadoUser pecadoUser = new PecadoUser(1L, "zhangsan", "N_A", "张三", new ArrayList<>(), Collections.singletonList("1"), new HashSet<>(Collections.singletonList("admin")));
 
         try (MockedStatic<SecurityUtils> mockStatic = mockStatic(SecurityUtils.class)) {
             mockStatic.when(SecurityUtils::getUser).thenReturn(pecadoUser);

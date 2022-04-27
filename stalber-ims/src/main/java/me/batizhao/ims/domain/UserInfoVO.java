@@ -3,6 +3,7 @@ package me.batizhao.ims.domain;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import me.batizhao.common.core.domain.IdName;
 
 import java.io.Serializable;
 import java.util.List;
@@ -40,8 +41,8 @@ public class UserInfoVO implements Serializable {
 	private List<String> roleIds;
 
 	/**
-	 * @mock @pick([1,2,3])
+	 * @mock @pick([{id:1,name:xxx},{id:2,name:vvv}])
 	 */
-	@Schema(description = "部门ID串")
-	private List<String> deptIds;
+	@Schema(description = "部门集合")
+	private List<IdName> departmentList;
 }
